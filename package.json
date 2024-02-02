@@ -1,6 +1,10 @@
 {
   "name": "lms-portal",
   "version": "0.1.0",
+  "repository": "git@github.com:mikita-workspace/lms-portal.git",
+  "description": "Nova LMS Portal",
+  "author": "Mikita Kandratsyeu <nickondr.production@gmail.com>",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +13,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.29.5",
+    "@clerk/themes": "^1.7.9",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -34,5 +40,8 @@
     "prettier": "^3.2.4",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
