@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 512 512" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<linearGradient gradientTransform="matrix(512 0 0 510 -5.68434e-14 256)" gradientUnits="userSpaceOnUse" id="LinearGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0" stop-color="#011bd4"/>
+<stop offset="0.779167" stop-color="#ff6cab"/>
+</linearGradient>
+</defs>
+<g id="Background" vectornator:layerName="Background" visibility="hidden">
+<path d="M1.13687e-13 2.84217e-14L512 2.84217e-14L512 512L1.13687e-13 512L1.13687e-13 2.84217e-14Z" fill="#000000" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="Прямоугольник 1"/>
+</g>
+<g id="Logo" vectornator:layerName="Logo">
+<path d="M189.04 5.68434e-14L123.12 28.0737L172.56 77.3859L222.32 127.024L296.8 201.236L299.76 204.084C312.217 215.961 320 232.868 320 251.606C320 287.559 291.346 316.704 256 316.704C220.654 316.704 192 287.559 192 251.606C192 234.134 199.547 217.404 210.56 205.711L201.44 195.702L167.04 157.945C142.946 181.621 128 214.839 128 251.606C128 323.512 185.308 381.803 256 381.803C326.692 381.803 384 323.512 384 251.606C384 214.051 368.367 180.243 343.36 156.481L189.04 5.68434e-14ZM437.52 67.9466L423.2 80.8036L389.44 111.156C425.55 146.665 448 196.483 448 251.606C448 359.465 362.039 446.901 256 446.901C149.961 446.901 64 359.465 64 251.606C64 197.146 87.7701 153.981 123.12 118.561C123.514 118.166 73.5201 69.8996 73.52 69.8996C26.7607 117.079 3.90625e-05 179.32 0 251.606C0 395.418 114.615 512 256 512C321.439 512 381.14 487.015 426.4 445.925C478.926 398.238 512 328.855 512 251.606C512 179.949 483.564 115.029 437.52 67.9466Z" fill="url(#LinearGradient)" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="Кривая 1"/>
+</g>
+</svg>
