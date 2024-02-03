@@ -2,7 +2,7 @@
   "name": "lms-portal",
   "version": "0.1.0",
   "repository": "git@github.com:mikita-workspace/lms-portal.git",
-  "description": "Nova LMS Portal",
+  "description": "Nova LMS",
   "author": "Mikita Kandratsyeu <nickondr.production@gmail.com>",
   "license": "Apache-2.0",
   "private": true,
