@@ -1,11 +1,5 @@
-import { UserButton as ClerkUserButton } from '@clerk/nextjs';
-
 const Home = () => {
-  return (
-    <div>
-      <ClerkUserButton afterSignOutUrl="/" />
-    </div>
-  );
+  return <div>Home</div>;
 };
 
 export default Home;
