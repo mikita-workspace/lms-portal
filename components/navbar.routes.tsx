@@ -13,14 +13,15 @@ export const NavBarRoutes = () => {
 
   const isTeacherPage = pathname?.startsWith('/teacher');
   const isStudentPage = pathname?.includes('/chapter');
+  const isSettingsPage = pathname?.startsWith('/settings');
 
   return (
     <div className="flex gap-x-2 ml-auto items-center">
-      {isTeacherPage || isStudentPage ? (
+      {isTeacherPage || isStudentPage || isSettingsPage ? (
         <Link href="/">
           <Button size="sm" variant="ghost">
             <LogOut className="h-4 w-4 mr-2" />
-            Exit
+            Go back
           </Button>
         </Link>
       ) : (
@@ -32,7 +33,11 @@ export const NavBarRoutes = () => {
         </Link>
       )}
       {/* <ThemeSwitcher /> */}
-      <ClerkUserButton afterSignOutUrl="/" />
+      <ClerkUserButton
+        afterSignOutUrl="/"
+        userProfileMode="navigation"
+        userProfileUrl="/settings/clerk"
+      />
     </div>
   );
 };

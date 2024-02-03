@@ -72,14 +72,14 @@ const CreatePage = () => {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={!isValid || isSubmitting} isLoading={isSubmitting}>
-                Continue
-              </Button>
-              <Link href="/">
+              <Link href="/teacher/courses">
                 <Button type="button" variant="ghost">
                   Cancel
                 </Button>
               </Link>
+              <Button type="submit" disabled={!isValid || isSubmitting} isLoading={isSubmitting}>
+                Continue
+              </Button>
             </div>
           </form>
         </Form>
