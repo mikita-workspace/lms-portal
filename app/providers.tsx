@@ -3,8 +3,9 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { ThemeProvider, useTheme } from 'next-themes';
+import { Toaster } from 'react-hot-toast';
 
-export const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const { resolvedTheme } = useTheme();
 
   return (
@@ -22,10 +23,17 @@ export const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode 
   );
 };
 
+const ToastProvider = () => {
+  return <Toaster />;
+};
+
 export const Providers = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <ToastProvider />
+        {children}
+      </AuthProvider>
     </ThemeProvider>
   );
 };
