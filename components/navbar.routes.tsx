@@ -33,11 +33,7 @@ export const NavBarRoutes = () => {
         </Link>
       )}
       {/* <ThemeSwitcher /> */}
-      <ClerkUserButton
-        afterSignOutUrl="/"
-        userProfileMode="navigation"
-        userProfileUrl="/settings/clerk"
-      />
+      <ClerkUserButton afterSignOutUrl="/" />
     </div>
   );
 };
