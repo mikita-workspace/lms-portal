@@ -13,8 +13,8 @@ import { FileUpload } from '@/components/file-upload';
 import { Button } from '@/components/ui/button';
 
 type ImageFormProps = {
-  initialData: Course;
   courseId: string;
+  initialData: Course;
 };
 
 const formSchema = z.object({

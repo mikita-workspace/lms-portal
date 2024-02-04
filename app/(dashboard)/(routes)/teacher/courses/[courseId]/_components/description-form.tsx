@@ -16,8 +16,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
 type DescriptionFormProps = {
-  initialData: Course;
   courseId: string;
+  initialData: Course;
 };
 
 const formSchema = z.object({

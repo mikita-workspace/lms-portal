@@ -11,10 +11,11 @@ import {
 } from '@radix-ui/react-dropdown-menu';
 import { cva } from 'class-variance-authority';
 import { LogIn, LogOut, Settings2 } from 'lucide-react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const dropdownMenuContentStyles = cva(
   'z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-72 mr-4 mt-2',
@@ -36,13 +37,10 @@ export const UserProfileButton = () => {
   return isSignedIn ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
-        <div className="relative flex shrink-0 overflow-hidden rounded-full h-[36px] w-[36px] border items-center justify-center">
-          {user?.imageUrl ? (
-            <Image src={user.imageUrl} alt="User Profile" height={36} width={36} />
-          ) : (
-            <p className="text-sm font-semibold">{`${user.firstName?.[0]}${user.lastName?.[0]}`}</p>
-          )}
-        </div>
+        <Avatar>
+          <AvatarImage src={user?.imageUrl} />
+          <AvatarFallback>{`${user.firstName?.[0]}${user.lastName?.[0]}`}</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={dropdownMenuContentStyles()}>
         <DropdownMenuLabel className="font-normal p-2">
