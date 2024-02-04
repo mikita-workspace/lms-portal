@@ -38,7 +38,7 @@ export const UserProfileButton = () => {
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
         <div className="relative flex shrink-0 overflow-hidden rounded-full h-[36px] w-[36px] border items-center justify-center">
           {user?.imageUrl ? (
-            <Image src={user?.imageUrl} alt="User Profile" height={36} width={36} />
+            <Image src={user.imageUrl} alt="User Profile" height={36} width={36} />
           ) : (
             <p className="text-sm font-semibold">{`${user.firstName?.[0]}${user.lastName?.[0]}`}</p>
           )}
