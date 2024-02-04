@@ -13,7 +13,6 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
 type CategoryFormProps = {
