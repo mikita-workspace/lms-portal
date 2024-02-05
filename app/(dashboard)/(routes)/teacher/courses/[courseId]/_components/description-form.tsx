@@ -54,7 +54,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
   };
 
   return (
-    <div className="mt-6 border  bg-slate-100 rounded-md p-4">
+    <div className="mt-6 border  bg-neutral-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Description
         <Button onClick={handleToggleEdit} variant="outline">
@@ -69,7 +69,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn('text-sm mt-2', !initialData.description && 'text-slate-500 italic')}>
+        <p className={cn('text-sm mt-2', !initialData.description && 'text-neutral-500 italic')}>
           {initialData.description || 'No description'}
         </p>
       )}

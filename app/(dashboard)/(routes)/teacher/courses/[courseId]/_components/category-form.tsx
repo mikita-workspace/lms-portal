@@ -57,7 +57,7 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
   };
 
   return (
-    <div className="mt-6 border  bg-slate-100 rounded-md p-4">
+    <div className="mt-6 border  bg-neutral-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Category
         <Button onClick={handleToggleEdit} variant="outline">
@@ -72,7 +72,7 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn('text-sm mt-2', !initialData.categoryId && 'text-slate-500 italic')}>
+        <p className={cn('text-sm mt-2', !initialData.categoryId && 'text-neutral-500 italic')}>
           {selectedOption?.label || 'No category'}
         </p>
       )}

@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { UserProfileButton } from '@/components/auth';
+// import { ThemeSwitcher } from '@/components/common';
 import { Button } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
-
-// import { ThemeSwitcher } from './theme-switcher';
 
 export const NavBarRoutes = () => {
   const pathname = usePathname();
