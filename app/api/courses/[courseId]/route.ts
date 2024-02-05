@@ -1,23 +1,22 @@
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
 
-import { authOptions } from '@/lib/auth';
+import { getCurrentUser } from '@/actions/get-current-user';
 import { db } from '@/lib/db';
 
 export const PATCH = async (req: Request, { params }: { params: { courseId: string } }) => {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getCurrentUser();
 
     const { courseId } = params;
     const values = await req.json();
 
-    if (!session) {
+    if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
     const course = await db.course.update({
-      where: { id: courseId, userId: session.user.userId },
+      where: { id: courseId, userId: user.userId },
       data: { ...values },
     });
 

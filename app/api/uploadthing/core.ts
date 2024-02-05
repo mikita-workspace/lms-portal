@@ -1,19 +1,18 @@
-import { getServerSession } from 'next-auth/next';
 import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
-import { authOptions } from '@/lib/auth';
+import { getCurrentUser } from '@/actions/get-current-user';
 
 const f = createUploadthing();
 
 const handleAuth = async () => {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (!session) {
+  if (!user) {
     throw new UploadThingError('Unauthorized');
   }
 
-  return { userId: session.user.userId };
+  return { userId: user.userId };
 };
 
 export const ourFileRouter = {

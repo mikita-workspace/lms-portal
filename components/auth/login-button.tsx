@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,8 +20,13 @@ import { Provider } from '@/constants/auth';
 export const LoginButton = () => {
   const searchParams = useSearchParams();
 
-  const handleSignIn = (provider: Provider) => async () =>
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleSignIn = (provider: Provider) => async () => {
+    setIsDisabled(true);
+
     await signIn(provider, { callbackUrl: searchParams.get('callbackUrl') ?? '/' });
+  };
 
   return (
     <Dialog>
@@ -38,20 +44,21 @@ export const LoginButton = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2 w-full mt-4">
-          {/* <Button className="w-full flex justify-start font-[400]" variant="outline">
+          <Button className="w-full flex justify-start font-[400]" variant="outline">
             <Image
               className="h-5 w-5 mr-4"
               src="/assets/google.svg"
-              alt="Github"
+              alt="Google"
               width="1"
               height="1"
             />
             Continue with Google
-          </Button> */}
+          </Button>
           <Button
             className="w-full flex justify-start font-[400]"
             variant="outline"
             onClick={handleSignIn(Provider.GITHUB)}
+            disabled={isDisabled}
           >
             <Image
               className="h-5 w-5 mr-4"

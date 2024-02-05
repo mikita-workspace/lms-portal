@@ -1,9 +1,8 @@
 import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth/next';
 
+import { getCurrentUser } from '@/actions/get-current-user';
 import { IconBadge } from '@/components/common';
-import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 
 import { CategoryForm } from './_components/category-form';
@@ -12,9 +11,9 @@ import { ImageForm } from './_components/image-form';
 import { TitleForm } from './_components/title-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (!session) {
+  if (!user) {
     return redirect('/');
   }
 
