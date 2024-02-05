@@ -7,9 +7,7 @@ interface LogoutButtonProps {
 }
 
 export const LogoutButton = ({ children }: LogoutButtonProps) => {
-  const handleSignOut = () => {
-    signOut();
-  };
+  const handleSignOut = async () => signOut({ callbackUrl: '/' });
 
   return <span onClick={handleSignOut}>{children}</span>;
 };

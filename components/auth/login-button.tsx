@@ -1,6 +1,8 @@
 import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,8 +14,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Provider } from '@/constants/auth';
 
-export const AuthModal = () => {
+export const LoginButton = () => {
+  const searchParams = useSearchParams();
+
+  const handleSignIn = (provider: Provider) => async () =>
+    await signIn(provider, { callbackUrl: searchParams.get('callbackUrl') ?? '/' });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,7 +38,7 @@ export const AuthModal = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2 w-full mt-4">
-          <Button className="w-full flex justify-start font-[400]" variant="outline">
+          {/* <Button className="w-full flex justify-start font-[400]" variant="outline">
             <Image
               className="h-5 w-5 mr-4"
               src="/assets/google.svg"
@@ -39,8 +47,12 @@ export const AuthModal = () => {
               height="1"
             />
             Continue with Google
-          </Button>
-          <Button className="w-full flex justify-start font-[400]" variant="outline">
+          </Button> */}
+          <Button
+            className="w-full flex justify-start font-[400]"
+            variant="outline"
+            onClick={handleSignIn(Provider.GITHUB)}
+          >
             <Image
               className="h-5 w-5 mr-4"
               src="/assets/github.svg"

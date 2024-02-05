@@ -6,6 +6,9 @@ import { Provider } from '@/constants/auth';
 import { db } from './db';
 
 export const authOptions = {
+  pages: {
+    signIn: '/sign-in',
+  },
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,

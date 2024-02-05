@@ -2,7 +2,6 @@
 
 import { LogOut, Settings2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
 
@@ -18,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui';
 import { LogoutButton } from '.';
-import { AuthModal } from '.';
+import { LoginButton } from '.';
 
 export const UserProfileButton = () => {
   const user = useCurrentUser();
@@ -27,7 +26,6 @@ export const UserProfileButton = () => {
   const usernameFallback = 'MK';
 
   const handleSettings = async () => router.push('/settings/account');
-  // const handleSignOut = async () => signOut(() => router.push('/'));
 
   return user ? (
     <DropdownMenu>
@@ -62,6 +60,6 @@ export const UserProfileButton = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <AuthModal />
+    <LoginButton />
   );
 };
