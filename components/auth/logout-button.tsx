@@ -1,19 +1,15 @@
 'use client';
 
-import { logout } from '@/actions/auth';
+import { signOut } from 'next-auth/react';
 
 interface LogoutButtonProps {
   children?: React.ReactNode;
 }
 
 export const LogoutButton = ({ children }: LogoutButtonProps) => {
-  const handleOnClick = () => {
-    logout();
+  const handleSignOut = () => {
+    signOut();
   };
 
-  return (
-    <span onClick={handleOnClick} className="cursor-pointer">
-      {children}
-    </span>
-  );
+  return <span onClick={handleSignOut}>{children}</span>;
 };
