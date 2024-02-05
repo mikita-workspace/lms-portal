@@ -44,7 +44,11 @@ export const LoginButton = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2 w-full mt-4">
-          <Button className="w-full flex justify-start font-[400]" variant="outline">
+          <Button
+            className="w-full flex justify-start font-[400]"
+            variant="outline"
+            disabled={isDisabled}
+          >
             <Image
               className="h-5 w-5 mr-4"
               src="/assets/google.svg"
