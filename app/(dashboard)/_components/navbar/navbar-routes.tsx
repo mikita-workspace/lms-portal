@@ -6,12 +6,13 @@ import { usePathname } from 'next/navigation';
 
 import { UserProfileButton } from '@/components/auth';
 import { Button } from '@/components/ui';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 // import { ThemeSwitcher } from './theme-switcher';
 
 export const NavBarRoutes = () => {
   const pathname = usePathname();
-  // const { userId } = useAuth();
+  const user = useCurrentUser();
 
   const isTeacherPage = pathname?.startsWith('/teacher');
   const isStudentPage = pathname?.includes('/chapter');
@@ -19,7 +20,7 @@ export const NavBarRoutes = () => {
 
   return (
     <div className="flex gap-x-2 ml-auto items-center">
-      {true && (
+      {user?.userId && (
         <>
           {isTeacherPage || isStudentPage || isSettingsPage ? (
             <Link href="/">
