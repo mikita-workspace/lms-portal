@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
-import { IconBadge } from '@/components/icon-badge';
+import { IconBadge } from '@/components/common';
 import { db } from '@/lib/db';
 
 import { CategoryForm } from './_components/category-form';

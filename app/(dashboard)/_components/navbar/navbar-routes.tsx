@@ -5,9 +5,10 @@ import { BookMarked, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { UserProfileButton } from '@/components/auth';
+import { Button } from '@/components/ui';
+
 // import { ThemeSwitcher } from './theme-switcher';
-import { Button } from './ui/button';
-import { UserProfileButton } from './user-profile.button';
 
 export const NavBarRoutes = () => {
   const pathname = usePathname();

@@ -1,29 +1,23 @@
 'use client';
 
 import { SignInButton, useAuth, useUser } from '@clerk/nextjs';
+import { LogIn, LogOut, Settings2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+// import { AuthModal } from './auth/auth-modal';
+import { Button } from '@/components/ui/button';
+
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { cva } from 'class-variance-authority';
-import { LogIn, LogOut, Settings2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-
-import { Button } from '@/components/ui/button';
-
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-
-const dropdownMenuContentStyles = cva(
-  'z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-72 mr-4 mt-2',
-);
-
-const dropdownMenuItemStyles = cva(
-  'relative flex select-none items-center rounded-sm text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 p-2 cursor-pointer',
-);
+} from '../ui';
 
 export const UserProfileButton = () => {
   const { isSignedIn, user } = useUser();
@@ -42,7 +36,7 @@ export const UserProfileButton = () => {
           <AvatarFallback>{`${user.firstName?.[0]}${user.lastName?.[0]}`}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={dropdownMenuContentStyles()}>
+      <DropdownMenuContent className="w-72 mr-4 mt-1">
         <DropdownMenuLabel className="font-normal p-2">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-semibold">{user.fullName}</p>
@@ -52,18 +46,19 @@ export const UserProfileButton = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className={dropdownMenuItemStyles()} onClick={handleSettings}>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className={dropdownMenuItemStyles()} onClick={handleSignOut}>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
+    // <AuthModal />
     <SignInButton afterSignInUrl="/">
       <Button variant="outline">
         <LogIn className="h-4 w-4 mr-2" />
