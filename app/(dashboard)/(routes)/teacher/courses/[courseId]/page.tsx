@@ -1,6 +1,6 @@
-import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import { IconBadge } from '@/components/common';
 import { db } from '@/lib/db';
@@ -11,7 +11,8 @@ import { ImageForm } from './_components/image-form';
 import { TitleForm } from './_components/title-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
-  const { userId } = auth();
+  const {} = useSession();
+  const userId = 'test';
 
   if (!userId) {
     return redirect('/');

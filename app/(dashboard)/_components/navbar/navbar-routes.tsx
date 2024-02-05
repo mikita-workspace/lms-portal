@@ -1,6 +1,5 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
 import { BookMarked, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,7 +11,7 @@ import { Button } from '@/components/ui';
 
 export const NavBarRoutes = () => {
   const pathname = usePathname();
-  const { userId } = useAuth();
+  // const { userId } = useAuth();
 
   const isTeacherPage = pathname?.startsWith('/teacher');
   const isStudentPage = pathname?.includes('/chapter');
@@ -20,7 +19,7 @@ export const NavBarRoutes = () => {
 
   return (
     <div className="flex gap-x-2 ml-auto items-center">
-      {userId && (
+      {true && (
         <>
           {isTeacherPage || isStudentPage || isSettingsPage ? (
             <Link href="/">

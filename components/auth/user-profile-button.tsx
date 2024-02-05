@@ -1,11 +1,10 @@
 'use client';
 
-import { SignInButton, useAuth, useUser } from '@clerk/nextjs';
-import { LogIn, LogOut, Settings2 } from 'lucide-react';
+import { LogOut, Settings2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
-// import { AuthModal } from './auth/auth-modal';
-import { Button } from '@/components/ui/button';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 import {
   Avatar,
@@ -18,31 +17,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui';
+import { LogoutButton } from '.';
+import { AuthModal } from '.';
 
 export const UserProfileButton = () => {
-  const { isSignedIn, user } = useUser();
-  const { signOut } = useAuth();
-
+  const user = useCurrentUser();
   const router = useRouter();
 
-  const handleSettings = async () => router.push('/settings/clerk');
-  const handleSignOut = async () => signOut(() => router.push('/'));
+  const usernameFallback = 'MK';
 
-  return isSignedIn ? (
+  const handleSettings = async () => router.push('/settings/account');
+  // const handleSignOut = async () => signOut(() => router.push('/'));
+
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
         <Avatar>
-          <AvatarImage src={user?.imageUrl} />
-          <AvatarFallback>{`${user.firstName?.[0]}${user.lastName?.[0]}`}</AvatarFallback>
+          {user.image ? (
+            <AvatarImage src={user.image} />
+          ) : (
+            <AvatarFallback>{usernameFallback}</AvatarFallback>
+          )}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72 mr-4 mt-1">
         <DropdownMenuLabel className="font-normal p-2">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-semibold">{user.fullName}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user.emailAddresses[0].emailAddress}
-            </p>
+            <p className="text-sm font-semibold">{user.name}</p>
+            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
@@ -51,19 +53,15 @@ export const UserProfileButton = () => {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" />
-          Log out
-        </DropdownMenuItem>
+        <LogoutButton>
+          <DropdownMenuItem className="hover:cursor-pointer">
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </DropdownMenuItem>
+        </LogoutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    // <AuthModal />
-    <SignInButton afterSignInUrl="/">
-      <Button variant="outline">
-        <LogIn className="h-4 w-4 mr-2" />
-        Login
-      </Button>
-    </SignInButton>
+    <AuthModal />
   );
 };

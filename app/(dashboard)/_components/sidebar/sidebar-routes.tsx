@@ -35,8 +35,8 @@ const teacherRoutes = [
 const settingsRoutes = [
   {
     icon: Shield,
-    label: 'Clerk',
-    href: '/settings/clerk',
+    label: 'Account',
+    href: '/settings/account',
   },
 ];
 

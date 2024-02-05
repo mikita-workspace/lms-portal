@@ -1,4 +1,3 @@
-import { auth } from '@clerk/nextjs';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
@@ -6,7 +5,7 @@ import { db } from '@/lib/db';
 
 export const POST = async (req: Request) => {
   try {
-    const { userId } = auth();
+    const userId = 'test';
     const { title } = await req.json();
 
     if (!userId) {

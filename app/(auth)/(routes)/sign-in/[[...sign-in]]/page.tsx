@@ -1,7 +1,5 @@
-import { SignIn as ClerkSignIn } from '@clerk/nextjs';
-
 const SignInPage = () => {
-  return <ClerkSignIn />;
+  return <div>sign-in</div>;
 };
 
 export default SignInPage;
