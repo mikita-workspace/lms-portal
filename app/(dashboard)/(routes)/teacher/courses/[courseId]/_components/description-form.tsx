@@ -96,7 +96,12 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
                       placeholder="e.g. 'This course is about ...'"
                     />
                   </FormControl>
-                  <FormDescription>{`${form.watch('description').length}/${TEXTAREA_MAX_LENGTH}`}</FormDescription>
+                  <FormDescription
+                    className={cn(
+                      'text-xs text-end',
+                      form.watch('description').length >= TEXTAREA_MAX_LENGTH && 'text-red-600',
+                    )}
+                  >{`${form.watch('description').length}/${TEXTAREA_MAX_LENGTH}`}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -3,4 +3,4 @@ export const TERMS_AND_CONDITIONS_URL =
 export const PRIVACY_POLICY_URL =
   'https://www.termsfeed.com/live/2ced86a5-ddcc-45cf-acd0-65e79223bd21';
 
-export const TEXTAREA_MAX_LENGTH = 256;
+export const TEXTAREA_MAX_LENGTH = 512;
