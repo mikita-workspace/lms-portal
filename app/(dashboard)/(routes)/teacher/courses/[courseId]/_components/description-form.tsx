@@ -11,8 +11,16 @@ import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { cn } from '@/lib/utils';
 
 type DescriptionFormProps = {
@@ -25,16 +33,15 @@ const formSchema = z.object({
 });
 
 export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-
   const router = useRouter();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: initialData?.description || '',
     },
   });
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -85,9 +92,11 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
                     <Textarea
                       {...field}
                       disabled={isSubmitting}
+                      maxLength={TEXTAREA_MAX_LENGTH}
                       placeholder="e.g. 'This course is about ...'"
                     />
                   </FormControl>
+                  <FormDescription>{`${form.watch('description').length || 0}/${TEXTAREA_MAX_LENGTH}`}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
