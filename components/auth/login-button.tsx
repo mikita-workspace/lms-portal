@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Provider } from '@/constants/auth';
+import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@/constants/common';
 
 export const LoginButton = () => {
   const searchParams = useSearchParams();
@@ -80,7 +81,7 @@ export const LoginButton = () => {
             <Link
               target="_blank"
               className="text-primary hover:underline"
-              href="https://en.wikipedia.org/wiki/Next.js"
+              href={TERMS_AND_CONDITIONS_URL}
             >
               Terms of Service
             </Link>{' '}
@@ -88,7 +89,7 @@ export const LoginButton = () => {
             <Link
               target="_blank"
               className="text-primary hover:underline"
-              href="https://en.wikipedia.org/wiki/Next.js"
+              href={PRIVACY_POLICY_URL}
             >
               Privacy Policy
             </Link>
