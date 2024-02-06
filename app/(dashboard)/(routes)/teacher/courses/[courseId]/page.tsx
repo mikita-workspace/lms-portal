@@ -1,4 +1,4 @@
-import { LayoutDashboard } from 'lucide-react';
+import { BadgeDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/get-current-user';
@@ -8,6 +8,7 @@ import { db } from '@/lib/db';
 import { CategoryForm } from './_components/category-form';
 import { DescriptionForm } from './_components/description-form';
 import { ImageForm } from './_components/image-form';
+import { PriceForm } from './_components/price-form';
 import { TitleForm } from './_components/title-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
@@ -64,6 +65,22 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             courseId={course.id}
             options={categories.map((category) => ({ label: category.name, value: category.id }))}
           />
+        </div>
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h2 className="text-xl">Course chapters</h2>
+            </div>
+            <div>TODO: Chapters</div>
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={BadgeDollarSign} />
+              <h2 className="text-xl">Sell your course</h2>
+            </div>
+            <PriceForm initialData={course} courseId={course.id} />
+          </div>
         </div>
       </div>
     </div>
