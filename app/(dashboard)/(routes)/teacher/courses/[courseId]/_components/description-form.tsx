@@ -29,7 +29,7 @@ type DescriptionFormProps = {
 };
 
 const formSchema = z.object({
-  description: z.string().min(1, { message: 'Description is required' }),
+  description: z.string().min(1, { message: 'Description is required' }).max(TEXTAREA_MAX_LENGTH),
 });
 
 export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
