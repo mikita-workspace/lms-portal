@@ -5,13 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { UserProfileButton } from '@/components/auth/user-profile-button';
-// import { ThemeSwitcher } from '@/components/common';
 import { Button } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 export const NavBarRoutes = () => {
   const pathname = usePathname();
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
 
   const isTeacherPage = pathname?.startsWith('/teacher');
   const isStudentPage = pathname?.includes('/chapter');

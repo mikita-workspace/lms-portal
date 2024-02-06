@@ -4,6 +4,7 @@ import { LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
+import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { getFallbackName } from '@/lib/utils';
 
@@ -17,17 +18,30 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Skeleton,
 } from '../ui';
 import { LoginButton } from './login-button';
 import { LogoutButton } from './logout-button';
 
 export const UserProfileButton = () => {
-  const user = useCurrentUser();
+  const { user, status } = useCurrentUser();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
 
   const handleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
   const handleSettings = async () => router.push('/settings/account');
+
+  if (status === AuthStatus.LOADING) {
+    return (
+      <div className="flex items-center space-x-4">
+        <div className="space-y-2">
+          <Skeleton className="h-3 w-[100px]" />
+          <Skeleton className="h-3 w-[75px]" />
+        </div>
+        <Skeleton className="h-10 w-10 rounded-full" />
+      </div>
+    );
+  }
 
   return user ? (
     <DropdownMenu>

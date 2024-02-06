@@ -8,4 +8,5 @@ export * from './form';
 export * from './input';
 export * from './popover';
 export * from './sheet';
+export * from './skeleton';
 export * from './textarea';
