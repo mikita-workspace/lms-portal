@@ -1,9 +1,11 @@
 'use client';
 
-import { LogOut, Settings2 } from 'lucide-react';
+import { LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { getFallbackName } from '@/lib/utils';
 
 import {
   Avatar,
@@ -16,15 +18,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui';
-import { LogoutButton } from '.';
-import { LoginButton } from '.';
+import { LoginButton } from './login-button';
+import { LogoutButton } from './logout-button';
 
 export const UserProfileButton = () => {
   const user = useCurrentUser();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
-  const usernameFallback = 'MK';
-
+  const handleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
   const handleSettings = async () => router.push('/settings/account');
 
   return user ? (
@@ -34,7 +36,7 @@ export const UserProfileButton = () => {
           {user.image ? (
             <AvatarImage src={user.image} />
           ) : (
-            <AvatarFallback>{usernameFallback}</AvatarFallback>
+            <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
           )}
         </Avatar>
       </DropdownMenuTrigger>
@@ -46,6 +48,19 @@ export const UserProfileButton = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleTheme}>
+          {theme === 'light' ? (
+            <>
+              <MoonStar className="mr-2 h-4 w-4" />
+              Dark mode
+            </>
+          ) : (
+            <>
+              <Sun className="mr-2 h-4 w-4" />
+              Light mode
+            </>
+          )}
+        </DropdownMenuItem>
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings

@@ -1,4 +1,4 @@
-import { SideBarRoutes } from '.';
+import { SideBarRoutes } from './sidebar-routes';
 
 export const SideBar = () => {
   return (

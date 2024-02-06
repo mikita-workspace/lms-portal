@@ -2,7 +2,7 @@
 
 import { Lock } from 'lucide-react';
 
-import { LoginButton } from '@/components/auth';
+import { LoginButton } from '@/components/auth/login-button';
 
 const SignInPage = () => {
   return (

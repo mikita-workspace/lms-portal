@@ -4,7 +4,7 @@ import { BarChart4, Compass, Layout, List, Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
-import { SideBarItem } from '.';
+import { SideBarItem } from './sidebar-item';
 
 const guestRoutes = [
   {

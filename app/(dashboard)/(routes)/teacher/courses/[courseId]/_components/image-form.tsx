@@ -9,7 +9,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
-import { FileUpload } from '@/components/common';
+import { FileUpload } from '@/components/common/file-upload';
 import { Button } from '@/components/ui/button';
 
 type ImageFormProps = {

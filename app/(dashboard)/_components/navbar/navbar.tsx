@@ -1,6 +1,6 @@
-import { Logo } from '../common';
-import { SideBarMobile } from '../sidebar';
-import { NavBarRoutes } from '.';
+import { Logo } from '../common/logo';
+import { SideBarMobile } from '../sidebar/sidebar-mobile';
+import { NavBarRoutes } from './navbar-routes';
 
 export const NavBar = () => {
   return (

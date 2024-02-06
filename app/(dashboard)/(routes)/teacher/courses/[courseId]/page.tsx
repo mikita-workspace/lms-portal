@@ -2,7 +2,7 @@ import { LayoutDashboard } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/get-current-user';
-import { IconBadge } from '@/components/common';
+import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
 import { CategoryForm } from './_components/category-form';

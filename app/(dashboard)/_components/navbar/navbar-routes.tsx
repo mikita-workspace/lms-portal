@@ -4,7 +4,7 @@ import { BookMarked, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { UserProfileButton } from '@/components/auth';
+import { UserProfileButton } from '@/components/auth/user-profile-button';
 // import { ThemeSwitcher } from '@/components/common';
 import { Button } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
