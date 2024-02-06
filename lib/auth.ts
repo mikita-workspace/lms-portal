@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 import { Provider } from '@/constants/auth';
 
@@ -14,10 +15,17 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider === Provider.GITHUB && user?.email) {
+      if (
+        [Provider.GITHUB, Provider.GOOGLE].includes(account?.provider as Provider) &&
+        user?.email
+      ) {
         const dbUser = await db.user.upsert({
           where: {
             email: user.email,
