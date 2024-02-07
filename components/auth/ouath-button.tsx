@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
 import { Provider } from '@/constants/auth';
-import { capitalize } from '@/lib/utils';
+import { capitalize, cn } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
 
@@ -31,7 +31,7 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
       onClick={handleSignIn}
     >
       <Image
-        className="h-5 w-5 mr-4"
+        className={cn('h-5 w-5 mr-4', provider === Provider.GITHUB && 'dark:invert')}
         src={`/assets/${provider}.svg`}
         alt={provider}
         width="1"
