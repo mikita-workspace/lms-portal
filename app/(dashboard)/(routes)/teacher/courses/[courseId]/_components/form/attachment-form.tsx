@@ -19,7 +19,7 @@ type AttachmentProps = {
 };
 
 const formSchema = z.object({
-  url: z.string().min(1),
+  urls: z.string().array(),
 });
 
 export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
@@ -67,7 +67,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
           {!isEditing && (
             <>
               <Paperclip className="h-4 w-4 mr-2" />
-              Add a file
+              Add files
             </>
           )}
         </Button>
@@ -110,12 +110,12 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
         </>
       )}
       {isEditing && (
-        <div className="mt-4 v">
+        <div className="mt-4">
           <FileUpload
             endpoint="courseAttachment"
-            onChange={(url) => {
-              if (url) {
-                handleSubmit({ url });
+            onChange={(urls) => {
+              if (urls?.length) {
+                handleSubmit({ urls });
               }
             }}
           />

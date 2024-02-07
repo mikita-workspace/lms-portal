@@ -8,7 +8,7 @@ export const POST = async (req: Request, { params }: { params: { courseId: strin
   try {
     const user = await getCurrentUser();
 
-    const { url } = await req.json();
+    const { urls } = await req.json();
 
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
@@ -22,11 +22,15 @@ export const POST = async (req: Request, { params }: { params: { courseId: strin
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
-    const attachment = await db.attachment.create({
-      data: { url, name: url.split('/').pop(), courseId: params.courseId },
+    const attachments = await db.attachment.createMany({
+      data: urls.map((url: string) => ({
+        url,
+        name: url.split('/').pop(),
+        courseId: params.courseId,
+      })),
     });
 
-    return NextResponse.json(attachment);
+    return NextResponse.json(attachments);
   } catch (error) {
     console.error('[COURSE_ID_ATTACHMENTS]', error);
 
