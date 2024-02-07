@@ -1,12 +1,13 @@
 import { BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
+import { ChaptersForm } from './_components/form/chapters-form';
 import { DescriptionForm } from './_components/form/description-form';
 import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
@@ -22,8 +23,12 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
+      userId: user.userId,
     },
-    include: { attachments: { orderBy: { createdAt: 'desc' } } },
+    include: {
+      attachments: { orderBy: { createdAt: 'desc' } },
+      chapters: { orderBy: { position: 'asc' } },
+    },
   });
 
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
@@ -33,11 +38,12 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   }
 
   const requiredFields = [
-    course.title,
+    course.categoryId,
+    course.chapters.some((chapter) => chapter.isPublished),
     course.description,
     course.imageUrl,
     course.price,
-    course.categoryId,
+    course.title,
   ];
 
   const totalFields = requiredFields.length;
@@ -74,7 +80,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Course chapters</h2>
             </div>
-            <div>TODO: Chapters</div>
+            <ChaptersForm initialData={course} courseId={course.id} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">

@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 

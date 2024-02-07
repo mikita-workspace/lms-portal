@@ -1,10 +1,10 @@
 import { HttpStatusCode } from 'axios';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
-export const PATCH = async (req: Request, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
     const user = await getCurrentUser();
 

@@ -1,7 +1,7 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions/auth/get-current-user';
 
 const f = createUploadthing();
 

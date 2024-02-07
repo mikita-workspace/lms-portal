@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
   try {
     const user = await getCurrentUser();
 
-    const { urls } = await req.json();
+    const { title } = await req.json();
 
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
@@ -22,17 +22,20 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
-    const attachments = await db.attachment.createMany({
-      data: urls.map((url: string) => ({
-        url,
-        name: url.split('/').pop(),
-        courseId: params.courseId,
-      })),
+    const lastChapter = await db.chapter.findFirst({
+      where: { courseId: params.courseId },
+      orderBy: { position: 'desc' },
     });
 
-    return NextResponse.json(attachments);
+    const newPosition = lastChapter ? lastChapter.position + 1 : 1;
+
+    const chapter = await db.chapter.create({
+      data: { title, courseId: params.courseId, position: newPosition },
+    });
+
+    return NextResponse.json(chapter);
   } catch (error) {
-    console.error('[COURSE_ID_ATTACHMENTS]', error);
+    console.error('[CHAPTERS]', error);
 
     return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
   }

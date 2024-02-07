@@ -67,7 +67,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
           {!isEditing && (
             <>
               <Paperclip className="h-4 w-4 mr-2" />
-              Add files
+              Attach
             </>
           )}
         </Button>
