@@ -8,14 +8,14 @@ import { SideBarItem } from './sidebar-item';
 
 const guestRoutes = [
   {
-    icon: Layout,
-    label: 'Dashboard',
+    icon: Compass,
+    label: 'Browse',
     href: '/',
   },
   {
-    icon: Compass,
-    label: 'Browse',
-    href: '/search',
+    icon: Layout,
+    label: 'Dashboard',
+    href: '/dashboard',
   },
 ];
 
