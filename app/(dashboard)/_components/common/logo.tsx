@@ -10,8 +10,8 @@ export const Logo = () => {
       <div className="items-center gap-x-2 hidden md:flex hover:opacity-75 transition-opacity">
         <Image src="/assets/logo.svg" alt="Nova LMS Logo" height={36} width={36} />
         <div className={poppins.className}>
-          <p className="font-semibold text-base text-sky-700">Nova LMS</p>
-          <p className="text-xs text-muted-foreground">Build something great!</p>
+          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
+          <p className="text-xs text-muted-foreground">Portal for educational purposes</p>
         </div>
       </div>
     </Link>

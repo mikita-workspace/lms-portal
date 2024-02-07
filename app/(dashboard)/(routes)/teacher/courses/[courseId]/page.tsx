@@ -1,15 +1,16 @@
-import { BadgeDollarSign, LayoutDashboard, ListChecks } from 'lucide-react';
+import { BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/get-current-user';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
-import { CategoryForm } from './_components/category-form';
-import { DescriptionForm } from './_components/description-form';
-import { ImageForm } from './_components/image-form';
-import { PriceForm } from './_components/price-form';
-import { TitleForm } from './_components/title-form';
+import { AttachmentForm } from './_components/form/attachment-form';
+import { CategoryForm } from './_components/form/category-form';
+import { DescriptionForm } from './_components/form/description-form';
+import { ImageForm } from './_components/form/image-form';
+import { PriceForm } from './_components/form/price-form';
+import { TitleForm } from './_components/form/title-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const user = await getCurrentUser();
@@ -22,6 +23,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     where: {
       id: params.courseId,
     },
+    include: { attachments: { orderBy: { createdAt: 'desc' } } },
   });
 
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
@@ -80,6 +82,13 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
               <h2 className="text-xl">Sell your course</h2>
             </div>
             <PriceForm initialData={course} courseId={course.id} />
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={Files} />
+              <h2 className="text-xl">Recourses & Attachments</h2>
+            </div>
+            <AttachmentForm initialData={course} courseId={course.id} />
           </div>
         </div>
       </div>

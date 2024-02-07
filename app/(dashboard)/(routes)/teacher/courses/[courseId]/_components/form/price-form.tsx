@@ -23,7 +23,7 @@ type PriceFormProps = {
 };
 
 const formSchema = z.object({
-  price: z.coerce.number().min(0, 'The price cannot be lower than zero'),
+  price: z.coerce.number().min(0),
 });
 
 export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
@@ -72,9 +72,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
       {!isEditing &&
         (initialData.price ? (
           <p className={cn('text-sm mt-2', !initialData.price && 'text-neutral-500 italic')}>
-            {initialData.price
-              ? formatPrice(initialData.price, { currency: Currency.USD, locale: Locale.EN_US })
-              : 'Free'}
+            {formatPrice(initialData.price, { currency: Currency.USD, locale: Locale.EN_US })}
           </p>
         ) : (
           <Badge
