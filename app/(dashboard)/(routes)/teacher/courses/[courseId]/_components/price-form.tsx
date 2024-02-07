@@ -77,7 +77,9 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
               : 'Free'}
           </p>
         ) : (
-          <Badge className="mt-2">Free</Badge>
+          <Badge variant="outline" className="bg-green-600/30 text-green-800 mt-2">
+            Free
+          </Badge>
         ))}
       {isEditing && (
         <Form {...form}>
