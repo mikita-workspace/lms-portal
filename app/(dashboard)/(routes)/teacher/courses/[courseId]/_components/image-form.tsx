@@ -86,7 +86,14 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">16:9 aspect ratio recommend</div>
+          <div className="flex text-xs items-end justify-between">
+            <div className="text-muted-foreground mt-4">16:9 aspect ratio recommend</div>
+            <div className="flex flex-row items-baseline font-bold">
+              <span className="font-extralight text-muted-foreground ">Powered by</span>&nbsp;
+              <span className="tracking-tight dark:text-white">upload</span>
+              <span className="text-red-600">thing</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
