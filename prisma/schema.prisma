@@ -18,15 +18,17 @@ model User {
 }
 
 model Course {
+  id          String       @id @default(uuid())
   attachments Attachment[]
   category    Category?    @relation(fields: [categoryId], references: [id])
   categoryId  String?
+  chapters    Chapter[]
   createdAt   DateTime     @default(now())
   description String?      @db.Text
-  id          String       @id @default(uuid())
   imageUrl    String?      @db.Text
   isPublished Boolean      @default(false)
   price       Float?
+  purchases   Purchase[]
   title       String       @db.Text
   updatedAt   DateTime     @updatedAt
   user        User         @relation(fields: [userId], references: [id])
@@ -51,4 +53,62 @@ model Attachment {
   url       String   @db.Text
 
   @@index([courseId])
+}
+
+model Chapter {
+  id           String         @id @default(uuid())
+  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId     String
+  createdAt    DateTime       @default(now())
+  description  String?        @db.Text
+  isFree       Boolean        @default(false)
+  isPublished  Boolean        @default(false)
+  maxData      MuxData?
+  position     Int
+  title        String
+  updatedAt    DateTime       @updatedAt
+  userProgress UserProgress[]
+  videoUrl     String?        @db.Text
+
+  @@index([courseId])
+}
+
+model MuxData {
+  id        String  @id @default(uuid())
+  assetId   String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String  @unique
+  playbacId String?
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  chapter     Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId   String
+  createdAt   DateTime @default(now())
+  isCompleted Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+  userId      String
+
+  @@unique([userId, chapterId])
+  @@index([chapterId])
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+
+  @@index([courseId])
+}
+
+model StripeCustomer {
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now())
+  stripeCustomerId String   @unique
+  updatedAt        DateTime @updatedAt
+  userId           String   @unique
 }
