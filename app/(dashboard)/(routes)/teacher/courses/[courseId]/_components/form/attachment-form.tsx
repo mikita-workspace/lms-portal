@@ -96,6 +96,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
                       <button
                         className="hover:opacity-75 transition-all duration-300"
                         onClick={() => handleDelete(attachment.id, attachment.name)}
+                        disabled={Boolean(deletingId)}
                       >
                         <X className="h-4 w-4" />
                       </button>
