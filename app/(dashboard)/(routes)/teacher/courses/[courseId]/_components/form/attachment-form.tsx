@@ -112,7 +112,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
       {isEditing && (
         <div className="mt-4">
           <FileUpload
-            endpoint="courseAttachment"
+            endpoint="courseAttachments"
             onChange={(urls) => {
               if (urls?.length) {
                 handleSubmit({ urls });
