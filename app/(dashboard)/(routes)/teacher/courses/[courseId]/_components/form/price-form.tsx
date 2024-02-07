@@ -77,7 +77,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
         ) : (
           <Badge
             variant="outline"
-            className="bg-green-600/30 text-green-800 dark:text-neutral-100 mt-2"
+            className="bg-green-600/30 text-green-800 dark:text-neutral-100 border-none mt-2"
           >
             Free
           </Badge>

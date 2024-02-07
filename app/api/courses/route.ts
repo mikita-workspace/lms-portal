@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
 
     const course = await db.course.create({ data: { userId: user.userId, title } });
 
-    return NextResponse.json(course, { status: HttpStatusCode.Ok });
+    return NextResponse.json(course);
   } catch (error) {
     console.error('[COURSES]', error);
 

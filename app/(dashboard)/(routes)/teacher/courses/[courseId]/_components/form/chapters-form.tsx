@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, Course } from '@prisma/client';
 import axios from 'axios';
-import { PlusCircle } from 'lucide-react';
+import { Loader2, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { cn } from '@/lib/utils';
+
+import { ChaptersList } from './chapters-list';
 
 type ChaptersFormProps = {
   courseId: string;
@@ -54,8 +56,31 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
   };
 
+  const handleReorder = async (updatedData: { id: string; position: number }[]) => {
+    try {
+      setIsUpdating(true);
+
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, { list: updatedData });
+
+      toast.success('Chapters reordered');
+
+      router.refresh();
+    } catch {
+      toast.error('Something went wrong!');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleEdit = (id: string) => router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+
   return (
-    <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
+    <div className="relative mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
+      {isUpdating && (
+        <div className="absolute h-full w-full bg-neutral-500/20 top-0 right-0 rounded-md flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-sky-700" />
+        </div>
+      )}
       <div className="font-medium flex items-center justify-between">
         Chapters
         <Button onClick={handleToggleCreating} variant="outline">
@@ -101,12 +126,16 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         <>
           <div
             className={cn(
-              'text-sm mr-2',
+              'text-sm mr-2 mt-4',
               !initialData.chapters.length && 'text-neutral-500 italic',
             )}
           >
             {!initialData.chapters.length && 'No chapters'}
-            {/* TODO: List of chapters here */}
+            <ChaptersList
+              items={initialData.chapters || []}
+              onEdit={handleEdit}
+              onReorder={handleReorder}
+            />
           </div>
           <div className="text-xs text-muted-foreground mt-4">
             Drag and drop to reorder the chapters

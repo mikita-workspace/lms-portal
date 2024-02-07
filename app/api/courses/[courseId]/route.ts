@@ -20,7 +20,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
       data: { ...values },
     });
 
-    return NextResponse.json(course, { status: HttpStatusCode.Ok });
+    return NextResponse.json(course);
   } catch (error) {
     console.error('[COURSE_ID]', error);
 
