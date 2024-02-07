@@ -1,15 +1,17 @@
 import { HttpStatusCode } from 'axios';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/get-current-user';
+import { deleteFiles } from '@/actions/uploadthing-delete-files';
 import { db } from '@/lib/db';
 
 export const DELETE = async (
-  _: Request,
+  { nextUrl: { searchParams } }: NextRequest,
   { params }: { params: { attachmentId: string; courseId: string } },
 ) => {
   try {
     const user = await getCurrentUser();
+    const attachmentName = searchParams.get('name');
 
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
@@ -26,6 +28,10 @@ export const DELETE = async (
     const attachment = await db.attachment.delete({
       where: { courseId: params.courseId, id: params.attachmentId },
     });
+
+    if (attachmentName) {
+      await deleteFiles([attachmentName]);
+    }
 
     return NextResponse.json(attachment);
   } catch (error) {

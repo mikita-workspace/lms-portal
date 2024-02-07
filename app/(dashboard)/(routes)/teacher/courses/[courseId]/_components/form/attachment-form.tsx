@@ -43,11 +43,11 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, name: string) => {
     try {
       setDeletingId(id);
 
-      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
+      await axios.delete(`/api/courses/${courseId}/attachments/${id}?name=${name}`);
 
       toast.success('Attachment deleted');
       router.refresh();
@@ -95,7 +95,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
                     ) : (
                       <button
                         className="hover:opacity-75 transition-all duration-300"
-                        onClick={() => handleDelete(attachment.id)}
+                        onClick={() => handleDelete(attachment.id, attachment.name)}
                       >
                         <X className="h-4 w-4" />
                       </button>
