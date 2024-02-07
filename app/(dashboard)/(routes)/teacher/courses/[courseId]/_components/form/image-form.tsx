@@ -19,7 +19,7 @@ type ImageFormProps = {
 };
 
 const formSchema = z.object({
-  imageUrl: z.string().min(1, { message: 'Image is required' }),
+  imageUrl: z.string().min(1),
 });
 
 export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {

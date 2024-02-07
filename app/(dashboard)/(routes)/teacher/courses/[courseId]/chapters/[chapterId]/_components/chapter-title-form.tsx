@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Chapter } from '@prisma/client';
 import axios from 'axios';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -16,9 +17,7 @@ import { Input } from '@/components/ui/input';
 type ChapterTitleFormProps = {
   chapterId: string;
   courseId: string;
-  initialData: {
-    title: string;
-  };
+  initialData: Chapter;
 };
 
 const formSchema = z.object({

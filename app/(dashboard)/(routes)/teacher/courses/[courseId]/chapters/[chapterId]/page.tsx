@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
+import { ChapterDescriptionForm } from './_components/chapter-description-form';
 import { ChapterTitleForm } from './_components/chapter-title-form';
 
 type ChapterIdPageProps = {
@@ -62,6 +63,11 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
               <h2 className="text-xl">Customize your chapter</h2>
             </div>
             <ChapterTitleForm
+              chapterId={params.chapterId}
+              courseId={params.courseId}
+              initialData={chapter}
+            />
+            <ChapterDescriptionForm
               chapterId={params.chapterId}
               courseId={params.courseId}
               initialData={chapter}
