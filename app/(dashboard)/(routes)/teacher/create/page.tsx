@@ -59,7 +59,7 @@ const CreatePage = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course title</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input
                       {...field}

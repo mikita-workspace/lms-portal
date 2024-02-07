@@ -2,7 +2,7 @@
 
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Chapter } from '@prisma/client';
-import { Grip, Pencil } from 'lucide-react';
+import { GripVertical, Pencil } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui';
@@ -77,7 +77,7 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                         chapter.isPublished && 'border-r-sky-200 hover:bg-sky-200',
                       )}
                     >
-                      <Grip className="h-5 w-5" />
+                      <GripVertical className="h-5 w-5" />
                     </div>
                     {chapter.title}
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
