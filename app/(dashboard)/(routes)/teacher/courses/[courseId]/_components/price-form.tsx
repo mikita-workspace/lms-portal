@@ -55,7 +55,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   };
 
   return (
-    <div className="mt-6 border  bg-neutral-100 rounded-md p-4">
+    <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Price
         <Button onClick={handleToggleEdit} variant="outline">
@@ -77,7 +77,10 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
               : 'Free'}
           </p>
         ) : (
-          <Badge variant="outline" className="bg-green-600/30 text-green-800 mt-2">
+          <Badge
+            variant="outline"
+            className="bg-green-600/30 text-green-800 dark:text-neutral-100 mt-2"
+          >
             Free
           </Badge>
         ))}
