@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
-export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (
+  req: NextRequest,
+  { params }: { params: { courseId: string; chapterId: string } },
+) => {
   try {
     const user = await getCurrentUser();
 
@@ -20,19 +23,18 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
-    const { urls } = await req.json();
+    const { isPublished, ...values } = await req.json();
 
-    const attachments = await db.attachment.createMany({
-      data: urls.map((url: string) => ({
-        url,
-        name: url.split('/').pop(),
-        courseId: params.courseId,
-      })),
+    const chapter = await db.chapter.update({
+      where: { id: params.chapterId, courseId: params.courseId },
+      data: { ...values },
     });
 
-    return NextResponse.json(attachments);
+    // TODO: Handle video upload here
+
+    return NextResponse.json(chapter);
   } catch (error) {
-    console.error('[COURSE_ID_ATTACHMENTS]', error);
+    console.error('[COURSES_CHAPTER_ID]', error);
 
     return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
   }

@@ -11,7 +11,6 @@ export const DELETE = async (
 ) => {
   try {
     const user = await getCurrentUser();
-    const attachmentName = searchParams.get('name');
 
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
@@ -24,6 +23,8 @@ export const DELETE = async (
     if (!courseOwner) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
+
+    const attachmentName = searchParams.get('name');
 
     const attachment = await db.attachment.delete({
       where: { courseId: params.courseId, id: params.attachmentId },

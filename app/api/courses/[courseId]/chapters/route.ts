@@ -8,8 +8,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
   try {
     const user = await getCurrentUser();
 
-    const { title } = await req.json();
-
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
@@ -21,6 +19,8 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     if (!courseOwner) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
+
+    const { title } = await req.json();
 
     const lastChapter = await db.chapter.findFirst({
       where: { courseId: params.courseId },

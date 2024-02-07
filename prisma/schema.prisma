@@ -63,7 +63,7 @@ model Chapter {
   description  String?        @db.Text
   isFree       Boolean        @default(false)
   isPublished  Boolean        @default(false)
-  maxData      MuxData?
+  muxData      MuxData?
   position     Int
   title        String
   updatedAt    DateTime       @updatedAt

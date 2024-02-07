@@ -13,7 +13,9 @@ import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
 import { TitleForm } from './_components/form/title-form';
 
-const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+type CourseIdPageProps = { params: { courseId: string } };
+
+const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const user = await getCurrentUser();
 
   if (!user) {

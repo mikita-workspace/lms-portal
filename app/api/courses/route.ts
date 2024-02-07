@@ -8,11 +8,11 @@ export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
-    const { title } = await req.json();
-
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
+
+    const { title } = await req.json();
 
     const course = await db.course.create({ data: { userId: user.userId, title } });
 

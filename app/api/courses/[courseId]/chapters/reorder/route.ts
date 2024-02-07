@@ -12,8 +12,6 @@ export const PUT = async (req: NextRequest, { params }: { params: { courseId: st
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
-    const { list } = await req.json();
-
     const courseOwner = await db.course.findUnique({
       where: { id: params.courseId, userId: user.userId },
     });
@@ -21,6 +19,8 @@ export const PUT = async (req: NextRequest, { params }: { params: { courseId: st
     if (!courseOwner) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
+
+    const { list } = await req.json();
 
     list.forEach(async (item: { id: string; position: number }) => {
       await db.chapter.update({

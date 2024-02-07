@@ -8,12 +8,12 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
   try {
     const user = await getCurrentUser();
 
-    const { courseId } = params;
-    const values = await req.json();
-
     if (!user) {
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
+
+    const { courseId } = params;
+    const values = await req.json();
 
     const course = await db.course.update({
       where: { id: courseId, userId: user.userId },
