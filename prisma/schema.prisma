@@ -79,6 +79,7 @@ model MuxData {
   chapter    Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId  String  @unique
   playbackId String?
+  videoUrl   String? @db.Text
 }
 
 model UserProgress {

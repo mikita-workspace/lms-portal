@@ -69,7 +69,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
             <Video className="h-10 w-10 text-neutral-500" />
           </div>
         ) : (
-          <div className="relative aspect-video mt-4">
+          <div className="relative mt-4">
             <MuxPlayer
               className="w-full h-[270px]"
               playbackId={initialData?.muxData?.playbackId || ''}

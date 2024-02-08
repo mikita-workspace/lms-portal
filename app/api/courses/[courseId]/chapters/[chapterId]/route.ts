@@ -2,6 +2,7 @@ import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 import { mux } from '@/server/mux';
 
@@ -37,8 +38,14 @@ export const PATCH = async (
       });
 
       if (existingMuxData) {
+        const fileName = existingMuxData?.videoUrl?.split('/').pop();
+
         await mux.video.assets.delete(existingMuxData.assetId);
         await db.muxData.delete({ where: { id: existingMuxData.id } });
+
+        if (fileName) {
+          await deleteFiles([fileName]);
+        }
       }
 
       const asset = await mux.video.assets.create({
@@ -49,9 +56,10 @@ export const PATCH = async (
 
       await db.muxData.create({
         data: {
-          chapterId: params.chapterId,
           assetId: asset.id,
+          chapterId: params.chapterId,
           playbackId: asset.playback_ids?.[0]?.id,
+          videoUrl: values.videoUrl,
         },
       });
     }
