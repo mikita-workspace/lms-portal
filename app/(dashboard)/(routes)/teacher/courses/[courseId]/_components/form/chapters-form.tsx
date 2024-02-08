@@ -16,7 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { cn } from '@/lib/utils';
 
-import { ChaptersList } from './chapters-list';
+import { ChaptersList } from '../chapters-list';
 
 type ChaptersFormProps = {
   courseId: string;

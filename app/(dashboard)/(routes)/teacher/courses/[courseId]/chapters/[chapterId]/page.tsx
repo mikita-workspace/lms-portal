@@ -7,11 +7,11 @@ import { Banner } from '@/components/common/banner';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
-import { ChapterAccessForm } from './_components/chapter-access-form';
 import { ChapterActions } from './_components/chapter-actions';
-import { ChapterDescriptionForm } from './_components/chapter-description-form';
-import { ChapterTitleForm } from './_components/chapter-title-form';
-import { ChapterVideoForm } from './_components/chapter-video-form';
+import { ChapterAccessForm } from './_components/form/chapter-access-form';
+import { ChapterDescriptionForm } from './_components/form/chapter-description-form';
+import { ChapterTitleForm } from './_components/form/chapter-title-form';
+import { ChapterVideoForm } from './_components/form/chapter-video-form';
 
 type ChapterIdPageProps = {
   params: { courseId: string; chapterId: string };

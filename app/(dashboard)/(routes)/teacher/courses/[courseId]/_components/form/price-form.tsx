@@ -23,7 +23,7 @@ type PriceFormProps = {
 };
 
 const formSchema = z.object({
-  price: z.coerce.number().min(0),
+  price: z.coerce.number().min(0).default(0),
 });
 
 export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
@@ -31,7 +31,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: initialData?.price || undefined,
+      price: initialData?.price || 0,
     },
   });
 

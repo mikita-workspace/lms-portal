@@ -2,9 +2,11 @@ import { BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-reac
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { Banner } from '@/components/common/banner';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
+import { Actions } from './_components/actions';
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
 import { ChaptersForm } from './_components/form/chapters-form';
@@ -44,12 +46,12 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     course.chapters.some((chapter) => chapter.isPublished),
     course.description,
     course.imageUrl,
-    course.price,
     course.title,
   ];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
+  const isCompleted = requiredFields.every(Boolean);
 
   const completionText = `(${completedFields}/${totalFields})`;
 
@@ -59,52 +61,62 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-y-2">
-          <h1 className="text-2xl font-medium">Course setup</h1>
-          <span className="text-sm text-neutral-700">Complete all fields {completionText}</span>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-        <div>
-          <div className="flex items-center gap-x-2">
-            <IconBadge icon={LayoutDashboard} />
-            <h2 className="text-xl">Customize your course</h2>
+    <>
+      {!course.isPublished && (
+        <Banner label="This course has not been published. It will not be visible in the students." />
+      )}
+      <div className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">Course setup</h1>
+            <span className="text-sm text-neutral-700">Complete all fields {completionText}</span>
           </div>
-          <TitleForm {...formProps} />
-          <DescriptionForm {...formProps} />
-          <ImageForm {...formProps} />
-          <CategoryForm
-            {...formProps}
-            options={categories.map((category) => ({ label: category.name, value: category.id }))}
+          <Actions
+            courseId={params.courseId}
+            disabled={!isCompleted}
+            isPublished={course.isPublished}
           />
         </div>
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div>
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={ListChecks} />
-              <h2 className="text-xl">Course chapters</h2>
+              <IconBadge icon={LayoutDashboard} />
+              <h2 className="text-xl">Customize your course</h2>
             </div>
-            <ChaptersForm {...formProps} />
+            <TitleForm {...formProps} />
+            <DescriptionForm {...formProps} />
+            <ImageForm {...formProps} />
+            <CategoryForm
+              {...formProps}
+              options={categories.map((category) => ({ label: category.name, value: category.id }))}
+            />
           </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={BadgeDollarSign} />
-              <h2 className="text-xl">Sell your course</h2>
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={ListChecks} />
+                <h2 className="text-xl">Course chapters</h2>
+              </div>
+              <ChaptersForm {...formProps} />
             </div>
-            <PriceForm {...formProps} />
-          </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={Files} />
-              <h2 className="text-xl">Recourses & Attachments</h2>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={BadgeDollarSign} />
+                <h2 className="text-xl">Sell your course</h2>
+              </div>
+              <PriceForm {...formProps} />
             </div>
-            <AttachmentForm {...formProps} />
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Files} />
+                <h2 className="text-xl">Recourses & Attachments</h2>
+              </div>
+              <AttachmentForm {...formProps} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

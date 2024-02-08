@@ -19,7 +19,7 @@ type AttachmentProps = {
 };
 
 const formSchema = z.object({
-  files: z.array(),
+  files: z.array(z.object({ url: z.string(), name: z.string() })),
 });
 
 export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
