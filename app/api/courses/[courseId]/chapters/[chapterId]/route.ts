@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
-import { mux } from '@/server/mux';
 
 export const PATCH = async (
   req: NextRequest,
@@ -40,7 +39,6 @@ export const PATCH = async (
       if (existingMuxData) {
         const fileName = existingMuxData?.videoUrl?.split('/').pop();
 
-        await mux.video.assets.delete(existingMuxData.assetId);
         await db.muxData.delete({ where: { id: existingMuxData.id } });
 
         if (fileName) {
@@ -48,17 +46,9 @@ export const PATCH = async (
         }
       }
 
-      const asset = await mux.video.assets.create({
-        input: [{ url: values.videoUrl }],
-        playback_policy: ['public'],
-        test: false,
-      });
-
       await db.muxData.create({
         data: {
-          assetId: asset.id,
           chapterId: params.chapterId,
-          playbackId: asset.playback_ids?.[0]?.id,
           videoUrl: values.videoUrl,
         },
       });

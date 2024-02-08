@@ -1,6 +1,5 @@
 'use client';
 
-import MuxPlayer from '@mux/mux-player-react';
 import { Chapter, MuxData } from '@prisma/client';
 import axios from 'axios';
 import { Pencil, PlusCircle, Video } from 'lucide-react';
@@ -11,6 +10,7 @@ import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
 import { UploadThingIcon } from '@/components/common/uploadthing-icon';
+import { VideoPlayer } from '@/components/common/video-player';
 import { Button } from '@/components/ui/button';
 
 type ChapterVideoFormProps = {
@@ -70,10 +70,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
           </div>
         ) : (
           <div className="relative mt-4">
-            <MuxPlayer
-              className="w-full h-[270px]"
-              playbackId={initialData?.muxData?.playbackId || ''}
-            />
+            <VideoPlayer height="270px" videoUrl={initialData?.videoUrl} />
           </div>
         ))}
       {isEditing && (
