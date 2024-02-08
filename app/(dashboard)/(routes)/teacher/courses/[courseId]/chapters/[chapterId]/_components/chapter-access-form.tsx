@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
-import { Preview } from '@/components/common/preview';
 import { Checkbox } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
@@ -72,7 +71,9 @@ export const ChapterAccessForm = ({ chapterId, courseId, initialData }: ChapterA
       {!isEditing && (
         <div className={cn('text-sm mt-4', !initialData.isFree && 'text-neutral-500 italic mt-2')}>
           {initialData.isFree ? (
-            <>This chapter is free for preview.</>
+            <>
+              This chapter is <strong>Free</strong> for preview.
+            </>
           ) : (
             <>This chapter is not free</>
           )}

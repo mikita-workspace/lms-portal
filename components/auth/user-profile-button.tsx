@@ -72,8 +72,8 @@ export const UserProfileButton = () => {
             </>
           )}
         </DropdownMenuItem>
-        {/* TODO: Add settings modal here */}
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
+        {/* TODO: Add settings here. Temporary disabled. */}
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}} disabled>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings
         </DropdownMenuItem>

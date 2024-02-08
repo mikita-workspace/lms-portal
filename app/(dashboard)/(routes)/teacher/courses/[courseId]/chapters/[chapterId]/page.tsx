@@ -1,4 +1,4 @@
-import { ArrowLeft, LayoutDashboard, ScanEye, Video } from 'lucide-react';
+import { ArrowLeft, Film, LayoutDashboard, ScanEye } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -9,6 +9,7 @@ import { db } from '@/lib/db';
 import { ChapterAccessForm } from './_components/chapter-access-form';
 import { ChapterDescriptionForm } from './_components/chapter-description-form';
 import { ChapterTitleForm } from './_components/chapter-title-form';
+import { ChapterVideoForm } from './_components/chapter-video-form';
 
 type ChapterIdPageProps = {
   params: { courseId: string; chapterId: string };
@@ -63,7 +64,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutDashboard} />
@@ -82,9 +83,10 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         </div>
         <div>
           <div className="flex items-center gap-x-2">
-            <IconBadge icon={Video} />
+            <IconBadge icon={Film} />
             <h2 className="text-xl">Add a video</h2>
           </div>
+          <ChapterVideoForm {...chapterFormProps} />
         </div>
       </div>
     </div>
