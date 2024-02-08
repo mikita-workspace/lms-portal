@@ -1,17 +1,21 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, MuxData } from '@prisma/client';
 import axios from 'axios';
 import { Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
 import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { VideoPlayer } from '@/components/common/video-player';
+import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 
 type ChapterVideoFormProps = {
   chapterId: string;
@@ -20,13 +24,20 @@ type ChapterVideoFormProps = {
 };
 
 const formSchema = z.object({
-  videoUrl: z.string().min(1),
+  videoUrl: z.string().min(1).url(),
 });
 
 export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData as Chapter & { videoUrl?: string },
+  });
+
+  const { isSubmitting, isValid } = form.formState;
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
@@ -83,8 +94,43 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
               }
             }}
           />
+          <Form {...form}>
+            <form
+              className="flex items-start justify-between mt-4"
+              onSubmit={form.handleSubmit(handleSubmit)}
+            >
+              <FormField
+                control={form.control}
+                name="videoUrl"
+                render={({ field }) => (
+                  <FormItem className="w-full pr-2">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isSubmitting}
+                        placeholder="e.g. https://www.youtube.com/watch?v=XYa_kQ..."
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center gap-x-2 basis-2/5">
+                <Button
+                  className="w-full"
+                  disabled={!isValid || isSubmitting}
+                  isLoading={isSubmitting}
+                  type="submit"
+                >
+                  Add
+                </Button>
+              </div>
+            </form>
+          </Form>
           <div className="flex text-xs items-end justify-between">
-            <div className="text-muted-foreground mt-4">Upload this chapter&apos;s video</div>
+            <div className="text-muted-foreground mt-4">
+              Upload or add a link to the video from this chapter
+            </div>
             <UploadThingIcon />
           </div>
         </div>
