@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 
-export const DELETE = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const DELETE = async (_: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
     const user = await getCurrentUser();
 

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui';
+import { useConfettiStore } from '@/hooks/use-confetti-store';
 
 type ActionsProps = {
   courseId: string;
@@ -17,6 +18,7 @@ type ActionsProps = {
 
 export const Actions = ({ courseId, disabled = false, isPublished = false }: ActionsProps) => {
   const router = useRouter();
+  const confetti = useConfettiStore();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +36,13 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
 
           router.refresh();
 
-          return isPublished ? 'Course unpublished' : 'The course has been published';
+          if (isPublished) {
+            return 'Course unpublished';
+          }
+
+          confetti.onOpen();
+
+          return 'The course has been published';
         },
         error: () => {
           setIsLoading(false);

@@ -145,7 +145,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
         </div>
       )}
       {initialData.videoUrl && !isEditing && (
-        <div className="text-xs text-muted-foreground mt-2">
+        <div className="text-xs text-muted-foreground mt-4">
           Video processing may take several minutes. Refresh the page if the video is not displayed.
         </div>
       )}

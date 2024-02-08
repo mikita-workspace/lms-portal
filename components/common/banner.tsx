@@ -3,7 +3,7 @@ import { AlertTriangle, CheckCircleIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-const bannerVariants = cva('border text-center p-4 text-sm flex items-center w-full', {
+const bannerVariants = cva('border p-4 text-sm flex items-center w-full', {
   variants: {
     variant: {
       warning: 'bg-yellow-200/80 border-x-yellow-30 dark:bg-yellow-700 text-primary',
