@@ -14,11 +14,11 @@ export const metadata: Metadata = {
   description: 'LMS Portal for educational purposes',
 };
 
-const RootLayout = ({
-  children,
-}: Readonly<{
+type RootLayoutProps = Readonly<{
   children: React.ReactNode;
-}>) => {
+}>;
+
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-screen bg-background font-sans antialiased', inter.className)}>
