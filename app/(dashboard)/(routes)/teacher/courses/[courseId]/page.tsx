@@ -53,6 +53,11 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
 
   const completionText = `(${completedFields}/${totalFields})`;
 
+  const formProps = {
+    courseId: course.id,
+    initialData: course,
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">
@@ -67,12 +72,11 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
             <IconBadge icon={LayoutDashboard} />
             <h2 className="text-xl">Customize your course</h2>
           </div>
-          <TitleForm initialData={course} courseId={course.id} />
-          <DescriptionForm initialData={course} courseId={course.id} />
-          <ImageForm initialData={course} courseId={course.id} />
+          <TitleForm {...formProps} />
+          <DescriptionForm {...formProps} />
+          <ImageForm {...formProps} />
           <CategoryForm
-            initialData={course}
-            courseId={course.id}
+            {...formProps}
             options={categories.map((category) => ({ label: category.name, value: category.id }))}
           />
         </div>
@@ -82,21 +86,21 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Course chapters</h2>
             </div>
-            <ChaptersForm initialData={course} courseId={course.id} />
+            <ChaptersForm {...formProps} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={BadgeDollarSign} />
               <h2 className="text-xl">Sell your course</h2>
             </div>
-            <PriceForm initialData={course} courseId={course.id} />
+            <PriceForm {...formProps} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Files} />
               <h2 className="text-xl">Recourses & Attachments</h2>
             </div>
-            <AttachmentForm initialData={course} courseId={course.id} />
+            <AttachmentForm {...formProps} />
           </div>
         </div>
       </div>
