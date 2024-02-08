@@ -1,7 +1,6 @@
 'use client';
 
 import axios from 'axios';
-import { error } from 'console';
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

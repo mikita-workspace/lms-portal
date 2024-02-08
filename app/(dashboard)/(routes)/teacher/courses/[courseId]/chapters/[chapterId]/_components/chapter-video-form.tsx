@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, MuxData } from '@prisma/client';
 import axios from 'axios';
-import { Loader, Pencil, PlusCircle, Video } from 'lucide-react';
+import { Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -93,9 +93,9 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
             <FileUpload
               endpoint="chapterVideo"
               onBegin={() => setIsUploading(true)}
-              onChange={(urls) => {
-                if (urls?.length) {
-                  handleSubmit({ videoUrl: urls[0] });
+              onChange={(files) => {
+                if (files?.length) {
+                  handleSubmit({ videoUrl: files[0]?.url });
                 }
               }}
             />

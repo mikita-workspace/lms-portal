@@ -9,7 +9,7 @@ const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => 
 };
 
 const ToastProvider = () => {
-  return <Toaster />;
+  return <Toaster toastOptions={{ className: 'dark:bg-neutral-900 dark:text-primary' }} />;
 };
 
 export const Providers = ({ children }: Readonly<{ children: React.ReactNode }>) => {
