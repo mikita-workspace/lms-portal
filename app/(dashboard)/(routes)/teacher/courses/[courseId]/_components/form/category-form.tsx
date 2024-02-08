@@ -60,7 +60,7 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Category
-        <Button onClick={handleToggleEdit} variant="outline">
+        <Button onClick={handleToggleEdit} variant="outline" size="sm">
           {isEditing ? (
             <>Cancel</>
           ) : (

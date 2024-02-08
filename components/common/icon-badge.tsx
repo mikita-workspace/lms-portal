@@ -6,12 +6,12 @@ import { cn } from '@/lib/utils';
 const backgroundVariants = cva('rounded-full flex items-center justify-center', {
   variants: {
     variant: {
-      default: 'bg-sky-100',
-      success: 'bg-emerald-100',
+      default: 'bg-sky-100 dark:bg-sky-700',
+      success: 'bg-emerald-100 dark:bg-emerald-700',
     },
     iconVariant: {
-      default: 'text-sky-700',
-      success: 'text-emerald-700',
+      default: 'text-sky-700 dark:text-sky-100',
+      success: 'text-emerald-700 dark:text-emerald-100',
     },
     size: {
       default: 'p-2',
@@ -27,8 +27,8 @@ const backgroundVariants = cva('rounded-full flex items-center justify-center', 
 const iconVariants = cva('', {
   variants: {
     variant: {
-      default: 'text-sky-700',
-      success: 'text-emerald-700',
+      default: 'text-sky-700 dark:text-sky-100',
+      success: 'text-emerald-700 dark:text-emerald-100',
     },
     size: {
       default: 'h-8 w-8',

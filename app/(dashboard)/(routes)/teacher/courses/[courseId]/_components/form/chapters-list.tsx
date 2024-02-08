@@ -66,15 +66,17 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                     {...innerProvided.draggableProps}
                     className={cn(
                       'flex items-center gap-x-2 bg-neutral-200 border-neutral-200 border text-neutral-700 rounded-md mb-4 text-sm dark:bg-muted dark:text-primary dark:border-muted',
-                      chapter.isPublished && 'bg-sky-100 border-sky-200 text-sky-700',
+                      chapter.isPublished &&
+                        'bg-sky-100 border-sky-200 text-sky-700 dark:bg-sky-700 dark:border-sky-800/50',
                     )}
                     ref={innerProvided.innerRef}
                   >
                     <div
                       {...innerProvided.dragHandleProps}
                       className={cn(
-                        'px-2 py-3 border-r border-r-neutral-200 hover:bg-neutral-300  rounded-l-md transition duration-300 dark:border-r-muted dark:hover:bg-neutral-900',
-                        chapter.isPublished && 'border-r-sky-200 hover:bg-sky-200',
+                        'px-2 py-3 border-r border-r-neutral-200 hover:bg-neutral-300  rounded-l-md transition duration-300 dark:border-r-muted dark:hover:bg-sky-900/50',
+                        chapter.isPublished &&
+                          'border-r-sky-200 hover:bg-sky-200 dark:border-r-sky-800/50 dark:hover:bg-sky-800/50',
                       )}
                     >
                       <GripVertical className="h-5 w-5" />

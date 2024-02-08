@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
-export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (
+  _: NextRequest,
+  { params }: { params: { courseId: string; chapterId: string } },
+) => {
   try {
     const user = await getCurrentUser();
 
@@ -20,19 +23,22 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
     }
 
-    const { files } = await req.json();
-
-    const attachments = await db.attachment.createMany({
-      data: files.map((file: { url: string; name: string }) => ({
-        url: file.url,
-        name: file.name,
-        courseId: params.courseId,
-      })),
+    const unpublishedChapter = await db.chapter.update({
+      where: { id: params.chapterId, courseId: params.courseId },
+      data: { isPublished: false },
     });
 
-    return NextResponse.json(attachments);
+    const publishedChapterInCourse = await db.chapter.findMany({
+      where: { courseId: params.courseId, isPublished: true },
+    });
+
+    if (!publishedChapterInCourse.length) {
+      await db.course.update({ where: { id: params.courseId }, data: { isPublished: false } });
+    }
+
+    return NextResponse.json(unpublishedChapter);
   } catch (error) {
-    console.error('[COURSE_ID_ATTACHMENTS]', error);
+    console.error('[COURSES_CHAPTER_ID_UNPUBLISH]', error);
 
     return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
   }

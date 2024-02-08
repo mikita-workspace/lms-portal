@@ -7,15 +7,17 @@ import { UploadDropzone } from '@/lib/uploadthing';
 
 type FileUploadProps = {
   endpoint: keyof typeof ourFileRouter;
-  onChange: (urls?: string[]) => void;
+  onBegin?: () => void;
+  onChange: (files: { url: string; name: string }[]) => void;
 };
 
-export const FileUpload = ({ endpoint, onChange }: FileUploadProps) => {
+export const FileUpload = ({ endpoint, onBegin, onChange }: FileUploadProps) => {
   return (
     <UploadDropzone
       endpoint={endpoint}
+      onUploadBegin={onBegin}
       onClientUploadComplete={(res) => {
-        onChange(res?.map(({ url }) => url));
+        onChange(res?.map(({ url, name }) => ({ url, name })));
       }}
       onUploadError={(error: Error) => {
         toast.error(String(error?.message));

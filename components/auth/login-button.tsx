@@ -32,9 +32,7 @@ export const LoginButton = () => {
       <DialogContent className="sm:max-w-[445px] p-9">
         <DialogHeader>
           <DialogTitle className="text-lg font-[600]">Sign in</DialogTitle>
-          <DialogDescription className="text-base text-muted-foreground">
-            to continue to Nova LMS
-          </DialogDescription>
+          <DialogDescription className="text-base">to continue to Nova LMS</DialogDescription>
         </DialogHeader>
         <div className="space-y-2 w-full mt-4">
           {Object.values(Provider).map((provider) => (

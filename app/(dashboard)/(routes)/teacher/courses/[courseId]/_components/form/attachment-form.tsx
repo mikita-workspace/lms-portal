@@ -19,7 +19,7 @@ type AttachmentProps = {
 };
 
 const formSchema = z.object({
-  urls: z.string().array(),
+  files: z.array(),
 });
 
 export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
@@ -62,7 +62,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Attachments
-        <Button onClick={handleToggleEdit} variant="outline">
+        <Button onClick={handleToggleEdit} variant="outline" size="sm">
           {isEditing && <>Cancel</>}
           {!isEditing && (
             <>
@@ -95,7 +95,9 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
                     ) : (
                       <button
                         className="hover:opacity-75 transition-all duration-300"
-                        onClick={() => handleDelete(attachment.id, attachment.name)}
+                        onClick={() =>
+                          handleDelete(attachment.id, attachment?.url?.split('/')?.pop() ?? '')
+                        }
                         disabled={Boolean(deletingId)}
                       >
                         <X className="h-4 w-4" />
@@ -114,9 +116,9 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
         <div className="mt-4">
           <FileUpload
             endpoint="courseAttachments"
-            onChange={(urls) => {
-              if (urls?.length) {
-                handleSubmit({ urls });
+            onChange={(files) => {
+              if (files?.length) {
+                handleSubmit({ files });
               }
             }}
           />

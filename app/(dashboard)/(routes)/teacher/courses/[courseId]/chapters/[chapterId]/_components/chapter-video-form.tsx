@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, MuxData } from '@prisma/client';
 import axios from 'axios';
-import { Pencil, PlusCircle, Video } from 'lucide-react';
+import { Loader, Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,6 +29,7 @@ const formSchema = z.object({
 
 export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
 
@@ -51,6 +52,8 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong!');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -58,7 +61,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Video
-        <Button onClick={handleToggleEdit} variant="outline">
+        <Button onClick={handleToggleEdit} variant="outline" size="sm">
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData?.videoUrl && (
             <>
@@ -86,14 +89,20 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
         ))}
       {isEditing && (
         <div className="mt-4">
-          <FileUpload
-            endpoint="chapterVideo"
-            onChange={(urls) => {
-              if (urls?.length) {
-                handleSubmit({ videoUrl: urls[0] });
-              }
-            }}
-          />
+          <div className="relative">
+            <FileUpload
+              endpoint="chapterVideo"
+              onBegin={() => setIsUploading(true)}
+              onChange={(urls) => {
+                if (urls?.length) {
+                  handleSubmit({ videoUrl: urls[0] });
+                }
+              }}
+            />
+            {isSubmitting && (
+              <div className="absolute h-full w-full bg-neutral-500/20 top-0 right-0 rounded-md" />
+            )}
+          </div>
           <Form {...form}>
             <form
               className="flex items-start justify-between mt-4"
@@ -107,7 +116,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
                     <FormControl>
                       <Input
                         {...field}
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isUploading}
                         placeholder="e.g. https://www.youtube.com/watch?v=XYa_kQ..."
                       />
                     </FormControl>
@@ -118,7 +127,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
               <div className="flex items-center gap-x-2 basis-2/5">
                 <Button
                   className="w-full"
-                  disabled={!isValid || isSubmitting}
+                  disabled={!isValid || isSubmitting || isUploading}
                   isLoading={isSubmitting}
                   type="submit"
                 >
