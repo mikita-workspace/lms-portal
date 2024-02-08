@@ -15,23 +15,36 @@ export const DELETE = async (_: NextRequest, { params }: { params: { courseId: s
 
     const course = await db.course.findUnique({
       where: { id: params.courseId, userId: user.userId },
-      include: { chapters: { include: { muxData: true } } },
+      include: { chapters: { include: { muxData: true } }, attachments: true },
     });
 
     if (!course) {
       return new NextResponse('Not found', { status: HttpStatusCode.NotFound });
     }
 
-    await deleteFiles(
-      course.chapters.reduce<string[]>((urls, chapter) => {
-        const fileName = chapter.muxData?.videoUrl?.split('/').pop();
+    const attachmentFiles = course.attachments.reduce<string[]>((urls, attachment) => {
+      const fileName = attachment?.url?.split('/').pop();
 
-        if (fileName) {
-          urls.push(fileName);
-        }
-        return urls;
-      }, []),
-    );
+      if (fileName) {
+        urls.push(fileName);
+      }
+      return urls;
+    }, []);
+
+    const videoFiles = course.chapters.reduce<string[]>((urls, chapter) => {
+      const fileName = chapter?.muxData?.videoUrl?.split('/').pop();
+
+      if (fileName) {
+        urls.push(fileName);
+      }
+      return urls;
+    }, []);
+
+    await deleteFiles([
+      ...attachmentFiles,
+      ...videoFiles,
+      ...(course?.imageUrl ? [course.imageUrl.split('/').pop()!] : []),
+    ]);
 
     const deletedCourse = await db.course.delete({ where: { id: params.courseId } });
 
