@@ -1,8 +1,7 @@
 'use client';
 
-import { BarChart4, Compass, Layout, List, Shield } from 'lucide-react';
+import { BarChart4, Compass, Layout, List } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useMemo } from 'react';
 
 import { SideBarItem } from './sidebar-item';
 
@@ -32,31 +31,12 @@ const teacherRoutes = [
   },
 ];
 
-const settingsRoutes = [
-  {
-    icon: Shield,
-    label: 'Account',
-    href: '/settings/account',
-  },
-];
-
 export const SideBarRoutes = () => {
   const pathname = usePathname();
 
   const isTeacherPage = pathname?.includes('/teacher');
-  const isSettingsPage = pathname?.includes('/settings');
 
-  const routes = useMemo(() => {
-    if (isTeacherPage) {
-      return teacherRoutes;
-    }
-
-    if (isSettingsPage) {
-      return settingsRoutes;
-    }
-
-    return guestRoutes;
-  }, [isSettingsPage, isTeacherPage]);
+  const routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
   return (
     <div className="flex flex-col w-full">

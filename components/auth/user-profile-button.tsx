@@ -1,7 +1,6 @@
 'use client';
 
 import { LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 
 import { AuthStatus } from '@/constants/auth';
@@ -25,11 +24,9 @@ import { LogoutButton } from './logout-button';
 
 export const UserProfileButton = () => {
   const { user, status } = useCurrentUser();
-  const router = useRouter();
   const { theme, setTheme } = useTheme();
 
   const handleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
-  const handleSettings = async () => router.push('/settings/account');
 
   if (status === AuthStatus.LOADING) {
     return (
@@ -75,7 +72,8 @@ export const UserProfileButton = () => {
             </>
           )}
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
+        {/* TODO: Add settings modal here */}
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings
         </DropdownMenuItem>

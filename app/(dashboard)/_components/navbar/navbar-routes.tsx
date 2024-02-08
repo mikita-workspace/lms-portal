@@ -12,15 +12,14 @@ export const NavBarRoutes = () => {
   const pathname = usePathname();
   const { user } = useCurrentUser();
 
-  const isTeacherPage = pathname?.startsWith('/teacher');
   const isStudentPage = pathname?.includes('/chapter');
-  const isSettingsPage = pathname?.startsWith('/settings');
+  const isTeacherPage = pathname?.startsWith('/teacher');
 
   return (
     <div className="flex gap-x-2 ml-auto items-center">
       {user?.userId && (
         <>
-          {isTeacherPage || isStudentPage || isSettingsPage ? (
+          {isTeacherPage || isStudentPage ? (
             <Link href="/">
               <Button size="sm" variant="ghost">
                 <LogOut className="h-4 w-4 mr-2" />
