@@ -12,4 +12,5 @@ export * from './input';
 export * from './popover';
 export * from './sheet';
 export * from './skeleton';
+export * from './table';
 export * from './textarea';
