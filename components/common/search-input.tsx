@@ -1,6 +1,6 @@
 'use client';
 
-import { Cross, Search, XIcon } from 'lucide-react';
+import { Search, XIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import { useEffect, useState } from 'react';
