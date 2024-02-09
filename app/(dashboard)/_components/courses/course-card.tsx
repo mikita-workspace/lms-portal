@@ -31,12 +31,12 @@ export const CourseCard = ({
   price = 0;
   return (
     <Link href={`/courses/${id}`}>
-      <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full">
+      <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image className="object-cover" fill alt={title} src={imageUrl!} />
         </div>
         <div className="flex flex-col pt-2">
-          <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition duration-300 line-clamp-2">
+          <div className="text-lg md:text-base font-medium group-hover:text-sky-700 dark:group-hover:text-sky-600 transition duration-300 line-clamp-2">
             {title}
           </div>
           <p className="text-xs text-muted-foreground">{category}</p>
