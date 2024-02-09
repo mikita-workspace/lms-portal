@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { UserProfileButton } from '@/components/auth/user-profile-button';
+import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -27,29 +28,37 @@ export const NavBarRoutes = () => {
 
   const isStudentPage = pathname?.includes('/chapter');
   const isTeacherPage = pathname?.startsWith('/teacher');
+  const isSearchPage = pathname === '/';
 
   return (
-    <div className="flex gap-x-2 ml-auto items-center">
-      {user?.userId && (
-        <>
-          {isTeacherPage || isStudentPage ? (
-            <Link href="/">
-              <Button size="sm" variant="ghost">
-                <LogOut className="h-4 w-4 mr-2" />
-                Exit
-              </Button>
-            </Link>
-          ) : (
-            <Link href="/teacher/courses">
-              <Button size="sm" variant="ghost">
-                <BookMarked className="h-4 w-4 mr-2" />
-                Teacher mode
-              </Button>
-            </Link>
-          )}
-        </>
+    <>
+      {isSearchPage && (
+        <div className="hidden md:block">
+          <SearchInput />
+        </div>
       )}
-      <UserProfileButton />
-    </div>
+      <div className="flex gap-x-2 ml-auto items-center">
+        {user?.userId && (
+          <>
+            {isTeacherPage || isStudentPage ? (
+              <Link href="/">
+                <Button size="sm" variant="ghost">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Exit
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/teacher/courses">
+                <Button size="sm" variant="ghost">
+                  <BookMarked className="h-4 w-4 mr-2" />
+                  Teacher mode
+                </Button>
+              </Link>
+            )}
+          </>
+        )}
+        <UserProfileButton />
+      </div>
+    </>
   );
 };
