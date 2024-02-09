@@ -43,7 +43,7 @@ export const columns: ColumnDef<Course>[] = [
       ) : (
         <Badge
           variant="outline"
-          className="bg-green-600/30 text-green-800 dark:text-neutral-100 border-none mt-2"
+          className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none mt-2"
         >
           Free
         </Badge>
@@ -60,7 +60,7 @@ export const columns: ColumnDef<Course>[] = [
         <Badge
           className={cn(
             'bg-neutral-600/30 text-neutral-800 dark:text-neutral-100 border-none',
-            isPublished && 'bg-violet-700 text-neutral-100',
+            isPublished && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300',
           )}
           variant="outline"
         >

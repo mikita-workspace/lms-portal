@@ -57,7 +57,7 @@ export const CourseCard = ({
               )}
               {price === 0 && (
                 <Badge
-                  className="bg-green-600/30 text-green-800 dark:text-neutral-100 border-none w-[46px]"
+                  className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none w-[46px]"
                   variant="outline"
                 >
                   Free

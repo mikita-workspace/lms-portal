@@ -64,19 +64,20 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                 {(innerProvided) => (
                   <div
                     {...innerProvided.draggableProps}
+                    // bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400
                     className={cn(
                       'flex items-center gap-x-2 bg-neutral-200 border-neutral-200 border text-neutral-700 rounded-md mb-4 text-sm dark:bg-muted dark:text-primary dark:border-muted',
                       chapter.isPublished &&
-                        'bg-sky-100 border-sky-200 text-sky-700 dark:bg-sky-700 dark:border-sky-800/50',
+                        'bg-blue-500/15 border-blue-500/20 text-blue-700 dark:text-blue-400 dark:bg-blue-500/15 dark:border-blue-500/20',
                     )}
                     ref={innerProvided.innerRef}
                   >
                     <div
                       {...innerProvided.dragHandleProps}
                       className={cn(
-                        'px-2 py-3 border-r border-r-neutral-200 hover:bg-neutral-300  rounded-l-md transition duration-300 dark:border-r-muted dark:hover:bg-sky-900/50',
+                        'px-2 py-3 border-r border-r-neutral-200 hover:bg-neutral-300  rounded-l-md transition duration-300 dark:border-r-muted dark:hover:bg-neutral-900/50',
                         chapter.isPublished &&
-                          'border-r-sky-200 hover:bg-sky-200 dark:border-r-sky-800/50 dark:hover:bg-sky-800/50',
+                          'border-r-blue-500/20 hover:bg-blue-500/15 dark:hover:bg-blue-500/15 dark:border-blue-500/20',
                       )}
                     >
                       <GripVertical className="h-5 w-5" />
@@ -85,7 +86,7 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       {chapter.isFree && (
                         <Badge
-                          className="bg-green-600/30 text-green-800 dark:text-neutral-100 border-none"
+                          className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none"
                           variant="outline"
                         >
                           Free
@@ -93,8 +94,9 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                       )}
                       <Badge
                         className={cn(
-                          'bg-neutral-600/30 text-neutral-800 dark:text-neutral-100 border-none',
-                          chapter.isPublished && 'bg-violet-700 text-neutral-100',
+                          'bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300 border-none',
+                          chapter.isPublished &&
+                            'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300',
                         )}
                         variant="outline"
                       >

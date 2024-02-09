@@ -38,9 +38,9 @@ export const CategoryItem = ({ icon: Icon, label, value = 'all' }: CategoryItemP
   return (
     <Button
       className={cn(
-        'py-2 px-3 text-xs border rounded-lg flex items-center transition duration-300 space-x-1 font-semibold',
+        'py-2 px-3 text-sm/6 border rounded-lg flex items-center transition duration-300 space-x-1 font-semibold',
         isSelected &&
-          'border-sky-700 bg-sky-200/20 text-sky-800 hover:bg-sky-200/40 dark:border-sky-200/20 dark:bg-sky-600/80 dark:text-primary dark:hover:bg-sky-600',
+          'bg-blue-500/15 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border-blue-500/20',
       )}
       variant="outline"
       onClick={handleClick}
