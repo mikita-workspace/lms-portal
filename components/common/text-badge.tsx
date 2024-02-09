@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils';
 
 import { Badge } from '../ui';
 
-const backgroundVariants = cva('rounded-full flex items-center justify-center', {
+const backgroundVariants = cva('border', {
   variants: {
     variant: {
-      default: 'bg-neutral-100 dark:bg-neutral-700 border-none',
-      lime: 'bg-lime-400/20 dark:bg-lime-400/10 border-none',
-      yellow: 'bg-yellow-100 dark:bg-yellow-700 border-none',
+      default: 'bg-neutral-100 dark:bg-neutral-700 border-neutral-500',
+      lime: 'bg-lime-400/20 dark:bg-lime-400/10 border-lime-400',
+      yellow: 'bg-yellow-100 dark:bg-yellow-700 border-yellow-300',
     },
   },
   defaultVariants: {
