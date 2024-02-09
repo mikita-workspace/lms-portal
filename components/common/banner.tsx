@@ -24,7 +24,7 @@ interface BannerProps extends BannerVariantsProps {
   label: string;
 }
 
-export const Banner = ({ label, variant }: BannerProps) => {
+const Banner = ({ label, variant }: BannerProps) => {
   const Icon = iconMap[variant || 'warning'];
 
   return (
@@ -34,3 +34,7 @@ export const Banner = ({ label, variant }: BannerProps) => {
     </div>
   );
 };
+
+Banner.displayName = 'Banner';
+
+export { Banner };

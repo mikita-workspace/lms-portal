@@ -99,6 +99,7 @@ model Purchase {
   updatedAt DateTime @updatedAt
   userId    String
 
+  @@unique([userId, courseId])
   @@index([courseId])
 }
 
