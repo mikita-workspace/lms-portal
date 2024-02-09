@@ -30,8 +30,9 @@ export const ChapterVideoPlayer = ({
   return (
     <div className="relative aspect-video">
       {!isReady && !isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 ">
           <Loader2 className="h-8 w-8 animate-spin text-secondary-foreground" />
+          <p className="text-sm">Loading a video...</p>
         </div>
       )}
       {isLocked && (
