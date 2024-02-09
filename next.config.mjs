@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
+
+import npmConfig from './package.json' assert { type: 'json' };
+
 const nextConfig = {
+  publicRuntimeConfig: {
+    version: npmConfig?.version,
+  },
   images: {
     remotePatterns: [
       {
