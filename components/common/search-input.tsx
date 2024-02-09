@@ -35,7 +35,7 @@ export const SearchInput = () => {
   return (
     <div className="relative">
       <Search className="h-4 w-4 absolute top-3 left-3 text-primary" />
-      {value.length && (
+      {Boolean(value) && (
         <span className="hover:cursor-pointer" onClick={() => setValue('')}>
           <XIcon className="h-4 w-4 absolute top-3 right-3 text-primary" />
         </span>
