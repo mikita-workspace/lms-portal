@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getCourses } from '@/actions/db/get-courses';
 import { SearchInput } from '@/components/common/search-input';
