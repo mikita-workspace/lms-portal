@@ -1,6 +1,6 @@
 'use client';
 
-import { getCourses } from '@/actions/get-courses';
+import { getCourses } from '@/actions/db/get-courses';
 
 import { CourseCard } from './course-card';
 

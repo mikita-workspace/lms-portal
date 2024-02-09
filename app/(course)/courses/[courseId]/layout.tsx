@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getProgress } from '@/actions/get-progress';
+import { getProgress } from '@/actions/db/get-progress';
 import { db } from '@/lib/db';
 
 import { CourseNavBar } from './_components/course-navbar/course-navbar';

@@ -64,7 +64,6 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                 {(innerProvided) => (
                   <div
                     {...innerProvided.draggableProps}
-                    // bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400
                     className={cn(
                       'flex items-center gap-x-2 bg-neutral-200 border-neutral-200 border text-neutral-700 rounded-md mb-4 text-sm dark:bg-muted dark:text-primary dark:border-muted',
                       chapter.isPublished &&

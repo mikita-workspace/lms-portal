@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, MuxData } from '@prisma/client';
 import axios from 'axios';
-import { Pencil, PlusCircle, Video } from 'lucide-react';
+import { Loader, Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +30,7 @@ const formSchema = z.object({
 export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   const router = useRouter();
 
@@ -40,7 +41,10 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
 
   const { isSubmitting, isValid } = form.formState;
 
-  const handleToggleEdit = () => setIsEditing((prev) => !prev);
+  const handleToggleEdit = () => {
+    setIsEditing((prev) => !prev);
+    setIsVideoReady(isEditing ? false : isVideoReady);
+  };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -84,7 +88,12 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
           </div>
         ) : (
           <div className="relative mt-4">
-            <VideoPlayer height="270px" videoUrl={initialData?.videoUrl} />
+            <VideoPlayer videoUrl={initialData?.videoUrl} onReady={() => setIsVideoReady(true)} />
+            {!isVideoReady && (
+              <div className="absolute h-full w-full bg-muted border top-0 right-0 rounded-md flex items-center justify-center">
+                <Loader className="h-6 w-6 animate-spin text-primary" />
+              </div>
+            )}
           </div>
         ))}
       {isEditing && (
