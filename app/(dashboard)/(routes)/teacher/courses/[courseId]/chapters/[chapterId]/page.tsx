@@ -18,7 +18,7 @@ type ChapterIdPageProps = {
 };
 
 const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     return redirect('/');
