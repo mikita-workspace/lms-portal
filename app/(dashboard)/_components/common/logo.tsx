@@ -11,7 +11,7 @@ export const Logo = () => {
         <Image src="/assets/logo.svg" alt="Nova LMS Logo" height={36} width={36} />
         <div className={poppins.className}>
           <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
-          <p className="text-xs text-muted-foreground">Portal for educational purposes</p>
+          <p className="text-xs text-muted-foreground">Portal&nbsp;for&nbsp;educational purposes</p>
         </div>
       </div>
     </Link>
