@@ -6,12 +6,12 @@ import { db } from '@/lib/db';
 
 import { CourseSideBarItem } from './course-sidebar-item';
 
-type CourseSidebarProps = {
+type CourseSideBarProps = {
   course: Course & { chapters: (Chapter & { userProgress: UserProgress[] | null })[] };
   progressCount: number;
 };
 
-export const CourseSidebar = async ({ course, progressCount }: CourseSidebarProps) => {
+export const CourseSideBar = async ({ course, progressCount }: CourseSideBarProps) => {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -23,7 +23,7 @@ export const CourseSidebar = async ({ course, progressCount }: CourseSidebarProp
   });
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
+    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm bg-white dark:bg-neutral-900">
       <div className="p-8 flex flex-col border-b">
         <h1 className="font-semibold">{course.title}</h1>
         {/* TODO: Check purchase and progress */}

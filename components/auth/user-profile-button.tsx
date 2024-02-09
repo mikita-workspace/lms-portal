@@ -24,17 +24,16 @@ export const UserProfileButton = () => {
   const { user } = useCurrentUser();
   const { theme, setTheme } = useTheme();
 
+  const ThemeIcon = theme === 'light' ? MoonStar : Sun;
+
   const handleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
 
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
         <Avatar>
-          {user.image ? (
-            <AvatarImage src={user.image} />
-          ) : (
-            <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
-          )}
+          {user.image && <AvatarImage src={user.image} />}
+          <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72 mr-4 mt-1">
@@ -46,17 +45,8 @@ export const UserProfileButton = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleTheme}>
-          {theme === 'light' ? (
-            <>
-              <MoonStar className="mr-2 h-4 w-4" />
-              Dark mode
-            </>
-          ) : (
-            <>
-              <Sun className="mr-2 h-4 w-4" />
-              Light mode
-            </>
-          )}
+          <ThemeIcon className="mr-2 h-4 w-4" />
+          {theme === 'light' ? 'Dark mode' : 'Light mode'}
         </DropdownMenuItem>
         {/* TODO: Add settings here. Temporary disabled. */}
         <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}} disabled>

@@ -55,7 +55,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
 
   const completionText = `(${completedFields}/${totalFields})`;
 
-  const formProps = {
+  const commonFormProps = {
     courseId: course.id,
     initialData: course,
   };
@@ -83,11 +83,11 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
               <IconBadge icon={LayoutDashboard} />
               <h2 className="text-xl">Customize your course</h2>
             </div>
-            <TitleForm {...formProps} />
-            <DescriptionForm {...formProps} />
-            <ImageForm {...formProps} />
+            <TitleForm {...commonFormProps} />
+            <DescriptionForm {...commonFormProps} />
+            <ImageForm {...commonFormProps} />
             <CategoryForm
-              {...formProps}
+              {...commonFormProps}
               options={categories.map((category) => ({ label: category.name, value: category.id }))}
             />
           </div>
@@ -97,21 +97,21 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl">Course chapters</h2>
               </div>
-              <ChaptersForm {...formProps} />
+              <ChaptersForm {...commonFormProps} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={BadgeDollarSign} />
                 <h2 className="text-xl">Sell your course</h2>
               </div>
-              <PriceForm {...formProps} />
+              <PriceForm {...commonFormProps} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={Files} />
                 <h2 className="text-xl">Recourses & Attachments</h2>
               </div>
-              <AttachmentForm {...formProps} />
+              <AttachmentForm {...commonFormProps} />
             </div>
           </div>
         </div>

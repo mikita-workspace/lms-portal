@@ -15,13 +15,9 @@ type SearchPageProps = {
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const user = await getCurrentUser();
 
-  if (!user) {
-    return redirect('/');
-  }
-
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
 
-  const courses = await getCourses({ ...searchParams, userId: user.userId });
+  const courses = await getCourses({ ...searchParams, userId: user?.userId });
 
   return (
     <>

@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getProgress } from '@/actions/get-progress';
 import { db } from '@/lib/db';
 
-import { CourseSidebar } from './_components/course-sidebar/course-sidebar';
+import { CourseNavBar } from './_components/course-navbar/course-navbar';
+import { CourseSideBar } from './_components/course-sidebar/course-sidebar';
 
 type CourseLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -36,11 +37,15 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
 
   const progressCount = await getProgress({ userId: user.userId, courseId: course.id });
 
+  const commonCourseProps = { course, progressCount };
+
   return (
     <div className="h-full">
-      <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50"></div>
+      <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
+        <CourseNavBar {...commonCourseProps} />
+      </div>
       <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
-        <CourseSidebar course={course} progressCount={progressCount} />
+        <CourseSideBar {...commonCourseProps} />
       </div>
       <main className="md:pl-80 pt-[80px] h-full">{children}</main>
     </div>

@@ -28,7 +28,6 @@ export const CourseCard = ({
   progress,
   title,
 }: CourseCardProps) => {
-  price = 0;
   return (
     <Link href={`/courses/${id}`}>
       <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900">
