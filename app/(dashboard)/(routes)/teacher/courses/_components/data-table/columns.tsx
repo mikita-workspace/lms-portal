@@ -5,8 +5,8 @@ import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
 import Link from 'next/link';
 
+import { TextBadge } from '@/components/common/text-badge';
 import {
-  Badge,
   Button,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -15,7 +15,6 @@ import {
 import { DropdownMenu } from '@/components/ui';
 import { Currency, Locale } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
-import { cn } from '@/lib/utils';
 
 const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label: string) => {
   return (
@@ -38,16 +37,7 @@ export const columns: ColumnDef<Course>[] = [
       const price = parseFloat(row.getValue('price') || '0');
       const formatted = formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD });
 
-      return price ? (
-        formatted
-      ) : (
-        <Badge
-          variant="outline"
-          className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none mt-2"
-        >
-          Free
-        </Badge>
-      );
+      return price ? formatted : <TextBadge variant="lime" label="Free" />;
     },
   },
   {
@@ -57,15 +47,10 @@ export const columns: ColumnDef<Course>[] = [
       const isPublished = row.getValue('isPublished') || false;
 
       return (
-        <Badge
-          className={cn(
-            'bg-neutral-600/30 text-neutral-800 dark:text-neutral-100 border-none',
-            isPublished && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300',
-          )}
-          variant="outline"
-        >
-          {isPublished ? 'Published' : 'Draft'}
-        </Badge>
+        <TextBadge
+          variant={isPublished ? 'yellow' : 'default'}
+          label={isPublished ? 'Published' : 'Draft'}
+        />
       );
     },
   },

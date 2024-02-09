@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { IconBadge } from '@/components/common/icon-badge';
-import { Badge } from '@/components/ui';
+import { TextBadge } from '@/components/common/text-badge';
 import { Currency, Locale } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
@@ -55,14 +55,7 @@ export const CourseCard = ({
                   {formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD })}
                 </p>
               )}
-              {price === 0 && (
-                <Badge
-                  className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none w-[46px]"
-                  variant="outline"
-                >
-                  Free
-                </Badge>
-              )}
+              {price === 0 && <TextBadge variant="lime" label="Free" />}
             </>
           )}
         </div>

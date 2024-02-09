@@ -5,7 +5,7 @@ import { Chapter } from '@prisma/client';
 import { GripVertical, Pencil } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { Badge } from '@/components/ui';
+import { TextBadge } from '@/components/common/text-badge';
 import { cn } from '@/lib/utils';
 
 type ChaptersListProps = {
@@ -84,24 +84,11 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                     </div>
                     {chapter.title}
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
-                      {chapter.isFree && (
-                        <Badge
-                          className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none"
-                          variant="outline"
-                        >
-                          Free
-                        </Badge>
-                      )}
-                      <Badge
-                        className={cn(
-                          'bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300 border-none',
-                          chapter.isPublished &&
-                            'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300',
-                        )}
-                        variant="outline"
-                      >
-                        {chapter.isPublished ? 'Published' : 'Draft'}
-                      </Badge>
+                      {chapter.isFree && <TextBadge variant="lime" label="Free" />}
+                      <TextBadge
+                        variant={chapter.isPublished ? 'yellow' : 'default'}
+                        label={chapter.isPublished ? 'Published' : 'Draft'}
+                      />
                       <Pencil
                         className="w-4 h-4 cursor-pointer hover:opacity-75 transition duration-300"
                         onClick={() => onEdit(chapter.id)}

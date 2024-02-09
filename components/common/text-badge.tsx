@@ -7,38 +7,26 @@ import { Badge } from '../ui';
 const backgroundVariants = cva('rounded-full flex items-center justify-center', {
   variants: {
     variant: {
-      default: 'bg-blue-500/15',
-      success: 'bg-emerald-100 dark:bg-emerald-700',
-    },
-    iconVariant: {
-      default: 'text-blue-700/85 dark:text-blue-400',
-      success: 'text-emerald-700 dark:text-emerald-100',
-    },
-    size: {
-      default: 'p-2',
-      sm: 'p-1',
+      default: 'bg-neutral-100 dark:bg-neutral-700 border-none',
+      lime: 'bg-lime-400/20 dark:bg-lime-400/10 border-none',
+      yellow: 'bg-yellow-100 dark:bg-yellow-700 border-none',
     },
   },
   defaultVariants: {
     variant: 'default',
-    size: 'default',
   },
 });
 
 const textVariants = cva('', {
   variants: {
     variant: {
-      default: 'text-blue-700/85 dark:text-blue-400',
-      success: 'text-emerald-700 dark:text-emerald-100',
-    },
-    size: {
-      default: 'h-8 w-8',
-      sm: 'h-3 w-3',
+      default: 'text-neutral-800 dark:text-neutral-300',
+      lime: 'text-lime-700 dark:text-lime-300',
+      yellow: 'text-yellow-800 dark:text-yellow-300',
     },
   },
   defaultVariants: {
     variant: 'default',
-    size: 'default',
   },
 });
 

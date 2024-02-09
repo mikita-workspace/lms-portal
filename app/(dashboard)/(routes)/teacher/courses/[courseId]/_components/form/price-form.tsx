@@ -10,7 +10,8 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
-import { Badge, Input } from '@/components/ui';
+import { TextBadge } from '@/components/common/text-badge';
+import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Currency, Locale } from '@/constants/locale';
@@ -75,12 +76,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
             {formatPrice(initialData.price, { currency: Currency.USD, locale: Locale.EN_US })}
           </p>
         ) : (
-          <Badge
-            variant="outline"
-            className="bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300 border-none mt-2"
-          >
-            Free
-          </Badge>
+          <TextBadge variant="lime" label="Free" />
         ))}
       {isEditing && (
         <Form {...form}>
