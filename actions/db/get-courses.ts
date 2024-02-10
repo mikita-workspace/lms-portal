@@ -16,7 +16,7 @@ type GetCourses = { userId?: string; title?: string; categoryId?: string };
 
 export const getCourses = async ({ userId, title, categoryId }: GetCourses) => {
   const courses = await db.course.findMany({
-    where: { isPublished: true, title: { contains: title }, categoryId },
+    where: { isPublished: true, title: { contains: title, mode: 'insensitive' }, categoryId },
     include: {
       category: true,
       chapters: { where: { isPublished: true }, select: { id: true } },

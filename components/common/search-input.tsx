@@ -24,7 +24,7 @@ export const SearchInput = () => {
     const url = qs.stringifyUrl(
       {
         url: pathname,
-        query: { categoryId: currentCategoryId, tittle: debouncedValue },
+        query: { categoryId: currentCategoryId, title: debouncedValue },
       },
       { skipNull: true, skipEmptyString: true },
     );
