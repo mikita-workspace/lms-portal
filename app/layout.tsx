@@ -1,13 +1,11 @@
 import './globals.css';
 
+import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Nova LMS',
@@ -21,7 +19,7 @@ type RootLayoutProps = Readonly<{
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', inter.className)}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased', GeistSans.className)}>
         <Providers>{children}</Providers>
       </body>
     </html>

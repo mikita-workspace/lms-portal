@@ -24,7 +24,7 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
 
         window.location.assign(res.data.url);
 
-        return null;
+        return 'Checkout';
       },
       error: () => {
         setIsLoading(false);

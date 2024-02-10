@@ -4,11 +4,18 @@ import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
+import { FaGithub } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 import { Provider } from '@/constants/auth';
 import { capitalize, cn } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
+
+const iconMap = {
+  [Provider.GITHUB]: FaGithub,
+  [Provider.GOOGLE]: FcGoogle,
+};
 
 type OAuthButton = {
   provider: Provider;
@@ -35,20 +42,16 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
     await signIn(provider, { callbackUrl });
   };
 
+  const Icon = iconMap[provider];
+
   return (
     <Button
       {...props}
-      className="w-full flex justify-start font-[400]"
+      className="w-full flex justify-start font-[400] space-x-2"
       variant="outline"
       onClick={handleSignIn}
     >
-      <Image
-        className={cn('h-5 w-5 mr-4', provider === Provider.GITHUB && 'dark:invert')}
-        src={`/assets/${provider}.svg`}
-        alt={provider}
-        width="1"
-        height="1"
-      />
+      <Icon className="mr-4" size={20} />
       {`Continue with ${capitalize(provider)}`}
     </Button>
   );
