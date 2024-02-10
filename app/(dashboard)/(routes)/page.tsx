@@ -8,10 +8,6 @@ import { db } from '@/lib/db';
 import { Categories } from '../_components/category/categories';
 import { CoursesList } from '../_components/courses/courses-list';
 
-const delay = (delayInms) => {
-  return new Promise((resolve) => setTimeout(resolve, delayInms));
-};
-
 type SearchPageProps = {
   searchParams: { title: string; categoryId: string };
 };
