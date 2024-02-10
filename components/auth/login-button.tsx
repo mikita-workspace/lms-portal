@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import {
   Dialog,
@@ -31,16 +31,18 @@ export const LoginButton = ({ children }: LoginButtonProps) => {
           <DialogTitle className="text-lg font-[600]">Sign in</DialogTitle>
           <DialogDescription className="text-base">to continue to Nova LMS</DialogDescription>
         </DialogHeader>
-        <div className="space-y-2 w-full mt-4">
-          {Object.values(Provider).map((provider) => (
-            <OAuthButton
-              key={provider}
-              disabled={isDisabledButtons}
-              provider={provider}
-              setIsDisabled={setIsDisabledButtons}
-            />
-          ))}
-        </div>
+        <Suspense>
+          <div className="space-y-2 w-full mt-4">
+            {Object.values(Provider).map((provider) => (
+              <OAuthButton
+                key={provider}
+                disabled={isDisabledButtons}
+                provider={provider}
+                setIsDisabled={setIsDisabledButtons}
+              />
+            ))}
+          </div>
+        </Suspense>
         <DialogFooter>
           <TermsAndPrivacy />
         </DialogFooter>

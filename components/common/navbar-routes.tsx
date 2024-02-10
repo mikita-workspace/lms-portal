@@ -3,6 +3,7 @@
 import { BookMarked, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { UserProfileButton } from '@/components/auth/user-profile-button';
 import { SearchInput } from '@/components/common/search-input';
@@ -21,9 +22,11 @@ export const NavBarRoutes = () => {
   return (
     <>
       {isSearchPage && (
-        <div className="hidden md:block -center">
-          <SearchInput />
-        </div>
+        <Suspense>
+          <div className="hidden md:block -center">
+            <SearchInput />
+          </div>
+        </Suspense>
       )}
       {status === AuthStatus.LOADING ? (
         <div className="flex items-center space-x-4 ml-auto">
