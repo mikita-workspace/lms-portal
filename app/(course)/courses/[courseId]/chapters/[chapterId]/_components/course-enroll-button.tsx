@@ -36,7 +36,7 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
 
   return (
     <Button
-      className="w-full md:w-auto focus:outline-none  bg-green-700 hover:bg-green-800 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 text-white"
+      className="w-full md:w-auto focus:outline-none  bg-green-700 hover:bg-green-800 font-medium text-sm px-5 dark:bg-green-600 dark:hover:bg-green-700 text-white"
       disabled={isLoading}
       onClick={handleClick}
       size="sm"

@@ -60,7 +60,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
           />
         </div>
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-          <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
+          <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
           {purchase ? (
             <div>TODO</div>
           ) : (
