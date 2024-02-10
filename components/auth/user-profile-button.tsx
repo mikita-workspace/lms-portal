@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import { LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -63,6 +63,9 @@ export const UserProfileButton = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <LoginButton />
+    <LoginButton>
+      <LogIn className="h-4 w-4 mr-2" />
+      Login
+    </LoginButton>
   );
 };

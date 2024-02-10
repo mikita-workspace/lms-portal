@@ -18,16 +18,17 @@ import { Provider } from '@/constants/auth';
 import { OAuthButton } from './ouath-button';
 import { TermsAndPrivacy } from './terms-and-privacy';
 
-export const LoginButton = () => {
+type LoginButtonProps = {
+  children: React.ReactNode;
+};
+
+export const LoginButton = ({ children }: LoginButtonProps) => {
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <LogIn className="h-4 w-4 mr-2" />
-          Login
-        </Button>
+        <Button variant="outline">{children}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[445px] p-9">
         <DialogHeader>

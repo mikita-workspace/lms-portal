@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { IconBadge } from '@/components/common/icon-badge';
 import { TextBadge } from '@/components/common/text-badge';
 import { Currency, Locale } from '@/constants/locale';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { formatPrice } from '@/lib/format';
 
 type CourseCardProps = {
@@ -28,8 +29,10 @@ export const CourseCard = ({
   progress,
   title,
 }: CourseCardProps) => {
+  const { user } = useCurrentUser();
+
   return (
-    <Link href={`/courses/${id}`}>
+    <Link href={`/${user?.userId ? 'courses' : 'landing-course'}/${id}`}>
       <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900 hover:bg-blue-500/10 dark:hover:bg-neutral-900/75">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image className="object-cover" fill alt={title} src={imageUrl!} />

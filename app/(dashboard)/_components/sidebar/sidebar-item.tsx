@@ -18,7 +18,10 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
   const handleClick = () => router.push(href);
 
   const isActive =
-    (pathname === '/' && href === '/') || pathname === href || pathname?.startsWith(`${href}/`);
+    (pathname === '/' && href === '/') ||
+    pathname === href ||
+    pathname?.startsWith(`${href}/`) ||
+    (pathname?.includes('/landing-course') && href == '/');
 
   return (
     <button

@@ -1,4 +1,4 @@
-import { Lock } from 'lucide-react';
+import { Lock, LogIn } from 'lucide-react';
 
 import { LoginButton } from '@/components/auth/login-button';
 
@@ -9,7 +9,10 @@ const SignInPage = () => {
         <Lock className="h-10 w-10" />
         <h1 className="text-xl md:text-3xl font-semibold">This content is protected.</h1>
         <p className="text-sm md:text-lg">To view, please login.</p>
-        <LoginButton />
+        <LoginButton>
+          <LogIn className="h-4 w-4 mr-2" />
+          Login
+        </LoginButton>
       </div>
     </div>
   );

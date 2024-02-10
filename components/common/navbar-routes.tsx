@@ -26,7 +26,7 @@ export const NavBarRoutes = () => {
     );
   }
 
-  const isStudentPage = pathname?.includes('/chapter');
+  const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isCoursePage = pathname?.startsWith('/courses');
   const isSearchPage = pathname === '/';
 
