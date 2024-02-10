@@ -16,6 +16,9 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     redirect('/');
   }
 
+  //TODO: Create course landing page
+  // return <div>{params.courseId}</div>;
+
   return redirect(`/courses/${params.courseId}/chapters/${course.chapters[0].id}`);
 };
 
