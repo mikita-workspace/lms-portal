@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 
 import { ChapterVideoPlayer } from './_components/chapter-video-player';
 import { CourseEnrollButton } from './_components/course-enroll-button';
+import { CourseProgressButton } from './_components/course-progress-button';
 
 type ChapterIdPageProps = {
   params: { courseId: string; chapterId: string };
@@ -55,14 +56,18 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             courseId={params.courseId}
             isLocked={isLocked}
             nextChapterId={nextChapter?.id}
-            title={chapter.title}
             videoUrl={muxData?.videoUrl}
           />
         </div>
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
           {purchase ? (
-            <div>TODO</div>
+            <CourseProgressButton
+              chapterId={params.chapterId}
+              courseId={params.courseId}
+              isCompleted={Boolean(userProgress?.isCompleted)}
+              nextChapterId={nextChapter?.id}
+            />
           ) : (
             <CourseEnrollButton courseId={params.courseId} price={course.price!} />
           )}

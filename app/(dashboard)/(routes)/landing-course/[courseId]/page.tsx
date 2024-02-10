@@ -26,7 +26,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
     include: {
       category: true,
       chapters: {
-        where: { isPublished: true, isFree: true, position: 1 },
+        where: { isPublished: true },
         orderBy: { position: 'asc' },
       },
     },
@@ -35,6 +35,8 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   if (!course) {
     redirect('/');
   }
+
+  const firstChapter = course.chapters.find((chapter) => chapter.position === 1);
 
   return (
     <div className="p-6">
@@ -51,11 +53,12 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="space-y-6 md:col-span-3">
-          <PreviewVideoPlayer videoUrl={course.chapters[0].videoUrl} />
+          <PreviewVideoPlayer videoUrl={firstChapter?.videoUrl} />
           <PreviewDescription
-            title={course.title}
-            description={course.description!}
             categories={[course.category!.name]}
+            chaptersLength={course.chapters.length}
+            description={course.description!}
+            title={course.title}
           />
         </div>
         <div className="space-y-6 md:col-span-2">

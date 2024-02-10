@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { IconBadge } from '@/components/common/icon-badge';
+import { ProgressBar } from '@/components/common/progress-bar';
 import { TextBadge } from '@/components/common/text-badge';
 import { Currency, Locale } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -50,7 +51,13 @@ export const CourseCard = ({
               </span>
             </div>
           </div>
-          {progress ? null : (
+          {progress !== null ? (
+            <ProgressBar
+              variant={progress < 100 ? 'default' : 'success'}
+              size="sm"
+              value={progress}
+            />
+          ) : (
             <div>
               {price === 0 ? (
                 <TextBadge variant="lime" label="Free" />

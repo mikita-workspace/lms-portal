@@ -1,31 +1,60 @@
 'use client';
 
+import axios from 'axios';
 import { Loader2, Lock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { VideoPlayer } from '@/components/common/video-player';
+import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { cn } from '@/lib/utils';
 
 type ChapterVideoPlayerProps = {
   chapterId: string;
-  completeOnEnd: boolean;
+  completeOnEnd?: boolean;
   courseId: string;
   isLocked: boolean;
   nextChapterId?: string;
-  title: string;
   videoUrl?: string | null;
 };
 
 export const ChapterVideoPlayer = ({
   chapterId,
-  completeOnEnd,
+  completeOnEnd = false,
   courseId,
   isLocked,
   nextChapterId,
-  title,
   videoUrl,
 }: ChapterVideoPlayerProps) => {
+  const router = useRouter();
+  const confetti = useConfettiStore();
+
   const [isReady, setIsReady] = useState(false);
+
+  const handleEnd = async () => {
+    if (completeOnEnd) {
+      await toast.promise(
+        axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+          isCompleted: true,
+        }),
+        {
+          loading: 'Updating progress...',
+          success: () => {
+            if (!nextChapterId) {
+              confetti.onOpen();
+            } else {
+              router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+            }
+
+            router.refresh();
+            return 'Progress updated';
+          },
+          error: () => 'Something went wrong',
+        },
+      );
+    }
+  };
 
   return (
     <div className="relative aspect-video">
@@ -45,7 +74,7 @@ export const ChapterVideoPlayer = ({
         <div className={cn(!isReady && 'hidden')}>
           <VideoPlayer
             autoPlay
-            onEnded={() => {}}
+            onEnded={handleEnd}
             onReady={() => setIsReady(true)}
             videoUrl={videoUrl}
           />

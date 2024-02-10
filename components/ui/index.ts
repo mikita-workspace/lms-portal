@@ -10,6 +10,7 @@ export * from './dropdown-menu';
 export * from './form';
 export * from './input';
 export * from './popover';
+export * from './progress';
 export * from './separator';
 export * from './sheet';
 export * from './skeleton';

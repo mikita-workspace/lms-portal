@@ -22,12 +22,12 @@ export const PUT = async (req: NextRequest, { params }: { params: { courseId: st
 
     const { list } = await req.json();
 
-    list.forEach(async (item: { id: string; position: number }) => {
+    for (const item of list) {
       await db.chapter.update({
         where: { id: item.id },
         data: { position: item.position },
       });
-    });
+    }
 
     return new NextResponse('Success');
   } catch (error) {

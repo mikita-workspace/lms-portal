@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils';
 const bannerVariants = cva('border p-4 text-sm flex items-center w-full', {
   variants: {
     variant: {
-      warning: 'bg-yellow-200/80 border-x-yellow-30 dark:bg-yellow-700 text-primary',
-      success: 'bg-emerald-700 border-emerald-800 dark:bg-emerald-200/80 text-secondary',
+      warning: 'bg-yellow-200/80 dark:bg-yellow-700 text-primary',
+      success: 'bg-emerald-700 text-secondary',
     },
   },
   defaultVariants: { variant: 'warning' },

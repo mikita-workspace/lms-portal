@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import { ShoppingCart } from 'lucide-react';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -36,14 +36,22 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
 
   return (
     <Button
-      className="w-full md:w-auto focus:outline-none  bg-green-700 hover:bg-green-800 font-medium text-sm px-5 dark:bg-green-600 dark:hover:bg-green-700 text-white"
+      className="w-full md:w-auto"
       disabled={isLoading}
       onClick={handleClick}
-      size="sm"
+      size="lg"
+      variant="success"
     >
-      <ShoppingCart className="w-4 h-4 mr-2" />
+      {Boolean(price) && <ShoppingCart className="w-4 h-4 mr-2" />}
       Enroll for&nbsp;
-      {formatPrice(price, { currency: Currency.USD, locale: Locale.EN_US })}
+      {Boolean(price) ? (
+        formatPrice(price, { currency: Currency.USD, locale: Locale.EN_US })
+      ) : (
+        <>
+          Free
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </>
+      )}
     </Button>
   );
 };
