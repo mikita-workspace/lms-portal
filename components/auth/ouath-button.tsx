@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
@@ -8,7 +7,7 @@ import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 import { Provider } from '@/constants/auth';
-import { capitalize, cn } from '@/lib/utils';
+import { capitalize } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
 
