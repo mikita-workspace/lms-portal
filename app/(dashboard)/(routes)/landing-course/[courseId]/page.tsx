@@ -1,10 +1,13 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { LoginButton } from '@/components/auth/login-button';
+import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 
+import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
 
 type LandingCourseIdPageProps = {
@@ -14,9 +17,14 @@ type LandingCourseIdPageProps = {
 const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const user = await getCurrentUser();
 
+  if (user) {
+    redirect(`/courses/${params.courseId}`);
+  }
+
   const course = await db.course.findUnique({
     where: { id: params.courseId },
     include: {
+      category: true,
       chapters: {
         where: { isPublished: true, isFree: true, position: 1 },
         orderBy: { position: 'asc' },
@@ -26,10 +34,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
 
   if (!course) {
     redirect('/');
-  }
-
-  if (user) {
-    redirect(`/courses/${params.courseId}`);
   }
 
   return (
@@ -45,14 +49,34 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div className="space-y-6 md:col-span-3">
           <PreviewVideoPlayer videoUrl={course.chapters[0].videoUrl} />
-          <div>Description</div>
+          <PreviewDescription
+            title={course.title}
+            description={course.description!}
+            categories={[course.category!.name]}
+          />
         </div>
-        <div className="space-y-6">
-          <div>Enroll button</div>
-          <div>External links</div>
+        <div className="space-y-6 md:col-span-2">
+          <div className="w-full border rounded-lg p-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            <div className="mb-8 space-y-2 text-white">
+              <h4 className="font-semibold text-xl">Ready to start learning?</h4>
+              <p className="text-sm">
+                Keep track of your progress, learn new things and much more.
+              </p>
+            </div>
+            <div className="w-full">
+              <LoginButton>
+                <Button className="w-full" variant="outline">
+                  Login to continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </LoginButton>
+            </div>
+          </div>
+          {/* TODO: External recourses */}
+          {/* <div className="w-full flex space-x-4"></div> */}
         </div>
       </div>
     </div>

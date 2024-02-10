@@ -25,7 +25,7 @@ const textVariants = cva('', {
     variant: {
       default: 'text-neutral-800 dark:text-neutral-300',
       green: 'text-green-800 dark:text-green-300',
-      indigo: 'text-red-800 dark:text-red-300',
+      indigo: 'text-indigo-800 dark:text-indigo-300',
       lime: 'text-lime-700 dark:text-lime-300',
       red: 'text-red-800 dark:text-red-300',
       yellow: 'text-yellow-800 dark:text-yellow-300',

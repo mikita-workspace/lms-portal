@@ -26,9 +26,7 @@ export const LoginButton = ({ children }: LoginButtonProps) => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">{children}</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[445px] p-9">
         <DialogHeader>
           <DialogTitle className="text-lg font-[600]">Sign in</DialogTitle>

@@ -10,6 +10,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -64,8 +65,10 @@ export const UserProfileButton = () => {
     </DropdownMenu>
   ) : (
     <LoginButton>
-      <LogIn className="h-4 w-4 mr-2" />
-      Login
+      <Button variant="outline">
+        <LogIn className="h-4 w-4 mr-2" />
+        Login
+      </Button>
     </LoginButton>
   );
 };
