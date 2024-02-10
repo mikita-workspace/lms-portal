@@ -1,10 +1,15 @@
+import { File } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getChapter } from '@/actions/db/get-chapter';
 import { Banner } from '@/components/common/banner';
+import { Preview } from '@/components/common/preview';
+import { Separator } from '@/components/ui/separator';
 
 import { ChapterVideoPlayer } from './_components/chapter-video-player';
+import { CourseEnrollButton } from './_components/course-enroll-button';
 
 type ChapterIdPageProps = {
   params: { courseId: string; chapterId: string };
@@ -54,6 +59,38 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             videoUrl={muxData?.videoUrl}
           />
         </div>
+        <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+          <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
+          {purchase ? (
+            <div>TODO</div>
+          ) : (
+            <CourseEnrollButton courseId={params.courseId} price={course.price} />
+          )}
+        </div>
+        <Separator />
+        {chapter.description && (
+          <div>
+            <Preview value={chapter.description} />
+          </div>
+        )}
+        {Boolean(attachments.length) && (
+          <>
+            <Separator />
+            <div className="p-4">
+              {attachments.map((attachment) => (
+                <Link
+                  className="flex items-center p-3 w-full rounded-md bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400"
+                  key={attachment.id}
+                  target="_blank"
+                  href={attachment.url}
+                >
+                  <File className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <p className="text-sm line-clamp-1 basis-4/5">{attachment.name}</p>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
