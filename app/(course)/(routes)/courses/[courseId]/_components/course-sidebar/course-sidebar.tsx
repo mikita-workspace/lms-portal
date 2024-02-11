@@ -1,5 +1,4 @@
 import { Chapter, Course, UserProgress } from '@prisma/client';
-import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { ProgressBar } from '@/components/common/progress-bar';
@@ -15,12 +14,8 @@ type CourseSideBarProps = {
 export const CourseSideBar = async ({ course, progressCount }: CourseSideBarProps) => {
   const user = await getCurrentUser();
 
-  if (!user) {
-    redirect('/');
-  }
-
   const purchase = await db.purchase.findUnique({
-    where: { userId_courseId: { userId: user.userId, courseId: course.id } },
+    where: { userId_courseId: { userId: user!.userId, courseId: course.id } },
   });
 
   return (

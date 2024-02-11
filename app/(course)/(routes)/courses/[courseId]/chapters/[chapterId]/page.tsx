@@ -19,15 +19,11 @@ type ChapterIdPageProps = {
 const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
   const user = await getCurrentUser();
 
-  if (!user) {
-    return redirect('/');
-  }
-
   const { chapter, course, muxData, attachments, nextChapter, userProgress, purchase } =
     await getChapter({
       chapterId: params.chapterId,
       courseId: params.courseId,
-      userId: user.userId,
+      userId: user!.userId,
     });
 
   if (!chapter || !course) {
