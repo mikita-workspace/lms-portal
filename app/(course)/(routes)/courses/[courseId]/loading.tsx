@@ -1,5 +1,7 @@
 import { CommonLoader } from '@/components/loaders/common-loader';
 
-const CourseLoading = () => <CommonLoader />;
+const CourseLoading = () => {
+  return <CommonLoader />;
+};
 
 export default CourseLoading;
