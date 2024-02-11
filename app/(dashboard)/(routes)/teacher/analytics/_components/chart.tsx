@@ -1,9 +1,7 @@
 'use client';
 
-import { Circle } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
-import { Card } from '@/components/ui';
 import { Currency, Locale } from '@/constants/locale';
 import { getCurrencySymbol } from '@/lib/format';
 
