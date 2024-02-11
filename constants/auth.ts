@@ -8,3 +8,9 @@ export enum AuthStatus {
   LOADING = 'loading',
   UNAUTHENTICATED = 'unauthenticated',
 }
+
+export enum UserRole {
+  ADMIN = 'admin',
+  STUDENT = 'student',
+  TEACHER = 'teacher',
+}

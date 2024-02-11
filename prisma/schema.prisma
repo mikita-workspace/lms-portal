@@ -14,6 +14,7 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
+  role      String   @default("student")
   updatedAt DateTime @updatedAt
 }
 

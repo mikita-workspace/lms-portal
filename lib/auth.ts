@@ -2,7 +2,7 @@ import type { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
-import { Provider } from '@/constants/auth';
+import { Provider, UserRole } from '@/constants/auth';
 
 import { db } from './db';
 
@@ -10,6 +10,7 @@ export const authOptions = {
   pages: {
     signIn: '/sign-in',
   },
+
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -40,15 +41,29 @@ export const authOptions = {
         });
 
         user.id = dbUser.id;
+        user.role = dbUser.role;
 
         return true;
       }
 
       return false;
     },
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+
+      return token;
+    },
     async session({ session, token }) {
-      if (token.sub && session.user) {
-        session.user.userId = token.sub;
+      if (session.user) {
+        if (token.sub) {
+          session.user.userId = token.sub;
+        }
+
+        if (token.role) {
+          session.user.role = (token.role as string) || UserRole.STUDENT;
+        }
       }
 
       return session;

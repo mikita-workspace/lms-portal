@@ -2,7 +2,6 @@ import { ArrowLeft, Film, LayoutDashboard, ScanEye } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { Banner } from '@/components/common/banner';
 import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
@@ -18,12 +17,6 @@ type ChapterIdPageProps = {
 };
 
 const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    return redirect('/');
-  }
-
   const chapter = await db.chapter.findUnique({
     where: { id: params.chapterId, courseId: params.courseId },
     include: { muxData: true },

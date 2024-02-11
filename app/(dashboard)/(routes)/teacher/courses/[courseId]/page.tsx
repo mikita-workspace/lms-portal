@@ -20,14 +20,10 @@ type CourseIdPageProps = { params: { courseId: string } };
 const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const user = await getCurrentUser();
 
-  if (!user) {
-    return redirect('/');
-  }
-
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
-      userId: user.userId,
+      userId: user!.userId,
     },
     include: {
       attachments: { orderBy: { createdAt: 'desc' } },

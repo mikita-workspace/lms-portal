@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 import { UserProfileButton } from '@/components/auth/user-profile-button';
 import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
-import { AuthStatus } from '@/constants/auth';
+import { AuthStatus, UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 export const NavBarRoutes = () => {
@@ -18,6 +18,8 @@ export const NavBarRoutes = () => {
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isCoursePage = pathname?.startsWith('/courses');
   const isSearchPage = pathname === '/';
+
+  const hasTeacherMode = [UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
 
   return (
     <>
@@ -48,12 +50,16 @@ export const NavBarRoutes = () => {
                   </Button>
                 </Link>
               ) : (
-                <Link href="/teacher/courses">
-                  <Button size="sm" variant="ghost">
-                    <BookMarked className="h-4 w-4 mr-2" />
-                    Teacher mode
-                  </Button>
-                </Link>
+                <>
+                  {hasTeacherMode && (
+                    <Link href="/teacher/courses">
+                      <Button size="sm" variant="ghost">
+                        <BookMarked className="h-4 w-4 mr-2" />
+                        Teacher mode
+                      </Button>
+                    </Link>
+                  )}
+                </>
               )}
             </>
           )}

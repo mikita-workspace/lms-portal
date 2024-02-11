@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
@@ -9,12 +7,8 @@ import { DataTable } from './_components/data-table/data-table';
 const CoursesPage = async () => {
   const user = await getCurrentUser();
 
-  if (!user?.userId) {
-    return redirect('/');
-  }
-
   const courses = await db.course.findMany({
-    where: { userId: user.userId },
+    where: { userId: user!.userId },
     orderBy: { createdAt: 'desc' },
   });
 
