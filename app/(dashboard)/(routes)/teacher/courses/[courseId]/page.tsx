@@ -1,0 +1,119 @@
+import { BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
+import { redirect } from 'next/navigation';
+
+import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { Banner } from '@/components/common/banner';
+import { IconBadge } from '@/components/common/icon-badge';
+import { db } from '@/lib/db';
+
+import { Actions } from './_components/actions';
+import { AttachmentForm } from './_components/form/attachment-form';
+import { CategoryForm } from './_components/form/category-form';
+import { ChaptersForm } from './_components/form/chapters-form';
+import { DescriptionForm } from './_components/form/description-form';
+import { ImageForm } from './_components/form/image-form';
+import { PriceForm } from './_components/form/price-form';
+import { TitleForm } from './_components/form/title-form';
+
+type CourseIdPageProps = { params: { courseId: string } };
+
+const CourseIdPage = async ({ params }: CourseIdPageProps) => {
+  const user = await getCurrentUser();
+
+  const course = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+      userId: user!.userId,
+    },
+    include: {
+      attachments: { orderBy: { createdAt: 'desc' } },
+      chapters: { orderBy: { position: 'asc' } },
+    },
+  });
+
+  const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
+
+  if (!course) {
+    redirect('/');
+  }
+
+  const requiredFields = [
+    course.categoryId,
+    course.chapters.some((chapter) => chapter.isPublished),
+    course.description,
+    course.imageUrl,
+    course.title,
+  ];
+
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+  const isCompleted = requiredFields.every(Boolean);
+
+  const completionText = `(${completedFields}/${totalFields})`;
+
+  const commonFormProps = {
+    courseId: course.id,
+    initialData: course,
+  };
+
+  return (
+    <>
+      {!course.isPublished && (
+        <Banner label="This course has not been published. It will not be visible in the students." />
+      )}
+      <div className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">Course setup</h1>
+            <span className="text-sm text-neutral-700">Complete all fields {completionText}</span>
+          </div>
+          <Actions
+            courseId={params.courseId}
+            disabled={!isCompleted}
+            isPublished={course.isPublished}
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={LayoutDashboard} />
+              <h2 className="text-xl">Customize your course</h2>
+            </div>
+            <TitleForm {...commonFormProps} />
+            <DescriptionForm {...commonFormProps} />
+            <ImageForm {...commonFormProps} />
+            <CategoryForm
+              {...commonFormProps}
+              options={categories.map((category) => ({ label: category.name, value: category.id }))}
+            />
+          </div>
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={ListChecks} />
+                <h2 className="text-xl">Course chapters</h2>
+              </div>
+              <ChaptersForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={BadgeDollarSign} />
+                <h2 className="text-xl">Sell your course</h2>
+              </div>
+              <PriceForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Files} />
+                <h2 className="text-xl">Recourses & Attachments</h2>
+              </div>
+              <AttachmentForm {...commonFormProps} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default CourseIdPage;
