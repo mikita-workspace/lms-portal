@@ -7,7 +7,7 @@ import { PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/constants/common
 export const TermsAndPrivacy = () => {
   const termsUrl = (
     <Link target="_blank" className="text-primary hover:underline" href={TERMS_AND_CONDITIONS_URL}>
-      Terms of Service
+      Terms and Conditions
     </Link>
   );
 
