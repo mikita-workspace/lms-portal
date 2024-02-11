@@ -33,10 +33,12 @@ export const authOptions = {
           },
           update: {
             name: user.name,
+            pictureUrl: user.image,
           },
           create: {
             email: user.email,
             name: user.name,
+            pictureUrl: user.image,
           },
         });
 

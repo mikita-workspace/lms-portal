@@ -3,6 +3,7 @@
 import { LucideIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { TextBadge } from '@/components/common/text-badge';
 import { cn } from '@/lib/utils';
 
 type SideBarItemProps = {
@@ -32,15 +33,18 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
         isActive && 'bg-muted text-primary font-medium',
       )}
     >
-      <div className="flex ite gap-x-2 items-center">
-        <Icon
-          size={20}
-          className={cn(
-            'h-5 w-5 font-medium',
-            isActive && ' text-primary font-medium animate-spin-once',
-          )}
-        />
-        {label}
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center gap-x-2">
+          <Icon
+            size={20}
+            className={cn(
+              'h-5 w-5 font-medium',
+              isActive && ' text-primary font-medium animate-spin-once',
+            )}
+          />
+          {label}
+        </div>
+        {label === 'Leaderboard' && <TextBadge label="new" variant="green" />}
       </div>
     </button>
   );

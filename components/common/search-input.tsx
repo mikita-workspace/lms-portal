@@ -10,6 +10,7 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { Input } from '../ui';
 
 export const SearchInput = () => {
+  const [isMounted, setIsMounted] = useState(false);
   const [value, setValue] = useState('');
 
   const debouncedValue = useDebounce(value);
@@ -19,6 +20,10 @@ export const SearchInput = () => {
   const searchParams = useSearchParams();
 
   const currentCategoryId = searchParams.get('categoryId');
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const url = qs.stringifyUrl(
@@ -31,6 +36,10 @@ export const SearchInput = () => {
 
     router.push(url);
   }, [debouncedValue, currentCategoryId, router, pathname]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="relative">

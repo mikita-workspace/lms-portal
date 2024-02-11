@@ -9,13 +9,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  Course    Course[]
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  role      String   @default("student")
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  Course     Course[]
+  createdAt  DateTime @default(now())
+  email      String   @unique
+  name       String?
+  pictureUrl String?
+  role       String   @default("student")
+  updatedAt  DateTime @updatedAt
 }
 
 model Course {
