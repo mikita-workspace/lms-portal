@@ -26,7 +26,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   }
 
   const chapterId =
-    course.chapters.find((chapter) => !chapter.userProgress[0].isCompleted)?.id ||
+    course.chapters.find((chapter) => !chapter?.userProgress?.[0]?.isCompleted)?.id ||
     course.chapters[0].id;
 
   return redirect(`/courses/${params.courseId}/chapters/${chapterId}`);
