@@ -7,6 +7,7 @@ import { getChapter } from '@/actions/db/get-chapter';
 import { Banner } from '@/components/common/banner';
 import { Preview } from '@/components/common/preview';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 import { ChapterVideoPlayer } from './_components/chapter-video-player';
 import { CourseEnrollButton } from './_components/course-enroll-button';
@@ -70,7 +71,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         </div>
         <Separator />
         {chapter.description && (
-          <div>
+          <div className={cn(isLocked && 'blur-sm')}>
             <Preview value={chapter.description} />
           </div>
         )}
