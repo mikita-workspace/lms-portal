@@ -48,8 +48,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
     redirect('/');
   }
 
-  const firstChapter = course.chapters.find((chapter) => chapter.position === 1);
-
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">
@@ -65,7 +63,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="space-y-6 md:col-span-3">
-          <PreviewVideoPlayer videoUrl={firstChapter?.videoUrl} />
+          <PreviewVideoPlayer videoUrl={course.chapters?.[0]?.videoUrl} />
           <PreviewDescription
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}
