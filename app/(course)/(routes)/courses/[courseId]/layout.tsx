@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -12,6 +13,17 @@ type CourseLayoutProps = Readonly<{
   children: React.ReactNode;
   params: { courseId: string };
 }>;
+
+export async function generateMetadata({ params }: CourseLayoutProps): Promise<Metadata> {
+  const course = await db.course.findUnique({
+    where: { id: params.courseId },
+  });
+
+  return {
+    title: course?.title || 'Nova LMS',
+    description: course?.description || 'LMS Portal for educational purposes',
+  };
+}
 
 const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   const user = await getCurrentUser();

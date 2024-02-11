@@ -11,14 +11,20 @@ import { db } from '@/lib/db';
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
 
-export const metadata: Metadata = {
-  title: 'Course',
-  description: 'LMS Portal for educational purposes',
-};
-
 type LandingCourseIdPageProps = {
   params: { courseId: string };
 };
+
+export async function generateMetadata({ params }: LandingCourseIdPageProps): Promise<Metadata> {
+  const course = await db.course.findUnique({
+    where: { id: params.courseId },
+  });
+
+  return {
+    title: course?.title || 'Nova LMS',
+    description: course?.description || 'LMS Portal for educational purposes',
+  };
+}
 
 const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const user = await getCurrentUser();
