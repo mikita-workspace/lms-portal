@@ -3,7 +3,12 @@
 import { ArrowUpRightFromSquare, Copyright } from 'lucide-react';
 import Link from 'next/link';
 
-import { PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/constants/common';
+import {
+  NOVA_CHAT_URL,
+  OWNER_EMAIL,
+  PRIVACY_POLICY_URL,
+  TERMS_AND_CONDITIONS_URL,
+} from '@/constants/common';
 
 export const Footer = () => {
   return (
@@ -17,13 +22,13 @@ export const Footer = () => {
           <span>Mikita&nbsp;Kandratsyeu. All rights reserved.</span>
         </div>
         <div className="md:space-x-2 font-semibold flex flex-col md:flex-row">
-          <Link href="mailto:mkandratsyeu@gmail.com">
+          <Link href={NOVA_CHAT_URL} target="_blank">
             <div className="flex items-center">
               NovaChat&nbsp;|&nbsp;GPT&nbsp;
               <ArrowUpRightFromSquare className="h-2 w-2" />
             </div>
           </Link>
-          <Link href="mailto:mkandratsyeu@gmail.com">Contact</Link>
+          <Link href={`mailto:${OWNER_EMAIL}`}>Contact</Link>
           <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
             Terms and Conditions
           </Link>
