@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       orderBy: { position: 'desc' },
     });
 
-    const newPosition = lastChapter ? lastChapter.position + 1 : 1;
+    const newPosition = lastChapter ? lastChapter.position + 1 : 0;
 
     const chapter = await db.chapter.create({
       data: { title, courseId: params.courseId, position: newPosition },
