@@ -36,7 +36,7 @@ const ConfettiProvider = () => {
 
 export const Providers = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <AuthProvider>
         <ConfettiProvider />
         <ToastProvider />

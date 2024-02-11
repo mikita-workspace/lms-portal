@@ -63,7 +63,10 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="space-y-6 md:col-span-3">
-          <PreviewVideoPlayer videoUrl={course.chapters?.[0]?.videoUrl} />
+          <PreviewVideoPlayer
+            videoUrl={course.chapters?.[0]?.videoUrl}
+            isLocked={!course.chapters?.[0]?.isFree}
+          />
           <PreviewDescription
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}

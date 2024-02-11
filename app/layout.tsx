@@ -19,7 +19,7 @@ type RootLayoutProps = Readonly<{
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', GeistSans.className)}>
+      <body className={cn('min-h-full bg-background font-sans antialiased', GeistSans.className)}>
         <Providers>{children}</Providers>
       </body>
     </html>

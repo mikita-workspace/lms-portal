@@ -1,4 +1,5 @@
-import { BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
+import { ArrowLeft, BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -63,15 +64,28 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
       )}
       <div className="p-6">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl font-medium">Course setup</h1>
-            <span className="text-sm text-neutral-700">Complete all fields {completionText}</span>
+          <div className="w-full">
+            <Link
+              className="flex items-center text-sm hover:opacity-75 transition duration-300 mb-6"
+              href={'/teacher/courses'}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to courses
+            </Link>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col gap-y-2">
+                <h1 className="text-2xl font-medium">Course setup</h1>
+                <span className="text-sm text-neutral-700">
+                  Complete all fields {completionText}
+                </span>
+              </div>
+              <Actions
+                courseId={params.courseId}
+                disabled={!isCompleted}
+                isPublished={course.isPublished}
+              />
+            </div>
           </div>
-          <Actions
-            courseId={params.courseId}
-            disabled={!isCompleted}
-            isPublished={course.isPublished}
-          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div>

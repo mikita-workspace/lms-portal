@@ -1,10 +1,11 @@
 'use client';
 
-import { LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import { Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { getFallbackName } from '@/lib/utils';
+import { capitalize, getFallbackName } from '@/lib/utils';
 
 import {
   Avatar,
@@ -25,9 +26,27 @@ export const UserProfileButton = () => {
   const { user } = useCurrentUser();
   const { theme, setTheme } = useTheme();
 
-  const ThemeIcon = theme === 'light' ? MoonStar : Sun;
+  const ThemeIcon = useMemo(() => {
+    if (theme === 'system') {
+      return Laptop2;
+    }
 
-  const handleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
+    return theme === 'light' ? MoonStar : Sun;
+  }, [theme]);
+
+  const handleTheme = () => {
+    if (theme === 'system') {
+      return setTheme('light');
+    }
+
+    if (theme === 'light') {
+      return setTheme('dark');
+    }
+
+    if (theme === 'dark') {
+      return setTheme('system');
+    }
+  };
 
   return user ? (
     <DropdownMenu>
@@ -47,7 +66,7 @@ export const UserProfileButton = () => {
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleTheme}>
           <ThemeIcon className="mr-2 h-4 w-4" />
-          {theme === 'light' ? 'Dark mode' : 'Light mode'}
+          {`${capitalize(theme || 'system')} theme`}
         </DropdownMenuItem>
         {/* TODO: Add settings here. Temporary disabled. */}
         <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}} disabled>
