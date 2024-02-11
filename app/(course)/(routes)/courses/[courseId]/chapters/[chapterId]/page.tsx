@@ -69,11 +69,11 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             <CourseEnrollButton courseId={params.courseId} price={course.price!} />
           )}
         </div>
-        <Separator />
-        {chapter.description && (
-          <div className={cn(isLocked && 'blur-sm')}>
+        {!isLocked && chapter.description && (
+          <>
+            <Separator />
             <Preview value={chapter.description} />
-          </div>
+          </>
         )}
         {Boolean(attachments.length) && (
           <>
