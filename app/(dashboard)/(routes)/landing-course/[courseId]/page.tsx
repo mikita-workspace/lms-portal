@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -9,6 +10,11 @@ import { db } from '@/lib/db';
 
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
+
+export const metadata: Metadata = {
+  title: 'Course',
+  description: 'LMS Portal for educational purposes',
+};
 
 type LandingCourseIdPageProps = {
   params: { courseId: string };
