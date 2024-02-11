@@ -1,7 +1,7 @@
 import { SearchSkeleton } from '@/components/loaders/search-skeleton';
 
-const DashboardLoading = () => {
+const SearchLoading = () => {
   return <SearchSkeleton />;
 };
 
-export default DashboardLoading;
+export default SearchLoading;

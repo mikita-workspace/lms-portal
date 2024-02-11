@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, Lock, PlayCircle } from 'lucide-react';
+import { CheckCircle, Lock, PauseCircle, PlayCircle } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
@@ -24,15 +24,19 @@ export const CourseSideBarItem = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  const isActive = pathname?.includes(id);
+
   const Icon = useMemo(() => {
     if (isLocked) {
       return Lock;
     }
 
-    return isCompleted ? CheckCircle : PlayCircle;
-  }, [isCompleted, isLocked]);
+    if (isActive) {
+      return PauseCircle;
+    }
 
-  const isActive = pathname?.includes(id);
+    return isCompleted ? CheckCircle : PlayCircle;
+  }, [isActive, isCompleted, isLocked]);
 
   const handleOnClick = () => router.push(`/courses/${courseId}/chapters/${id}`);
 
@@ -51,7 +55,7 @@ export const CourseSideBarItem = ({
         <Icon
           className={cn(
             'text-muted-foreground',
-            isActive && 'text-primary',
+            isActive && 'text-primary animate-spin-once',
             isCompleted && 'text-emerald-700',
           )}
           size={22}
