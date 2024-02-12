@@ -10,9 +10,19 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui';
 import { Button } from '@/components/ui/button';
-import { Combobox } from '@/components/ui/combobox';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { cn } from '@/lib/utils';
 
 type CategoryFormProps = {
@@ -83,10 +93,21 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
               control={form.control}
               name="categoryId"
               render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Combobox {...field} options={options} />
-                  </FormControl>
+                <FormItem className="shadow-none">
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select option..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {options.map((option) => (
+                        <SelectItem key={option.label} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
