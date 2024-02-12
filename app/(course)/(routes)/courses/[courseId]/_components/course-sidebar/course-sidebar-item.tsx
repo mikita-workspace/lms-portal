@@ -43,7 +43,7 @@ export const CourseSideBarItem = ({
   return (
     <button
       className={cn(
-        'flex items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-6 transition-all duration-300 hover:bg-muted',
+        'flex items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-4 pr-2 transition-all duration-300 hover:bg-muted rounded-lg mb-2',
         isActive && 'text-primary bg-muted',
         isCompleted && 'text-emerald-700 hover:text-emerald-700',
         isCompleted && isActive && 'bg-emerald-200/20',
@@ -52,15 +52,17 @@ export const CourseSideBarItem = ({
       onClick={handleOnClick}
     >
       <div className="flex items-center gap-x-2 py-4">
-        <Icon
-          className={cn(
-            'text-muted-foreground',
-            isActive && 'text-primary animate-spin-once',
-            isCompleted && 'text-emerald-700',
-          )}
-          size={22}
-        />
-        <span className="text-left">{label}</span>
+        <div>
+          <Icon
+            className={cn(
+              'text-muted-foreground',
+              isActive && 'text-primary animate-spin-once',
+              isCompleted && 'text-emerald-700',
+            )}
+            size={22}
+          />
+        </div>
+        <p className="text-left line-clamp-2">{label}</p>
       </div>
     </button>
   );

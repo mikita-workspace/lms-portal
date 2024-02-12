@@ -19,8 +19,8 @@ export const CourseSideBar = async ({ course, progressCount }: CourseSideBarProp
   });
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm bg-white dark:bg-neutral-900">
-      <div className="flex flex-col border-b p-8">
+    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm bg-white dark:bg-neutral-900 px-4">
+      <div className="flex flex-col px-2 py-6">
         <h1 className="font-semibold">{course.title}</h1>
         {purchase !== null && (
           <div className="mt-10">
