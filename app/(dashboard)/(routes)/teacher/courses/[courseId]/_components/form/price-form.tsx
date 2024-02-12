@@ -28,7 +28,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
-  const handleOnPriceChange = (_price: string | undefined) => {
+  const handleOnPriceChange = (_price?: string) => {
     if (!_price) {
       setPrice('');
       return;

@@ -71,6 +71,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}
             description={course.description!}
+            price={course.price}
             title={course.title}
           />
         </div>

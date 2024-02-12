@@ -61,11 +61,11 @@ export const CourseCard = ({
             />
           ) : (
             <div>
-              {price === 0 ? (
+              {!price ? (
                 <TextBadge variant="lime" label="Free" />
               ) : (
                 <p className="text-md md:text-small font-medium text-neutral-700 dark:text-neutral-300 ">
-                  {formatPrice(price!, { locale: Locale.EN_US, currency: Currency.USD })}
+                  {formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD })}
                 </p>
               )}
             </div>
