@@ -3,7 +3,7 @@
 import { Skeleton } from '../ui/skeleton';
 
 export const DashboardSkeleton = () => (
-  <div className="w-full px-6 pt-6 space-y-4">
+  <div className="w-full px-6 py-6 space-y-4">
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <Skeleton className="w-full h-[75px] rounded-lg overflow-hidden" />
       <Skeleton className="w-full h-[75px] rounded-lg overflow-hidden" />
