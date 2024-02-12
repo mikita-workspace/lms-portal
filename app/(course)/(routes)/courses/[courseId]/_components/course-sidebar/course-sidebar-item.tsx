@@ -51,7 +51,7 @@ export const CourseSideBarItem = ({
       type="button"
       onClick={handleOnClick}
     >
-      <div className="flex items center gap-x-2 py-4">
+      <div className="flex items-center gap-x-2 py-4">
         <Icon
           className={cn(
             'text-muted-foreground',
@@ -60,7 +60,7 @@ export const CourseSideBarItem = ({
           )}
           size={22}
         />
-        {label}
+        <span className="text-left">{label}</span>
       </div>
     </button>
   );
