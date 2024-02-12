@@ -35,7 +35,7 @@ export const CourseCard = ({
   const href = `/${user?.userId ? 'courses' : 'landing-course'}/${id}`;
 
   return (
-    <Link href={href}>
+    <Link href={href} title={title}>
       <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900 hover:bg-blue-500/10 dark:hover:bg-neutral-900/75">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image className="object-cover" fill alt={title} src={imageUrl!} />
