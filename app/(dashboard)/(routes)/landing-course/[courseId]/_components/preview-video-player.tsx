@@ -14,7 +14,7 @@ export const PreviewVideoPlayer = ({ videoUrl, isLocked = false }: PreviewVideoP
 
   return (
     <div className="relative aspect-video">
-      {isReady && (
+      {!isReady && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 border">
           <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
           <p className="text-sm">Loading a video...</p>
