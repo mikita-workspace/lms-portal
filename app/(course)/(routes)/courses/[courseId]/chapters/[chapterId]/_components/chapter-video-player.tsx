@@ -1,9 +1,10 @@
 'use client';
 
-import { Loader2, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 import { VideoPlayer } from '@/components/common/video-player';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
@@ -60,7 +61,7 @@ export const ChapterVideoPlayer = ({
     <div className="relative aspect-video">
       {!isReady && !isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 ">
-          <Loader2 className="h-8 w-8 animate-spin text-secondary-foreground" />
+          <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
           <p className="text-sm">Loading a video...</p>
         </div>
       )}

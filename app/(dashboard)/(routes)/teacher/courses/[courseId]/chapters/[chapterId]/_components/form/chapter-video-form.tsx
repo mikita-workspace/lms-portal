@@ -2,11 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, MuxData } from '@prisma/client';
-import { Loader, Pencil, PlusCircle, Video } from 'lucide-react';
+import { Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
@@ -91,7 +92,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
             <VideoPlayer videoUrl={initialData?.videoUrl} onReady={() => setIsVideoReady(true)} />
             {!isVideoReady && (
               <div className="absolute h-full w-full bg-muted border top-0 right-0 rounded-md flex items-center justify-center">
-                <Loader className="h-6 w-6 animate-spin text-primary" />
+                <BiLoader className="h-6 w-6 animate-spin text-primary" />
               </div>
             )}
           </div>

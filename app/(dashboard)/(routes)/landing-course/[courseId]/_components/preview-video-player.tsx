@@ -1,7 +1,8 @@
 'use client';
 
-import { Loader2, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useState } from 'react';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 import { VideoPlayer } from '@/components/common/video-player';
 import { cn } from '@/lib/utils';
@@ -13,9 +14,9 @@ export const PreviewVideoPlayer = ({ videoUrl, isLocked = false }: PreviewVideoP
 
   return (
     <div className="relative aspect-video">
-      {!isReady && (
+      {isReady && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 border">
-          <Loader2 className="h-8 w-8 animate-spin text-secondary-foreground" />
+          <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
           <p className="text-sm">Loading a video...</p>
         </div>
       )}

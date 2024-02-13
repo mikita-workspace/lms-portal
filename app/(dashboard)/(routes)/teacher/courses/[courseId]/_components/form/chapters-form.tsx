@@ -2,11 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, Course } from '@prisma/client';
-import { Loader, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { Input } from '@/components/ui';
@@ -80,7 +81,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     <div className="relative mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       {isUpdating && (
         <div className="absolute h-full w-full bg-neutral-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader className="h-6 w-6 animate-spin text-primary" />
+          <BiLoader className="h-6 w-6 animate-spin text-primary" />
         </div>
       )}
       <div className="font-medium flex items-center justify-between">

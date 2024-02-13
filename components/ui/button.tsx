@@ -1,7 +1,7 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Loader2 } from 'lucide-react';
 import * as React from 'react';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 import { cn } from '@/lib/utils';
 
@@ -46,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {isLoading && <BiLoaderAlt className="mr-2 h-4 w-4 animate-spin" />}
         {children}
       </Comp>
     );
