@@ -19,16 +19,16 @@ export const POST = async (_: NextRequest, { params }: { params: { courseId: str
       where: { id: params.courseId, isPublished: true },
     });
 
+    if (!course) {
+      return new NextResponse('Not found', { status: StatusCodes.NOT_FOUND });
+    }
+
     const purchase = await db.purchase.findUnique({
       where: { userId_courseId: { userId: user.userId, courseId: params.courseId } },
     });
 
     if (purchase) {
       return new NextResponse('Already purchased', { status: StatusCodes.BAD_REQUEST });
-    }
-
-    if (!course) {
-      return new NextResponse('Not found', { status: StatusCodes.NOT_FOUND });
     }
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [

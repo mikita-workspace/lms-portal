@@ -17,21 +17,24 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
   const handleClick = async () => {
     setIsLoading(true);
 
-    await toast.promise(fetcher.post(`/api/courses/${courseId}/checkout`), {
-      loading: 'Payment processing...',
-      success: (res) => {
-        setIsLoading(false);
+    await toast.promise(
+      fetcher.post(`/api/courses/${courseId}/checkout`, { responseType: 'json' }),
+      {
+        loading: 'Payment processing...',
+        success: (data) => {
+          setIsLoading(false);
 
-        window.location.assign(res.data.url);
+          window.location.assign(data.url);
 
-        return 'Checkout';
+          return 'Checkout';
+        },
+        error: () => {
+          setIsLoading(false);
+
+          return 'Something went wrong';
+        },
       },
-      error: () => {
-        setIsLoading(false);
-
-        return 'Something went wrong';
-      },
-    });
+    );
   };
 
   return (
