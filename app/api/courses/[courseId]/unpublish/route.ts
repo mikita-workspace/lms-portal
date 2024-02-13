@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -9,7 +9,7 @@ export const PATCH = async (_: NextRequest, { params }: { params: { courseId: st
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const course = await db.course.findUnique({
@@ -17,7 +17,7 @@ export const PATCH = async (_: NextRequest, { params }: { params: { courseId: st
     });
 
     if (!course) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const unpublishedCourse = await db.course.update({
@@ -29,6 +29,6 @@ export const PATCH = async (_: NextRequest, { params }: { params: { courseId: st
   } catch (error) {
     console.error('[COURSES_ID_UNPUBLISH]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };

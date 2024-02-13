@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const { title } = await req.json();
@@ -20,6 +20,6 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     console.error('[COURSES]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };

@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -8,6 +7,7 @@ import toast from 'react-hot-toast';
 
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui';
+import { fetcher } from '@/lib/fetcher';
 
 type ChapterActionsProps = {
   chapterId: string;
@@ -30,7 +30,7 @@ export const ChapterActions = ({
     setIsLoading(true);
 
     toast.promise(
-      axios.patch(
+      fetcher.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/${isPublished ? 'unpublish' : 'publish'}`,
       ),
       {
@@ -56,7 +56,7 @@ export const ChapterActions = ({
   const handleDelete = async () => {
     setIsLoading(true);
 
-    await toast.promise(axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`), {
+    await toast.promise(fetcher.delete(`/api/courses/${courseId}/chapters/${chapterId}`), {
       loading: 'Deleting a chapter...',
       success: () => {
         setIsLoading(false);

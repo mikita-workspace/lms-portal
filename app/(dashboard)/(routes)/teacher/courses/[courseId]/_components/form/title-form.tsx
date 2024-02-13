@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
-import axios from 'axios';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -13,6 +12,7 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { fetcher } from '@/lib/fetcher';
 
 type TitleFormProps = {
   courseId: string;
@@ -39,7 +39,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
       toast.success('Course updated');
       handleToggleEdit();

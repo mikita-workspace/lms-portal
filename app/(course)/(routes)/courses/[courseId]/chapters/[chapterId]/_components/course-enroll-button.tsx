@@ -1,12 +1,12 @@
 'use client';
 
-import axios from 'axios';
 import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
 import { Currency, Locale } from '@/constants/locale';
+import { fetcher } from '@/lib/fetcher';
 import { formatPrice } from '@/lib/format';
 
 type CourseEnrollButtonProps = { courseId: string; price: number };
@@ -17,21 +17,24 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
   const handleClick = async () => {
     setIsLoading(true);
 
-    await toast.promise(axios.post(`/api/courses/${courseId}/checkout`), {
-      loading: 'Payment processing...',
-      success: (res) => {
-        setIsLoading(false);
+    await toast.promise(
+      fetcher.post(`/api/courses/${courseId}/checkout`, { responseType: 'json' }),
+      {
+        loading: 'Payment processing...',
+        success: (data) => {
+          setIsLoading(false);
 
-        window.location.assign(res.data.url);
+          window.location.assign(data.url);
 
-        return 'Checkout';
+          return 'Checkout';
+        },
+        error: () => {
+          setIsLoading(false);
+
+          return 'Something went wrong';
+        },
       },
-      error: () => {
-        setIsLoading(false);
-
-        return 'Something went wrong';
-      },
-    });
+    );
   };
 
   return (

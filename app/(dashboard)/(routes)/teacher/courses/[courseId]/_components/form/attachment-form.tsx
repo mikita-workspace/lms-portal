@@ -1,17 +1,18 @@
 'use client';
 
 import { Attachment, Course } from '@prisma/client';
-import axios from 'axios';
-import { File, Loader2, Paperclip, X } from 'lucide-react';
+import { File, Paperclip, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
 import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { Button } from '@/components/ui/button';
+import { fetcher } from '@/lib/fetcher';
 
 type AttachmentProps = {
   courseId: string;
@@ -32,7 +33,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/attachments`, values);
+      await fetcher.post(`/api/courses/${courseId}/attachments`, { body: values });
 
       handleToggleEdit();
 
@@ -47,7 +48,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
     try {
       setDeletingId(id);
 
-      await axios.delete(`/api/courses/${courseId}/attachments/${id}?name=${name}`);
+      await fetcher.delete(`/api/courses/${courseId}/attachments/${id}?name=${name}`);
 
       toast.success('Attachment deleted');
       router.refresh();
@@ -91,7 +92,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
                   </Link>
                   <div className="ml-auto flex items-center">
                     {deletingId === attachment.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <BiLoaderAlt className="h-4 w-4 animate-spin" />
                     ) : (
                       <button
                         className="hover:opacity-75 transition-all duration-300"

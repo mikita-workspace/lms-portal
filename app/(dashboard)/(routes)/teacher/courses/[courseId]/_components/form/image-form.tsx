@@ -1,7 +1,6 @@
 'use client';
 
 import { Course } from '@prisma/client';
-import axios from 'axios';
 import { ImageIcon, Pencil, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -12,6 +11,7 @@ import * as z from 'zod';
 import { FileUpload } from '@/components/common/file-upload';
 import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { Button } from '@/components/ui/button';
+import { fetcher } from '@/lib/fetcher';
 
 type ImageFormProps = {
   courseId: string;
@@ -31,7 +31,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
       toast.success('Course updated');
       handleToggleEdit();

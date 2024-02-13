@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -10,7 +10,7 @@ export const DELETE = async (_: NextRequest, { params }: { params: { courseId: s
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const course = await db.course.findUnique({
@@ -19,7 +19,7 @@ export const DELETE = async (_: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!course) {
-      return new NextResponse('Not found', { status: HttpStatusCode.NotFound });
+      return new NextResponse('Not found', { status: StatusCodes.NOT_FOUND });
     }
 
     const attachmentFiles = course.attachments.reduce<string[]>((urls, attachment) => {
@@ -52,7 +52,7 @@ export const DELETE = async (_: NextRequest, { params }: { params: { courseId: s
   } catch (error) {
     console.error('[COURSE_ID_DELETE]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -61,7 +61,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const values = await req.json();
@@ -75,6 +75,6 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
   } catch (error) {
     console.error('[COURSE_ID]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };

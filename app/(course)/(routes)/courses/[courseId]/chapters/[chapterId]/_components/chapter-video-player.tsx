@@ -1,13 +1,14 @@
 'use client';
 
-import axios from 'axios';
-import { Loader2, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 import { VideoPlayer } from '@/components/common/video-player';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 type ChapterVideoPlayerProps = {
@@ -35,8 +36,8 @@ export const ChapterVideoPlayer = ({
   const handleEnd = async () => {
     if (completeOnEnd) {
       await toast.promise(
-        axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
-          isCompleted: true,
+        fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+          body: { isCompleted: true },
         }),
         {
           loading: 'Updating progress...',
@@ -60,7 +61,7 @@ export const ChapterVideoPlayer = ({
     <div className="relative aspect-video">
       {!isReady && !isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 ">
-          <Loader2 className="h-8 w-8 animate-spin text-secondary-foreground" />
+          <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
           <p className="text-sm">Loading a video...</p>
         </div>
       )}

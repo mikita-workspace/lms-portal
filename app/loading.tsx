@@ -1,7 +1,7 @@
-import { CommonLoader } from '@/components/loaders/common-loader';
+import { PrettyLoader } from '@/components/loaders/pretty-loader';
 
 const GlobalLoading = () => {
-  return <CommonLoader />;
+  return <PrettyLoader />;
 };
 
 export default GlobalLoading;

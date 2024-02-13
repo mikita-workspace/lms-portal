@@ -2,18 +2,19 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, Course } from '@prisma/client';
-import axios from 'axios';
-import { Loader, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 import { ChaptersList } from '../chapters-list';
@@ -45,7 +46,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/chapters`, values);
+      await fetcher.post(`/api/courses/${courseId}/chapters`, { body: values });
 
       toast.success('Chapter created');
       handleToggleCreating();
@@ -60,7 +61,9 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     try {
       setIsUpdating(true);
 
-      await axios.put(`/api/courses/${courseId}/chapters/reorder`, { list: updatedData });
+      await fetcher.put(`/api/courses/${courseId}/chapters/reorder`, {
+        body: { list: updatedData },
+      });
 
       toast.success('Chapters reordered');
 
@@ -78,7 +81,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     <div className="relative mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       {isUpdating && (
         <div className="absolute h-full w-full bg-neutral-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader className="h-6 w-6 animate-spin text-primary" />
+          <BiLoader className="h-6 w-6 animate-spin text-primary" />
         </div>
       )}
       <div className="font-medium flex items-center justify-between">

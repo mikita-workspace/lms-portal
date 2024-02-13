@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -17,7 +17,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!courseOwner) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const { files } = await req.json();
@@ -34,6 +34,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
   } catch (error) {
     console.error('[COURSE_ID_ATTACHMENTS]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };

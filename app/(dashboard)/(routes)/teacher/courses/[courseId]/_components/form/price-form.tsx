@@ -1,7 +1,6 @@
 'use client';
 
 import { Course } from '@prisma/client';
-import axios from 'axios';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
@@ -11,6 +10,7 @@ import toast from 'react-hot-toast';
 import { TextBadge } from '@/components/common/text-badge';
 import { Button } from '@/components/ui/button';
 import { Currency, Locale } from '@/constants/locale';
+import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getCurrencySymbol } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
@@ -43,13 +43,14 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
     setIsSubmitting(true);
 
     try {
-      await axios.patch(`/api/courses/${courseId}`, { price: Number(price) });
+      await fetcher.patch(`/api/courses/${courseId}`, { body: { price: Number(price) } });
 
       toast.success('Course updated');
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
+      console.log(error);
       toast.error('Something went wrong!');
     } finally {
       setIsSubmitting(false);
