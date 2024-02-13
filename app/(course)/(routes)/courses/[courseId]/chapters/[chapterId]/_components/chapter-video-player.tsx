@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { Loader2, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -8,6 +7,7 @@ import toast from 'react-hot-toast';
 
 import { VideoPlayer } from '@/components/common/video-player';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 type ChapterVideoPlayerProps = {
@@ -35,8 +35,8 @@ export const ChapterVideoPlayer = ({
   const handleEnd = async () => {
     if (completeOnEnd) {
       await toast.promise(
-        axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
-          isCompleted: true,
+        fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+          body: { isCompleted: true },
         }),
         {
           loading: 'Updating progress...',

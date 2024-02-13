@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error: any) {
     return new NextResponse(`Webhook Error: ${error?.message}`, {
-      status: HttpStatusCode.BadRequest,
+      status: StatusCodes.BAD_REQUEST,
     });
   }
 
@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
   if (event.type === 'checkout.session.completed') {
     if (!userId || !courseId) {
       return new NextResponse('Webhook Error: Missing metadata', {
-        status: HttpStatusCode.BadRequest,
+        status: StatusCodes.BAD_REQUEST,
       });
     }
 

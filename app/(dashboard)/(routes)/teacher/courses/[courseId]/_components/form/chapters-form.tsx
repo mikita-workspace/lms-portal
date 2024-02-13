@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter, Course } from '@prisma/client';
-import axios from 'axios';
 import { Loader, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 import { ChaptersList } from '../chapters-list';
@@ -45,7 +45,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/chapters`, values);
+      await fetcher.post(`/api/courses/${courseId}/chapters`, { body: values });
 
       toast.success('Chapter created');
       handleToggleCreating();
@@ -60,7 +60,9 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     try {
       setIsUpdating(true);
 
-      await axios.put(`/api/courses/${courseId}/chapters/reorder`, { list: updatedData });
+      await fetcher.put(`/api/courses/${courseId}/chapters/reorder`, {
+        body: { list: updatedData },
+      });
 
       toast.success('Chapters reordered');
 

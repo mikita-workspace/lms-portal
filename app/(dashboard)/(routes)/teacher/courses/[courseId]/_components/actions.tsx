@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import toast from 'react-hot-toast';
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { fetcher } from '@/lib/fetcher';
 
 type ActionsProps = {
   courseId: string;
@@ -26,7 +26,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
     setIsLoading(true);
 
     toast.promise(
-      axios.patch(`/api/courses/${courseId}/${isPublished ? 'unpublish' : 'publish'}`),
+      fetcher.patch(`/api/courses/${courseId}/${isPublished ? 'unpublish' : 'publish'}`),
       {
         loading: isPublished
           ? 'This course is removing from publications'
@@ -56,7 +56,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
   const handleDelete = async () => {
     setIsLoading(true);
 
-    await toast.promise(axios.delete(`/api/courses/${courseId}`), {
+    await toast.promise(fetcher.delete(`/api/courses/${courseId}`), {
       loading: 'Deleting a course...',
       success: () => {
         setIsLoading(false);

@@ -1,4 +1,4 @@
-import { HttpStatusCode } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -7,12 +7,12 @@ import { Currency } from '@/constants/locale';
 import { db } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 
-export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const POST = async (_: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
     const user = await getCurrentUser();
 
     if (!user || !user.email || !user.userId) {
-      return new NextResponse('Unauthorized', { status: HttpStatusCode.Unauthorized });
+      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
     const course = await db.course.findUnique({
@@ -24,11 +24,11 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (purchase) {
-      return new NextResponse('Already purchased', { status: HttpStatusCode.BadRequest });
+      return new NextResponse('Already purchased', { status: StatusCodes.BAD_REQUEST });
     }
 
     if (!course) {
-      return new NextResponse('Not found', { status: HttpStatusCode.NotFound });
+      return new NextResponse('Not found', { status: StatusCodes.NOT_FOUND });
     }
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
@@ -74,6 +74,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
   } catch (error) {
     console.log('[COURSE_ID_CHECKOUT]', error);
 
-    return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
+    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 };
