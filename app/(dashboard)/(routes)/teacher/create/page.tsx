@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -19,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { fetcher } from '@/lib/fetcher';
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -36,12 +36,12 @@ const CreatePage = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const { data } = await axios.post('/api/courses', values);
+      const data = await fetcher.post('/api/courses', { body: values, responseType: 'json' });
 
       router.push(`/teacher/courses/${data.id}`);
 
       toast.success('Course has been created');
-    } catch {
+    } catch (error) {
       toast.error('Something went wrong!');
     }
   };

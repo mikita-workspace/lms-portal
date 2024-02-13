@@ -1,12 +1,12 @@
 'use client';
 
-import axios from 'axios';
 import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
 import { Currency, Locale } from '@/constants/locale';
+import { fetcher } from '@/lib/fetcher';
 import { formatPrice } from '@/lib/format';
 
 type CourseEnrollButtonProps = { courseId: string; price: number };
@@ -17,7 +17,7 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
   const handleClick = async () => {
     setIsLoading(true);
 
-    await toast.promise(axios.post(`/api/courses/${courseId}/checkout`), {
+    await toast.promise(fetcher.post(`/api/courses/${courseId}/checkout`), {
       loading: 'Payment processing...',
       success: (res) => {
         setIsLoading(false);

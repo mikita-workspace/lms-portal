@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
-import axios from 'axios';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -23,6 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 type CategoryFormProps = {
@@ -55,7 +55,7 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
       toast.success('Course updated');
       handleToggleEdit();

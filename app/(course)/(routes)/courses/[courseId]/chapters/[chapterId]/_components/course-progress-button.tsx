@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { ArrowRight, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -8,6 +7,7 @@ import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { fetcher } from '@/lib/fetcher';
 
 type CourseProgressButton = {
   chapterId: string;
@@ -31,8 +31,8 @@ export const CourseProgressButton = ({
     setIsLoading(true);
 
     await toast.promise(
-      axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
-        isCompleted: !isCompleted,
+      fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+        body: { isCompleted: !isCompleted },
       }),
       {
         loading: 'Updating progress...',

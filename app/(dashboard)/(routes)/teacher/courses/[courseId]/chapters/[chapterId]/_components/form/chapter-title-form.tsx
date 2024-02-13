@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter } from '@prisma/client';
-import axios from 'axios';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -13,6 +12,7 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { fetcher } from '@/lib/fetcher';
 
 type ChapterTitleFormProps = {
   chapterId: string;
@@ -40,7 +40,7 @@ export const ChapterTitleForm = ({ initialData, chapterId, courseId }: ChapterTi
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, { body: values });
 
       toast.success('Chapter updated');
       handleToggleEdit();
