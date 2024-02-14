@@ -8,9 +8,8 @@ type DashboardLayoutProps = Readonly<{
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    // <div className="h-full flex flex-col">
-    // {
-    /* <div className="flex-1">
+    <div className="h-full flex flex-col">
+      <div className="flex-1 h-full">
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
           <NavBar />
         </div>
@@ -19,10 +18,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
         <main className="md:pl-64 pt-[80px] h-full">{children}</main>
       </div>
-      <Footer /> */
-    // }
-    // </div>
-    <> {children}</>
+      <Footer />
+    </div>
   );
 };
 

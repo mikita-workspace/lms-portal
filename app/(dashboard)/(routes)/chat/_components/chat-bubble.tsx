@@ -12,7 +12,7 @@ type ChatBubbleProps = {
 
 export const ChatBubble = ({ message, name, picture, timestamp }: ChatBubbleProps) => {
   return (
-    <div className="pb-8 pt-2">
+    <div className="pb-4 pt-2">
       <div className="flex gap-x-4">
         <div>
           <Avatar>

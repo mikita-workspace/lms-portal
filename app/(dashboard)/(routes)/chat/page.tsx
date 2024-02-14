@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
-import { ChatAi } from './_components/chat-ai';
+import { ChatBody } from './_components/chat-body';
+import { ChatInput } from './_components/chat-input';
 
 export const metadata: Metadata = {
   title: 'Chat AI',
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
 const ChatPage = () => {
   return (
     <div className="w-full h-full overflow-hidden">
-      <ChatAi />
+      <div className="flex h-full w-full">
+        <div className="flex h-full w-full flex-col overflow-auto bg-background outline-none">
+          <div className="flex h-full w-full flex-col justify-between">
+            <ChatBody />
+            <ChatInput />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
