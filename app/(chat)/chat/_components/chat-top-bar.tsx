@@ -2,6 +2,8 @@
 
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
+import { GrClearOption } from 'react-icons/gr';
+import { MdIosShare } from 'react-icons/md';
 
 import {
   Button,
@@ -86,7 +88,14 @@ export const ChatTopBar = () => {
               </Command>
             </PopoverContent>
           </Popover>
-          <div>asdas;kdjal;skjdas</div>
+          <div className="flex gap-1">
+            <Button variant="outline">
+              <GrClearOption className="w-4 h-4" />
+            </Button>
+            <Button variant="outline">
+              <MdIosShare className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

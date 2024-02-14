@@ -1,15 +1,21 @@
-import { NavBar } from '../../components/navbar/navbar';
-import { SideBar } from '../../components/sidebar/sidebar';
-import { Footer } from './_components/footer/footer';
+import { Metadata } from 'next';
+
+import { NavBar } from '@/components/navbar/navbar';
+import { SideBar } from '@/components/sidebar/sidebar';
+
+export const metadata: Metadata = {
+  title: 'Chat AI',
+  description: 'LMS Portal for educational purposes',
+};
 
 type DashboardLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const ChatLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1">
+      <div className="flex-1 h-full">
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
           <NavBar />
         </div>
@@ -18,9 +24,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
         <main className="md:pl-64 pt-[80px] h-full">{children}</main>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default DashboardLayout;
+export default ChatLayout;

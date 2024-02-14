@@ -10,15 +10,15 @@ export const LeaderBoardSkeleton = () => (
     <Skeleton className="h-4 w-[200px]" />
     <Skeleton className="h-4 w-4/5" />
     <Skeleton className="h-4 w-4/5" />
-    <Skeleton className="h-4 w-[285px] mb-6" />
-    <Skeleton className="h-4 w-[285px] mb-6" />
+    <Skeleton className="h-4 w-[220px] mb-6" />
+    <Skeleton className="h-4 w-[220px] mb-6" />
     <Skeleton className="h-4 w-4/5" />
     <Skeleton className="h-4 w-4/5" />
     <Skeleton className="h-4 w-[200px]" />
     <Skeleton className="h-4 w-[200px]" />
     <Skeleton className="h-4 w-3/5" />
     <Skeleton className="h-4 w-3/5" />
-    <Skeleton className="h-4 w-[285px]" />
-    <Skeleton className="h-4 w-[285px]" />
+    <Skeleton className="h-4 w-[220px]" />
+    <Skeleton className="h-4 w-[220px]" />
   </div>
 );
