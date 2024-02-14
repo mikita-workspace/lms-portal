@@ -10,7 +10,7 @@ type ChatBubbleProps = {
   timestamp?: string;
 };
 
-export const ChatBubble = ({ message, name, picture, timestamp }: ChatBubbleProps) => {
+export const ChatBubble = ({ message, name, picture }: ChatBubbleProps) => {
   return (
     <div className="pb-4 pt-2">
       <div className="flex gap-x-4">
