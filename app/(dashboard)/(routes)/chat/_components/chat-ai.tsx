@@ -23,7 +23,7 @@ export const ChatAi = () => {
     <div className="flex h-full w-full">
       <div className="relative flex h-full w-full flex-col overflow-auto bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ScrollToBottom className="flex h-[calc(100vh-150px)] w-full flex-col">
+          <ScrollToBottom className="flex h-[calc(100%-8rem)] w-full flex-col">
             {[...Array(45)].map((i, index) => (
               <div key={index}>
                 <div className="relative py-4">
