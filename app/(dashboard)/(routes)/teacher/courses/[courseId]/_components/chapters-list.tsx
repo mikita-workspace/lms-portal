@@ -26,6 +26,10 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
     setChapters(items);
   }, [items]);
 
+  if (!isMounted) {
+    return null;
+  }
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -49,10 +53,6 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
 
     onReorder(bulkUpdateData);
   };
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

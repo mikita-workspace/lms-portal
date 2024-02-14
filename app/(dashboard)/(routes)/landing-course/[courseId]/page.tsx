@@ -15,7 +15,7 @@ type LandingCourseIdPageProps = {
   params: { courseId: string };
 };
 
-export async function generateMetadata({ params }: LandingCourseIdPageProps): Promise<Metadata> {
+export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Promise<Metadata> => {
   const course = await db.course.findUnique({
     where: { id: params.courseId },
   });
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: LandingCourseIdPageProps): Pr
     title: course?.title || 'Nova LMS',
     description: course?.description || 'LMS Portal for educational purposes',
   };
-}
+};
 
 const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const user = await getCurrentUser();

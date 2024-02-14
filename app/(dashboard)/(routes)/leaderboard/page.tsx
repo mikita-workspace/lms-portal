@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -5,6 +6,11 @@ import { getLeaders } from '@/actions/db/get-leaders';
 import { LeaderBoardSkeleton } from '@/components/loaders/leaderboard-skeleton';
 
 import { LeadersTable } from './_components/leaders-table';
+
+export const metadata: Metadata = {
+  title: 'Leaderboard',
+  description: 'LMS Portal for educational purposes',
+};
 
 const LeaderBoard = async () => {
   const user = await getCurrentUser();
