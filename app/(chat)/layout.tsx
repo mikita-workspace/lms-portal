@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: 'LMS Portal for educational purposes',
 };
 
-type DashboardLayoutProps = Readonly<{
+type ChatLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const ChatLayout = ({ children }: DashboardLayoutProps) => {
+const ChatLayout = ({ children }: ChatLayoutProps) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 h-full">
