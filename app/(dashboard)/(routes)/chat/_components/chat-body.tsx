@@ -45,7 +45,7 @@ export const ChatBody = () => {
 
   return (
     <ChatBodyContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
-      <div className="h-[calc(100%-12rem)] relative">
+      <div className="h-[calc(100%-14rem)] relative">
         <ScrollToBottom
           className="flex h-full w-full flex-col"
           followButtonClassName="scroll-to-bottom-button"
@@ -54,7 +54,7 @@ export const ChatBody = () => {
             {[...Array(45)].map((i, index) => (
               <div
                 key={index}
-                className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] first:pt-4 last:pb-6 px-4"
+                className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4"
               >
                 <ChatBubble
                   message={
