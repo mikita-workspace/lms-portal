@@ -29,11 +29,14 @@ export const Chat = ({ initialData }: ChatProps) => {
   const [assistantMessage, setAssistantMessage] = useState('');
 
   const handleAddMessages = useChatStore((state) => state.addMessages);
+  const handleRemoveMessages = useChatStore((state) => state.removeMessages);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
+
+    return () => handleRemoveMessages();
   }, []);
 
   if (!isMounted) {
