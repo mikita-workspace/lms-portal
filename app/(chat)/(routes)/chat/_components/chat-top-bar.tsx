@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, Save } from 'lucide-react';
 import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 import { MdIosShare } from 'react-icons/md';
@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui';
 import { useChatStore } from '@/hooks/use-chat-store';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 const models = [
@@ -43,6 +44,7 @@ const models = [
 ];
 
 export const ChatTopBar = () => {
+  const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
   const [open, setOpen] = useState(false);
@@ -55,7 +57,7 @@ export const ChatTopBar = () => {
 
     const link = document.createElement('a');
     link.href = jsonString;
-    link.download = 'ai-messages.json';
+    link.download = `${user?.name?.toLowerCase()?.replace(/\W/g, '-')}-ai-messages.json`;
     link.click();
   };
 
@@ -69,7 +71,7 @@ export const ChatTopBar = () => {
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
-                className="w-[200px] justify-between"
+                className="w-[180px] justify-between"
               >
                 {value ? models.find((model) => model.value === value)?.label : 'Select model...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -105,6 +107,9 @@ export const ChatTopBar = () => {
           <div className="flex gap-1">
             <Button variant="outline" onClick={handleClear}>
               <GrClearOption className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" onClick={() => {}}>
+              <Save className="w-4 h-4" />
             </Button>
             <Button variant="outline" onClick={handleShare}>
               <MdIosShare className="w-4 h-4" />

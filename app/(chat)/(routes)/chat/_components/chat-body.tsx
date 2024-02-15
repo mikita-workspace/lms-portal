@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
 import { Button } from '@/components/ui';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -54,6 +55,15 @@ export const ChatBody = () => {
 
   return (
     <ChatScrollContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
+      {!hasMessages && (
+        <div className="flex flex-col items-center justify-start gap-y-2 h-full">
+          <Avatar>
+            <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />
+            <AvatarFallback>AI</AvatarFallback>
+          </Avatar>
+          <p className="mb-5 text-2xl font-medium">How can I help you today?</p>
+        </div>
+      )}
       <div className="h-[calc(100%-12rem)] relative">
         {hasMessages ? (
           <ScrollToBottom
@@ -62,12 +72,10 @@ export const ChatBody = () => {
           >
             <Content>
               {messages.map((message, index) => {
-                const name =
-                  message.role === ChatCompletionRole.ASSISTANT
-                    ? 'Artificial Intelligence'
-                    : user?.name || 'User';
+                const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const picture = message.role === ChatCompletionRole.USER ? user?.image : null;
+                const name = isAssistant ? 'Artificial Intelligence' : user?.name || 'User';
+                const picture = isAssistant ? null : user?.image;
 
                 return (
                   <div

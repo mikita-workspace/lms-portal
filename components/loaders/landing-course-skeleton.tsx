@@ -5,7 +5,7 @@ import { Skeleton } from '../ui/skeleton';
 export const LandingCourseSkeleton = () => (
   <div className="w-full px-6 py-6 grid grid-cols-1 md:grid-cols-5 gap-6">
     <div className="flex flex-col space-y-3 md:col-span-3">
-      <Skeleton className="w-full aspect-video rounded-lg overflow-hidden" />
+      <Skeleton className="w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden" />
       <div className="space-y-2">
         <Skeleton className="h-4 w-[200px]" />
         <div className="space-y-2">
