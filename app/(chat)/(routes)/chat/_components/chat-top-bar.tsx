@@ -20,35 +20,19 @@ import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
-const models = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+type ChatTopBarProps = {
+  models: { value: string; label: string }[];
+};
 
-export const ChatTopBar = () => {
+export const ChatTopBar = ({ models }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
+
   const messages = useChatStore((state) => state.messages);
+  const currentModel = useChatStore((state) => state.currentModel);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('astro');
+
+  const handleCurrentModel = useChatStore((state) => state.setCurrentModel);
 
   const handleClear = useChatStore((state) => state.removeMessages);
 
@@ -62,7 +46,7 @@ export const ChatTopBar = () => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className={cn('w-full h-[50px]', !messages.length && 'h-full')}>
       <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
         <div className="flex items-center justify-between w-full">
           <Popover open={open} onOpenChange={setOpen}>
@@ -73,7 +57,9 @@ export const ChatTopBar = () => {
                 aria-expanded={open}
                 className="w-[180px] justify-between"
               >
-                {value ? models.find((model) => model.value === value)?.label : 'Select model...'}
+                {currentModel
+                  ? models.find((model) => model.value === currentModel)?.label
+                  : 'Select model...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -87,14 +73,14 @@ export const ChatTopBar = () => {
                       key={model.value}
                       value={model.value}
                       onSelect={(currentValue) => {
-                        setValue(currentValue === value ? '' : currentValue);
+                        handleCurrentModel(currentValue === currentModel ? '' : currentValue);
                         setOpen(false);
                       }}
                     >
                       <Check
                         className={cn(
                           'mr-2 h-4 w-4',
-                          value === model.value ? 'opacity-100' : 'opacity-0',
+                          currentModel === model.value ? 'opacity-100' : 'opacity-0',
                         )}
                       />
                       {model.label}

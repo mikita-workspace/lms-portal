@@ -89,7 +89,14 @@ export const ChatBody = () => {
             </Content>
           </ScrollToBottom>
         ) : (
-          <ChatIntro />
+          <ChatIntro
+            introMessages={[
+              'What are the main trends in artificial intelligence for 2023?',
+              'What are successful examples of neural networks in medicine?',
+              'What are the most effective methods for training AI in gaming?',
+              'What new approaches in quantum computing have emerged?',
+            ]}
+          />
         )}
         {!sticky && hasMessages && (
           <Button

@@ -23,7 +23,18 @@ export const Chat = () => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-auto bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar />
+          <ChatTopBar
+            models={[
+              {
+                value: 'gpt-3.5-turbo-1106',
+                label: 'gpt-3.5-turbo-1106',
+              },
+              {
+                value: 'gpt-4-turbo-1106',
+                label: 'gpt-4-turbo-1106',
+              },
+            ]}
+          />
           <ChatBody />
           <ChatInput />
         </div>
