@@ -1,19 +1,21 @@
 'use client';
 
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
-  message: ChatCompletionMessageParam;
+  message: { role: string; content: string };
   name: string;
   picture?: string | null;
+  streamMessage?: string;
   timestamp?: string;
 };
 
-export const ChatBubble = ({ message, name, picture }: ChatBubbleProps) => {
+export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubbleProps) => {
   const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
   return (
@@ -37,7 +39,7 @@ export const ChatBubble = ({ message, name, picture }: ChatBubbleProps) => {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
           </div>
           <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline">
-            {message.content as string}
+            <Markdown remarkPlugins={[remarkGfm]}>{streamMessage || message.content}</Markdown>
           </p>
         </div>
       </div>

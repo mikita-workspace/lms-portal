@@ -1,12 +1,11 @@
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { create } from 'zustand';
 
 import { DEFAULT_MODEL } from '@/constants/open-ai';
 
 type ChatStore = {
-  addMessages: (messages: ChatCompletionMessageParam[]) => void;
+  addMessages: (messages: { role: string; content: string }[]) => void;
   currentModel: string;
-  messages: ChatCompletionMessageParam[];
+  messages: { role: string; content: string }[];
   removeMessages: () => void;
   setCurrentModel: (model: string) => void;
 };

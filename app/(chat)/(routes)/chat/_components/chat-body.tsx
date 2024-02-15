@@ -46,15 +46,15 @@ const Content = ({ children }: ContentProps) => {
 
 type ChatBodyProps = {
   introMessages: string[];
+  streamAssistantMessage?: string;
 };
 
-export const ChatBody = ({ introMessages }: ChatBodyProps) => {
+export const ChatBody = ({ introMessages, streamAssistantMessage }: ChatBodyProps) => {
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
   const [sticky, setSticky] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasMessages = Boolean(messages.length);
 
@@ -91,6 +91,15 @@ export const ChatBody = ({ introMessages }: ChatBodyProps) => {
                   </div>
                 );
               })}
+              {streamAssistantMessage && (
+                <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
+                  <ChatBubble
+                    message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
+                    name={'Artificial Intelligence'}
+                    streamMessage={streamAssistantMessage}
+                  />
+                </div>
+              )}
             </Content>
           </ScrollToBottom>
         ) : (

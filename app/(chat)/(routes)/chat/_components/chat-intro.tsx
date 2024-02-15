@@ -11,12 +11,12 @@ type ChatIntroProps = {
 
 export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
   const mapQuestion = (value: string) => {
-    const random = Math.floor(Math.random() * 3) + 3;
+    const index = 4;
     const words = value.replace(/\W/g, '-').split('-');
 
     return {
-      head: words.slice(0, random).join(' '),
-      tail: `${words.slice(random, words.length - 1).join(' ')}?`,
+      head: words.slice(0, index).join(' '),
+      tail: `${words.slice(index, words.length - 1).join(' ')}?`,
     };
   };
 
