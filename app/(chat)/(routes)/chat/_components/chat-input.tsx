@@ -33,7 +33,7 @@ export const ChatInput = ({
                 setIsCurrentMessage(event.target.value);
               }}
               onKeyDown={(event) => {
-                if (event.key == 'Enter' && event.shiftKey == false) {
+                if (event.key == 'Enter' && !event.shiftKey && !isSubmitting) {
                   event.preventDefault();
                   onSubmit(event);
                 }
