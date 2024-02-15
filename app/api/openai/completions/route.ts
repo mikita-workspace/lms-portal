@@ -20,6 +20,7 @@ export const POST = async (req: NextRequest) => {
       messages,
       model,
       top_p: 0.5,
+      max_tokens: 1000,
       stream: true,
     });
 
