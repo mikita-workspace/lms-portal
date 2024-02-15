@@ -1,11 +1,18 @@
 import './globals.css';
 
 import { GeistSans } from 'geist/font/sans';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
+
+export const viewport: Viewport = {
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: true,
+  width: 'device-width',
+};
 
 export const metadata: Metadata = {
   title: 'Nova LMS',

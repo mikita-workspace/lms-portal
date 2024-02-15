@@ -29,9 +29,10 @@ export const ChapterVideoPlayer = ({
   videoUrl,
 }: ChapterVideoPlayerProps) => {
   const router = useRouter();
-  const confetti = useConfettiStore();
 
   const [isReady, setIsReady] = useState(false);
+
+  const handleOpenConfetti = useConfettiStore((state) => state.onOpen);
 
   const handleEnd = async () => {
     if (completeOnEnd) {
@@ -43,7 +44,7 @@ export const ChapterVideoPlayer = ({
           loading: 'Updating progress...',
           success: () => {
             if (!nextChapterId) {
-              confetti.onOpen();
+              handleOpenConfetti();
             } else {
               router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
             }
@@ -58,7 +59,7 @@ export const ChapterVideoPlayer = ({
   };
 
   return (
-    <div className="relative aspect-video">
+    <div className="relative aspect-w-16 aspect-h-9">
       {!isReady && !isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 ">
           <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />

@@ -21,7 +21,7 @@ export const VideoPlayer = ({
   const ReactPlayer = useMemo(() => dynamic(() => import('react-player/lazy'), { ssr: false }), []);
 
   return (
-    <div className="border aspect-video">
+    <div className="border aspect-w-16 aspect-h-9">
       <ReactPlayer
         controls={showControls}
         height="100%"

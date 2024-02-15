@@ -1,7 +1,6 @@
-import { NavBarRoutes } from '@/components/common/navbar-routes';
-
-import { Logo } from '../common/logo';
+import { Logo } from '../../app/(dashboard)/_components/common/logo';
 import { SideBarMobile } from '../sidebar/sidebar-mobile';
+import { NavBarRoutes } from './navbar-routes';
 
 export const NavBar = () => {
   return (

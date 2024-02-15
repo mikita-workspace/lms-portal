@@ -83,7 +83,14 @@ const config = withUt({
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
+  ],
 } satisfies Config);
 
 export default config;

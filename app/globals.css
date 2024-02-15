@@ -126,3 +126,8 @@ body,
 }
 
 .ldio-n11zyy0r5u div { box-sizing: content-box; }
+
+/* ScrollToBottom styles */
+.scroll-to-bottom-button {
+  display: none !important;
+}
