@@ -8,7 +8,14 @@ import { ChatBody } from './chat-body';
 import { ChatInput } from './chat-input';
 import { ChatTopBar } from './chat-top-bar';
 
-export const Chat = () => {
+type ChatProps = {
+  initialData: {
+    introMessages: string[];
+    models: { value: string; label: string }[];
+  };
+};
+
+export const Chat = ({ initialData }: ChatProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -23,19 +30,8 @@ export const Chat = () => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-auto bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar
-            models={[
-              {
-                value: 'gpt-3.5-turbo-1106',
-                label: 'gpt-3.5-turbo-1106',
-              },
-              {
-                value: 'gpt-4-turbo-1106',
-                label: 'gpt-4-turbo-1106',
-              },
-            ]}
-          />
-          <ChatBody />
+          <ChatTopBar models={initialData.models} />
+          <ChatBody introMessages={initialData.introMessages} />
           <ChatInput />
         </div>
       </div>

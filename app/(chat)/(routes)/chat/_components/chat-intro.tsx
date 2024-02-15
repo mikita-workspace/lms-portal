@@ -29,7 +29,7 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
           const { head, tail } = mapQuestion(message);
 
           return (
-            <button
+            <div
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
               onClick={() =>
@@ -43,14 +43,14 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
             >
               <div className="truncate font-semibold text-sm">{head}</div>
               <div className="truncate text-secondary-foreground text-xs">{tail}</div>
-            </button>
+            </div>
           );
         })}
         {introMessages.slice(2).map((message, index) => {
           const { head, tail } = mapQuestion(message);
 
           return (
-            <button
+            <div
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
               onClick={() =>
@@ -63,8 +63,8 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
               }
             >
               <div className="truncate font-semibold text-sm">{head}</div>
-              <div className="truncate text-secondary-foreground text-xs">{tail}</div>
-            </button>
+              <div className="line-clamp-1 text-secondary-foreground text-xs">{tail}</div>
+            </div>
           );
         })}
       </div>

@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
 
     return new StreamingTextResponse(stream);
   } catch (error) {
-    console.log('[OPEN_AI_COMPLETIONS]', error);
+    console.error('[OPEN_AI_COMPLETIONS]', error);
 
     return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
   }

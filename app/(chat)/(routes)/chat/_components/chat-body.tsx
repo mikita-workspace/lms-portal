@@ -44,12 +44,17 @@ const Content = ({ children }: ContentProps) => {
   return <>{children}</>;
 };
 
-export const ChatBody = () => {
+type ChatBodyProps = {
+  introMessages: string[];
+};
+
+export const ChatBody = ({ introMessages }: ChatBodyProps) => {
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
   const [sticky, setSticky] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasMessages = Boolean(messages.length);
 
@@ -89,14 +94,7 @@ export const ChatBody = () => {
             </Content>
           </ScrollToBottom>
         ) : (
-          <ChatIntro
-            introMessages={[
-              'What are the main trends in artificial intelligence for 2023?',
-              'What are successful examples of neural networks in medicine?',
-              'What are the most effective methods for training AI in gaming?',
-              'What new approaches in quantum computing have emerged?',
-            ]}
-          />
+          <ChatIntro introMessages={introMessages} />
         )}
         {!sticky && hasMessages && (
           <Button

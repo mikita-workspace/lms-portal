@@ -72,7 +72,7 @@ export const POST = async (_: NextRequest, { params }: { params: { courseId: str
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.log('[COURSE_ID_CHECKOUT]', error);
+    console.error('[COURSE_ID_CHECKOUT]', error);
 
     return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
