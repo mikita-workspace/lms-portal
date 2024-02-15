@@ -12,7 +12,6 @@ type ChatBubbleProps = {
   name: string;
   picture?: string | null;
   streamMessage?: string;
-  timestamp?: string;
 };
 
 export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubbleProps) => {
@@ -36,7 +35,9 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
         <div className="flex flex-col">
           <div className="space-x-2">
             <span className="text-medium font-bold">{name}</span>
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+            {/* {time && (
+              <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{time}</span>
+            )} */}
           </div>
           <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline">
             <Markdown remarkPlugins={[remarkGfm]}>{streamMessage || message.content}</Markdown>
