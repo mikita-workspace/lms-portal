@@ -29,9 +29,10 @@ export const ChapterVideoPlayer = ({
   videoUrl,
 }: ChapterVideoPlayerProps) => {
   const router = useRouter();
-  const confetti = useConfettiStore();
 
   const [isReady, setIsReady] = useState(false);
+
+  const handleOpenConfetti = useConfettiStore((state) => state.onOpen);
 
   const handleEnd = async () => {
     if (completeOnEnd) {
@@ -43,7 +44,7 @@ export const ChapterVideoPlayer = ({
           loading: 'Updating progress...',
           success: () => {
             if (!nextChapterId) {
-              confetti.onOpen();
+              handleOpenConfetti();
             } else {
               router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
             }

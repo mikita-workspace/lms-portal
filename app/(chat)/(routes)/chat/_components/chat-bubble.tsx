@@ -1,12 +1,14 @@
 'use client';
 
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
-  message: string;
+  message: ChatCompletionMessageParam;
   name: string;
-  picture?: string;
+  picture?: string | null;
   timestamp?: string;
 };
 
@@ -26,7 +28,7 @@ export const ChatBubble = ({ message, name, picture }: ChatBubbleProps) => {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
           </div>
           <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline">
-            {message}
+            {message.content as string}
           </p>
         </div>
       </div>

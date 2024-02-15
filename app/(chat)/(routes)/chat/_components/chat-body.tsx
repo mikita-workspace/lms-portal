@@ -5,10 +5,14 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
 import { Button } from '@/components/ui';
+import { ChatCompletionRole } from '@/constants/open-ai';
+import { useChatStore } from '@/hooks/use-chat-store';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { ChatBubble } from './chat-bubble';
+import { ChatIntro } from './chat-intro';
 
-const ChatBodyContext = createContext({
+const ChatScrollContext = createContext({
   sticky: false,
   scrollToBottom: false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,7 +26,7 @@ type ContentProps = {
 };
 
 const Content = ({ children }: ContentProps) => {
-  const { scrollToBottom, setSticky, setScrollToBottom } = useContext(ChatBodyContext);
+  const { scrollToBottom, setSticky, setScrollToBottom } = useContext(ChatScrollContext);
 
   const [sticky] = useSticky();
   const handleScrollToBottom = useScrollToBottom();
@@ -40,33 +44,46 @@ const Content = ({ children }: ContentProps) => {
 };
 
 export const ChatBody = () => {
+  const { user } = useCurrentUser();
+  const messages = useChatStore((state) => state.messages);
+
   const [sticky, setSticky] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(false);
 
+  const hasMessages = Boolean(messages.length);
+
   return (
-    <ChatBodyContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
-      <div className="h-[calc(100%-14rem)] relative">
-        <ScrollToBottom
-          className="flex h-full w-full flex-col"
-          followButtonClassName="scroll-to-bottom-button"
-        >
-          <Content>
-            {[...Array(45)].map((i, index) => (
-              <div
-                key={index}
-                className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4"
-              >
-                <ChatBubble
-                  message={
-                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ipsa, sed voluptatem laborum, eum deserunt error in quis enim debitis obcaecati iste. Eligendi tenetur blanditiis saepe ad est dicta deleniti.'
-                  }
-                  name={'John Doe'}
-                />
-              </div>
-            ))}
-          </Content>
-        </ScrollToBottom>
-        {!sticky && (
+    <ChatScrollContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
+      <div className="h-[calc(100%-12rem)] relative">
+        {hasMessages ? (
+          <ScrollToBottom
+            className="flex h-full w-full flex-col"
+            followButtonClassName="scroll-to-bottom-button"
+          >
+            <Content>
+              {messages.map((message, index) => {
+                const name =
+                  message.role === ChatCompletionRole.ASSISTANT
+                    ? 'Artificial Intelligence'
+                    : user?.name || 'User';
+
+                const picture = message.role === ChatCompletionRole.USER ? user?.image : null;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
+                  >
+                    <ChatBubble message={message} name={name} picture={picture} />
+                  </div>
+                );
+              })}
+            </Content>
+          </ScrollToBottom>
+        ) : (
+          <ChatIntro />
+        )}
+        {!sticky && hasMessages && (
           <Button
             className="w-10 h-10 rounded-full p-2 absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             variant="outline"
@@ -76,6 +93,6 @@ export const ChatBody = () => {
           </Button>
         )}
       </div>
-    </ChatBodyContext.Provider>
+    </ChatScrollContext.Provider>
   );
 };

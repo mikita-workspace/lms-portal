@@ -23,9 +23,10 @@ export const CourseProgressButton = ({
   nextChapterId,
 }: CourseProgressButton) => {
   const router = useRouter();
-  const confetti = useConfettiStore();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleOpenConfetti = useConfettiStore((state) => state.onOpen);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -40,7 +41,7 @@ export const CourseProgressButton = ({
           setIsLoading(false);
 
           if (!isCompleted && !nextChapterId) {
-            confetti.onOpen();
+            handleOpenConfetti();
           } else if (!isCompleted && nextChapterId) {
             router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
           }

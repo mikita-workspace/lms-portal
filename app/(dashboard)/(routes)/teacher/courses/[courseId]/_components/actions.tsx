@@ -18,9 +18,10 @@ type ActionsProps = {
 
 export const Actions = ({ courseId, disabled = false, isPublished = false }: ActionsProps) => {
   const router = useRouter();
-  const confetti = useConfettiStore();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleOpenConfetti = useConfettiStore((state) => state.onOpen);
 
   const handleTogglePublication = async () => {
     setIsLoading(true);
@@ -40,7 +41,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
             return 'Course unpublished';
           }
 
-          confetti.onOpen();
+          handleOpenConfetti();
 
           return 'The course has been published';
         },

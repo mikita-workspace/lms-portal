@@ -6,26 +6,20 @@ import { openai } from '@/server/openai';
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { prompt } = await req.json();
+    const { messages, model } = await req.json();
 
-    console.log(prompt);
-
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-0125-preview',
+    const completion = await openai.chat.completions.create({
+      messages,
+      model,
+      top_p: 0.5,
       stream: true,
-      max_tokens: 512,
-      messages: [
-        { role: 'system', content: 'You are a helpful assistant in learning portal.' },
-        { role: 'user', content: prompt },
-      ],
-      temperature: 0.8,
     });
 
-    const stream = OpenAIStream(response);
+    const stream = OpenAIStream(completion);
 
     return new StreamingTextResponse(stream);
   } catch (error) {
-    console.log('[OPEN_AI]', error);
+    console.log('[OPEN_AI_COMPLETIONS]', error);
 
     return new NextResponse('Internal Error', { status: HttpStatusCode.InternalServerError });
   }

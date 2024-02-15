@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { useChatStore } from '@/hooks/use-chat-store';
 import { cn } from '@/lib/utils';
 
 const models = [
@@ -42,12 +43,25 @@ const models = [
 ];
 
 export const ChatTopBar = () => {
+  const messages = useChatStore((state) => state.messages);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('astro');
 
+  const handleClear = useChatStore((state) => state.removeMessages);
+
+  const handleShare = () => {
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(messages))}`;
+
+    const link = document.createElement('a');
+    link.href = jsonString;
+    link.download = 'ai-messages.json';
+    link.click();
+  };
+
   return (
     <div className="w-full h-full">
-      <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] first:pt-4 last:pb-6 px-4">
+      <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
         <div className="flex items-center justify-between w-full">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -89,10 +103,10 @@ export const ChatTopBar = () => {
             </PopoverContent>
           </Popover>
           <div className="flex gap-1">
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleClear}>
               <GrClearOption className="w-4 h-4" />
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleShare}>
               <MdIosShare className="w-4 h-4" />
             </Button>
           </div>
