@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
+
 import { ChatBody } from './chat-body';
 import { ChatInput } from './chat-input';
 import { ChatTopBar } from './chat-top-bar';
@@ -14,7 +16,7 @@ export const Chat = () => {
   }, []);
 
   if (!isMounted) {
-    return null;
+    return <ChatSkeleton />;
   }
 
   return (
