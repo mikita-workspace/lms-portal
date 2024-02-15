@@ -29,8 +29,14 @@ export const ChatInput = ({
               className="resize-none flex-1 pr-16 overflow-auto z-10"
               placeholder="Enter your message..."
               value={currenMessage}
-              onChange={(event: SyntheticEvent) => {
-                setIsCurrentMessage((event.target as HTMLInputElement).value);
+              onChange={(event) => {
+                setIsCurrentMessage(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key == 'Enter' && event.shiftKey == false) {
+                  event.preventDefault();
+                  onSubmit(event);
+                }
               }}
             />
             <Button

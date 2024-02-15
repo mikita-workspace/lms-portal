@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowDown } from 'lucide-react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
 import { Button } from '@/components/ui';
@@ -46,10 +46,11 @@ const Content = ({ children }: ContentProps) => {
 
 type ChatBodyProps = {
   introMessages: string[];
+  onSubmit: (event: SyntheticEvent, message?: string) => void;
   streamAssistantMessage?: string;
 };
 
-export const ChatBody = ({ introMessages, streamAssistantMessage }: ChatBodyProps) => {
+export const ChatBody = ({ introMessages, onSubmit, streamAssistantMessage }: ChatBodyProps) => {
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
@@ -103,7 +104,7 @@ export const ChatBody = ({ introMessages, streamAssistantMessage }: ChatBodyProp
             </Content>
           </ScrollToBottom>
         ) : (
-          <ChatIntro introMessages={introMessages} />
+          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         )}
         {!sticky && hasMessages && (
           <Button

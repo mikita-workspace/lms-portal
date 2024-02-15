@@ -4,6 +4,7 @@ type FetchMethod = (
     body?: Record<string, unknown>;
     headers?: HeadersInit;
     responseType?: 'json' | 'stream';
+    signal?: AbortSignal;
   },
 ) => Promise<any>;
 
@@ -23,6 +24,7 @@ class Fetcher {
       method: 'POST',
       body: JSON.stringify(options?.body),
       headers: options?.headers,
+      signal: options?.signal,
     };
 
     if (options?.responseType === 'json') {
@@ -39,6 +41,7 @@ class Fetcher {
       method: 'PUT',
       body: JSON.stringify(options?.body),
       headers: options?.headers,
+      signal: options?.signal,
     };
 
     if (options?.responseType === 'json') {
@@ -55,6 +58,7 @@ class Fetcher {
       method: 'PATCH',
       body: JSON.stringify(options?.body),
       headers: options?.headers,
+      signal: options?.signal,
     };
 
     if (options?.responseType === 'json') {

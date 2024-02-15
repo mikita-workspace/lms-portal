@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, ChevronsUpDown, Save } from 'lucide-react';
+import { Check, ChevronsUpDown, StopCircle } from 'lucide-react';
 import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 import { MdIosShare } from 'react-icons/md';
@@ -16,15 +16,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 type ChatTopBarProps = {
+  isSubmitting?: boolean;
+  lastAssistantMessage: string;
   models: { value: string; label: string }[];
+  onAbortGenerating: () => void;
+  setAssistantMessage: (value: string) => void;
 };
 
-export const ChatTopBar = ({ models }: ChatTopBarProps) => {
+export const ChatTopBar = ({
+  isSubmitting = false,
+  lastAssistantMessage,
+  models,
+  onAbortGenerating,
+  setAssistantMessage,
+}: ChatTopBarProps) => {
   const { user } = useCurrentUser();
 
   const messages = useChatStore((state) => state.messages);
@@ -37,7 +48,15 @@ export const ChatTopBar = ({ models }: ChatTopBarProps) => {
   const handleClear = useChatStore((state) => state.removeMessages);
 
   const handleShare = () => {
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(messages))}`;
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      JSON.stringify([
+        ...messages,
+        {
+          role: ChatCompletionRole.ASSISTANT,
+          content: lastAssistantMessage,
+        },
+      ]),
+    )}`;
 
     const link = document.createElement('a');
     link.href = jsonString;
@@ -46,7 +65,7 @@ export const ChatTopBar = ({ models }: ChatTopBarProps) => {
   };
 
   return (
-    <div className={cn('w-full h-[50px]', !messages.length && 'h-full')}>
+    <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
       <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
         <div className="flex items-center justify-between w-full">
           <Popover open={open} onOpenChange={setOpen}>
@@ -55,7 +74,7 @@ export const ChatTopBar = ({ models }: ChatTopBarProps) => {
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
-                className="w-[180px] justify-between"
+                className="w-[180px] justify-between truncate"
               >
                 {currentModel
                   ? models.find((model) => model.value === currentModel)?.label
@@ -73,7 +92,9 @@ export const ChatTopBar = ({ models }: ChatTopBarProps) => {
                       key={model.value}
                       value={model.value}
                       onSelect={(currentValue) => {
-                        handleCurrentModel(currentValue === currentModel ? '' : currentValue);
+                        const value = currentValue === currentModel ? '' : currentValue;
+
+                        handleCurrentModel(value);
                         setOpen(false);
                       }}
                     >
@@ -91,13 +112,22 @@ export const ChatTopBar = ({ models }: ChatTopBarProps) => {
             </PopoverContent>
           </Popover>
           <div className="flex gap-1">
-            <Button variant="outline" onClick={handleClear}>
+            {isSubmitting && (
+              <Button variant="outline" onClick={onAbortGenerating}>
+                <StopCircle className="w-4 h-4" />
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={() => {
+                handleClear();
+                setAssistantMessage('');
+              }}
+            >
               <GrClearOption className="w-4 h-4" />
             </Button>
-            <Button variant="outline" onClick={() => {}}>
-              <Save className="w-4 h-4" />
-            </Button>
-            <Button variant="outline" onClick={handleShare}>
+            <Button variant="outline" disabled={isSubmitting} onClick={handleShare}>
               <MdIosShare className="w-4 h-4" />
             </Button>
           </div>

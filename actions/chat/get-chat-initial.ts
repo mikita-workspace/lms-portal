@@ -27,7 +27,9 @@ export const getChatInitial = async () => {
 
     return {
       introMessages: JSON.parse(introMessages.choices[0].message.content || '[]'),
-      models: models.map((model) => ({ value: model.id, label: model.id })),
+      models: models
+        .map((model) => ({ value: model.id, label: model.id }))
+        .filter((model) => model.value.startsWith('gpt')),
     };
   } catch (error) {
     console.error('[GET_CHAT_INITIAL_ACTION]', error);

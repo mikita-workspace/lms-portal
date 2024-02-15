@@ -1,15 +1,13 @@
 'use client';
 
-import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
-
-import { ChatCompletionRole } from '@/constants/open-ai';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { SyntheticEvent } from 'react';
 
 type ChatIntroProps = {
   introMessages: string[];
+  onSubmit: (event: SyntheticEvent, message?: string) => void;
 };
 
-export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
+export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
   const mapQuestion = (value: string) => {
     const index = 4;
     const words = value.replace(/\W/g, '-').split('-');
@@ -19,8 +17,6 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
       tail: `${words.slice(index, words.length - 1).join(' ')}?`,
     };
   };
-
-  const handleInitialMessage = useChatStore((state) => state.addMessages);
 
   return (
     <div className="h-full flex flex-col justify-end">
@@ -32,14 +28,9 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
             <div
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
-              onClick={() =>
-                handleInitialMessage([
-                  {
-                    content: message,
-                    role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
-                  },
-                ])
-              }
+              onClick={(event) => {
+                onSubmit(event, message);
+              }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>
               <div className="truncate text-secondary-foreground text-xs">{tail}</div>
@@ -53,14 +44,9 @@ export const ChatIntro = ({ introMessages }: ChatIntroProps) => {
             <div
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
-              onClick={() =>
-                handleInitialMessage([
-                  {
-                    content: message,
-                    role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
-                  },
-                ])
-              }
+              onClick={(event) => {
+                onSubmit(event, message);
+              }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>
               <div className="line-clamp-1 text-secondary-foreground text-xs">{tail}</div>

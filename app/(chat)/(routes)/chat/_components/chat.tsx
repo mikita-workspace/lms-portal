@@ -1,6 +1,6 @@
 'use client';
 
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
@@ -30,6 +30,8 @@ export const Chat = ({ initialData }: ChatProps) => {
 
   const handleAddMessages = useChatStore((state) => state.addMessages);
 
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -38,24 +40,36 @@ export const Chat = ({ initialData }: ChatProps) => {
     return <ChatSkeleton />;
   }
 
-  const handleSubmit = async (event: SyntheticEvent) => {
+  const handleSubmit = async (event: SyntheticEvent, introMessage?: string) => {
     try {
       event.preventDefault();
 
       setIsSubmitting(true);
 
-      const currentUserMessage = { role: ChatCompletionRole.USER, content: currentMessage };
+      const currentUserMessage = {
+        role: ChatCompletionRole.USER,
+        content: currentMessage || introMessage || '',
+      };
       const currentAssistantMessage = {
         role: ChatCompletionRole.ASSISTANT,
         content: assistantMessage,
       };
 
-      handleAddMessages(
-        [currentAssistantMessage, currentUserMessage].filter((message) => message.content.length),
+      const messagesToApi = [currentAssistantMessage, currentUserMessage].filter(
+        (message) => message.content.length,
       );
+
+      if (!messagesToApi.length) {
+        return;
+      }
+
+      handleAddMessages(messagesToApi);
 
       setAssistantMessage('');
       setIsCurrentMessage('');
+
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
 
       const completionStream = await fetcher.post('/api/openai/completions', {
         body: {
@@ -65,6 +79,7 @@ export const Chat = ({ initialData }: ChatProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal,
       });
 
       const reader = completionStream.body?.getReader();
@@ -88,9 +103,17 @@ export const Chat = ({ initialData }: ChatProps) => {
         setAssistantMessage((prev) => prev + chunk);
       }
     } catch (error: any) {
-      toast.error(String(error?.message));
+      if (error.name !== 'AbortError') {
+        toast.error(String(error?.message));
+      }
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleAbortGenerating = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
   };
 
@@ -98,9 +121,16 @@ export const Chat = ({ initialData }: ChatProps) => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-auto bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar models={initialData.models} />
+          <ChatTopBar
+            isSubmitting={isSubmitting}
+            lastAssistantMessage={assistantMessage}
+            models={initialData.models}
+            onAbortGenerating={handleAbortGenerating}
+            setAssistantMessage={setAssistantMessage}
+          />
           <ChatBody
             introMessages={initialData.introMessages}
+            onSubmit={handleSubmit}
             streamAssistantMessage={assistantMessage}
           />
           <ChatInput
