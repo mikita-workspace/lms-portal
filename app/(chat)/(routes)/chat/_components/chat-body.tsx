@@ -80,7 +80,7 @@ export const ChatBody = ({ introMessages, onSubmit, streamAssistantMessage }: Ch
               {messages.map((message, index) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const name = isAssistant ? 'Artificial Intelligence' : user?.name || 'User';
+                const name = isAssistant ? 'Chat GPT' : user?.name || 'User';
                 const picture = isAssistant ? null : user?.image;
 
                 return (
@@ -96,7 +96,7 @@ export const ChatBody = ({ introMessages, onSubmit, streamAssistantMessage }: Ch
                 <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
                   <ChatBubble
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
-                    name={'Artificial Intelligence'}
+                    name="Chat GPT"
                     streamMessage={streamAssistantMessage}
                   />
                 </div>
