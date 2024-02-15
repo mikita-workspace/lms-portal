@@ -1,7 +1,7 @@
-import { LeaderBoardSkeleton } from '@/components/loaders/leaderboard-skeleton';
+import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 
 const ChatLoading = () => {
-  return <LeaderBoardSkeleton />;
+  return <ChatSkeleton />;
 };
 
 export default ChatLoading;
