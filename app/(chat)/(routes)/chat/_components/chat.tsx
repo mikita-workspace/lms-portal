@@ -37,6 +37,7 @@ export const Chat = ({ initialData }: ChatProps) => {
     setIsMounted(true);
 
     return () => handleRemoveMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!isMounted) {
@@ -86,7 +87,7 @@ export const Chat = ({ initialData }: ChatProps) => {
       });
 
       const reader = completionStream.body?.getReader();
-      const decoder = new TextDecoder('utf-8');
+      const decoder = new TextDecoder();
 
       while (true) {
         const rawChunk = await reader?.read();

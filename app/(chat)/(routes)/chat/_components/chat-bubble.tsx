@@ -2,7 +2,7 @@
 
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
@@ -51,7 +51,8 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
                       {...props}
                       PreTag="div"
                       language={match[1]}
-                      style={vscDarkPlus}
+                      style={atomDark}
+                      wrapLongLines
                     >
                       {String(children).replace(/\n$/, '')}
                     </SyntaxHighlighter>
