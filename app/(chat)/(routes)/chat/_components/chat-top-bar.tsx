@@ -1,7 +1,7 @@
 'use client';
 
-import { Check, ChevronsUpDown, StopCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Check, ChevronsUpDown, RefreshCcw, StopCircle } from 'lucide-react';
+import { SyntheticEvent, useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 import { MdIosShare } from 'react-icons/md';
 
@@ -24,6 +24,7 @@ type ChatTopBarProps = {
   lastAssistantMessage: string;
   models: { value: string; label: string }[];
   onAbortGenerating: () => void;
+  onRegenerate: (event: SyntheticEvent) => void;
   setAssistantMessage: (value: string) => void;
 };
 
@@ -32,6 +33,7 @@ export const ChatTopBar = ({
   lastAssistantMessage,
   models,
   onAbortGenerating,
+  onRegenerate,
   setAssistantMessage,
 }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
@@ -107,9 +109,14 @@ export const ChatTopBar = ({
                 <StopCircle className="w-4 h-4" />
               </Button>
             )}
+            {!isSubmitting && Boolean(messages.length) && (
+              <Button variant="outline" onClick={onRegenerate}>
+                <RefreshCcw className="w-4 h-4" />
+              </Button>
+            )}
             <Button
               variant="outline"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !messages.length}
               onClick={() => {
                 removeMessages();
                 setAssistantMessage('');
@@ -117,7 +124,11 @@ export const ChatTopBar = ({
             >
               <GrClearOption className="w-4 h-4" />
             </Button>
-            <Button variant="outline" disabled={isSubmitting} onClick={handleShare}>
+            <Button
+              variant="outline"
+              disabled={isSubmitting || !messages.length}
+              onClick={handleShare}
+            >
               <MdIosShare className="w-4 h-4" />
             </Button>
           </div>

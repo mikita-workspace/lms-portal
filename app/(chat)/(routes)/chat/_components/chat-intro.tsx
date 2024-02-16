@@ -4,7 +4,12 @@ import { SyntheticEvent } from 'react';
 
 type ChatIntroProps = {
   introMessages: string[];
-  onSubmit: (event: SyntheticEvent, message?: string) => void;
+  onSubmit: (
+    event: SyntheticEvent,
+    options?: {
+      userMessage?: string;
+    },
+  ) => void;
 };
 
 export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
@@ -29,7 +34,7 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
               onClick={(event) => {
-                onSubmit(event, message);
+                onSubmit(event, { userMessage: message });
               }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>
@@ -45,7 +50,7 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
               onClick={(event) => {
-                onSubmit(event, message);
+                onSubmit(event, { userMessage: message });
               }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>

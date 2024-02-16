@@ -1,5 +1,6 @@
 'use client';
 
+import { getTime } from 'date-fns';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -20,11 +21,11 @@ type ChatProps = {
 };
 
 export const Chat = ({ initialData }: ChatProps) => {
-  const { addMessages, currentModel, messages, removeMessages } = useChatStore();
+  const { currentModel, messages, removeMessages, setMessages } = useChatStore();
 
   const [isMounted, setIsMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentMessage, setIsCurrentMessage] = useState('');
+  const [currentMessage, setCurrentMessage] = useState('');
   const [assistantMessage, setAssistantMessage] = useState('');
 
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -40,40 +41,53 @@ export const Chat = ({ initialData }: ChatProps) => {
     return <ChatSkeleton />;
   }
 
-  const handleSubmit = async (event: SyntheticEvent, introMessage?: string) => {
+  const handleSubmit = async (
+    event: SyntheticEvent,
+    options?: { userMessage?: string; regenerate?: boolean },
+  ) => {
     try {
       event.preventDefault();
 
       setIsSubmitting(true);
 
       const currentUserMessage = {
+        content: currentMessage || options?.userMessage || '',
         role: ChatCompletionRole.USER,
-        content: currentMessage || introMessage || '',
-      };
-      const currentAssistantMessage = {
-        role: ChatCompletionRole.ASSISTANT,
-        content: assistantMessage,
+        timestamp: getTime(Date.now()),
       };
 
-      const messagesToApi = [currentAssistantMessage, currentUserMessage].filter(
+      const currentAssistantMessage = {
+        content: options?.userMessage ? '' : assistantMessage,
+        role: ChatCompletionRole.ASSISTANT,
+        timestamp: getTime(Date.now()),
+      };
+
+      const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
         (message) => message.content.length,
       );
 
-      if (!messagesToApi.length) {
+      if (!messagesForApi.length) {
         return;
       }
 
-      addMessages(messagesToApi);
+      if (!options?.regenerate) {
+        setMessages([...messages, ...messagesForApi]);
+      }
 
       setAssistantMessage('');
-      setIsCurrentMessage('');
+      setCurrentMessage('');
 
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
 
       const completionStream = await fetcher.post('/api/openai/completions', {
         body: {
-          messages: [...messages, currentAssistantMessage, currentUserMessage],
+          messages: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
+            ({ content, role }) => ({
+              content,
+              role,
+            }),
+          ),
           model: currentModel,
         },
         headers: {
@@ -111,6 +125,9 @@ export const Chat = ({ initialData }: ChatProps) => {
     }
   };
 
+  const handleRegenerate = (event: SyntheticEvent) =>
+    handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
+
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -126,18 +143,19 @@ export const Chat = ({ initialData }: ChatProps) => {
             lastAssistantMessage={assistantMessage}
             models={initialData.models}
             onAbortGenerating={handleAbortGenerating}
+            onRegenerate={handleRegenerate}
             setAssistantMessage={setAssistantMessage}
           />
           <ChatBody
             introMessages={initialData.introMessages}
             onSubmit={handleSubmit}
-            streamAssistantMessage={assistantMessage}
+            assistantMessage={assistantMessage}
           />
           <ChatInput
             currenMessage={currentMessage}
             isSubmitting={isSubmitting}
             onSubmit={handleSubmit}
-            setIsCurrentMessage={setIsCurrentMessage}
+            setCurrentMessage={setCurrentMessage}
           />
         </div>
       </div>

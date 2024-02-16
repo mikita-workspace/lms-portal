@@ -4,21 +4,21 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { DEFAULT_MODEL } from '@/constants/open-ai';
 
 type ChatStore = {
-  addMessages: (messages: { role: string; content: string }[]) => void;
   currentModel: string;
-  messages: { role: string; content: string }[];
+  messages: { role: string; content: string; timestamp: number }[];
   removeMessages: () => void;
   setCurrentModel: (model: string) => void;
+  setMessages: (messages: { role: string; content: string; timestamp: number }[]) => void;
 };
 
 export const useChatStore = create<ChatStore, any>(
   persist(
     (set) => ({
-      addMessages: (messages) => set((state) => ({ messages: [...state.messages, ...messages] })),
       currentModel: DEFAULT_MODEL,
       messages: [],
       removeMessages: () => set({ messages: [] }),
       setCurrentModel: (model) => set({ currentModel: model }),
+      setMessages: (messages) => set({ messages }),
     }),
     {
       name: 'chat-storage',

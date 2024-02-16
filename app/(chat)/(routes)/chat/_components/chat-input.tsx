@@ -1,6 +1,7 @@
 'use client';
 
 import { SyntheticEvent } from 'react';
+import { BsStars } from 'react-icons/bs';
 
 import { Button, Textarea } from '@/components/ui';
 
@@ -8,14 +9,14 @@ type ChatInputProps = {
   currenMessage: string;
   isSubmitting?: boolean;
   onSubmit: (event: SyntheticEvent) => void;
-  setIsCurrentMessage: (value: string) => void;
+  setCurrentMessage: (value: string) => void;
 };
 
 export const ChatInput = ({
   currenMessage,
   isSubmitting = false,
   onSubmit,
-  setIsCurrentMessage,
+  setCurrentMessage,
 }: ChatInputProps) => {
   return (
     <div className="w-full relative">
@@ -30,7 +31,7 @@ export const ChatInput = ({
               placeholder="Enter your message..."
               value={currenMessage}
               onChange={(event) => {
-                setIsCurrentMessage(event.target.value);
+                setCurrentMessage(event.target.value);
               }}
               onKeyDown={(event) => {
                 if (event.key == 'Enter' && !event.shiftKey && !isSubmitting) {
@@ -40,11 +41,12 @@ export const ChatInput = ({
               }}
             />
             <Button
-              className="absolute bottom-3 right-7 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10"
+              className="absolute bottom-3 right-7 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10 px-2"
               disabled={isSubmitting || !currenMessage}
               type="submit"
               variant="outline"
             >
+              <BsStars className="mr-1" />
               Ask
             </Button>
           </form>

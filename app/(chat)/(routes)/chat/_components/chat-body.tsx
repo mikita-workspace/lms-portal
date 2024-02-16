@@ -45,12 +45,17 @@ const Content = ({ children }: ContentProps) => {
 };
 
 type ChatBodyProps = {
+  assistantMessage?: string;
   introMessages: string[];
-  onSubmit: (event: SyntheticEvent, message?: string) => void;
-  streamAssistantMessage?: string;
+  onSubmit: (
+    event: SyntheticEvent,
+    options?: {
+      userMessage?: string;
+    },
+  ) => void;
 };
 
-export const ChatBody = ({ introMessages, onSubmit, streamAssistantMessage }: ChatBodyProps) => {
+export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBodyProps) => {
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
@@ -92,12 +97,12 @@ export const ChatBody = ({ introMessages, onSubmit, streamAssistantMessage }: Ch
                   </div>
                 );
               })}
-              {streamAssistantMessage && (
+              {assistantMessage && (
                 <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
                   <ChatBubble
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
                     name="Chat GPT"
-                    streamMessage={streamAssistantMessage}
+                    streamMessage={assistantMessage}
                   />
                 </div>
               )}
