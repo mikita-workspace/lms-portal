@@ -35,15 +35,9 @@ export const ChatTopBar = ({
   setAssistantMessage,
 }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
-
-  const messages = useChatStore((state) => state.messages);
-  const currentModel = useChatStore((state) => state.currentModel);
+  const { messages, currentModel, setCurrentModel, removeMessages } = useChatStore();
 
   const [open, setOpen] = useState(false);
-
-  const handleCurrentModel = useChatStore((state) => state.setCurrentModel);
-
-  const handleClear = useChatStore((state) => state.removeMessages);
 
   const handleShare = () => {
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -90,7 +84,7 @@ export const ChatTopBar = ({
                       onSelect={(currentValue) => {
                         const value = currentValue === currentModel ? '' : currentValue;
 
-                        handleCurrentModel(value);
+                        setCurrentModel(value);
                         setOpen(false);
                       }}
                     >
@@ -117,7 +111,7 @@ export const ChatTopBar = ({
               variant="outline"
               disabled={isSubmitting}
               onClick={() => {
-                handleClear();
+                removeMessages();
                 setAssistantMessage('');
               }}
             >

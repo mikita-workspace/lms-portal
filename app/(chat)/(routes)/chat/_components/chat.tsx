@@ -20,23 +20,19 @@ type ChatProps = {
 };
 
 export const Chat = ({ initialData }: ChatProps) => {
-  const messages = useChatStore((state) => state.messages);
-  const currentModel = useChatStore((state) => state.currentModel);
+  const { addMessages, currentModel, messages, removeMessages } = useChatStore();
 
   const [isMounted, setIsMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentMessage, setIsCurrentMessage] = useState('');
   const [assistantMessage, setAssistantMessage] = useState('');
 
-  const handleAddMessages = useChatStore((state) => state.addMessages);
-  const handleRemoveMessages = useChatStore((state) => state.removeMessages);
-
   const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
 
-    return () => handleRemoveMessages();
+    return () => removeMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -67,7 +63,7 @@ export const Chat = ({ initialData }: ChatProps) => {
         return;
       }
 
-      handleAddMessages(messagesToApi);
+      addMessages(messagesToApi);
 
       setAssistantMessage('');
       setIsCurrentMessage('');
