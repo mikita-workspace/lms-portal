@@ -44,7 +44,7 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
           />
           {label}
         </div>
-        {['Leaderboard', 'AI Chat'].includes(label) && <TextBadge label="new" variant="green" />}
+        {['Leaderboard'].includes(label) && <TextBadge label="new" variant="green" />}
       </div>
     </button>
   );

@@ -1,12 +1,15 @@
 'use client';
 
 import { Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
+import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { capitalize, getFallbackName } from '@/lib/utils';
 
+import { TextBadge } from '../common/text-badge';
 import {
   Avatar,
   AvatarFallback,
@@ -25,6 +28,7 @@ import { LogoutButton } from './logout-button';
 export const UserProfileButton = () => {
   const { user } = useCurrentUser();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
 
   const ThemeIcon = useMemo(() => {
     if (theme === 'system') {
@@ -69,7 +73,12 @@ export const UserProfileButton = () => {
           {`${capitalize(theme || 'system')} theme`}
         </DropdownMenuItem>
         {/* TODO: Add settings here. Temporary disabled. */}
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}} disabled>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
+          <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
+          Chat&nbsp;&nbsp;
+          <TextBadge label="AI" variant="yellow" />
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:cursor-pointer" disabled>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings
         </DropdownMenuItem>

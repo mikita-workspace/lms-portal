@@ -15,9 +15,10 @@ export const NavBarRoutes = () => {
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
 
-  const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
+  const isChatPage = pathname?.startsWith('/chat');
   const isCoursePage = pathname?.startsWith('/courses');
   const isSearchPage = pathname === '/';
+  const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isTeacherPage = pathname?.startsWith('/teacher');
 
   const hasTeacherMode = [UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
@@ -43,7 +44,7 @@ export const NavBarRoutes = () => {
         <div className="flex gap-x-2 ml-auto items-center">
           {user?.userId && (
             <>
-              {isCoursePage || isStudentPage || isTeacherPage ? (
+              {isCoursePage || isStudentPage || isTeacherPage || isChatPage ? (
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />

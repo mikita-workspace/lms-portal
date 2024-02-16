@@ -2,11 +2,15 @@ import { Logo } from '../../app/(dashboard)/_components/common/logo';
 import { SideBarMobile } from '../sidebar/sidebar-mobile';
 import { NavBarRoutes } from './navbar-routes';
 
-export const NavBar = () => {
+type NavBarProps = {
+  isChat?: boolean;
+};
+
+export const NavBar = ({ isChat = false }: NavBarProps) => {
   return (
     <div className="p-4 gap-x-4 h-full flex items-center bg-white dark:bg-neutral-800 border-b">
-      <SideBarMobile />
-      <Logo />
+      {!isChat && <SideBarMobile />}
+      <Logo isChat={isChat} />
       <NavBarRoutes />
     </div>
   );

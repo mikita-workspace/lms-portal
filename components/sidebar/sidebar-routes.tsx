@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart4, Compass, Crown, Layout, List, MessageSquare } from 'lucide-react';
+import { BarChart4, Compass, Crown, Layout, List } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import { SideBarItem } from './sidebar-item';
@@ -17,7 +17,6 @@ const studentRoutes = [
     href: '/dashboard',
   },
   { icon: Crown, label: 'Leaderboard', href: '/leaderboard' },
-  { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
 ];
 
 const teacherRoutes = [
