@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { openai } from '@/server/openai';
 
+export const maxDuration = 60;
+
 export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
