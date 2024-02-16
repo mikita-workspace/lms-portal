@@ -1,7 +1,8 @@
 'use client';
 
 import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
@@ -39,8 +40,31 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
               <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{time}</span>
             )} */}
           </div>
-          <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline">
-            <Markdown remarkPlugins={[remarkGfm]}>{streamMessage || message.content}</Markdown>
+          <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent">
+            <Markdown
+              components={{
+                code({ inline, className, children, ...props }: any) {
+                  const match = /language-(\w+)/.exec(className || '');
+
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      {...props}
+                      PreTag="div"
+                      language={match[1]}
+                      style={vscDarkPlus}
+                    >
+                      {String(children).replace(/\n$/, '')}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={className ? className : ''} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+              }}
+            >
+              {streamMessage || message.content}
+            </Markdown>
           </p>
         </div>
       </div>
