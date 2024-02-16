@@ -13,15 +13,11 @@ export const getGlobalProgress = async (userId?: string) => {
       where: {
         userId,
       },
-      include: {
+      select: {
         course: {
           include: {
-            chapters: {
-              where: {
-                isPublished: true,
-              },
-              select: { id: true },
-            },
+            category: true,
+            chapters: { where: { isPublished: true }, select: { id: true } },
           },
         },
       },

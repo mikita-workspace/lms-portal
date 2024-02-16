@@ -14,13 +14,14 @@ type Leaders = {
 
 export const getLeaders = async () => {
   const userProgress = await db.userProgress.findMany();
-
-  if (!userProgress) {
-    return [];
-  }
+  const publishedChapters = await db.chapter.findMany({
+    where: { isPublished: true },
+    select: { id: true },
+  });
 
   const groupedByUser = groupBy(userProgress, (item) => item.userId);
   const userIds = Object.keys(groupedByUser);
+  const publishedChapterIds = publishedChapters.map(({ id }) => id);
 
   const users = await db.user.findMany({ where: { id: { in: userIds } } });
 
@@ -29,7 +30,8 @@ export const getLeaders = async () => {
       const userInfo = users.find((user) => user.id === userId);
 
       if (userInfo) {
-        const xp = items.length * CHAPTER_XP;
+        const xp =
+          items.filter((item) => publishedChapterIds.includes(item.chapterId)).length * CHAPTER_XP;
 
         if (xp > 0) {
           acc.push({
