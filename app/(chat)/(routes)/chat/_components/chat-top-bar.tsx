@@ -8,9 +8,7 @@ import { MdIosShare } from 'react-icons/md';
 import {
   Button,
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   Popover,
   PopoverContent,
@@ -84,8 +82,6 @@ export const ChatTopBar = ({
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
               <Command>
-                <CommandInput placeholder="Search model..." />
-                <CommandEmpty>No model found.</CommandEmpty>
                 <CommandGroup>
                   {models.map((model) => (
                     <CommandItem
