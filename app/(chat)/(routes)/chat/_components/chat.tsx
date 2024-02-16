@@ -87,7 +87,7 @@ export const Chat = ({ initialData }: ChatProps) => {
       });
 
       const reader = completionStream.body?.getReader();
-      const decoder = new TextDecoder();
+      const decoder = new TextDecoder('utf-8');
 
       while (true) {
         const rawChunk = await reader?.read();
