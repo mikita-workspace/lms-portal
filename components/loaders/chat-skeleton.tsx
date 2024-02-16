@@ -37,7 +37,7 @@ export const ChatSkeleton = () => (
         </div>
       </div>
       <div className="flex flex-col gap-y-2 items-center">
-        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-[80px] w-full" />
         <Skeleton className="w-2/3 h-2" />
       </div>
     </div>

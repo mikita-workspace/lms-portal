@@ -6,9 +6,11 @@ import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
+import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { capitalize, getFallbackName } from '@/lib/utils';
 
+import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
 import {
   Avatar,
@@ -25,7 +27,15 @@ import {
 import { LoginButton } from './login-button';
 import { LogoutButton } from './logout-button';
 
-export const UserProfileButton = () => {
+type UserProfileButtonProps = {
+  globalProgress?: {
+    progressPercentage: number;
+    total: number;
+    value: number;
+  } | null;
+};
+
+export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) => {
   const { user } = useCurrentUser();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -52,6 +62,8 @@ export const UserProfileButton = () => {
     }
   };
 
+  const isRestricted = ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
+
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
@@ -67,13 +79,37 @@ export const UserProfileButton = () => {
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
+
+        {globalProgress && globalProgress.total > 0 && (
+          <>
+            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+            <div className="p-2 flex flex-col space-y-1">
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <p>Progress</p>
+                <p>
+                  {globalProgress.value}/{globalProgress.total} Points
+                </p>
+              </div>
+
+              <ProgressBar
+                showText={false}
+                variant="success"
+                size="sm"
+                value={globalProgress.progressPercentage}
+              />
+            </div>
+          </>
+        )}
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleTheme}>
           <ThemeIcon className="mr-2 h-4 w-4" />
           {`${capitalize(theme || 'system')} theme`}
         </DropdownMenuItem>
-        {/* TODO: Add settings here. Temporary disabled. */}
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => router.push('/chat')}
+          disabled={isRestricted}
+        >
           <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
           Chat&nbsp;&nbsp;
           <TextBadge label="AI" variant="yellow" />

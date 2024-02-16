@@ -1,9 +1,8 @@
 'use server';
 
+import { CHAPTER_XP } from '@/constants/common';
 import { db } from '@/lib/db';
 import { groupBy } from '@/lib/utils';
-
-const CHAPTER_XP = 20;
 
 type Leaders = {
   name: string;

@@ -50,7 +50,7 @@ export const ChatInput = ({
               Ask
             </Button>
           </form>
-          <div className="p-2 text-center text-xs text-secondary-foreground z-10">
+          <div className="p-2 text-center text-xs text-muted-foreground z-10">
             AI Chat can make mistakes. Consider checking important information.
           </div>
         </div>

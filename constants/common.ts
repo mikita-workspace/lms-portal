@@ -7,3 +7,5 @@ export const NOVA_CHAT_URL = 'https://t.me/novachat_gpt_bot';
 export const OWNER_EMAIL = 'mkandratsyeu@gmail.com';
 
 export const TEXTAREA_MAX_LENGTH = 1024;
+
+export const CHAPTER_XP = 20;

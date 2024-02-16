@@ -16,9 +16,12 @@ const ToastProvider = () => {
 };
 
 const ConfettiProvider = () => {
-  const confetti = useConfettiStore();
+  const { isOpen, onClose } = useConfettiStore((state) => ({
+    isOpen: state.isOpen,
+    onClose: state.onClose,
+  }));
 
-  if (!confetti.isOpen) {
+  if (!isOpen) {
     return null;
   }
 
@@ -27,9 +30,7 @@ const ConfettiProvider = () => {
       className="pointer-events-none z-[100]"
       numberOfPieces={500}
       recycle={false}
-      onConfettiComplete={() => {
-        confetti.onClose();
-      }}
+      onConfettiComplete={() => onClose()}
     />
   );
 };

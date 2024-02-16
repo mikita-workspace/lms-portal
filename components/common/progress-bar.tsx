@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Progress } from '../ui';
 
 type ProgressBarProps = {
+  showText?: boolean;
   size?: 'default' | 'sm';
   value: number;
   variant?: 'default' | 'success';
@@ -20,19 +21,26 @@ const sizeByVariant = {
   sm: 'text-xs',
 };
 
-export const ProgressBar = ({ size = 'default', value, variant = 'default' }: ProgressBarProps) => {
+export const ProgressBar = ({
+  showText = false,
+  size = 'default',
+  value,
+  variant = 'default',
+}: ProgressBarProps) => {
   return (
     <div>
       <Progress className="h-2" value={value} variant={variant} />
-      <p
-        className={cn(
-          'font-medium mt-2 text-blue-700/85 dark:text-blue-400',
-          colorByVariant[variant || 'default'],
-          sizeByVariant[size || 'default'],
-        )}
-      >
-        {Math.round(value)}% Complete
-      </p>
+      {showText && (
+        <p
+          className={cn(
+            'font-medium mt-2 text-blue-700/85 dark:text-blue-400',
+            colorByVariant[variant || 'default'],
+            sizeByVariant[size || 'default'],
+          )}
+        >
+          {Math.round(value)}% Complete
+        </p>
+      )}
     </div>
   );
 };

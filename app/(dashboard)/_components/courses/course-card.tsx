@@ -55,6 +55,7 @@ export const CourseCard = ({
           </div>
           {progress !== null ? (
             <ProgressBar
+              showText
               variant={progress < 100 ? 'default' : 'success'}
               size="sm"
               value={progress}

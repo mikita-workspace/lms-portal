@@ -1,3 +1,6 @@
+import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getGlobalProgress } from '@/actions/db/get-global-progress';
+
 import { NavBar } from '../../components/navbar/navbar';
 import { SideBar } from '../../components/sidebar/sidebar';
 import { Footer } from './_components/footer/footer';
@@ -6,12 +9,15 @@ type DashboardLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
+  const user = await getCurrentUser();
+  const globalProgress = await getGlobalProgress(user?.userId);
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1">
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
-          <NavBar />
+          <NavBar globalProgress={globalProgress} />
         </div>
         <div className="hidden md:flex h-full w-64 flex-col fixed inset-y-0 z-[48]">
           <SideBar />

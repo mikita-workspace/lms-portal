@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getGlobalProgress } from '@/actions/db/get-global-progress';
 import { getProgress } from '@/actions/db/get-progress';
 import { db } from '@/lib/db';
 
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
 
 const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   const user = await getCurrentUser();
+  const globalProgress = await getGlobalProgress(user?.userId);
 
   if (!user) {
     redirect('/');
@@ -54,7 +56,7 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   return (
     <div className="h-full">
       <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
-        <CourseNavBar {...commonCourseProps} />
+        <CourseNavBar {...commonCourseProps} globalProgress={globalProgress} />
       </div>
       <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
         <CourseSideBar {...commonCourseProps} />

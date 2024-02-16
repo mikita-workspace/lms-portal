@@ -11,7 +11,15 @@ import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus, UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
-export const NavBarRoutes = () => {
+type NavBarRoutesProps = {
+  globalProgress?: {
+    progressPercentage: number;
+    total: number;
+    value: number;
+  } | null;
+};
+
+export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
 
@@ -65,7 +73,7 @@ export const NavBarRoutes = () => {
               )}
             </>
           )}
-          <UserProfileButton />
+          <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
     </>

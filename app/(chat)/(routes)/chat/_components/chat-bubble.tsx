@@ -36,9 +36,6 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
         <div className="flex flex-col">
           <div className="space-x-2">
             <span className="text-medium font-bold">{name}</span>
-            {/* {time && (
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{time}</span>
-            )} */}
           </div>
           <p className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent">
             <Markdown
@@ -57,7 +54,7 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
                       {String(children).replace(/\n$/, '')}
                     </SyntaxHighlighter>
                   ) : (
-                    <code className={className ? className : ''} {...props}>
+                    <code {...props} className={className || ''}>
                       {children}
                     </code>
                   );
