@@ -1,15 +1,17 @@
 'use client';
 
-import { BookMarked, LogOut } from 'lucide-react';
+import { BookMarked, Globe, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { UserProfileButton } from '@/components/auth/user-profile-button';
 import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus, UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { fetcher } from '@/lib/fetcher';
 
 type NavBarRoutesProps = {
   globalProgress?: {
@@ -23,6 +25,8 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
 
+  const [isIpFetching, setIsIpFetching] = useState(false);
+
   const isChatPage = pathname?.startsWith('/chat');
   const isCoursePage = pathname?.startsWith('/courses');
   const isSearchPage = pathname === '/';
@@ -30,6 +34,26 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
   const isTeacherPage = pathname?.startsWith('/teacher');
 
   const hasTeacherMode = [UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
+
+  const handleIpCheck = async () => {
+    setIsIpFetching(true);
+
+    await toast.promise(fetcher.get('https://ipapi.co/json/', { responseType: 'json' }), {
+      loading: 'Deleting a course...',
+      success: (res) => {
+        setIsIpFetching(false);
+
+        console.info('[IP_CHECK]', res);
+
+        return 'Checked';
+      },
+      error: () => {
+        setIsIpFetching(false);
+
+        return 'Something went wrong';
+      },
+    });
+  };
 
   return (
     <>
@@ -62,12 +86,23 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
               ) : (
                 <>
                   {hasTeacherMode && (
-                    <Link href="/teacher/courses">
-                      <Button size="sm" variant="ghost">
-                        <BookMarked className="h-4 w-4 mr-2" />
-                        Teacher mode
+                    <div className="flex items-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={isIpFetching}
+                        onClick={handleIpCheck}
+                      >
+                        <Globe className="h-4 w-4 mr-2" />
+                        IP Check
                       </Button>
-                    </Link>
+                      <Link href="/teacher/courses">
+                        <Button size="sm" variant="ghost">
+                          <BookMarked className="h-4 w-4 mr-2" />
+                          Teacher mode
+                        </Button>
+                      </Link>
+                    </div>
                   )}
                 </>
               )}
