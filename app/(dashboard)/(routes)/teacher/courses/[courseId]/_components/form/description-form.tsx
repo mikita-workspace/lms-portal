@@ -72,7 +72,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
           messages: [
             {
               role: ChatCompletionRole.USER,
-              content: `There is a short description of the course "${form.getValues().description}". Improve it. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
+              content: `There is a short description of the course "${form.getValues().description}". Based on provided course description write a new one. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
             },
           ],
           cache: 'no-cache',

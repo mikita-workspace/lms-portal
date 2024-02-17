@@ -79,7 +79,7 @@ export const ChapterDescriptionForm = ({
           messages: [
             {
               role: ChatCompletionRole.USER,
-              content: `There is a description of the course "${form.getValues().description}". Improve it and provide only answer.`,
+              content: `There is a description of the course "${form.getValues().description.replace(/\n$/, '')}". Based on provided course description write a new one and highlight the list of the most. Provide only answer without HTML tags.`,
             },
           ],
           system: {
