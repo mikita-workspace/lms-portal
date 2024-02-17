@@ -10,12 +10,14 @@ import { TextBadge } from '@/components/common/text-badge';
 import { Currency, Locale } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { formatPrice } from '@/lib/format';
+import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
   category?: string;
   chaptersLength: number;
   id: string;
   imageUrl: string | null;
+  isPublished?: boolean;
   price: number | null;
   progress: number | null;
   title: string;
@@ -26,6 +28,7 @@ export const CourseCard = ({
   chaptersLength,
   id,
   imageUrl,
+  isPublished,
   price,
   progress,
   title,
@@ -35,9 +38,14 @@ export const CourseCard = ({
   const href = `/${user?.userId ? 'courses' : 'landing-course'}/${id}`;
 
   return (
-    <Link href={href} title={title}>
-      <div className="group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900 hover:bg-blue-500/10 dark:hover:bg-neutral-900/75">
-        <div className="relative w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
+    <Link href={href} title={title} className={cn(!isPublished && 'pointer-events-none')}>
+      <div
+        className={cn(
+          'group hover:shadow-sm transition duration-300 overflow-hidden border rounded-lg p-3 h-full dark:bg-neutral-900 hover:bg-blue-500/10 dark:hover:bg-neutral-900/75',
+          !isPublished && 'select-none blur-sm',
+        )}
+      >
+        <div className="w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
           <Image className="object-cover" fill alt={title} src={imageUrl!} />
         </div>
         <div className="flex flex-col pt-2">

@@ -19,6 +19,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
             chaptersLength={item.chapters.length}
             id={item.id}
             imageUrl={item.imageUrl}
+            isPublished={item.isPublished}
             price={item.price}
             progress={item.progress}
             title={item.title}
