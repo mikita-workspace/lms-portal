@@ -2,7 +2,7 @@
 
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
-import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
+import { ChatCompletionRole, DEFAULT_MODEL, models } from '@/constants/open-ai';
 import { openai } from '@/server/openai';
 
 export const getChatInitial = async () => {
@@ -25,12 +25,7 @@ export const getChatInitial = async () => {
 
     return {
       introMessages: JSON.parse(introMessages.choices[0].message.content || '[]'),
-      models: [
-        // { value: 'gpt-4-0125-preview', label: 'GPT-4 Turbo (0125)' },
-        { value: 'gpt-4-1106-preview', label: 'GPT-4 Turbo 1106' },
-        { value: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo 0125' },
-        { value: 'gpt-3.5-turbo-1106', label: 'GPT-3.5 Turbo 1106' },
-      ],
+      models,
     };
   } catch (error) {
     console.error('[GET_CHAT_INITIAL_ACTION]', error);
