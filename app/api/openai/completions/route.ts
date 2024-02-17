@@ -16,10 +16,10 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { messages, model } = await req.json();
+    const { messages, model, system } = await req.json();
 
     const completion = await openai.chat.completions.create({
-      messages,
+      messages: [...(system ? [system] : []), ...messages],
       model,
       top_p: 0.5,
       stream: true,
