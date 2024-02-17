@@ -4,10 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { BsStars } from 'react-icons/bs';
 import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -21,9 +20,11 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
-import { ChatCompletionRole, DEFAULT_SUMMARIZE_MODEL } from '@/constants/open-ai';
+import { ChatCompletionRole } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
+
+import { GenerateDescriptionAi } from '../../../_components/generate-description-ai';
 
 type DescriptionFormProps = {
   courseId: string;
@@ -44,11 +45,20 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isImproving, setIsImproving] = useState(false);
+  const [newDescription, setNewDescription] = useState('');
 
   const { isSubmitting, isValid } = form.formState;
 
-  const handleToggleEdit = () => setIsEditing((prev) => !prev);
+  useEffect(() => {
+    if (newDescription.length) {
+      form.setValue('description', newDescription);
+    }
+  }, [form, newDescription]);
+
+  const handleToggleEdit = () => {
+    setIsEditing((prev) => !prev);
+    setNewDescription(initialData?.description || '');
+  };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -63,79 +73,25 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
     }
   };
 
-  const handleImproveAi = async () => {
-    try {
-      setIsImproving(true);
-
-      const completionStream = await fetcher.post('/api/openai/completions', {
-        body: {
-          messages: [
-            {
-              role: ChatCompletionRole.USER,
-              content: `There is a short description of the course "${form.getValues().description}". Based on provided course description write a new one. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
-            },
-          ],
-          cache: 'no-cache',
-          system: {
-            role: ChatCompletionRole.SYSTEM,
-            content: 'You are the creator of various courses on a special learning platform.',
-          },
-          model: DEFAULT_SUMMARIZE_MODEL,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const reader = completionStream.body?.getReader();
-      const decoder = new TextDecoder('utf-8');
-
-      form.setValue('description', '');
-
-      while (true) {
-        const rawChunk = await reader?.read();
-
-        if (!rawChunk) {
-          throw new Error('Unable to process chunk');
-        }
-
-        const { done, value } = rawChunk;
-
-        if (done) {
-          break;
-        }
-
-        const chunk = decoder.decode(value);
-
-        form.setValue('description', form.getValues().description + chunk);
-      }
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
-        toast.error(String(error?.message));
-      }
-    } finally {
-      setIsImproving(false);
-    }
-  };
-
   return (
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Description
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <Button
-              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10 px-2"
-              disabled={isSubmitting || isImproving || !isValid}
-              variant="outline"
-              size="sm"
-              onClick={handleImproveAi}
-            >
-              <BsStars className="mr-1" />
-              Improve
-            </Button>
+            <GenerateDescriptionAi
+              callback={setNewDescription}
+              isSubmitting={isSubmitting}
+              isValid={isValid}
+              messages={[
+                {
+                  role: ChatCompletionRole.USER,
+                  content: `Course short description: "${form.getValues().description}".\nUsing the course description provided above, generate a new one. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
+                },
+              ]}
+            />
           )}
-          <Button onClick={handleToggleEdit} variant="outline" size="sm">
+          <Button onClick={handleToggleEdit} variant="outline" size="sm" disabled={isSubmitting}>
             {isEditing ? (
               <>Cancel</>
             ) : (
