@@ -90,6 +90,7 @@ export const Chat = ({ initialData }: ChatProps) => {
           ),
           model: currentModel,
         },
+        cache: 'no-cache',
         headers: {
           'Content-Type': 'application/json',
         },

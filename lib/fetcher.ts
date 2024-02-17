@@ -2,6 +2,7 @@ type FetchMethod = (
   url: string,
   options?: {
     body?: Record<string, unknown>;
+    cache?: RequestCache;
     headers?: HeadersInit;
     responseType?: 'json' | 'stream';
     signal?: AbortSignal;
@@ -23,6 +24,7 @@ class Fetcher {
     const fetchOptions = {
       method: 'POST',
       body: JSON.stringify(options?.body),
+      cache: options?.cache,
       headers: options?.headers,
       signal: options?.signal,
     };

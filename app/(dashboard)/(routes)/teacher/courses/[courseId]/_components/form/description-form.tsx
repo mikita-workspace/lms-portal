@@ -75,6 +75,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
               content: `There is a short description of the course "${form.getValues().description}". Improve it. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
             },
           ],
+          cache: 'no-cache',
           system: {
             role: ChatCompletionRole.SYSTEM,
             content: 'You are the creator of various courses on a special learning platform.',

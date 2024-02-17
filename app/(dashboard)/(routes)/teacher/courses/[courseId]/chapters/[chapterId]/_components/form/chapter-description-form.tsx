@@ -88,6 +88,7 @@ export const ChapterDescriptionForm = ({
           },
           model: DEFAULT_SUMMARIZE_MODEL,
         },
+        cache: 'no-cache',
         headers: {
           'Content-Type': 'application/json',
         },
