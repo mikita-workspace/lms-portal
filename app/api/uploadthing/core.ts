@@ -32,6 +32,10 @@ export const ourFileRouter = {
       maxFileSize: '4MB',
       maxFileCount: 4,
     },
+    'application/zip': {
+      maxFileSize: '128MB',
+      maxFileCount: 4,
+    },
   })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
