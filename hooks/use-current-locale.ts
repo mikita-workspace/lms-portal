@@ -15,8 +15,6 @@ export const useCurrentLocale = () => {
         setIsFetching(true);
         const response = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
 
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-
         switch (response.country_code) {
           case CountryCode.BY:
             setIpInfo({ currency: Currency.BYN, locale: Locale.BE_BY });
