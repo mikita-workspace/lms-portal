@@ -36,11 +36,12 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const course = await db.course.findUnique({
     where: { id: params.courseId },
     include: {
-      category: true,
       chapters: {
-        where: { isPublished: true },
+        where: { isPublished: true, position: 0 },
         orderBy: { position: 'asc' },
       },
+      category: true,
+      price: true,
     },
   });
 
@@ -71,7 +72,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}
             description={course.description!}
-            price={course.price}
+            prices={course.price}
             title={course.title}
           />
         </div>

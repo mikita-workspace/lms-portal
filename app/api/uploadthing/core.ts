@@ -1,3 +1,4 @@
+import { ReasonPhrases } from 'http-status-codes';
 import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
@@ -9,7 +10,7 @@ const handleAuth = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
-    throw new UploadThingError('Unauthorized');
+    throw new UploadThingError(ReasonPhrases.UNAUTHORIZED);
   }
 
   return { userId: user.userId };

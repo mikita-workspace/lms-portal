@@ -1,4 +1,4 @@
-import { StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -13,7 +13,7 @@ export const DELETE = async (
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -21,7 +21,7 @@ export const DELETE = async (
     });
 
     if (!courseOwner) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const chapter = await db.chapter.findUnique({
@@ -29,7 +29,7 @@ export const DELETE = async (
     });
 
     if (!chapter) {
-      return new NextResponse('Not Found', { status: StatusCodes.NOT_FOUND });
+      return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
     if (chapter.videoUrl) {
@@ -62,7 +62,9 @@ export const DELETE = async (
   } catch (error) {
     console.error('[COURSES_CHAPTER_ID_DELETE]', error);
 
-    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
@@ -74,7 +76,7 @@ export const PATCH = async (
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -82,7 +84,7 @@ export const PATCH = async (
     });
 
     if (!courseOwner) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const values = await req.json();
@@ -119,6 +121,8 @@ export const PATCH = async (
   } catch (error) {
     console.error('[COURSES_CHAPTER_ID]', error);
 
-    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 };

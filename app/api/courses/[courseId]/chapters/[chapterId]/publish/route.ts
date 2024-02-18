@@ -1,4 +1,4 @@
-import { StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -12,7 +12,7 @@ export const PATCH = async (
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -20,7 +20,7 @@ export const PATCH = async (
     });
 
     if (!courseOwner) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const chapter = await db.chapter.findUnique({
@@ -44,6 +44,8 @@ export const PATCH = async (
   } catch (error) {
     console.error('[COURSES_CHAPTER_ID_PUBLISH]', error);
 
-    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { BookMarked, Globe, LogOut } from 'lucide-react';
+import { BookMarked, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense } from 'react';
@@ -9,7 +9,6 @@ import { UserProfileButton } from '@/components/auth/user-profile-button';
 import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus, UserRole } from '@/constants/auth';
-import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 type NavBarRoutesProps = {
@@ -23,8 +22,6 @@ type NavBarRoutesProps = {
 export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
-
-  const { isFetching, ipInfo } = useCurrentLocale();
 
   const isChatPage = pathname?.startsWith('/chat');
   const isCoursePage = pathname?.startsWith('/courses');
@@ -66,15 +63,6 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
                 <>
                   {hasTeacherMode && (
                     <div className="flex items-center">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={isFetching}
-                        onClick={() => console.log(ipInfo)}
-                      >
-                        <Globe className="h-4 w-4 mr-2" />
-                        IP Check
-                      </Button>
                       <Link href="/teacher/courses">
                         <Button size="sm" variant="ghost">
                           <BookMarked className="h-4 w-4 mr-2" />

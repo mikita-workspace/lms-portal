@@ -1,24 +1,48 @@
 'use client';
 
-import { ArrowRight, ShoppingCart } from 'lucide-react';
-import { useState } from 'react';
+import { Price } from '@prisma/client';
+import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
-import { Currency, Locale } from '@/constants/locale';
+import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice } from '@/lib/format';
 
-type CourseEnrollButtonProps = { courseId: string; price: number };
+type CourseEnrollButtonProps = { courseId: string; prices: Price };
 
-export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps) => {
+export const CourseEnrollButton = ({ courseId, prices }: CourseEnrollButtonProps) => {
+  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = useCurrentLocale();
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const price = useMemo(() => {
+    if (ipInfo) {
+      const currency = ipInfo.currency.toLowerCase() as keyof Price;
+      const coursePrice = prices ? (prices[currency] as number) : 0;
+
+      if (!coursePrice) {
+        return 0;
+      }
+
+      return formatPrice(coursePrice, {
+        currency: ipInfo.currency,
+        locale: ipInfo.locale,
+      });
+    }
+
+    return null;
+  }, [ipInfo, prices]);
 
   const handleClick = async () => {
     setIsLoading(true);
 
     await toast.promise(
-      fetcher.post(`/api/courses/${courseId}/checkout`, { responseType: 'json' }),
+      fetcher.post(`/api/courses/${courseId}/checkout`, {
+        body: { ...ipInfo },
+        responseType: 'json',
+      }),
       {
         loading: 'Payment processing...',
         success: (data) => {
@@ -40,19 +64,31 @@ export const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps)
   return (
     <Button
       className="w-full md:w-auto"
-      disabled={isLoading}
+      disabled={isLoading || isIpFetching || Boolean(ipInfoError)}
       onClick={handleClick}
       size="lg"
       variant="success"
     >
-      {Boolean(price) && <ShoppingCart className="w-4 h-4 mr-2" />}
-      Enroll for&nbsp;
-      {Boolean(price) ? (
-        formatPrice(price, { currency: Currency.USD, locale: Locale.EN_US })
+      {isIpFetching ? (
+        <MoreHorizontal className="w-6 h-6 animate-pulse" />
       ) : (
         <>
-          Free
-          <ArrowRight className="w-4 h-4 ml-2" />
+          {Boolean(price) && <ShoppingCart className="w-4 h-4 mr-2" />}
+          Enroll for&nbsp;
+          {Boolean(price) ? (
+            price
+          ) : (
+            <>
+              {ipInfoError ? (
+                (ipInfoError as Error).message || 'Price Error'
+              ) : (
+                <>
+                  Free
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
+            </>
+          )}
         </>
       )}
     </Button>
