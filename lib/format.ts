@@ -5,8 +5,8 @@ export const formatPrice = (
   { locale, currency }: { locale: Locale; currency: Currency },
 ) =>
   new Intl.NumberFormat(locale, {
+    currency,
     style: 'currency',
-    currency: currency,
   }).format(price);
 
 export const getCurrencySymbol = (locale: Locale, currency: Currency) =>
