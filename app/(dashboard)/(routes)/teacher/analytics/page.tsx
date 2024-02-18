@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAnalytics } from '@/actions/db/get-analytics';
 
-import { Chart } from './_components/chart';
+// import { Chart } from './_components/chart';
 import { DataRevenueCard } from './_components/data-revenue-card';
 import { DataSalesCard } from './_components/data-sales-card';
 import { LastPurchaseCard } from './_components/last-purchase-card';
