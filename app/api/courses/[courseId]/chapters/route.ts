@@ -1,4 +1,4 @@
-import { StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     const user = await getCurrentUser();
 
     if (!user) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -17,7 +17,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!courseOwner) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const { title } = await req.json();
@@ -37,6 +37,8 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
   } catch (error) {
     console.error('[CHAPTERS]', error);
 
-    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 };

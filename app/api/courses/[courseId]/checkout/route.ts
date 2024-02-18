@@ -1,26 +1,29 @@
-import { StatusCodes } from 'http-status-codes';
+import { Price } from '@prisma/client';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { Currency } from '@/constants/locale';
 import { db } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 
-export const POST = async (_: NextRequest, { params }: { params: { courseId: string } }) => {
+export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
     const user = await getCurrentUser();
 
     if (!user || !user.email || !user.userId) {
-      return new NextResponse('Unauthorized', { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const course = await db.course.findUnique({
       where: { id: params.courseId, isPublished: true },
+      include: { price: true },
     });
 
-    if (!course) {
-      return new NextResponse('Not found', { status: StatusCodes.NOT_FOUND });
+    const { currency } = await req.json();
+
+    if (!course || !currency) {
+      return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
     const purchase = await db.purchase.findUnique({
@@ -31,16 +34,20 @@ export const POST = async (_: NextRequest, { params }: { params: { courseId: str
       return new NextResponse('Already purchased', { status: StatusCodes.BAD_REQUEST });
     }
 
+    const unitAmount = Math.round(
+      Number(course.price![currency.toLowerCase() as keyof Price]) * 100,
+    );
+
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         quantity: 1,
         price_data: {
-          currency: Currency.USD,
+          currency,
           product_data: {
             name: course.title,
             description: course.description!,
           },
-          unit_amount: Math.round(course.price! * 100),
+          unit_amount: unitAmount,
         },
       },
     ];
@@ -74,6 +81,8 @@ export const POST = async (_: NextRequest, { params }: { params: { courseId: str
   } catch (error) {
     console.error('[COURSE_ID_CHECKOUT]', error);
 
-    return new NextResponse('Internal Error', { status: StatusCodes.INTERNAL_SERVER_ERROR });
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
   }
 };

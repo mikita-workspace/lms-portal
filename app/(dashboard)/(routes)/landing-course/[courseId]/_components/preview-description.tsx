@@ -1,17 +1,20 @@
 'use client';
 
+import { Price } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
+import { useMemo } from 'react';
 
 import { IconBadge } from '@/components/common/icon-badge';
 import { TextBadge } from '@/components/common/text-badge';
-import { Currency, Locale } from '@/constants/locale';
+import { Skeleton } from '@/components/ui';
+import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { formatPrice } from '@/lib/format';
 
 type PreviewDescriptionProps = {
   categories: string[];
   chaptersLength: number;
   description: string;
-  price?: number | null;
+  prices: Price | null;
   title: string;
 };
 
@@ -19,9 +22,29 @@ export const PreviewDescription = ({
   categories,
   chaptersLength,
   description,
-  price,
+  prices,
   title,
 }: PreviewDescriptionProps) => {
+  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = useCurrentLocale();
+
+  const price = useMemo(() => {
+    if (ipInfo) {
+      const currency = ipInfo.currency.toLowerCase() as keyof Price;
+      const coursePrice = prices ? (prices[currency] as number) : 0;
+
+      if (!coursePrice) {
+        return 0;
+      }
+
+      return formatPrice(coursePrice, {
+        currency: ipInfo.currency,
+        locale: ipInfo.locale,
+      });
+    }
+
+    return null;
+  }, [ipInfo, prices]);
+
   return (
     <div className="border rounded-lg p-6">
       <div className="flex items-center gap-x-2 mb-1">
@@ -38,11 +61,13 @@ export const PreviewDescription = ({
         ))}
       </div>
       <div className="mt-4">
-        {!price ? (
+        {!price && !isIpFetching && !ipInfoError ? (
           <TextBadge variant="lime" label="Free" />
         ) : (
           <p className="text-md md:text-small font-bold text-neutral-700 dark:text-neutral-300">
-            {formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD })}
+            {ipInfoError && ((ipInfoError as Error).message || 'Price Error')}
+            {!ipInfoError && isIpFetching && <Skeleton className="h-[20px] w-2/6" />}
+            {!ipInfoError && !isIpFetching && price}
           </p>
         )}
       </div>

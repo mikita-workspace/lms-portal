@@ -16,7 +16,9 @@ const groupByCourse = (purchases: PurchaseWithCourse[]) => {
       grouped[courseTitle] = 0;
     }
 
-    grouped[courseTitle] += purchase.course.price!;
+    // TODO
+    // grouped[courseTitle] += purchase.course.price!;
+    grouped[courseTitle] += 0;
   });
 
   return grouped;
