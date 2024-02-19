@@ -9,16 +9,30 @@ import { locales } from '@/constants/locale';
 import { getCurrencySymbol } from '@/lib/format';
 
 type DataCardProps = {
+  label: string;
   lastPurchases?: { courseTitle: string; timestamp: Date; user?: User }[];
+  topSales?: {
+    currency: string | null;
+    key: string;
+    position: (number | null)[];
+    sales: number;
+    totalPrice: number;
+  }[];
   totalRevenue?: Record<string, number>;
   totalSales?: number;
 };
 
-export const DataCard = ({ lastPurchases, totalRevenue, totalSales }: DataCardProps) => {
+export const DataCard = ({
+  label,
+  lastPurchases,
+  topSales,
+  totalRevenue,
+  totalSales,
+}: DataCardProps) => {
   return (
     <Card className="shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+        <CardTitle className="text-sm font-medium">{label}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
@@ -50,7 +64,21 @@ export const DataCard = ({ lastPurchases, totalRevenue, totalSales }: DataCardPr
               />
             ))}
           {totalSales && (
-            <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
+            <div className="flex flex-col gap-2">
+              <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
+              <div className="flex flex-col text-sm gap-1">
+                <p className="font-medium mb-2">Top Locations</p>
+                {topSales?.map((sale) => {
+                  const [country, city] = sale.key.split('-');
+
+                  return (
+                    <span key={sale.key}>
+                      {country}, {city}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       </CardContent>

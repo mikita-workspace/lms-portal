@@ -5,14 +5,18 @@ import { stripe } from '@/server/stripe';
 
 export const getUserBilling = async (userId?: string) => {
   try {
-    const purchases = await db.purchase.findMany({
-      where: { userId },
-      include: { course: { select: { id: true } }, details: { select: { invoiceId: true } } },
-    });
-
     const stripeCustomer = await db.stripeCustomer.findUnique({
       where: { userId },
       select: { stripeCustomerId: true },
+    });
+
+    if (!stripeCustomer) {
+      return [];
+    }
+
+    const purchases = await db.purchase.findMany({
+      where: { userId },
+      include: { course: { select: { id: true } }, details: { select: { invoiceId: true } } },
     });
 
     const { data: invoices } = await stripe.invoices.list({

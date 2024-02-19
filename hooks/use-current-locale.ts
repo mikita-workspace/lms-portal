@@ -34,7 +34,7 @@ export const useCurrentLocale = () => {
 
         switch (response.currency) {
           case Currency.BYN:
-            setIpInfo({ locale: { currency: Currency.BYN, locale: Locale.BE_BY }, details });
+            setIpInfo({ locale: { currency: Currency.BYN, locale: Locale.EN_US }, details });
             break;
           case Currency.EUR:
             setIpInfo({ locale: { currency: Currency.EUR, locale: Locale.DE_DE }, details });

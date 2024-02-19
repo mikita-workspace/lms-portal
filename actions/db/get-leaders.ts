@@ -1,8 +1,9 @@
 'use server';
 
+import groupBy from 'lodash.groupby';
+
 import { CHAPTER_XP } from '@/constants/common';
 import { db } from '@/lib/db';
-import { groupBy } from '@/lib/utils';
 
 type Leaders = {
   name: string;
@@ -18,7 +19,7 @@ export const getLeaders = async () => {
     select: { id: true },
   });
 
-  const groupedByUser = groupBy(userProgress, (item) => item.userId);
+  const groupedByUser = groupBy(userProgress, 'userId');
   const userIds = Object.keys(groupedByUser);
   const publishedChapterIds = publishedChapters.map(({ id }) => id);
 
