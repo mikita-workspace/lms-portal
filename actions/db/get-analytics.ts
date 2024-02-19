@@ -1,13 +1,13 @@
 'use server';
 
-import { Course, Price, Purchase, User } from '@prisma/client';
+import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
 
 import { db } from '@/lib/db';
 
-type PurchaseWithCourse = Purchase & { course: Course & { price: Price | null } };
+type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
 
 const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
-  const grouped: { [courseTitle: string]: { user?: User; price: Price }[] } = {};
+  const grouped: { [courseTitle: string]: { user?: User; details: PurchaseDetails }[] } = {};
 
   purchases.forEach((purchase) => {
     const courseTitle = purchase.course.title;
@@ -16,10 +16,11 @@ const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
       grouped[courseTitle] = [];
     }
 
-    const price = purchase.course.price;
-
-    if (price) {
-      grouped[courseTitle].push({ user: users.find((user) => user.id === purchase.userId), price });
+    if (purchase.details) {
+      grouped[courseTitle].push({
+        user: users.find((user) => user.id === purchase.userId),
+        details: purchase.details,
+      });
     }
   });
 
@@ -35,6 +36,7 @@ export const getAnalytics = async (userId: string) => {
         course: {
           include: { price: true },
         },
+        details: true,
       },
     });
 
@@ -42,20 +44,27 @@ export const getAnalytics = async (userId: string) => {
 
     const groupedEarnings = groupByCourse(purchases, users);
 
-    const data = Object.entries(groupedEarnings).map(([courseTitle, userPurchases]) => ({
-      title: courseTitle,
-      purchases: userPurchases,
-    }));
+    const totalRevenue = Object.values(groupedEarnings)
+      .flat()
+      .map((item) => item.details)
+      .reduce<Record<string, number>>((total, { currency, price }) => {
+        if (currency && price) {
+          total[currency] = (total[currency] ?? 0) + price;
+        }
+
+        return total;
+      }, {});
 
     const lastPurchases = purchases.slice(0, 5).map((ps) => ({
-      ...ps,
+      courseTitle: ps.course.title,
+      timestamp: ps.updatedAt,
       user: users.find((user) => user.id === ps.userId),
     }));
 
     const totalSales = purchases.length;
 
     return {
-      data,
+      totalRevenue,
       lastPurchases,
       totalSales,
     };
@@ -63,8 +72,8 @@ export const getAnalytics = async (userId: string) => {
     console.error('[GET_CHAPTER_ACTION]', error);
 
     return {
-      data: [],
       lastPurchases: [],
+      totalRevenue: {},
       totalSales: 0,
     };
   }
