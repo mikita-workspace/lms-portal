@@ -4,10 +4,14 @@ import { Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
+import { FaChalkboardTeacher } from 'react-icons/fa';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+import { MdOutlineWorkspacePremium } from 'react-icons/md';
+import { PiStudentBold } from 'react-icons/pi';
 
 import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { isOwner } from '@/lib/owner';
 import { capitalize, getFallbackName } from '@/lib/utils';
 
 import { ProgressBar } from '../common/progress-bar';
@@ -63,6 +67,9 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
   };
 
   const isRestricted = ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
+  const isAdmin = user?.role === UserRole.ADMIN;
+  const isStudent = user?.role === UserRole.STUDENT;
+  const isTeacher = user?.role === UserRole.TEACHER;
 
   return user ? (
     <DropdownMenu>
@@ -75,7 +82,14 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
       <DropdownMenuContent className="w-72 mr-4 mt-1">
         <DropdownMenuLabel className="font-normal p-2">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-semibold">{user.name}</p>
+            <div className="flex gap-1 items-center">
+              <p className="text-sm font-semibold">{user.name}</p>
+              {(isOwner(user.userId) || isAdmin) && (
+                <MdOutlineWorkspacePremium className="w-4 h-4 text-yellow-500/90 dark:text-yellow-400" />
+              )}
+              {isTeacher && <FaChalkboardTeacher className="w-4 h-4 text-purple-700" />}
+              {isStudent && <PiStudentBold className="w-4 h-4 text-indigo-700" />}
+            </div>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
