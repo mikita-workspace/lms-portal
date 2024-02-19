@@ -115,7 +115,6 @@ model PurchaseDetails {
   currency    String?
   invoiceId   String?
   latitude    Float?
-  locale      String?
   longitude   Float?
   price       Float?
   purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)

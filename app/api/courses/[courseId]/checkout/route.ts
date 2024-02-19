@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       include: { price: true },
     });
 
-    const { locale, details: ipDeatils } = await req.json();
+    const { locale, details: ipDetails } = await req.json();
 
     if (!course || !locale?.currency) {
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
@@ -72,12 +72,14 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       allow_promotion_codes: true,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       customer: stripeCustomer.stripeCustomerId,
-      invoice_creation: { enabled: true },
+      invoice_creation: {
+        enabled: true,
+      },
       line_items: lineItems,
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true`,
       metadata: {
-        ...ipDeatils,
+        ...ipDetails,
         courseId: course.id,
         userId: user.userId,
       },

@@ -58,10 +58,11 @@ export const POST = async (req: NextRequest) => {
         city: session?.metadata?.city,
         country: session?.metadata?.country,
         countryCode: session?.metadata?.countryCode,
-        currency: session.currency,
+        currency: session.currency?.toUpperCase(),
         invoiceId,
         latitude: Number(session?.metadata?.latitude),
         longitude: Number(session?.metadata?.longitude),
+        price: (session.amount_total ?? 0) / 100,
         purchaseId: purchase.id,
       },
     });
