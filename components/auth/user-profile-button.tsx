@@ -66,6 +66,8 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
     }
   };
 
+  const handleSettings = () => router.push('/settings');
+
   const isRestricted = ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
   const isAdmin = user?.role === UserRole.ADMIN;
   const isStudent = user?.role === UserRole.STUDENT;
@@ -128,7 +130,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           Chat&nbsp;&nbsp;
           <TextBadge label="AI" variant="yellow" />
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:cursor-pointer" disabled>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
           <Settings2 className="mr-2 h-4 w-4" />
           Settings
         </DropdownMenuItem>

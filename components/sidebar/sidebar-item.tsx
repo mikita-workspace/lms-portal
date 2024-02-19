@@ -2,6 +2,7 @@
 
 import { LucideIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
 import { cn } from '@/lib/utils';
@@ -18,11 +19,18 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
 
   const handleClick = () => router.push(href);
 
-  const isActive =
-    (pathname === '/' && href === '/') ||
-    pathname === href ||
-    pathname?.startsWith(`${href}/`) ||
-    (pathname?.includes('/landing-course') && href == '/');
+  const isActive = useMemo(() => {
+    if (pathname.startsWith('/settings')) {
+      return pathname === href;
+    }
+
+    return (
+      (pathname === '/' && href === '/') ||
+      pathname === href ||
+      pathname?.startsWith(`${href}/`) ||
+      (pathname?.includes('/landing-course') && href == '/')
+    );
+  }, [href, pathname]);
 
   return (
     <button
@@ -39,7 +47,7 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
             size={20}
             className={cn(
               'h-5 w-5 font-medium',
-              isActive && ' text-primary font-medium animate-spin-once',
+              isActive && 'text-primary font-medium animate-spin-once',
             )}
           />
           {label}

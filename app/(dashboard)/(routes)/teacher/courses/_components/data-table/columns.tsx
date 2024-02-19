@@ -34,6 +34,7 @@ export const columns: ColumnDef<Course>[] = [
     accessorKey: 'price',
     header: ({ column }) => handleSortingHeader(column, 'Price'),
     cell: ({ row }) => {
+      // TODO: Fix it
       const price = parseFloat(row.getValue('price') || '0');
       const formatted = formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD });
 
