@@ -7,6 +7,7 @@ import {
   AvatarImage,
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -30,6 +31,7 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
 
   return (
     <Table className="w-full md:w-4/5 mx-auto">
+      {!leaders.length && <TableCaption>There are no leaders here yet</TableCaption>}
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Rank</TableHead>
