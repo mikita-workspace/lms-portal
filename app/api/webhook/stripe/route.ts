@@ -2,9 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import stripe from 'stripe';
 
 import { db } from '@/lib/db';
-import { stripe } from '@/lib/stripe';
 
 export const POST = async (req: NextRequest) => {
   const body = await req.text();
@@ -35,7 +35,37 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    await db.purchase.create({ data: { courseId, userId } });
+    const purchase = await db.purchase.create({
+      data: {
+        courseId,
+        userId,
+      },
+    });
+
+    const invoiceId = (() => {
+      if (typeof session.invoice === 'string') {
+        return session.invoice;
+      }
+
+      if (typeof session.invoice === 'object') {
+        return session.invoice?.id;
+      }
+      return null;
+    })();
+
+    await db.purchaseDetails.create({
+      data: {
+        city: session?.metadata?.city,
+        country: session?.metadata?.country,
+        countryCode: session?.metadata?.countryCode,
+        currency: session.currency?.toUpperCase(),
+        invoiceId,
+        latitude: Number(session?.metadata?.latitude),
+        longitude: Number(session?.metadata?.longitude),
+        price: (session.amount_total ?? 0) / 100,
+        purchaseId: purchase.id,
+      },
+    });
   } else {
     return new NextResponse(`Webhook Error: Unhandled event type ${event.type}`);
   }

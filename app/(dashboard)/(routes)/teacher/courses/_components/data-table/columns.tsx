@@ -1,6 +1,6 @@
 'use client';
 
-import { Course } from '@prisma/client';
+import { Course, Price } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -13,10 +13,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { DropdownMenu } from '@/components/ui';
-import { Currency, Locale } from '@/constants/locale';
+import { locales } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
-const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label: string) => {
+const handleSortingHeader = <T extends Column<Course & { price: Price | null }, unknown>>(
+  column: T,
+  label: string,
+) => {
   return (
     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
       {label}
@@ -25,19 +28,28 @@ const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label
   );
 };
 
-export const columns: ColumnDef<Course>[] = [
+export const columns: ColumnDef<Course & { price: Price | null }>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => handleSortingHeader(column, 'Title'),
   },
   {
-    accessorKey: 'price',
-    header: ({ column }) => handleSortingHeader(column, 'Price'),
+    id: 'prices',
+    header: () => <span>Prices</span>,
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue('price') || '0');
-      const formatted = formatPrice(price, { locale: Locale.EN_US, currency: Currency.USD });
+      const { price: prices } = row.original;
 
-      return price ? formatted : <TextBadge variant="lime" label="Free" />;
+      return (
+        <span>
+          {locales
+            .map((locale) => {
+              const currency = locale.currency.toLowerCase() as keyof Price;
+
+              return formatPrice(prices ? (prices[currency] as number) : 0, locale);
+            })
+            .join(' / ')}
+        </span>
+      );
     },
   },
   {

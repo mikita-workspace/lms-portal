@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
-import { stripe } from '@/lib/stripe';
+import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
@@ -20,9 +20,9 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       include: { price: true },
     });
 
-    const { currency } = await req.json();
+    const { locale, details: ipDetails } = await req.json();
 
-    if (!course || !currency) {
+    if (!course || !locale?.currency) {
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
@@ -35,14 +35,14 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     }
 
     const unitAmount = Math.round(
-      Number(course.price![currency.toLowerCase() as keyof Price]) * 100,
+      Number(course.price![locale.currency.toLowerCase() as keyof Price]) * 100,
     );
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         quantity: 1,
         price_data: {
-          currency,
+          currency: locale.currency,
           product_data: {
             name: course.title,
             description: course.description!,
@@ -58,7 +58,10 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!stripeCustomer) {
-      const customer = await stripe.customers.create({ email: user.email });
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user?.name || undefined,
+      });
 
       stripeCustomer = await db.stripeCustomer.create({
         data: { userId: user.userId, stripeCustomerId: customer.id },
@@ -66,12 +69,17 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     }
 
     const session = await stripe.checkout.sessions.create({
+      allow_promotion_codes: true,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       customer: stripeCustomer.stripeCustomerId,
+      invoice_creation: {
+        enabled: true,
+      },
       line_items: lineItems,
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       metadata: {
+        ...ipDetails,
         courseId: course.id,
         userId: user.userId,
       },

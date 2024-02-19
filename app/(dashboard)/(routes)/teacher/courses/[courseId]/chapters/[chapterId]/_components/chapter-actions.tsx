@@ -42,7 +42,7 @@ export const ChapterActions = ({
 
           router.refresh();
 
-          return isPublished ? 'Chapter unpublished' : 'The chapter has been published';
+          return isPublished ? 'Chapter unpublished' : 'Chapter has been published';
         },
         error: () => {
           setIsLoading(false);

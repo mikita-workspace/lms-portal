@@ -1,13 +1,13 @@
 'use server';
 
+import groupBy from 'lodash.groupby';
+
 import { CHAPTER_XP } from '@/constants/common';
 import { db } from '@/lib/db';
-import { groupBy } from '@/lib/utils';
 
 type Leaders = {
   name: string;
   picture: string | null;
-  role: string;
   userId: string;
   xp: number;
 };
@@ -19,7 +19,7 @@ export const getLeaders = async () => {
     select: { id: true },
   });
 
-  const groupedByUser = groupBy(userProgress, (item) => item.userId);
+  const groupedByUser = groupBy(userProgress, 'userId');
   const userIds = Object.keys(groupedByUser);
   const publishedChapterIds = publishedChapters.map(({ id }) => id);
 
@@ -37,7 +37,6 @@ export const getLeaders = async () => {
           acc.push({
             name: userInfo.name || '',
             picture: userInfo.pictureUrl,
-            role: userInfo.role,
             userId,
             xp,
           });

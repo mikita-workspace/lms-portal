@@ -5,11 +5,11 @@ import { Footer } from '@/components/footer/footer';
 import { NavBar } from '../../components/navbar/navbar';
 import { SideBar } from '../../components/sidebar/sidebar';
 
-type DashboardLayoutProps = Readonly<{
+type SettingsLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
+const SettingsLayout = async ({ children }: SettingsLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
 
@@ -29,4 +29,4 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   );
 };
 
-export default DashboardLayout;
+export default SettingsLayout;

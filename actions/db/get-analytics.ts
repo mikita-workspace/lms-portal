@@ -1,13 +1,14 @@
 'use server';
 
-import { Course, Price, Purchase, User } from '@prisma/client';
+import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
+import groupBy from 'lodash.groupby';
 
 import { db } from '@/lib/db';
 
-type PurchaseWithCourse = Purchase & { course: Course & { price: Price | null } };
+type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
 
 const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
-  const grouped: { [courseTitle: string]: { user?: User; price: Price }[] } = {};
+  const grouped: { [courseTitle: string]: { user?: User; details: PurchaseDetails }[] } = {};
 
   purchases.forEach((purchase) => {
     const courseTitle = purchase.course.title;
@@ -16,10 +17,11 @@ const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
       grouped[courseTitle] = [];
     }
 
-    const price = purchase.course.price;
-
-    if (price) {
-      grouped[courseTitle].push({ user: users.find((user) => user.id === purchase.userId), price });
+    if (purchase.details) {
+      grouped[courseTitle].push({
+        user: users.find((user) => user.id === purchase.userId),
+        details: purchase.details,
+      });
     }
   });
 
@@ -35,36 +37,60 @@ export const getAnalytics = async (userId: string) => {
         course: {
           include: { price: true },
         },
+        details: true,
       },
     });
 
     const users = await db.user.findMany();
 
     const groupedEarnings = groupByCourse(purchases, users);
+    const sales = Object.values(groupedEarnings)
+      .flat()
+      .map((item) => item.details);
+    const groupedByCity = groupBy(sales, (item) => `${item.country}-${item.city}`);
 
-    const data = Object.entries(groupedEarnings).map(([courseTitle, userPurchases]) => ({
-      title: courseTitle,
-      purchases: userPurchases,
-    }));
+    const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
+      if (currency && price) {
+        total[currency] = (total[currency] ?? 0) + price;
+      }
+
+      return total;
+    }, {});
 
     const lastPurchases = purchases.slice(0, 5).map((ps) => ({
-      ...ps,
+      courseTitle: ps.course.title,
+      timestamp: ps.updatedAt,
       user: users.find((user) => user.id === ps.userId),
     }));
 
-    const totalSales = purchases.length;
+    const totalSales = sales.length;
+
+    const topSales = Object.keys(groupedByCity)
+      .map((key) => {
+        const item = groupedByCity[key];
+        return {
+          currency: item[0].currency,
+          key,
+          position: [item[0].latitude, item[0].longitude],
+          sales: item.length,
+          totalPrice: item.reduce((acc, current) => acc + (current.price ?? 0), 0),
+        };
+      })
+      .sort((a, b) => b.sales - a.sales);
 
     return {
-      data,
       lastPurchases,
+      topSales,
+      totalRevenue,
       totalSales,
     };
   } catch (error) {
-    console.error('[GET_CHAPTER_ACTION]', error);
+    console.error('[GET_ANALYTICS_ACTION]', error);
 
     return {
-      data: [],
       lastPurchases: [],
+      topSales: [],
+      totalRevenue: {},
       totalSales: 0,
     };
   }

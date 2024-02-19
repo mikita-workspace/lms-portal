@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { BsStars } from 'react-icons/bs';
 
 import { Button } from '@/components/ui';
-import { ChatCompletionRole, DEFAULT_SUMMARIZE_MODEL } from '@/constants/open-ai';
+import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 
 type GenerateDescriptionAiProps = {
@@ -40,7 +40,7 @@ export const GenerateDescriptionAi = ({
             role: ChatCompletionRole.SYSTEM,
             content: 'You are the creator of various courses on a special learning platform.',
           },
-          model: DEFAULT_SUMMARIZE_MODEL,
+          model: DEFAULT_MODEL,
         },
         cache: 'no-cache',
         headers: {
