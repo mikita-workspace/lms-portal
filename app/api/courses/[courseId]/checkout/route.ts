@@ -20,9 +20,9 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       include: { price: true },
     });
 
-    const { currency } = await req.json();
+    const { locale, details: ipDeatils } = await req.json();
 
-    if (!course || !currency) {
+    if (!course || !locale?.currency) {
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
@@ -35,14 +35,14 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     }
 
     const unitAmount = Math.round(
-      Number(course.price![currency.toLowerCase() as keyof Price]) * 100,
+      Number(course.price![locale.currency.toLowerCase() as keyof Price]) * 100,
     );
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         quantity: 1,
         price_data: {
-          currency,
+          currency: locale.currency,
           product_data: {
             name: course.title,
             description: course.description!,
@@ -76,6 +76,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       metadata: {
+        ...ipDeatils,
         courseId: course.id,
         userId: user.userId,
       },

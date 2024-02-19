@@ -35,12 +35,22 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    await db.purchase.create({
+    const purchase = await db.purchase.create({
       data: {
         courseId,
-        currency: session.currency?.toUpperCase(),
-        price: (session?.amount_total ?? 0) / 100,
         userId,
+      },
+    });
+
+    await db.purchaseDetails.create({
+      data: {
+        city: session?.metadata?.city,
+        country: session?.metadata?.country,
+        countryCode: session?.metadata?.countryCode,
+        currency: session.currency,
+        latitude: Number(session?.metadata?.latitude),
+        longitude: Number(session?.metadata?.longitude),
+        purchaseId: purchase.id,
       },
     });
   } else {
