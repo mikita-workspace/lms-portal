@@ -7,7 +7,6 @@ import { groupBy } from '@/lib/utils';
 type Leaders = {
   name: string;
   picture: string | null;
-  role: string;
   userId: string;
   xp: number;
 };
@@ -37,7 +36,6 @@ export const getLeaders = async () => {
           acc.push({
             name: userInfo.name || '',
             picture: userInfo.pictureUrl,
-            role: userInfo.role,
             userId,
             xp,
           });

@@ -18,7 +18,6 @@ type LeadersTableProps = {
   leaders: {
     name: string;
     picture: string | null;
-    role: string;
     userId: string;
     xp: number;
   }[];
