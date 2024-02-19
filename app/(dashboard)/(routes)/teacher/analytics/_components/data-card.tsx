@@ -2,10 +2,11 @@
 
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
+import CountUp from 'react-countup';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { locales } from '@/constants/locale';
-import { formatPrice } from '@/lib/format';
+import { getCurrencySymbol } from '@/lib/format';
 
 type DataCardProps = {
   lastPurchases?: { courseTitle: string; timestamp: Date; user?: User }[];
@@ -39,11 +40,18 @@ export const DataCard = ({ lastPurchases, totalRevenue, totalSales }: DataCardPr
           )}
           {totalRevenue &&
             locales.map((locale) => (
-              <p key={locale.locale} className="text-2xl font-bold">
-                {formatPrice(totalRevenue[locale.currency] || 0, locale)}
-              </p>
+              <CountUp
+                key={locale.locale}
+                className="text-2xl font-bold"
+                decimals={2}
+                duration={2.75}
+                end={totalRevenue[locale.currency]}
+                prefix={`${getCurrencySymbol(locale.locale, locale.currency)} `}
+              />
             ))}
-          {totalSales && <span className="text-2xl font-bold">{totalSales}</span>}
+          {totalSales && (
+            <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
+          )}
         </div>
       </CardContent>
     </Card>
