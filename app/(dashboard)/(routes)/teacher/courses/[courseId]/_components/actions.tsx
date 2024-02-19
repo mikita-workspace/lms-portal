@@ -29,9 +29,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
     toast.promise(
       fetcher.patch(`/api/courses/${courseId}/${isPublished ? 'unpublish' : 'publish'}`),
       {
-        loading: isPublished
-          ? 'This course is removing from publications'
-          : 'Publication of the course...',
+        loading: isPublished ? 'Removing from publications' : 'Publishing the course...',
         success: () => {
           setIsLoading(false);
 
@@ -43,7 +41,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
 
           handleOpenConfetti();
 
-          return 'The course has been published';
+          return 'Course has been published';
         },
         error: () => {
           setIsLoading(false);

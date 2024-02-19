@@ -109,6 +109,8 @@ model Purchase {
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String
   createdAt DateTime @default(now())
+  currency  String?
+  price     Float?
   updatedAt DateTime @updatedAt
   userId    String
 

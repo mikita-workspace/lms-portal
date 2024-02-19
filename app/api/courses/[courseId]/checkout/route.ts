@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
-import { stripe } from '@/lib/stripe';
+import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
   try {
@@ -58,7 +58,10 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!stripeCustomer) {
-      const customer = await stripe.customers.create({ email: user.email });
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user?.name || undefined,
+      });
 
       stripeCustomer = await db.stripeCustomer.create({
         data: { userId: user.userId, stripeCustomerId: customer.id },
@@ -66,6 +69,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
     }
 
     const session = await stripe.checkout.sessions.create({
+      allow_promotion_codes: true,
       customer: stripeCustomer.stripeCustomerId,
       line_items: lineItems,
       mode: 'payment',
