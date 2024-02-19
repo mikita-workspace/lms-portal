@@ -111,13 +111,16 @@ model PurchaseDetails {
   city        String?
   country     String?
   countryCode String?
+  createdAt   DateTime @default(now())
   currency    String?
+  invoiceId   String?
   latitude    Float?
   locale      String?
   longitude   Float?
   price       Float?
   purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
   purchaseId  String
+  updatedAt   DateTime @updatedAt
 
   @@unique([purchaseId])
 }

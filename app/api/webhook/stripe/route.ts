@@ -42,12 +42,24 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
+    const invoiceId = (() => {
+      if (typeof session.invoice === 'string') {
+        return session.invoice;
+      }
+
+      if (typeof session.invoice === 'object') {
+        return session.invoice?.id;
+      }
+      return null;
+    })();
+
     await db.purchaseDetails.create({
       data: {
         city: session?.metadata?.city,
         country: session?.metadata?.country,
         countryCode: session?.metadata?.countryCode,
         currency: session.currency,
+        invoiceId,
         latitude: Number(session?.metadata?.latitude),
         longitude: Number(session?.metadata?.longitude),
         purchaseId: purchase.id,
