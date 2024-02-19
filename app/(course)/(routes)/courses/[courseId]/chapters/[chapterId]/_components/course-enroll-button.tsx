@@ -19,7 +19,7 @@ export const CourseEnrollButton = ({ courseId, prices }: CourseEnrollButtonProps
 
   const price = useMemo(() => {
     if (ipInfo) {
-      const currency = ipInfo.currency.toLowerCase() as keyof Price;
+      const currency = ipInfo.locale.currency.toLowerCase() as keyof Price;
       const coursePrice = prices ? (prices[currency] as number) : 0;
 
       if (!coursePrice) {
@@ -27,8 +27,8 @@ export const CourseEnrollButton = ({ courseId, prices }: CourseEnrollButtonProps
       }
 
       return formatPrice(coursePrice, {
-        currency: ipInfo.currency,
-        locale: ipInfo.locale,
+        currency: ipInfo.locale.currency,
+        locale: ipInfo.locale.locale,
       });
     }
 
