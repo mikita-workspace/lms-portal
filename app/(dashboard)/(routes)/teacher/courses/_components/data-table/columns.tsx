@@ -16,7 +16,7 @@ import { DropdownMenu } from '@/components/ui';
 import { locales } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
-const handleSortingHeader = <T extends Column<Course & { price: Price }, unknown>>(
+const handleSortingHeader = <T extends Column<Course & { price: Price | null }, unknown>>(
   column: T,
   label: string,
 ) => {
@@ -28,7 +28,7 @@ const handleSortingHeader = <T extends Column<Course & { price: Price }, unknown
   );
 };
 
-export const columns: ColumnDef<Course & { price: Price }>[] = [
+export const columns: ColumnDef<Course & { price: Price | null }>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => handleSortingHeader(column, 'Title'),
