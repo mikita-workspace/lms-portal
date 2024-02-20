@@ -3,9 +3,10 @@ export const TERMS_AND_CONDITIONS_URL =
 export const PRIVACY_POLICY_URL =
   'https://www.termsfeed.com/live/2ced86a5-ddcc-45cf-acd0-65e79223bd21';
 export const NOVA_CHAT_URL = 'https://t.me/novachat_gpt_bot';
+export const STRIPE_COUPONS_URL = 'https://dashboard.stripe.com/coupons';
 
 export const OWNER_EMAIL = 'mkandratsyeu@gmail.com';
+export const OWNER_COPYRIGHT = 'Mikita Kandratsyeu. All rights reserved.';
 
 export const TEXTAREA_MAX_LENGTH = 256;
-
 export const CHAPTER_XP = 20;

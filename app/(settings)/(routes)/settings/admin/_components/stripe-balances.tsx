@@ -2,31 +2,18 @@
 
 import { format, fromUnixTime } from 'date-fns';
 import CountUp from 'react-countup';
-import Stripe from 'stripe';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { getAdminInfo } from '@/actions/db/get-admin-info';
+import { Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
 import { Currency, Locale } from '@/constants/locale';
 import { formatPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
-type StripeBalance = { amount: number; currency: string };
+type AdminInfo = Awaited<ReturnType<typeof getAdminInfo>>;
 
 type StripeBalancesProps = {
-  balances: {
-    available: StripeBalance[];
-    pending: StripeBalance[];
-  };
-  transactions: {
-    amount: number;
-    created: number;
-    currency: string;
-    fee: number;
-    feeDetails: Stripe.BalanceTransaction.FeeDetail[];
-    id: string;
-    net: number;
-    status: string;
-    type: Stripe.BalanceTransaction.Type;
-  }[];
+  balances: AdminInfo['stripeBalances'];
+  transactions: AdminInfo['stripeTransactions'];
 };
 
 export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) => {
@@ -94,43 +81,48 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
               </span>
             </div>
             <p className="text-sm font-medium mb-2">Details:</p>
-            <div className="text-xs flex flex-col max-h-[240px] overflow-auto">
-              {transactions.map((tn) => {
-                return (
-                  <div key={tn.id} className="flex justify-between border-b last:border-none py-1">
-                    <div className="flex flex-col gap-1">
-                      <p className="font-bold">
-                        {formatPrice(tn.amount / 100, {
-                          locale: Locale.EN_US,
-                          currency: tn.currency as Currency,
-                        })}
-                      </p>
-                      <p>
-                        <span>
-                          {formatPrice(tn.net / 100, {
+            <ScrollArea className="w-full h-[240px]">
+              <div className="text-xs">
+                {transactions.map((tn) => {
+                  return (
+                    <div
+                      key={tn.id}
+                      className="flex justify-between border-b last:border-none py-1"
+                    >
+                      <div className="flex flex-col gap-1">
+                        <p className="font-bold">
+                          {formatPrice(tn.amount / 100, {
                             locale: Locale.EN_US,
                             currency: tn.currency as Currency,
                           })}
-                        </span>
-                        &nbsp;+&nbsp;
-                        <span>
-                          {formatPrice(tn.fee / 100, {
-                            locale: Locale.EN_US,
-                            currency: tn.currency as Currency,
-                          })}
-                          &nbsp;Fees
-                        </span>
-                      </p>
-                      <p>Type: {tn.type}</p>
-                      <p>Status: {tn.status}</p>
+                        </p>
+                        <p>
+                          <span>
+                            {formatPrice(tn.net / 100, {
+                              locale: Locale.EN_US,
+                              currency: tn.currency as Currency,
+                            })}
+                          </span>
+                          &nbsp;+&nbsp;
+                          <span>
+                            {formatPrice(tn.fee / 100, {
+                              locale: Locale.EN_US,
+                              currency: tn.currency as Currency,
+                            })}
+                            &nbsp;Fees
+                          </span>
+                        </p>
+                        <p>Type: {tn.type}</p>
+                        <p>Status: {tn.status}</p>
+                      </div>
+                      <span className="text-right">
+                        {format(fromUnixTime(tn.created), 'HH:mm, dd MMM yyyy')}
+                      </span>
                     </div>
-                    <span className="text-right">
-                      {format(fromUnixTime(tn.created), 'HH:mm, dd MMM yyyy')}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
           </CardContent>
         </Card>
       </div>

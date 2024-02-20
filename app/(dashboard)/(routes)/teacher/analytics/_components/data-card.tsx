@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import { format } from 'date-fns';
 import CountUp from 'react-countup';
 
+import { ScrollArea } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { locales } from '@/constants/locale';
 import { getCurrencySymbol } from '@/lib/format';
@@ -37,7 +38,7 @@ export const DataCard = ({
       <CardContent>
         <div className="flex flex-col gap-2">
           {lastPurchases && (
-            <div className="text-xs flex flex-col max-h-[240px] overflow-auto">
+            <ScrollArea className="text-xs flex flex-col max-h-[240px]">
               {lastPurchases.map((lp) => (
                 <div
                   key={lp.courseTitle}
@@ -50,7 +51,7 @@ export const DataCard = ({
                   <span className="text-right">{format(lp.timestamp, 'HH:mm, dd MMM yyyy')}</span>
                 </div>
               ))}
-            </div>
+            </ScrollArea>
           )}
           {totalRevenue &&
             locales.map((locale) => (
@@ -66,7 +67,7 @@ export const DataCard = ({
           {totalSales && (
             <div className="flex flex-col gap-2">
               <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
-              <div className="flex flex-col text-sm gap-1 max-h-[200px] overflow-auto">
+              <ScrollArea className="flex flex-col text-sm gap-1 max-h-[200px]">
                 <p className="font-medium mb-2">Top Locations</p>
                 <ul className="space-y-1">
                   {topSales?.map((sale, index) => {
@@ -79,7 +80,7 @@ export const DataCard = ({
                     );
                   })}
                 </ul>
-              </div>
+              </ScrollArea>
             </div>
           )}
         </div>

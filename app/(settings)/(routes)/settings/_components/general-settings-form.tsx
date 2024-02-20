@@ -96,7 +96,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
                 control={form.control}
                 name="pictureUrl"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2">
                     <FormLabel className="text-xs text-muted-foreground">Avatar URL</FormLabel>
                     <FormControl>
                       <div className="flex gap-4">

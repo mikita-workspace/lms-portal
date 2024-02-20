@@ -45,7 +45,12 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
 
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <p className="font-medium text-xl">Public Profile</p>
+      <div className="flex flex-col gap-1">
+        <p className="font-medium text-xl">Public Profile</p>
+        <span className="text-xs text-muted-foreground">
+          Here you can change the visibility of your profile
+        </span>
+      </div>
       <Form {...form}>
         <form className="mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import {
   NOVA_CHAT_URL,
+  OWNER_COPYRIGHT,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
   TERMS_AND_CONDITIONS_URL,
@@ -24,7 +25,7 @@ export const Footer = () => {
               &nbsp;
               <span>{new Date().getFullYear()}</span>
               &nbsp;
-              <span>Mikita&nbsp;Kandratsyeu. All rights reserved.</span>
+              <span>{OWNER_COPYRIGHT}</span>
             </div>
             <div className="md:space-x-2 font-semibold flex flex-col md:flex-row">
               <Link href={NOVA_CHAT_URL} target="_blank" className="flex items-baseline">

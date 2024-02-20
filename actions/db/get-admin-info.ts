@@ -6,8 +6,14 @@ export const getAdminInfo = async () => {
   try {
     const stripeBalance = await stripe.balance.retrieve();
     const stripeTransaction = await stripe.balanceTransactions.list();
+    const stripeCoupons = await stripe.coupons.list();
+    const stripePromotionCodes = await stripe.promotionCodes.list();
 
     return {
+      stripeCoupons: stripeCoupons.data.map((dt) => ({
+        ...dt,
+        promotionCodes: stripePromotionCodes.data.filter((promo) => promo.coupon.id === dt.id),
+      })),
       stripeBalances: {
         available: stripeBalance.available,
         pending: stripeBalance.pending,
@@ -28,6 +34,7 @@ export const getAdminInfo = async () => {
     console.error('[GET_ADMIN_INITIAL_ACTION]', error);
 
     return {
+      stripeCoupons: [],
       stripeBalances: {
         available: [],
         pending: [],

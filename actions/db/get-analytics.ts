@@ -105,8 +105,6 @@ export const getAnalytics = async (userId: string) => {
       };
     });
 
-    console.log(data);
-
     return {
       data,
       lastPurchases,
