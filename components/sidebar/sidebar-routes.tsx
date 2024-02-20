@@ -6,8 +6,8 @@ import {
   Crown,
   Layout,
   List,
+  LockKeyhole,
   Settings2,
-  ShieldEllipsis,
   Wallet2,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -59,7 +59,7 @@ const settingsRoutes = (userId?: string) => [
   ...(isOwner(userId)
     ? [
         {
-          icon: ShieldEllipsis,
+          icon: LockKeyhole,
           label: 'Admin',
           href: '/settings/admin',
         },
