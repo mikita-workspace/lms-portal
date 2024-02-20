@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { getAdminInfo } from '@/actions/db/get-admin-info';
 import { TextBadge } from '@/components/common/text-badge';
-// import { Button } from '@/components/ui';
 import { STRIPE_COUPONS_URL } from '@/constants/common';
 import { Currency, Locale } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
@@ -20,7 +19,8 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Stripe Coupons</p>
         <span className="text-xs text-muted-foreground">
-          Here you can view coupons and manage promo codes. You can create coupons on{' '}
+          Here you can view coupons and manage promo codes. You can create coupons and promo codes
+          on{' '}
           <Link
             className="hover:underline text-blue-500 font-semibold"
             href={STRIPE_COUPONS_URL}
@@ -54,9 +54,6 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
                   </div>
                   <span className="text-xs">{term}</span>
                 </div>
-                {/* <Button size="sm" variant="outline" disabled={!cp.valid}>
-                  Create a promo code
-                </Button> */}
               </div>
               <div className="flex flex-col gap-1">
                 {cp.promotionCodes.map((promo) => (
@@ -76,9 +73,6 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
                       {promo.active && <TextBadge label="Active" variant="green" />}
                       {!promo.active && <TextBadge label="Inactive" variant="red" />}
                     </div>
-                    {/* <Button size="sm" variant="destructive" disabled={!promo.active}>
-                      Archive
-                    </Button> */}
                   </div>
                 ))}
               </div>
