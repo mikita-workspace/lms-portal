@@ -23,7 +23,7 @@ export const getLeaders = async () => {
   const userIds = Object.keys(groupedByUser);
   const publishedChapterIds = publishedChapters.map(({ id }) => id);
 
-  const users = await db.user.findMany({ where: { id: { in: userIds } } });
+  const users = await db.user.findMany({ where: { id: { in: userIds }, isPublic: true } });
 
   return Object.entries(groupedByUser)
     .reduce<Leaders[]>((acc, [userId, items]) => {

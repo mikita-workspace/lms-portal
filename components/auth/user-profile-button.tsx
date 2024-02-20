@@ -77,7 +77,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
         <Avatar>
-          {user.image && <AvatarImage src={user.image} />}
+          <AvatarImage src={user.image || ''} />
           <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

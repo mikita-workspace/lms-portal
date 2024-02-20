@@ -13,6 +13,7 @@ model User {
   Course     Course[]
   createdAt  DateTime @default(now())
   email      String   @unique
+  isPublic   Boolean? @default(false)
   name       String?
   pictureUrl String?
   role       String   @default("student")

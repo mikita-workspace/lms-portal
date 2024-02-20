@@ -23,7 +23,7 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
       <div className="flex gap-x-4">
         <div>
           <Avatar>
-            {!isAssistant && picture && <AvatarImage src={picture} />}
+            {!isAssistant && <AvatarImage src={picture || ''} />}
             {isAssistant && (
               <AvatarImage
                 className="bg-white p-1.5 border rounded-full"

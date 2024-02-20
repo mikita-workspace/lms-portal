@@ -40,6 +40,9 @@ export const authOptions = {
         });
 
         user.id = dbUser.id;
+        user.image = dbUser.pictureUrl;
+        user.isPublic = Boolean(dbUser.isPublic);
+        user.name = dbUser.name;
         user.role = dbUser.role;
 
         return true;
@@ -49,6 +52,7 @@ export const authOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
+        token.isPublic = user.isPublic;
         token.role = user.role;
       }
 
@@ -57,6 +61,7 @@ export const authOptions = {
     async session({ session, token }) {
       if (session.user) {
         if (token.sub) {
+          session.user.isPublic = Boolean(token.isPublic);
           session.user.userId = token.sub;
         }
 
