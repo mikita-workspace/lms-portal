@@ -1,8 +1,20 @@
 'use client';
 
-import { BarChart4, Compass, Crown, Layout, List, Settings2, Wallet2 } from 'lucide-react';
+import {
+  BarChart4,
+  Compass,
+  Crown,
+  Layout,
+  List,
+  Settings2,
+  ShieldEllipsis,
+  Wallet2,
+} from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { isOwner } from '@/lib/owner';
 
 import { SideBarItem } from './sidebar-item';
 
@@ -33,7 +45,7 @@ const teacherRoutes = [
   },
 ];
 
-const settingsRoutes = [
+const settingsRoutes = (userId?: string) => [
   {
     icon: Settings2,
     label: 'General',
@@ -44,9 +56,20 @@ const settingsRoutes = [
     label: 'Billing',
     href: '/settings/billing',
   },
+  ...(isOwner(userId)
+    ? [
+        {
+          icon: ShieldEllipsis,
+          label: 'Admin',
+          href: '/settings/admin',
+        },
+      ]
+    : []),
 ];
 
 export const SideBarRoutes = () => {
+  const { user } = useCurrentUser();
+
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
@@ -54,11 +77,11 @@ export const SideBarRoutes = () => {
 
   const routes = useMemo(() => {
     if (isSettingsPage) {
-      return settingsRoutes;
+      return settingsRoutes(user?.userId);
     }
 
     return isTeacherPage ? teacherRoutes : studentRoutes;
-  }, [isSettingsPage, isTeacherPage]);
+  }, [isSettingsPage, isTeacherPage, user?.userId]);
 
   return (
     <div className="flex flex-col w-full h-full p-3 justify-between">
