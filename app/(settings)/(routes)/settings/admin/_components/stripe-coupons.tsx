@@ -70,6 +70,12 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
                       <span>
                         Created at {format(fromUnixTime(promo.created), 'HH:mm, dd MMM yyyy')}
                       </span>
+                      {promo.expires_at && (
+                        <span>
+                          | Expires at{' '}
+                          {format(fromUnixTime(promo.expires_at), 'HH:mm, dd MMM yyyy')}
+                        </span>
+                      )}
                       {promo.active && <TextBadge label="Active" variant="green" />}
                       {!promo.active && <TextBadge label="Inactive" variant="red" />}
                     </div>
