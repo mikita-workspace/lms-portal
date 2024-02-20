@@ -19,7 +19,7 @@ export const useCurrentLocale = () => {
   } | null>(null);
 
   useEffect(() => {
-    (async function () {
+    const fetchIpInfo = async () => {
       try {
         setIsFetching(true);
         const response = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
@@ -48,7 +48,9 @@ export const useCurrentLocale = () => {
       } finally {
         setIsFetching(false);
       }
-    })();
+    };
+
+    fetchIpInfo();
   }, []);
 
   return { isFetching, ipInfo, error };
