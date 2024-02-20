@@ -1,4 +1,5 @@
 import { Price } from '@prisma/client';
+import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
@@ -45,7 +46,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
           currency: locale.currency,
           product_data: {
             name: course.title,
-            description: course.description!,
           },
           unit_amount: unitAmount,
         },
@@ -72,6 +72,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       allow_promotion_codes: true,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       customer: stripeCustomer.stripeCustomerId,
+      expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
       invoice_creation: {
         enabled: true,
       },
