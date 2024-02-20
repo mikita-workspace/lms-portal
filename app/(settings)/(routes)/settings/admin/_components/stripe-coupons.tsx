@@ -55,7 +55,7 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
                   <span className="text-xs">{term}</span>
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 {cp.promotionCodes.map((promo) => (
                   <div
                     key={promo.id}
