@@ -3,6 +3,7 @@
 import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
 import groupBy from 'lodash.groupby';
 
+import { Currency } from '@/constants/locale';
 import { db } from '@/lib/db';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
@@ -44,10 +45,12 @@ export const getAnalytics = async (userId: string) => {
     const users = await db.user.findMany();
 
     const groupedEarnings = groupByCourse(purchases, users);
-    const sales = Object.values(groupedEarnings)
-      .flat()
-      .map((item) => item.details);
+    const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
+      others.map((other) => ({ ...other.details, title })),
+    );
+
     const groupedByCity = groupBy(sales, (item) => `${item.country}-${item.city}`);
+    const groupedByTitle = groupBy(sales, 'title');
 
     const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
       if (currency && price) {
@@ -57,7 +60,7 @@ export const getAnalytics = async (userId: string) => {
       return total;
     }, {});
 
-    const lastPurchases = purchases.slice(0, 5).map((ps) => ({
+    const lastPurchases = purchases.map((ps) => ({
       courseTitle: ps.course.title,
       timestamp: ps.updatedAt,
       user: users.find((user) => user.id === ps.userId),
@@ -78,7 +81,34 @@ export const getAnalytics = async (userId: string) => {
       })
       .sort((a, b) => b.sales - a.sales);
 
+    const data = Object.keys(groupedByTitle).map((key) => {
+      const items = groupedByTitle[key];
+      const groupedByCurrency = groupBy(items, 'currency');
+
+      return {
+        name: key,
+        ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
+          const price =
+            groupedByCurrency[key].reduce(
+              (total, current) => total + (current.price ?? 0) * 100,
+              0,
+            ) / 100;
+
+          acc[key] = acc[key] ?? 0 + price;
+
+          Object.keys(Currency).forEach((curr) => {
+            acc[curr] = acc[curr] ?? 0;
+          });
+
+          return acc;
+        }, {}),
+      };
+    });
+
+    console.log(data);
+
     return {
+      data,
       lastPurchases,
       topSales,
       totalRevenue,
@@ -88,6 +118,7 @@ export const getAnalytics = async (userId: string) => {
     console.error('[GET_ANALYTICS_ACTION]', error);
 
     return {
+      data: [],
       lastPurchases: [],
       topSales: [],
       totalRevenue: {},

@@ -62,7 +62,6 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
           The changes will be applied after a new login
         </span>
       </div>
-
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>

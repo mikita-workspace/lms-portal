@@ -37,7 +37,7 @@ export const DataCard = ({
       <CardContent>
         <div className="flex flex-col gap-2">
           {lastPurchases && (
-            <div className="text-xs flex flex-col">
+            <div className="text-xs flex flex-col max-h-[240px] overflow-auto">
               {lastPurchases.map((lp) => (
                 <div
                   key={lp.courseTitle}
@@ -66,17 +66,19 @@ export const DataCard = ({
           {totalSales && (
             <div className="flex flex-col gap-2">
               <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
-              <div className="flex flex-col text-sm gap-1">
+              <div className="flex flex-col text-sm gap-1 max-h-[200px] overflow-auto">
                 <p className="font-medium mb-2">Top Locations</p>
-                {topSales?.map((sale) => {
-                  const [country, city] = sale.key.split('-');
+                <ul className="space-y-1">
+                  {topSales?.map((sale, index) => {
+                    const [country, city] = sale.key.split('-');
 
-                  return (
-                    <span key={sale.key}>
-                      {country}, {city}
-                    </span>
-                  );
-                })}
+                    return (
+                      <li key={index}>
+                        {country}, {city}
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
           )}

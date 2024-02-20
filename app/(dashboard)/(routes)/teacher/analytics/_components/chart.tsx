@@ -1,31 +1,41 @@
 'use client';
 
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-
-import { Currency, Locale } from '@/constants/locale';
-import { getCurrencySymbol } from '@/lib/format';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 type ChartProps = {
-  data: {
-    title: string;
-    total: number;
-  }[];
+  data: Record<string, number | string>[];
 };
 
 export const Chart = ({ data }: ChartProps) => {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
-        <CartesianGrid stroke="#cccccc" strokeDasharray="3 3" />
-        <XAxis dataKey="title" fontSize={12} tickLine={false} axisLine={false} />
-        <YAxis
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={(value) => `${getCurrencySymbol(Locale.EN_US, Currency.USD)}${value}`}
-        />
-        <Bar dataKey="total" fill="#22c55e" radius={[8, 8, 0, 0]} barSize={45} />
-      </BarChart>
+      <LineChart
+        width={250}
+        height={150}
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line type="monotone" dataKey="BYN" stroke="#8884d8" activeDot={{ r: 8 }} />
+        <Line type="monotone" dataKey="EUR" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="USD" stroke="#ffc658" />
+      </LineChart>
     </ResponsiveContainer>
   );
 };
