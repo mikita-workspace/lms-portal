@@ -55,7 +55,7 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
         </div>
         <Card className="shadow-none xl:col-span-2">
           <CardHeader className="flex flex-col justify-center space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+            <CardTitle className="text-sm font-medium">Last 100 Transactions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold mb-2 flex items-center">

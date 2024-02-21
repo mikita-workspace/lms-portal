@@ -5,7 +5,7 @@ import { stripe } from '@/server/stripe';
 export const getAdminInfo = async () => {
   try {
     const stripeBalance = await stripe.balance.retrieve();
-    const stripeTransaction = await stripe.balanceTransactions.list();
+    const stripeTransaction = await stripe.balanceTransactions.list({ limit: 100 });
     const stripeCoupons = await stripe.coupons.list();
     const stripePromotionCodes = await stripe.promotionCodes.list();
 
