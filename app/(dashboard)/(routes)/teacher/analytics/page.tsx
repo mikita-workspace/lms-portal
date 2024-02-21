@@ -12,22 +12,26 @@ import { DataCard } from './_components/data-card';
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
 
-  const { lastPurchases, topSales, totalRevenue, totalSales, data } = await getAnalytics(
-    user!.userId,
-  );
+  const {
+    data,
+    lastPurchases,
+    map: mapData,
+    topSales,
+    totalRevenue,
+    totalSales,
+  } = await getAnalytics(user!.userId);
 
-  const mapMarkers = topSales.map((sale) => {
-    const [country, city] = sale.key.split('-');
-    const locale = locales.find((lc) => lc.currency === sale.currency);
+  const mapMarkers = mapData.map((mp) => {
+    const locale = locales.find((lc) => lc.currency === mp.currency);
 
     return {
-      position: sale.position,
+      position: mp.position,
       content: (
         <div className="flex flex-col text-sm">
           <h2 className="text-medium font-semibold gap-2">
-            {country}, {city}
+            {mp.country}, {mp.city}
           </h2>
-          <span>{formatPrice(sale.totalPrice, locale!)}</span>
+          <span>{formatPrice(mp.total, locale!)}</span>
         </div>
       ),
     };

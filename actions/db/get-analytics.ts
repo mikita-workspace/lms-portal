@@ -49,8 +49,15 @@ export const getAnalytics = async (userId: string) => {
       others.map((other) => ({ ...other.details, title })),
     );
 
-    const groupedByCity = groupBy(sales, (item) => `${item.country}-${item.city}`);
+    const groupedByCity = groupBy(
+      sales,
+      (item: (typeof sales)[number]) => `${item.country}-${item.city}`,
+    );
     const groupedByTitle = groupBy(sales, 'title');
+    const groupedByPosition = groupBy(
+      sales,
+      (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
+    );
 
     const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
       if (currency && price) {
@@ -105,9 +112,22 @@ export const getAnalytics = async (userId: string) => {
       };
     });
 
+    const map = Object.keys(groupedByPosition).map((key) => {
+      const [lt, lg] = key.split('*');
+
+      return {
+        city: groupedByPosition[key][0].city,
+        country: groupedByPosition[key][0].country,
+        currency: groupedByPosition[key][0].currency,
+        position: [Number(lt), Number(lg)],
+        total: groupedByPosition[key].reduce((total, current) => total + (current.price ?? 0), 0),
+      };
+    });
+
     return {
       data,
       lastPurchases,
+      map,
       topSales,
       totalRevenue,
       totalSales,
@@ -118,6 +138,7 @@ export const getAnalytics = async (userId: string) => {
     return {
       data: [],
       lastPurchases: [],
+      map: [],
       topSales: [],
       totalRevenue: {},
       totalSales: 0,
