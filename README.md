@@ -1,6 +1,5 @@
 # [Nova LMS](https://nova-lms-portal.vercel.app)
 
-[![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/mikita-workspace/lms-portal/ci.yml?branch=main&style=for-the-badge)](https://github.com/mikita-workspace/lms-portal/actions)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mikita-workspace/lms-portal?style=for-the-badge)](https://github.com/mikita-workspace/lms-portal/commits/main)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/mikita-workspace/lms-portal?style=for-the-badge)](https://github.com/mikita-workspace/lms-portal/releases)
 ## Description
