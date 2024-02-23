@@ -8,7 +8,6 @@ import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Label, Switch } from '@/components/ui';
-import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { fetcher } from '@/lib/fetcher';
 
@@ -63,7 +62,9 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
                     <Switch
                       id="visibility"
                       checked={field.value}
+                      disabled={!isValid || isSubmitting}
                       onCheckedChange={field.onChange}
+                      type="submit"
                     />
                     <Label htmlFor="visibility">Enable Public Profile</Label>
                   </div>
@@ -71,11 +72,6 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
               </FormItem>
             )}
           />
-          <div className="flex items-center mt-6">
-            <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-              Update visibility
-            </Button>
-          </div>
         </form>
       </Form>
     </div>
