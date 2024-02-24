@@ -1,15 +1,13 @@
-import { Currency, Locale } from '@/constants/locale';
-
 export const formatPrice = (
   price: number,
-  { locale, currency }: { locale: Locale; currency: Currency },
+  { locale, currency }: { locale: string; currency: string },
 ) =>
   new Intl.NumberFormat(locale, {
     currency,
     style: 'currency',
   }).format(price);
 
-export const getCurrencySymbol = (locale: Locale, currency: Currency) =>
+export const getCurrencySymbol = (locale: string, currency: string) =>
   (0)
     .toLocaleString(locale, {
       style: 'currency',

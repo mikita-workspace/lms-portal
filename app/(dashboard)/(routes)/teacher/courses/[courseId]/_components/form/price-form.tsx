@@ -1,13 +1,14 @@
 'use client';
 
-import { Course, Price } from '@prisma/client';
+import { Course } from '@prisma/client';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { TextBadge } from '@/components/common/text-badge';
 import { Button } from '@/components/ui/button';
-import { locales } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
@@ -16,26 +17,25 @@ import { CurrencyInput } from '../currency-input';
 
 type PriceFormProps = {
   courseId: string;
-  initialData: Course & { price: Price | null };
+  initialData: Course;
 };
 
 export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   const router = useRouter();
 
-  const [prices, setPrices] = useState<Record<string, string | number>>({
-    byn: initialData.price?.byn || '',
-    eur: initialData.price?.eur || '',
-    usd: initialData.price?.usd || '',
-  });
+  const [price, setPrice] = useState<string | number>(initialData.price || '');
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isPricesEmpty = Object.values(prices).every((price) => !price);
-
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
-  const handleOnPriceChange = (_price?: string, _name: string = '') => {
-    setPrices({ ...prices, [_name]: _price ?? '' });
+  const handleOnPriceChange = (_price?: string) => {
+    if (!_price) {
+      setPrice('');
+      return;
+    }
+
+    setPrice(_price);
   };
 
   const handleSubmit = async (event: SyntheticEvent) => {
@@ -43,15 +43,10 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
 
     setIsSubmitting(true);
 
-    const price = Object.fromEntries(
-      Object.entries(prices).map(([key, value]) => [
-        key,
-        typeof value === 'string' ? Number(value.replace(/,/g, '.')) : value,
-      ]),
-    );
-
     try {
-      await fetcher.patch(`/api/courses/${courseId}`, { body: { price } });
+      await fetcher.patch(`/api/courses/${courseId}`, {
+        body: { price: typeof price === 'string' ? Number(price.replace(/,/g, '.')) : price },
+      });
 
       toast.success('Course updated');
       handleToggleEdit();
@@ -79,34 +74,25 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
           )}
         </Button>
       </div>
-      {!isEditing && initialData.price && (
-        <p className={cn('text-sm mt-2', !initialData.price && 'text-neutral-500 italic')}>
-          {locales
-            .map((locale) => {
-              const currency = locale.currency.toLowerCase() as keyof Price;
-
-              return formatPrice(
-                initialData.price ? (initialData.price[currency] as number) : 0,
-                locale,
-              );
-            })
-            .join(' / ')}
-        </p>
-      )}
+      {!isEditing &&
+        (initialData.price ? (
+          <p className={cn('text-sm mt-2', !initialData.price && 'text-neutral-500 italic')}>
+            {formatPrice(initialData.price, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY })}
+          </p>
+        ) : (
+          <TextBadge variant="lime" label="Free" />
+        ))}
       {isEditing && (
         <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
-          {locales.map((locale) => (
-            <CurrencyInput
-              key={`${locale.currency}-${locale.locale}`}
-              intlConfig={locale}
-              name={locale.currency.toLowerCase()}
-              onValueChange={handleOnPriceChange}
-              placeholder={`Set a price for ${locale.locale} region`}
-              value={prices[locale.currency.toLowerCase()]}
-            />
-          ))}
+          <CurrencyInput
+            intlConfig={{ locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY }}
+            name="price"
+            onValueChange={handleOnPriceChange}
+            placeholder={`Set a price for course`}
+            value={price}
+          />
           <div className="flex items-center gap-x-2">
-            <Button disabled={isSubmitting || isPricesEmpty} isLoading={isSubmitting} type="submit">
+            <Button disabled={!price || isSubmitting} isLoading={isSubmitting} type="submit">
               Save
             </Button>
           </div>
