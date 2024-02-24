@@ -1,6 +1,7 @@
 'use client';
 
-import { Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import { ExternalLink, Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
@@ -10,9 +11,10 @@ import { MdOutlineWorkspacePremium } from 'react-icons/md';
 import { PiStudentBold } from 'react-icons/pi';
 
 import { UserRole } from '@/constants/auth';
+import { NOVA_CHAT_URL } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { isOwner } from '@/lib/owner';
-import { capitalize, getFallbackName } from '@/lib/utils';
+import { getFallbackName } from '@/lib/utils';
 
 import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
@@ -27,6 +29,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '../ui';
 import { LoginButton } from './login-button';
 import { LogoutButton } from './logout-button';
@@ -49,22 +57,10 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
       return Laptop2;
     }
 
-    return theme === 'light' ? MoonStar : Sun;
+    return theme === 'light' ? Sun : MoonStar;
   }, [theme]);
 
-  const handleTheme = () => {
-    if (theme === 'system') {
-      return setTheme('light');
-    }
-
-    if (theme === 'light') {
-      return setTheme('dark');
-    }
-
-    if (theme === 'dark') {
-      return setTheme('system');
-    }
-  };
+  const handleTheme = (theme: string) => setTheme(theme);
 
   const handleSettings = () => router.push('/settings');
 
@@ -117,10 +113,6 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           </>
         )}
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleTheme}>
-          <ThemeIcon className="mr-2 h-4 w-4" />
-          {`${capitalize(theme || 'system')} theme`}
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="hover:cursor-pointer"
           onClick={() => router.push('/chat')}
@@ -135,6 +127,34 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        <DropdownMenuItem className="hover:cursor-pointer">
+          <div className="flex justify-between items-center w-full">
+            <div className="flex items-center">
+              <ThemeIcon className="mr-2 h-4 w-4" />
+              <span>Theme</span>
+            </div>
+            <Select onValueChange={handleTheme} defaultValue={theme}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Select a theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup className="z-10">
+                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="dark">Dark</SelectItem>
+                  <SelectItem value="light">Light</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        <Link href={NOVA_CHAT_URL} target="_blank">
+          <DropdownMenuItem className="hover:cursor-pointer">
+            <ExternalLink className="mr-2 h-4 w-4" />
+            NovaChat&nbsp;|&nbsp;GPT&nbsp;&nbsp;
+            <TextBadge label="Bot" variant="lime" />
+          </DropdownMenuItem>
+        </Link>
         <LogoutButton>
           <DropdownMenuItem className="hover:cursor-pointer">
             <LogOut className="mr-2 h-4 w-4" />

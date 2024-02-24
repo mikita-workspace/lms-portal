@@ -1,11 +1,10 @@
 'use client';
 
-import { Copyright, ExternalLink } from 'lucide-react';
+import { Copyright } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
-  NOVA_CHAT_URL,
   OWNER_COPYRIGHT,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
@@ -28,12 +27,6 @@ export const Footer = () => {
               <span>{OWNER_COPYRIGHT}</span>
             </div>
             <div className="md:space-x-2 font-semibold flex flex-col md:flex-row">
-              <Link href={NOVA_CHAT_URL} target="_blank" className="flex items-baseline">
-                <div className="flex items-center">
-                  NovaChat&nbsp;|&nbsp;GPT&nbsp;
-                  <ExternalLink className="h-3 w-3" />
-                </div>
-              </Link>
               <Link href={`mailto:${OWNER_EMAIL}`}>Contact</Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
                 Terms and Conditions
