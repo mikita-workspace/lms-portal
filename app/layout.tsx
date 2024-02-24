@@ -3,6 +3,9 @@ import './globals.css';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
 
+import { getLocale } from '@/actions/locale/get-locale-action';
+import { fetcher } from '@/lib/fetcher';
+import { fetchCachedData } from '@/lib/redis';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -23,11 +26,13 @@ type RootLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const RootLayout = ({ children }: RootLayoutProps) => {
+const RootLayout = async ({ children }: RootLayoutProps) => {
+  const locale = await getLocale();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', GeistSans.className)}>
-        <Providers>{children}</Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   );

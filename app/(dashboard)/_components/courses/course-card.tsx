@@ -10,7 +10,6 @@ import { IconBadge } from '@/components/common/icon-badge';
 import { ProgressBar } from '@/components/common/progress-bar';
 import { TextBadge } from '@/components/common/text-badge';
 import { Skeleton } from '@/components/ui';
-import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
@@ -18,7 +17,6 @@ import { cn } from '@/lib/utils';
 type CourseCardProps = {
   category?: string;
   chaptersLength: number;
-  currentLocale: ReturnType<typeof useCurrentLocale>;
   id: string;
   imageUrl: string | null;
   isPublished?: boolean;
@@ -30,7 +28,6 @@ type CourseCardProps = {
 export const CourseCard = ({
   category,
   chaptersLength,
-  currentLocale,
   id,
   imageUrl,
   isPublished,
@@ -39,8 +36,6 @@ export const CourseCard = ({
   title,
 }: CourseCardProps) => {
   const { user } = useCurrentUser();
-
-  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = currentLocale;
 
   const price = useMemo(() => {
     if (ipInfo) {

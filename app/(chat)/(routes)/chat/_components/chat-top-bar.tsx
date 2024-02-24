@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole, models } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,6 @@ import { cn } from '@/lib/utils';
 type ChatTopBarProps = {
   isSubmitting?: boolean;
   lastAssistantMessage: string;
-  models: { value: string; label: string }[];
   onAbortGenerating: () => void;
   onRegenerate: (event: SyntheticEvent) => void;
   setAssistantMessage: (value: string) => void;
@@ -31,7 +30,6 @@ type ChatTopBarProps = {
 export const ChatTopBar = ({
   isSubmitting = false,
   lastAssistantMessage,
-  models,
   onAbortGenerating,
   onRegenerate,
   setAssistantMessage,

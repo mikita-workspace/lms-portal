@@ -6,7 +6,6 @@ import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
-import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice } from '@/lib/format';
 

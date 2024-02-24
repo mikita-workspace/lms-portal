@@ -16,7 +16,6 @@ import { ChatTopBar } from './chat-top-bar';
 type ChatProps = {
   initialData: {
     introMessages: string[];
-    models: { value: string; label: string }[];
   };
 };
 
@@ -142,7 +141,6 @@ export const Chat = ({ initialData }: ChatProps) => {
           <ChatTopBar
             isSubmitting={isSubmitting}
             lastAssistantMessage={assistantMessage}
-            models={initialData.models}
             onAbortGenerating={handleAbortGenerating}
             onRegenerate={handleRegenerate}
             setAssistantMessage={setAssistantMessage}

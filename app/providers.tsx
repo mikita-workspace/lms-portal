@@ -2,10 +2,12 @@
 
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
+import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Toaster } from 'react-hot-toast';
 
 import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { ExchangeRates, LocaleInfo, useLocaleStore } from '@/hooks/use-locale-store';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return <SessionProvider>{children}</SessionProvider>;
@@ -35,7 +37,27 @@ const ConfettiProvider = () => {
   );
 };
 
-export const Providers = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+export const Providers = ({
+  children,
+  locale,
+}: Readonly<{
+  children: React.ReactNode;
+  locale: {
+    localeInfo: LocaleInfo;
+    exchangeRates: ExchangeRates;
+  };
+}>) => {
+  const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
+    handleExchangeRates: state.setExchangeRates,
+    handleLocaleInfo: state.setLocaleInfo,
+  }));
+
+  useEffect(() => {
+    handleExchangeRates(locale.exchangeRates);
+    handleLocaleInfo(locale.localeInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <AuthProvider>
