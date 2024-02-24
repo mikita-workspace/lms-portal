@@ -4,8 +4,6 @@ import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
 
 import { getLocale } from '@/actions/locale/get-locale-action';
-import { fetcher } from '@/lib/fetcher';
-import { fetchCachedData } from '@/lib/redis';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
