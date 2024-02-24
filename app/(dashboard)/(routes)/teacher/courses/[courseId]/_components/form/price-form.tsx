@@ -7,6 +7,7 @@ import { SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { TextBadge } from '@/components/common/text-badge';
+import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
@@ -91,6 +92,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
             placeholder={`Set a price for course`}
             value={price}
           />
+          <Input disabled={isSubmitting} placeholder={`e.g. '{"BTN": 82.908948, ... }`} />
           <div className="flex items-center gap-x-2">
             <Button disabled={!price || isSubmitting} isLoading={isSubmitting} type="submit">
               Save
