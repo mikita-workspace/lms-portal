@@ -3,7 +3,7 @@ import './globals.css';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
 
-import { getLocale } from '@/actions/locale/get-locale-action';
+import { getLocale } from '@/actions/locale/get-locale';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';

@@ -18,6 +18,7 @@ import { Actions } from './_components/actions';
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
 import { ChaptersForm } from './_components/form/chapters-form';
+import { CountriesForm } from './_components/form/countries-form';
 import { DescriptionForm } from './_components/form/description-form';
 import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
@@ -135,7 +136,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <IconBadge icon={Globe} />
                 <h2 className="text-xl">Localization</h2>
               </div>
-              <AttachmentForm {...commonFormProps} />
+              <CountriesForm {...commonFormProps} />
             </div>
           </div>
         </div>

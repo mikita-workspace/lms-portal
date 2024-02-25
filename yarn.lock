@@ -4732,6 +4732,11 @@ react-syntax-highlighter@^15.5.0:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
+react-tag-autocomplete@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-7.2.0.tgz#f2b3afc1acb845ab40b44af6ebc18b65a244c687"
+  integrity sha512-ahTJGOZJfwdQ0cWw7U27/KUqY40BEadAClp62vuHxuNMSCV3bGXcWas5PoTGISuBJyN3qRypTDrZSNJ5GY0Iug==
+
 react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"

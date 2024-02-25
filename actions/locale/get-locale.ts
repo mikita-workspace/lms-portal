@@ -10,7 +10,7 @@ export const getLocale = async () => {
     const exchangeRates = await fetchCachedData(
       'exchange-rate',
       async () => {
-        const res = await fetcher.get('https://open.er-api.com/v6/latest/USD', {
+        const res = await fetcher.get(`https://open.er-api.com/v6/latest/${DEFAULT_CURRENCY}`, {
           responseType: 'json',
         });
 
