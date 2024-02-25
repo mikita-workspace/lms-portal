@@ -1,33 +1,14 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Course } from '@prisma/client';
-import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { ReactTags } from 'react-tag-autocomplete';
-import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  Input,
-  ScrollArea,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { COUNTRY_CODES } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
-import { cn } from '@/lib/utils';
 
 type CountriesFormProps = {
   courseId: string;
@@ -35,7 +16,7 @@ type CountriesFormProps = {
 };
 
 export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -101,58 +82,12 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
             label: name,
           }))}
         />
+        <div className="flex items-center gap-x-2 mt-4">
+          <Button disabled={isSubmitting} isLoading={isSubmitting}>
+            Save
+          </Button>
+        </div>
       </div>
-
-      {/* <ReactTags
-        labelText="Select countries"
-        selected={selected}
-        suggestions={Object.values(COUNTRY_CODES).map((name, index) => ({
-          value: index,
-          label: name,
-        }))}
-        onAdd={onAdd}
-        onDelete={onDelete}
-        noOptionsText="No matching countries"
-      /> */}
-      {/* {!isEditing && (
-        <p className={cn('text-sm mt-2', !initialData.categoryId && 'text-neutral-500 italic')}>
-          {selectedOption?.label || 'No category'}
-        </p>
-      )} */}
-      {/* {isEditing && (
-        <Form {...form}>
-          <form className="space-y-4 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem className="shadow-none">
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select option..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {options.map((option) => (
-                        <SelectItem key={option.label} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )} */}
     </div>
   );
 };
