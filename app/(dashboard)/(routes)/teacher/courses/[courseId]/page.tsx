@@ -127,17 +127,17 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
             </div>
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={Files} />
-                <h2 className="text-xl">Recourses & Attachments</h2>
-              </div>
-              <AttachmentForm {...commonFormProps} />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
                 <IconBadge icon={Globe} />
                 <h2 className="text-xl">Localization</h2>
               </div>
               <CountriesForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Files} />
+                <h2 className="text-xl">Recourses & Attachments</h2>
+              </div>
+              <AttachmentForm {...commonFormProps} />
             </div>
           </div>
         </div>
