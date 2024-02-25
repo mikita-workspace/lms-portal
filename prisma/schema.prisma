@@ -109,7 +109,7 @@ model PurchaseDetails {
   invoiceId   String?
   latitude    Float?
   longitude   Float?
-  price       Float?
+  price       Int?
   purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
   purchaseId  String
   updatedAt   DateTime @updatedAt

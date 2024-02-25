@@ -3,7 +3,6 @@
 import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
 import groupBy from 'lodash.groupby';
 
-import { Currency } from '@/constants/locale';
 import { db } from '@/lib/db';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
@@ -35,9 +34,7 @@ export const getAnalytics = async (userId: string) => {
       where: { course: { userId } },
       orderBy: { updatedAt: 'desc' },
       include: {
-        course: {
-          include: { price: true },
-        },
+        course: true,
         details: true,
       },
     });
