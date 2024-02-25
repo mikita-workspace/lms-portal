@@ -4,7 +4,7 @@ import { Course } from '@prisma/client';
 import { format, fromUnixTime } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { SyntheticEvent, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { TextBadge } from '@/components/common/text-badge';
@@ -22,6 +22,7 @@ import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
+import { hasJsonStructure } from '@/lib/utils';
 
 import { CurrencyInput } from '../currency-input';
 
@@ -31,13 +32,19 @@ type PriceFormProps = {
 };
 
 export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
-  const exchangeRates = useLocaleStore((state) => state.exchangeRates);
+  const { exchangeRates, localeInfo } = useLocaleStore((state) => ({
+    exchangeRates: state.exchangeRates,
+    localeInfo: state.localeInfo,
+  }));
   const router = useRouter();
 
   const [price, setPrice] = useState<string | number>(
     getConvertedPrice(initialData?.price ?? 0) || '',
   );
-  const [selectedCurrency, setSelectedCurrency] = useState(DEFAULT_CURRENCY);
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    localeInfo?.locale.currency ?? DEFAULT_CURRENCY,
+  );
+  const [customRates, setCustomRates] = useState(initialData.customRates ?? '');
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -52,6 +59,15 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
     setPrice(_price);
   };
 
+  const handleCustomRatesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value) {
+      setCustomRates('');
+      return;
+    }
+
+    setCustomRates(event.target.value);
+  };
+
   const handleCurrencySelect = (_currency: string) => {
     setSelectedCurrency(_currency);
   };
@@ -64,6 +80,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
     try {
       await fetcher.patch(`/api/courses/${courseId}`, {
         body: {
+          customRates,
           price: getScaledPrice(
             typeof price === 'string' ? Number(price.replace(/,/g, '.')) : price,
           ),
@@ -80,6 +97,8 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
       setIsSubmitting(false);
     }
   };
+
+  const isValidCustomRates = hasJsonStructure(customRates);
 
   return (
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
@@ -118,10 +137,17 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>≈</span>
                 <div>
-                  {formatPrice(((price || 0) as number) * exchangeRates.rates[selectedCurrency], {
-                    locale: DEFAULT_LOCALE,
-                    currency: selectedCurrency,
-                  })}
+                  {formatPrice(
+                    ((price || 0) as number) *
+                      {
+                        ...exchangeRates.rates,
+                        ...(isValidCustomRates && JSON.parse(customRates)),
+                      }[selectedCurrency],
+                    {
+                      locale: DEFAULT_LOCALE,
+                      currency: selectedCurrency,
+                    },
+                  )}
                 </div>
                 <Select onValueChange={handleCurrencySelect} defaultValue={selectedCurrency}>
                   <SelectTrigger className="w-[120px]">
@@ -146,9 +172,18 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
             )}
           </div>
           <p className="text-sm">You can also add a custom exchange rate</p>
-          <Input disabled={isSubmitting} placeholder={`e.g. '{"BTN": 82.908948, ... }'`} />
+          <Input
+            disabled={isSubmitting}
+            placeholder={`e.g. '{"BTN": 82.908948, ... }'`}
+            onChange={handleCustomRatesChange}
+            defaultValue={initialData?.customRates ?? ''}
+          />
           <div className="flex items-center gap-x-2">
-            <Button disabled={!price || isSubmitting} isLoading={isSubmitting} type="submit">
+            <Button
+              disabled={!price || isSubmitting || Boolean(!isValidCustomRates && customRates)}
+              isLoading={isSubmitting}
+              type="submit"
+            >
               Save
             </Button>
           </div>

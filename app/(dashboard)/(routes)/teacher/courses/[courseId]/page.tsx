@@ -49,6 +49,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const requiredFields = [
     course.categoryId,
     course.chapters.some((chapter) => chapter.isPublished),
+    course.countryCodes.length,
     course.description,
     course.imageUrl,
     course.title,

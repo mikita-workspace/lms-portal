@@ -28,6 +28,7 @@ model Course {
   chapters     Chapter[]
   countryCodes String[]
   createdAt    DateTime     @default(now())
+  customRates  String?
   description  String?      @db.Text
   imageUrl     String?      @db.Text
   isPublished  Boolean      @default(false)
