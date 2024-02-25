@@ -1,8 +1,8 @@
 'use server';
 
 import { DEFAULT_CURRENCY } from '@/constants/locale';
+import { fetchCachedData } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
-import { fetchCachedData } from '@/lib/redis';
 
 export const getExchangeRates = async () => {
   try {
