@@ -1,6 +1,6 @@
 'use client';
 
-import { Course, Price } from '@prisma/client';
+import { Course } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -13,13 +13,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { DropdownMenu } from '@/components/ui';
-import { locales } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
-const handleSortingHeader = <T extends Column<Course & { price: Price | null }, unknown>>(
-  column: T,
-  label: string,
-) => {
+const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label: string) => {
   return (
     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
       {label}
@@ -28,28 +25,19 @@ const handleSortingHeader = <T extends Column<Course & { price: Price | null }, 
   );
 };
 
-export const columns: ColumnDef<Course & { price: Price | null }>[] = [
+export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => handleSortingHeader(column, 'Title'),
   },
   {
-    id: 'prices',
-    header: () => <span>Prices</span>,
+    accessorKey: 'price',
+    header: ({ column }) => handleSortingHeader(column, 'Price'),
     cell: ({ row }) => {
-      const { price: prices } = row.original;
+      const price = parseFloat(row.getValue('price') || '0');
+      const formatted = formatPrice(price, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY });
 
-      return (
-        <span>
-          {locales
-            .map((locale) => {
-              const currency = locale.currency.toLowerCase() as keyof Price;
-
-              return formatPrice(prices ? (prices[currency] as number) : 0, locale);
-            })
-            .join(' / ')}
-        </span>
-      );
+      return price ? formatted : <TextBadge variant="lime" label="Free" />;
     },
   },
   {

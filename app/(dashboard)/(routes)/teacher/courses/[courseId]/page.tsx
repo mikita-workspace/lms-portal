@@ -29,7 +29,6 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     include: {
       attachments: { orderBy: { createdAt: 'desc' } },
       chapters: { orderBy: { position: 'asc' } },
-      price: true,
     },
   });
 

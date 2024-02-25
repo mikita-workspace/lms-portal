@@ -13,24 +13,11 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { price, ...other } = await req.json();
-
-    await db.price.upsert({
-      where: {
-        courseId: params.courseId,
-      },
-      update: {
-        ...price,
-      },
-      create: {
-        ...price,
-        courseId: params.courseId,
-      },
-    });
+    const values = await req.json();
 
     const course = await db.course.update({
       where: { id: params.courseId, userId: user.userId },
-      data: { ...other },
+      data: { ...values },
     });
 
     return NextResponse.json(course);

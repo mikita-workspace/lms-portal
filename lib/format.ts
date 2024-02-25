@@ -17,3 +17,7 @@ export const getCurrencySymbol = (locale: string, currency: string) =>
     })
     .replace(/\d/g, '')
     .trim();
+
+export const getConvertedPrice = (price: number) => price / 100;
+
+export const getScaledPrice = (price: number) => price * 100;

@@ -41,7 +41,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
         orderBy: { position: 'asc' },
       },
       category: true,
-      price: true,
     },
   });
 

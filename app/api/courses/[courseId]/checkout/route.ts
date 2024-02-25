@@ -18,7 +18,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
 
     const course = await db.course.findUnique({
       where: { id: params.courseId, isPublished: true },
-      include: { price: true },
     });
 
     const { locale, details: ipDetails } = await req.json();

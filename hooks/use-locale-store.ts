@@ -12,7 +12,7 @@ export type LocaleInfo = {
   rate: number;
 } | null;
 
-export type ExchangeRates = { updateAt: number; rates: Record<string, number> } | null;
+export type ExchangeRates = { updatedAt: number; rates: Record<string, number> } | null;
 
 type LocaleStore = {
   exchangeRates: ExchangeRates;

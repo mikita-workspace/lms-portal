@@ -22,7 +22,6 @@ export const getCourses = async ({ userId, title, categoryId }: GetCourses) => {
       ...(userId && { purchases: { where: { userId } } }),
       category: true,
       chapters: { where: { isPublished: true }, select: { id: true } },
-      price: true,
     },
     orderBy: { createdAt: 'desc' },
   });
