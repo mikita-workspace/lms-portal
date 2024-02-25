@@ -1,4 +1,3 @@
-import { Price } from '@prisma/client';
 import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
@@ -34,10 +33,6 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse('Already purchased', { status: StatusCodes.BAD_REQUEST });
     }
 
-    const unitAmount = Math.round(
-      Number(course.price![locale.currency.toLowerCase() as keyof Price]) * 100,
-    );
-
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         quantity: 1,
@@ -46,7 +41,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
           product_data: {
             name: course.title,
           },
-          unit_amount: unitAmount,
+          unit_amount: course.price!,
         },
       },
     ];
