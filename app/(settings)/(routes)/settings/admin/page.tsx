@@ -11,7 +11,7 @@ const AdminPage = async () => {
       <h1 className="text-2xl font-medium">Admin Settings</h1>
       <div className="mt-12">
         <StripeBalances balances={stripeBalances} transactions={stripeTransactions} />
-        <StripeCoupons coupons={stripeCoupons} />
+        {/* <StripeCoupons coupons={stripeCoupons} /> */}
       </div>
     </div>
   );

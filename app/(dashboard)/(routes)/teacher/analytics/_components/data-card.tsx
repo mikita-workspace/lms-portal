@@ -39,18 +39,20 @@ export const DataCard = ({
         <div className="flex flex-col gap-2">
           {lastPurchases && (
             <ScrollArea className="text-xs flex flex-col max-h-[240px]">
-              {lastPurchases.map((lp) => (
-                <div
-                  key={lp.courseTitle}
-                  className="flex justify-between border-b last:border-none py-1"
-                >
-                  <div className="flex flex-col gap-1 truncate">
-                    <p className="font-medium">{lp.courseTitle}</p>
-                    <p>{lp.user?.email}</p>
+              <div className="pr-4">
+                {lastPurchases.map((lp) => (
+                  <div
+                    key={lp.courseTitle}
+                    className="flex justify-between border-b last:border-none py-1"
+                  >
+                    <div className="flex flex-col gap-1 truncate">
+                      <p className="font-medium">{lp.courseTitle}</p>
+                      <p>{lp.user?.email}</p>
+                    </div>
+                    <span className="text-right">{format(lp.timestamp, 'HH:mm, dd MMM yyyy')}</span>
                   </div>
-                  <span className="text-right">{format(lp.timestamp, 'HH:mm, dd MMM yyyy')}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </ScrollArea>
           )}
           {totalRevenue &&
@@ -68,18 +70,20 @@ export const DataCard = ({
             <div className="flex flex-col gap-2">
               <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
               <ScrollArea className="flex flex-col text-sm gap-1 max-h-[200px]">
-                <p className="font-medium mb-2">Top Locations</p>
-                <ul className="space-y-1">
-                  {topSales?.map((sale, index) => {
-                    const [country, city] = sale.key.split('-');
+                <div className="pr-4">
+                  <p className="font-medium mb-2">Top Locations</p>
+                  <ul className="space-y-1">
+                    {topSales?.map((sale, index) => {
+                      const [country, city] = sale.key.split('-');
 
-                    return (
-                      <li key={index}>
-                        {country}, {city}
-                      </li>
-                    );
-                  })}
-                </ul>
+                      return (
+                        <li key={index}>
+                          {country}, {city}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </ScrollArea>
             </div>
           )}

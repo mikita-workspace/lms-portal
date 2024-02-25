@@ -5,7 +5,7 @@ import CountUp from 'react-countup';
 
 import { getAdminInfo } from '@/actions/db/get-admin-info';
 import { Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
-import { Currency, Locale } from '@/constants/locale';
+import { DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
@@ -44,7 +44,7 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                         decimals={2}
                         duration={2.75}
                         end={bl.amount / 100}
-                        prefix={`${getCurrencySymbol(Locale.EN_US, bl.currency.toUpperCase() as Currency)} `}
+                        prefix={`${getCurrencySymbol(DEFAULT_LOCALE, bl.currency.toUpperCase())} `}
                       />
                     ))}
                   </div>
@@ -63,8 +63,8 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                 {formatPrice(
                   transactions.reduce((total, current) => total + current.net, 0) / 100,
                   {
-                    locale: Locale.EN_US,
-                    currency: transactions[0].currency as Currency,
+                    locale: DEFAULT_LOCALE,
+                    currency: transactions[0].currency,
                   },
                 )}
               </span>
@@ -73,8 +73,8 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                 {formatPrice(
                   transactions.reduce((total, current) => total + current.fee, 0) / 100,
                   {
-                    locale: Locale.EN_US,
-                    currency: transactions[0].currency as Currency,
+                    locale: DEFAULT_LOCALE,
+                    currency: transactions[0].currency,
                   },
                 )}
                 <span className="text-base">&nbsp;Fees</span>
@@ -82,7 +82,7 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
             </div>
             <p className="text-sm font-medium mb-2">Details:</p>
             <ScrollArea className="w-full h-[240px]">
-              <div className="text-xs">
+              <div className="text-xs pr-4">
                 {transactions.map((tn) => {
                   return (
                     <div
@@ -92,22 +92,22 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                       <div className="flex flex-col gap-1">
                         <p className="font-bold">
                           {formatPrice(tn.amount / 100, {
-                            locale: Locale.EN_US,
-                            currency: tn.currency as Currency,
+                            locale: DEFAULT_LOCALE,
+                            currency: tn.currency,
                           })}
                         </p>
                         <p>
                           <span>
                             {formatPrice(tn.net / 100, {
-                              locale: Locale.EN_US,
-                              currency: tn.currency as Currency,
+                              locale: DEFAULT_LOCALE,
+                              currency: tn.currency,
                             })}
                           </span>
                           &nbsp;+&nbsp;
                           <span>
                             {formatPrice(tn.fee / 100, {
-                              locale: Locale.EN_US,
-                              currency: tn.currency as Currency,
+                              locale: DEFAULT_LOCALE,
+                              currency: tn.currency,
                             })}
                             &nbsp;Fees
                           </span>
