@@ -1,4 +1,11 @@
-import { ArrowLeft, BadgeDollarSign, Files, LayoutDashboard, ListChecks } from 'lucide-react';
+import {
+  ArrowLeft,
+  BadgeDollarSign,
+  Files,
+  Globe,
+  LayoutDashboard,
+  ListChecks,
+} from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -120,6 +127,13 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={Files} />
                 <h2 className="text-xl">Recourses & Attachments</h2>
+              </div>
+              <AttachmentForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Globe} />
+                <h2 className="text-xl">Localization</h2>
               </div>
               <AttachmentForm {...commonFormProps} />
             </div>
