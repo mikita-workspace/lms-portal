@@ -22,7 +22,6 @@ import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
-import { cn } from '@/lib/utils';
 
 import { CurrencyInput } from '../currency-input';
 
