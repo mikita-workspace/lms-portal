@@ -6,7 +6,7 @@ import CountUp from 'react-countup';
 import { getAdminInfo } from '@/actions/db/get-admin-info';
 import { Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice, getCurrencySymbol } from '@/lib/format';
+import { formatPrice, getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
 type AdminInfo = Awaited<ReturnType<typeof getAdminInfo>>;
@@ -43,7 +43,7 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                         className="text-2xl font-bold"
                         decimals={2}
                         duration={2.75}
-                        end={bl.amount / 100}
+                        end={getConvertedPrice(bl.amount)}
                         prefix={`${getCurrencySymbol(DEFAULT_LOCALE, bl.currency.toUpperCase())} `}
                       />
                     ))}

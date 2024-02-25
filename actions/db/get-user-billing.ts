@@ -25,7 +25,7 @@ export const getUserBilling = async (userId?: string) => {
     });
 
     return invoices.map((invoice) => ({
-      amount: invoice.amount_paid / 100,
+      amount: invoice.amount_paid,
       currency: invoice.currency.toUpperCase(),
       id: invoice.id,
       timestamp: invoice.created,
