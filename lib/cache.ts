@@ -3,6 +3,8 @@ import NodeCache from 'node-cache';
 
 const TTL_DEFAULT = 60;
 
+// TODO  add vercel
+
 export const cacheProvider = (() => {
   if (process.env.NODE_ENV === 'production') {
     return new Redis(process.env.REDIS_URL as string);
