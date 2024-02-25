@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { getAdminInfo } from '@/actions/db/get-admin-info';
 import { TextBadge } from '@/components/common/text-badge';
 import { STRIPE_COUPONS_URL } from '@/constants/common';
-import { Currency, Locale } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
 type StripeCouponsProps = {
@@ -34,7 +34,7 @@ export const StripeCoupons = ({ coupons }: StripeCouponsProps) => {
         {coupons.map((cp) => {
           const term = (() => {
             if (cp.amount_off) {
-              return `${formatPrice(cp.amount_off / 100, { locale: Locale.EN_US, currency: cp.currency as Currency })} off ${cp.duration_in_months ? `for ${cp.duration_in_months} months` : 'forever'}`;
+              return `${formatPrice(cp.amount_off / 100, { locale: DEFAULT_LOCALE, currency: cp.currency ?? DEFAULT_CURRENCY })} off ${cp.duration_in_months ? `for ${cp.duration_in_months} months` : 'forever'}`;
             }
 
             if (cp.percent_off) {

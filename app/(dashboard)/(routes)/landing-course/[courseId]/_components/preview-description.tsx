@@ -1,49 +1,52 @@
 'use client';
 
-import { Price } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { IconBadge } from '@/components/common/icon-badge';
 import { TextBadge } from '@/components/common/text-badge';
 import { Skeleton } from '@/components/ui';
-import { useCurrentLocale } from '@/hooks/use-current-locale';
-import { formatPrice } from '@/lib/format';
+import { DEFAULT_CURRENCY_EXCHANGE } from '@/constants/locale';
+import { useLocaleStore } from '@/hooks/use-locale-store';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { hasJsonStructure } from '@/lib/utils';
 
 type PreviewDescriptionProps = {
   categories: string[];
   chaptersLength: number;
+  customRates: string | null;
   description: string;
-  prices: Price | null;
+  price: number | null;
   title: string;
 };
 
 export const PreviewDescription = ({
   categories,
   chaptersLength,
+  customRates,
   description,
-  prices,
+  price,
   title,
 }: PreviewDescriptionProps) => {
-  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = useCurrentLocale();
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
 
-  const price = useMemo(() => {
-    if (ipInfo) {
-      const currency = ipInfo.locale.currency.toLowerCase() as keyof Price;
-      const coursePrice = prices ? (prices[currency] as number) : 0;
-
-      if (!coursePrice) {
-        return 0;
+  const amount = useMemo(() => {
+    if (localeInfo?.locale.currency && price) {
+      if (hasJsonStructure(customRates ?? '')) {
+        return price * JSON.parse(customRates!)[localeInfo.locale.currency];
       }
 
-      return formatPrice(coursePrice, {
-        currency: ipInfo.locale.currency,
-        locale: ipInfo.locale.locale,
-      });
+      return price * localeInfo?.rate ?? DEFAULT_CURRENCY_EXCHANGE;
     }
 
-    return null;
-  }, [ipInfo, prices]);
+    return 0;
+  }, [customRates, localeInfo?.locale.currency, localeInfo?.rate, price]);
+
+  const formattedPrice = localeInfo?.locale
+    ? formatPrice(getConvertedPrice(amount), localeInfo?.locale)
+    : null;
+
+  const isLoadingPrice = !Number.isFinite(price) || !formattedPrice;
 
   return (
     <div className="border rounded-lg p-6">
@@ -61,15 +64,11 @@ export const PreviewDescription = ({
         ))}
       </div>
       <div className="mt-4">
-        {!price && !isIpFetching && !ipInfoError ? (
-          <TextBadge variant="lime" label="Free" />
-        ) : (
-          <p className="text-md md:text-small font-bold text-neutral-700 dark:text-neutral-300">
-            {ipInfoError && ((ipInfoError as Error).message || 'Price Error')}
-            {!ipInfoError && isIpFetching && <Skeleton className="h-[20px] w-2/6" />}
-            {!ipInfoError && !isIpFetching && price}
-          </p>
-        )}
+        <p className="text-md md:text-small font-bold text-neutral-700 dark:text-neutral-300">
+          {isLoadingPrice && <Skeleton className="h-[20px] w-[100px]" />}
+          {!isLoadingPrice && amount > 0 && formattedPrice}
+          {!isLoadingPrice && amount === 0 && <TextBadge variant="lime" label="Free" />}
+        </p>
       </div>
     </div>
   );

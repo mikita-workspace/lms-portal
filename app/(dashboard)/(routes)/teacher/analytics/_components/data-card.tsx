@@ -6,7 +6,6 @@ import CountUp from 'react-countup';
 
 import { ScrollArea } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { locales } from '@/constants/locale';
 import { getCurrencySymbol } from '@/lib/format';
 
 type DataCardProps = {
@@ -55,7 +54,7 @@ export const DataCard = ({
               </div>
             </ScrollArea>
           )}
-          {totalRevenue &&
+          {/* {totalRevenue &&
             locales.map((locale) => (
               <CountUp
                 key={locale.locale}
@@ -65,7 +64,7 @@ export const DataCard = ({
                 end={totalRevenue[locale.currency]}
                 prefix={`${getCurrencySymbol(locale.locale, locale.currency)} `}
               />
-            ))}
+            ))} */}
           {totalSales && (
             <div className="flex flex-col gap-2">
               <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />

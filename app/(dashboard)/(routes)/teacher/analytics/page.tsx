@@ -3,7 +3,7 @@ import { LatLngExpression } from 'leaflet';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAnalytics } from '@/actions/db/get-analytics';
 import Map from '@/components/map';
-import { locales } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice } from '@/lib/format';
 
 import { Chart } from './_components/chart';
@@ -22,8 +22,6 @@ const AnalyticsPage = async () => {
   } = await getAnalytics(user!.userId);
 
   const mapMarkers = mapData.map((mp) => {
-    const locale = locales.find((lc) => lc.currency === mp.currency);
-
     return {
       position: mp.position,
       content: (
@@ -31,7 +29,12 @@ const AnalyticsPage = async () => {
           <h2 className="text-medium font-semibold gap-2">
             {mp.country}, {mp.city}
           </h2>
-          <span>{formatPrice(mp.total, locale!)}</span>
+          <span>
+            {formatPrice(mp.total, {
+              locale: DEFAULT_LOCALE,
+              currency: mp.currency ?? DEFAULT_CURRENCY,
+            })}
+          </span>
         </div>
       ),
     };
