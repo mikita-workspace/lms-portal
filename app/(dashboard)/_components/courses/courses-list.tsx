@@ -16,6 +16,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
           <CourseCard
             category={item?.category?.name}
             chaptersLength={item.chapters.length}
+            customRates={item.customRates}
             id={item.id}
             imageUrl={item.imageUrl}
             isPublished={item.isPublished}

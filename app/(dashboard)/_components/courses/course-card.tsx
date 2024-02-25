@@ -5,16 +5,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { IconBadge } from '@/components/common/icon-badge';
+import { Price } from '@/components/common/price';
 import { ProgressBar } from '@/components/common/progress-bar';
-import { TextBadge } from '@/components/common/text-badge';
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
   category?: string;
   chaptersLength: number;
+  customRates: string | null;
   id: string;
   imageUrl: string | null;
   isPublished?: boolean;
@@ -26,6 +25,7 @@ type CourseCardProps = {
 export const CourseCard = ({
   category,
   chaptersLength,
+  customRates,
   id,
   imageUrl,
   isPublished,
@@ -69,15 +69,7 @@ export const CourseCard = ({
               value={progress}
             />
           ) : (
-            <div>
-              {!price ? (
-                <TextBadge variant="lime" label="Free" />
-              ) : (
-                <p className="text-md md:text-small font-medium text-neutral-700 dark:text-neutral-300 ">
-                  {formatPrice(price, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY })}
-                </p>
-              )}
-            </div>
+            <Price customRates={customRates} price={price} />
           )}
         </div>
       </div>
