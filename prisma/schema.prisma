@@ -1,12 +1,11 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "mysql"
-  relationMode = "prisma"
-  url          = env("MYSQL_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
 }
 
 model User {
@@ -39,8 +38,6 @@ model Course {
   userId      String
 
   @@index([categoryId])
-  @@index([userId])
-  @@fulltext([title])
 }
 
 model Category {
