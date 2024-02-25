@@ -1,45 +1,56 @@
 'use client';
 
-import { Price } from '@prisma/client';
 import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
+import { DEFAULT_CURRENCY_EXCHANGE } from '@/constants/locale';
+import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { hasJsonStructure } from '@/lib/utils';
 
-type CourseEnrollButtonProps = { courseId: string; prices: Price };
+type CourseEnrollButtonProps = {
+  courseId: string;
+  customRates: string | null;
+  price: number | null;
+};
 
-export const CourseEnrollButton = ({ courseId, prices }: CourseEnrollButtonProps) => {
-  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = useCurrentLocale();
+export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrollButtonProps) => {
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const price = useMemo(() => {
-    if (ipInfo) {
-      const currency = ipInfo.locale.currency.toLowerCase() as keyof Price;
-      const coursePrice = prices ? (prices[currency] as number) : 0;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-      if (!coursePrice) {
-        return 0;
+  const amount = useMemo(() => {
+    if (localeInfo?.locale.currency && price) {
+      if (hasJsonStructure(customRates ?? '')) {
+        return price * JSON.parse(customRates!)[localeInfo.locale.currency];
       }
 
-      return formatPrice(coursePrice, {
-        currency: ipInfo.locale.currency,
-        locale: ipInfo.locale.locale,
-      });
+      return price * localeInfo?.rate ?? DEFAULT_CURRENCY_EXCHANGE;
     }
 
-    return null;
-  }, [ipInfo, prices]);
+    return 0;
+  }, [customRates, localeInfo?.locale.currency, localeInfo?.rate, price]);
+
+  const formattedPrice = localeInfo?.locale
+    ? formatPrice(getConvertedPrice(amount), localeInfo?.locale)
+    : null;
+
+  const isLoadingPrice = !Number.isFinite(price) || !formattedPrice;
 
   const handleClick = async () => {
     setIsLoading(true);
 
     await toast.promise(
       fetcher.post(`/api/courses/${courseId}/checkout`, {
-        body: { ...ipInfo },
+        body: {},
         responseType: 'json',
       }),
       {
@@ -60,34 +71,30 @@ export const CourseEnrollButton = ({ courseId, prices }: CourseEnrollButtonProps
     );
   };
 
+  if (!isMounted) {
+    return (
+      <Button className="w-full md:w-auto" size="lg" variant="success" disabled>
+        <MoreHorizontal className="w-6 h-6 animate-pulse" />
+      </Button>
+    );
+  }
+
   return (
     <Button
       className="w-full md:w-auto"
-      disabled={isLoading || isIpFetching || Boolean(ipInfoError)}
+      disabled={isLoading || isLoadingPrice}
       onClick={handleClick}
       size="lg"
       variant="success"
     >
-      {isIpFetching ? (
-        <MoreHorizontal className="w-6 h-6 animate-pulse" />
-      ) : (
+      {isLoadingPrice && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
+      {!isLoadingPrice && amount > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
+      Enroll for&nbsp;
+      {!isLoadingPrice && amount > 0 && price}
+      {!isLoadingPrice && amount === 0 && (
         <>
-          {Boolean(price) && <ShoppingCart className="w-4 h-4 mr-2" />}
-          Enroll for&nbsp;
-          {Boolean(price) ? (
-            price
-          ) : (
-            <>
-              {ipInfoError ? (
-                (ipInfoError as Error).message || 'Price Error'
-              ) : (
-                <>
-                  Free
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </>
-              )}
-            </>
-          )}
+          Free
+          <ArrowRight className="w-4 h-4 ml-2" />
         </>
       )}
     </Button>
