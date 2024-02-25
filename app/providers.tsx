@@ -6,8 +6,10 @@ import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Toaster } from 'react-hot-toast';
 
+import { DEFAULT_CURRENCY, DEFAULT_CURRENCY_EXCHANGE, DEFAULT_LOCALE } from '@/constants/locale';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
-import { ExchangeRates, LocaleInfo, useLocaleStore } from '@/hooks/use-locale-store';
+import { ExchangeRates, useLocaleStore } from '@/hooks/use-locale-store';
+import { fetcher } from '@/lib/fetcher';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return <SessionProvider>{children}</SessionProvider>;
@@ -39,13 +41,10 @@ const ConfettiProvider = () => {
 
 export const Providers = ({
   children,
-  locale,
+  exchangeRates,
 }: Readonly<{
   children: React.ReactNode;
-  locale: {
-    localeInfo: LocaleInfo;
-    exchangeRates: ExchangeRates;
-  };
+  exchangeRates: ExchangeRates;
 }>) => {
   const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
     handleExchangeRates: state.setExchangeRates,
@@ -53,8 +52,26 @@ export const Providers = ({
   }));
 
   useEffect(() => {
-    handleExchangeRates(locale.exchangeRates);
-    handleLocaleInfo(locale.localeInfo);
+    const getUserLocation = async () => {
+      const userIp = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
+
+      const currency = userIp?.currency ?? DEFAULT_CURRENCY;
+
+      handleExchangeRates(exchangeRates);
+      handleLocaleInfo({
+        locale: { currency, locale: DEFAULT_LOCALE },
+        details: {
+          city: userIp.city,
+          country: userIp.country_name,
+          countryCode: userIp.country_code,
+          latitude: userIp.latitude,
+          longitude: userIp.longitude,
+        },
+        rate: exchangeRates?.rates?.[currency] ?? DEFAULT_CURRENCY_EXCHANGE,
+      });
+    };
+
+    getUserLocation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -40,7 +40,7 @@ export const Price = ({ customRates, price }: PriceProps) => {
     ? formatPrice(getConvertedPrice(amount), localeInfo?.locale)
     : null;
 
-  const isLoading = !Number.isFinite(price) || !formattedPrice;
+  const isLoading = !Number.isFinite(price) || !formattedPrice || !localeInfo;
 
   if (!isMounted) {
     return <Skeleton className="h-[20px] w-[100px]" />;

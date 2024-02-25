@@ -3,7 +3,7 @@ import './globals.css';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
 
-import { getLocale } from '@/actions/locale/get-locale';
+import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -25,12 +25,12 @@ type RootLayoutProps = Readonly<{
 }>;
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
-  const locale = await getLocale();
+  const { exchangeRates } = await getExchangeRates();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', GeistSans.className)}>
-        <Providers locale={locale}>{children}</Providers>
+        <Providers exchangeRates={exchangeRates}>{children}</Providers>
       </body>
     </html>
   );
