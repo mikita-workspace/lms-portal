@@ -90,7 +90,7 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
       {isLoadingPrice && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
       {!isLoadingPrice && amount > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
       Enroll for&nbsp;
-      {!isLoadingPrice && amount > 0 && price}
+      {!isLoadingPrice && amount > 0 && formattedPrice}
       {!isLoadingPrice && amount === 0 && (
         <>
           Free
