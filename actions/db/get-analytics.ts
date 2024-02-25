@@ -85,29 +85,30 @@ export const getAnalytics = async (userId: string) => {
       })
       .sort((a, b) => b.sales - a.sales);
 
-    const data = Object.keys(groupedByTitle).map((key) => {
-      const items = groupedByTitle[key];
-      const groupedByCurrency = groupBy(items, 'currency');
+    // TODO
+    // const data = Object.keys(groupedByTitle).map((key) => {
+    //   const items = groupedByTitle[key];
+    //   const groupedByCurrency = groupBy(items, 'currency');
 
-      return {
-        name: key,
-        ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
-          const price =
-            groupedByCurrency[key].reduce(
-              (total, current) => total + (current.price ?? 0) * 100,
-              0,
-            ) / 100;
+    //   return {
+    //     name: key,
+    //     ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
+    //       const price =
+    //         groupedByCurrency[key].reduce(
+    //           (total, current) => total + (current.price ?? 0) * 100,
+    //           0,
+    //         ) / 100;
 
-          acc[key] = acc[key] ?? 0 + price;
+    //       acc[key] = acc[key] ?? 0 + price;
 
-          Object.keys(Currency).forEach((curr) => {
-            acc[curr] = acc[curr] ?? 0;
-          });
+    //       Object.keys(Currency).forEach((curr) => {
+    //         acc[curr] = acc[curr] ?? 0;
+    //       });
 
-          return acc;
-        }, {}),
-      };
-    });
+    //       return acc;
+    //     }, {}),
+    //   };
+    // });
 
     const map = Object.keys(groupedByPosition).map((key) => {
       const [lt, lg] = key.split('*');
@@ -122,7 +123,7 @@ export const getAnalytics = async (userId: string) => {
     });
 
     return {
-      data,
+      data: [],
       lastPurchases,
       map,
       topSales,

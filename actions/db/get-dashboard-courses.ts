@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Chapter, Course, Price } from '@prisma/client';
+import { Category, Chapter, Course } from '@prisma/client';
 
 import { db } from '@/lib/db';
 
@@ -9,7 +9,7 @@ import { getProgress } from './get-progress';
 type CourseWithProgressAndCategory = Course & {
   category: Category;
   chapters: Chapter[];
-  price: Price | null;
+  price: number | null;
   progress: number | null;
 };
 
@@ -18,7 +18,7 @@ export const getDashboardCourses = async (userId: string) => {
     where: { userId },
     select: {
       course: {
-        include: { category: true, chapters: { where: { isPublished: true } }, price: true },
+        include: { category: true, chapters: { where: { isPublished: true } } },
       },
     },
   });
