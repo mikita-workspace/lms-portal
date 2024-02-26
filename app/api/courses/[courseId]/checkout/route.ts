@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       where: { id: params.courseId, isPublished: true },
     });
 
-    const { locale, details } = await req.json();
+    const { locale, details, rate } = await req.json();
 
     if (!course || !locale?.currency) {
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
@@ -41,7 +41,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
           product_data: {
             name: course.title,
           },
-          unit_amount: course.price!,
+          unit_amount: course.price! * rate,
         },
       },
     ];

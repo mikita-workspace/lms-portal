@@ -34,6 +34,7 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
         body: {
           locale: localeInfo?.locale,
           details: localeInfo?.details,
+          rate: localeInfo?.rate,
         },
         responseType: 'json',
       }),
