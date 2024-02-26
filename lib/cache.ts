@@ -30,7 +30,11 @@ export const removeValueFromMemoryCache = async (key: string) => cacheProvider.d
 export const getValueFromMemoryCache = async (key: string): Promise<string | null> =>
   cacheProvider.get(key) as string | null;
 
-export const fetchCachedData = async <T>(key: string, callback: () => T, expires = TTL_DEFAULT) => {
+export const fetchCachedData = async <T>(
+  key: string,
+  callback: () => Promise<T>,
+  expires = TTL_DEFAULT,
+) => {
   const cachedData = await getValueFromMemoryCache(key);
 
   if (cachedData) {

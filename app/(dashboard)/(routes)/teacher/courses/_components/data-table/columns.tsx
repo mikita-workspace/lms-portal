@@ -14,7 +14,7 @@ import {
 } from '@/components/ui';
 import { DropdownMenu } from '@/components/ui';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label: string) => {
   return (
@@ -34,7 +34,7 @@ export const columns: ColumnDef<Course>[] = [
     accessorKey: 'price',
     header: ({ column }) => handleSortingHeader(column, 'Price'),
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue('price') || '0');
+      const price = getConvertedPrice(row.getValue('price') || 0);
       const formatted = formatPrice(price, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY });
 
       return price ? formatted : <TextBadge variant="lime" label="Free" />;
