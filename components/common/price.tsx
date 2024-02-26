@@ -1,11 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { DEFAULT_CURRENCY_EXCHANGE } from '@/constants/locale';
-import { useLocaleStore } from '@/hooks/use-locale-store';
-import { formatPrice, getConvertedPrice } from '@/lib/format';
-import { hasJsonStructure } from '@/lib/utils';
+import { useLocaleAmount } from '@/hooks/use-locale-amount';
 
 import { Skeleton } from '../ui';
 import { TextBadge } from './text-badge';
@@ -16,31 +13,13 @@ type PriceProps = {
 };
 
 export const Price = ({ customRates, price }: PriceProps) => {
-  const localeInfo = useLocaleStore((state) => state.localeInfo);
+  const { amount, formattedPrice, isLoading } = useLocaleAmount(price, customRates);
 
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const amount = useMemo(() => {
-    if (localeInfo?.locale.currency && price) {
-      if (hasJsonStructure(customRates ?? '')) {
-        return price * JSON.parse(customRates!)[localeInfo.locale.currency];
-      }
-
-      return price * localeInfo?.rate ?? DEFAULT_CURRENCY_EXCHANGE;
-    }
-
-    return 0;
-  }, [customRates, localeInfo?.locale.currency, localeInfo?.rate, price]);
-
-  const formattedPrice = localeInfo?.locale
-    ? formatPrice(getConvertedPrice(amount), localeInfo?.locale)
-    : null;
-
-  const isLoading = !Number.isFinite(price) || !formattedPrice || !localeInfo;
 
   if (!isMounted) {
     return <Skeleton className="h-[20px] w-[100px]" />;
