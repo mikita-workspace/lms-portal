@@ -15,7 +15,7 @@ export const useLocaleAmount = (price: number | null, customRates: string | null
         return price * JSON.parse(customRates!)[localeInfo.locale.currency];
       }
 
-      return price * localeInfo?.rate ?? DEFAULT_CURRENCY_EXCHANGE;
+      return price * (localeInfo?.rate ?? DEFAULT_CURRENCY_EXCHANGE);
     }
 
     return 0;

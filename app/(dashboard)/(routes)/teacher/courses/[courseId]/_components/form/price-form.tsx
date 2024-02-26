@@ -155,8 +155,8 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup className="z-10">
-                      {Object.keys(exchangeRates.rates).map((key, index) => (
-                        <SelectItem key={index} value={key}>
+                      {Object.keys(exchangeRates.rates).map((key) => (
+                        <SelectItem key={key} value={key}>
                           {key}
                         </SelectItem>
                       ))}

@@ -12,7 +12,6 @@ type AdminInfo = Awaited<ReturnType<typeof getStripeInfo>>;
 
 type StripeBalancesProps = {
   balances: AdminInfo['stripeBalances'];
-  transactions: AdminInfo['stripeTransactions'];
 };
 
 export const StripeBalances = ({ balances }: StripeBalancesProps) => {
@@ -36,9 +35,9 @@ export const StripeBalances = ({ balances }: StripeBalancesProps) => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-2 mt-2">
-                    {balance.map((bl, index) => (
+                    {balance.map((bl) => (
                       <CountUp
-                        key={index}
+                        key={`${bl.amount}-${bl.currency}`}
                         className="text-2xl font-bold"
                         decimals={2}
                         duration={2.75}

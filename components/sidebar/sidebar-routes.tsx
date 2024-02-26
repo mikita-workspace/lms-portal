@@ -5,7 +5,6 @@ import {
   Compass,
   CreditCard,
   Crown,
-  Landmark,
   Layout,
   List,
   Settings2,

@@ -57,7 +57,7 @@ export const DataCard = ({
           )}
           {totalRevenue &&
             Object.keys(totalRevenue)
-              .sort()
+              .sort((a, b) => a.localeCompare(b))
               .map((curr) => (
                 <CountUp
                   key={curr}
