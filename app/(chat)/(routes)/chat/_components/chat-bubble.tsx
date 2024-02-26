@@ -61,7 +61,7 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
                 },
               }}
             >
-              {streamMessage || message.content}
+              {streamMessage ?? message.content}
             </Markdown>
           </p>
         </div>

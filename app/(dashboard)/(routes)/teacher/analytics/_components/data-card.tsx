@@ -75,11 +75,11 @@ export const DataCard = ({
                 <div className="pr-4">
                   <p className="font-medium mb-2">Top Locations</p>
                   <ul className="space-y-1">
-                    {topSales?.map((sale, index) => {
+                    {topSales?.map((sale) => {
                       const [country, city] = sale.key.split('-');
 
                       return (
-                        <li key={index}>
+                        <li key={sale.key}>
                           {country}, {city}
                         </li>
                       );

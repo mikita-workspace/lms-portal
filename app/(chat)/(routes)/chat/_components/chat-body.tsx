@@ -4,8 +4,7 @@ import { ArrowDown } from 'lucide-react';
 import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
-import { Button } from '@/components/ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -82,7 +81,7 @@ export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBody
             followButtonClassName="scroll-to-bottom-button"
           >
             <Content>
-              {messages.map((message, index) => {
+              {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
                 const name = isAssistant ? 'Chat GPT' : user?.name || 'User';
@@ -90,7 +89,7 @@ export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBody
 
                 return (
                   <div
-                    key={index}
+                    key={message.timestamp}
                     className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
                   >
                     <ChatBubble message={message} name={name} picture={picture} />

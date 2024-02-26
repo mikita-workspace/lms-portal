@@ -8,11 +8,11 @@ import Link from 'next/link';
 import { TextBadge } from '@/components/common/text-badge';
 import {
   Button,
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui';
-import { DropdownMenu } from '@/components/ui';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
