@@ -41,7 +41,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
           product_data: {
             name: course.title,
           },
-          unit_amount: course.price! * rate,
+          unit_amount: Math.round((course.price ?? 0) * rate),
         },
       },
     ];
