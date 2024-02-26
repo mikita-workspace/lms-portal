@@ -7,8 +7,15 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
-import { Label, Switch } from '@/components/ui';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Switch } from '@/components/ui';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
 import { fetcher } from '@/lib/fetcher';
 
 type PublicProfileFormProps = {
@@ -44,30 +51,28 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
 
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <div className="flex flex-col gap-1">
-        <p className="font-medium text-xl">Public Profile</p>
-        <span className="text-xs text-muted-foreground">
-          Here you can change the visibility of your profile
-        </span>
-      </div>
+      <p className="font-medium text-xl">Public Profile</p>
       <Form {...form}>
-        <form className="mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="isPublic"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel>Enable Public Profile</FormLabel>
+                  <FormDescription className="text-xs">
+                    Change the visibility of your profile.
+                  </FormDescription>
+                </div>
                 <FormControl>
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="visibility"
-                      checked={field.value}
-                      disabled={!isValid || isSubmitting}
-                      onCheckedChange={field.onChange}
-                      type="submit"
-                    />
-                    <Label htmlFor="visibility">Enable Public Profile</Label>
-                  </div>
+                  <Switch
+                    aria-readonly
+                    checked={field.value}
+                    disabled={!isValid || isSubmitting}
+                    onCheckedChange={field.onChange}
+                    type="submit"
+                  />
                 </FormControl>
               </FormItem>
             )}

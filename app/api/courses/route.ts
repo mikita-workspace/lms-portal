@@ -12,11 +12,9 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { title } = await req.json();
+    const values = await req.json();
 
-    const course = await db.course.create({ data: { userId: user.userId, title } });
-
-    await db.price.create({ data: { courseId: course.id } });
+    const course = await db.course.create({ data: { userId: user.userId, ...values } });
 
     return NextResponse.json(course);
   } catch (error) {

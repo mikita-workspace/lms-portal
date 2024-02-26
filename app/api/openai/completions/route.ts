@@ -5,7 +5,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { openai } from '@/server/openai';
 
-export const maxDuration = 60;
+// Only for Hobby Plan on vercel. For normal use, 60s is enough.
+export const maxDuration = 10;
 
 export const POST = async (req: NextRequest) => {
   try {

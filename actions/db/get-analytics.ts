@@ -3,7 +3,6 @@
 import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
 import groupBy from 'lodash.groupby';
 
-import { Currency } from '@/constants/locale';
 import { db } from '@/lib/db';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
@@ -35,9 +34,7 @@ export const getAnalytics = async (userId: string) => {
       where: { course: { userId } },
       orderBy: { updatedAt: 'desc' },
       include: {
-        course: {
-          include: { price: true },
-        },
+        course: true,
         details: true,
       },
     });
@@ -54,6 +51,7 @@ export const getAnalytics = async (userId: string) => {
       (item: (typeof sales)[number]) => `${item.country}-${item.city}`,
     );
     const groupedByTitle = groupBy(sales, 'title');
+    const uniqCurrencies = Array.from(new Set(sales.map(({ currency }) => currency)));
     const groupedByPosition = groupBy(
       sales,
       (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
@@ -103,8 +101,10 @@ export const getAnalytics = async (userId: string) => {
 
           acc[key] = acc[key] ?? 0 + price;
 
-          Object.keys(Currency).forEach((curr) => {
-            acc[curr] = acc[curr] ?? 0;
+          uniqCurrencies.forEach((curr) => {
+            if (curr) {
+              acc[curr] = acc[curr] ?? 0;
+            }
           });
 
           return acc;

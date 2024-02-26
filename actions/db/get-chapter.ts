@@ -18,7 +18,6 @@ export const getChapter = async ({ chapterId, courseId, userId }: GetChapter) =>
 
     const course = await db.course.findUnique({
       where: { id: courseId, isPublished: true },
-      select: { price: true },
     });
 
     const chapter = await db.chapter.findUnique({

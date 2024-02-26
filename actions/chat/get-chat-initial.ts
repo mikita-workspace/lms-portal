@@ -2,7 +2,7 @@
 
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
-import { ChatCompletionRole, DEFAULT_MODEL, models } from '@/constants/open-ai';
+import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { openai } from '@/server/openai';
 
 export const getChatInitial = async () => {
@@ -25,14 +25,12 @@ export const getChatInitial = async () => {
 
     return {
       introMessages: JSON.parse(introMessages.choices[0].message.content || '[]'),
-      models,
     };
   } catch (error) {
     console.error('[GET_CHAT_INITIAL_ACTION]', error);
 
     return {
       introMessages: [],
-      models: [],
     };
   }
 };

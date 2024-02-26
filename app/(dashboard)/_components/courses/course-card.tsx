@@ -1,28 +1,23 @@
 'use client';
 
-import { Price } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
 
 import { IconBadge } from '@/components/common/icon-badge';
+import { Price } from '@/components/common/price';
 import { ProgressBar } from '@/components/common/progress-bar';
-import { TextBadge } from '@/components/common/text-badge';
-import { Skeleton } from '@/components/ui';
-import { useCurrentLocale } from '@/hooks/use-current-locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
   category?: string;
   chaptersLength: number;
-  currentLocale: ReturnType<typeof useCurrentLocale>;
+  customRates: string | null;
   id: string;
   imageUrl: string | null;
   isPublished?: boolean;
-  prices: Price | null;
+  price: number | null;
   progress: number | null;
   title: string;
 };
@@ -30,35 +25,15 @@ type CourseCardProps = {
 export const CourseCard = ({
   category,
   chaptersLength,
-  currentLocale,
+  customRates,
   id,
   imageUrl,
   isPublished,
-  prices,
+  price,
   progress,
   title,
 }: CourseCardProps) => {
   const { user } = useCurrentUser();
-
-  const { ipInfo, isFetching: isIpFetching, error: ipInfoError } = currentLocale;
-
-  const price = useMemo(() => {
-    if (ipInfo) {
-      const currency = ipInfo.locale.currency.toLowerCase() as keyof Price;
-      const coursePrice = prices ? (prices[currency] as number) : 0;
-
-      if (!coursePrice) {
-        return 0;
-      }
-
-      return formatPrice(coursePrice, {
-        currency: ipInfo.locale.currency,
-        locale: ipInfo.locale.locale,
-      });
-    }
-
-    return null;
-  }, [ipInfo, prices]);
 
   const href = `/${user?.userId ? 'courses' : 'landing-course'}/${id}`;
 
@@ -94,17 +69,7 @@ export const CourseCard = ({
               value={progress}
             />
           ) : (
-            <div>
-              {!price && !isIpFetching && !ipInfoError ? (
-                <TextBadge variant="lime" label="Free" />
-              ) : (
-                <p className="text-md md:text-small font-medium text-neutral-700 dark:text-neutral-300">
-                  {ipInfoError && ((ipInfoError as Error).message || 'Price Error')}
-                  {!ipInfoError && isIpFetching && <Skeleton className="h-[20px] w-2/6" />}
-                  {!ipInfoError && !isIpFetching && price}
-                </p>
-              )}
-            </div>
+            <Price customRates={customRates} price={price} />
           )}
         </div>
       </div>

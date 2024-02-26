@@ -41,7 +41,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
         orderBy: { position: 'asc' },
       },
       category: true,
-      price: true,
     },
   });
 
@@ -71,8 +70,9 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
           <PreviewDescription
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}
+            customRates={course.customRates}
             description={course.description!}
-            prices={course.price}
+            price={course.price}
             title={course.title}
           />
         </div>
@@ -93,7 +93,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
               </LoginButton>
             </div>
           </div>
-          {/* TODO: External recourses */}
+          {/* TODO: External recourses. [https://trello.com/c/R4RkoqmC/13-add-external-resources-for-landing-course-page] */}
           {/* <div className="w-full flex space-x-4"></div> */}
         </div>
       </div>

@@ -3,10 +3,10 @@
 import {
   BarChart4,
   Compass,
+  CreditCard,
   Crown,
   Layout,
   List,
-  LockKeyhole,
   Settings2,
   Wallet2,
 } from 'lucide-react';
@@ -59,9 +59,9 @@ const settingsRoutes = (userId?: string) => [
   ...(isOwner(userId)
     ? [
         {
-          icon: LockKeyhole,
-          label: 'Admin',
-          href: '/settings/admin',
+          icon: CreditCard,
+          label: 'Stripe',
+          href: '/settings/stripe',
         },
       ]
     : []),

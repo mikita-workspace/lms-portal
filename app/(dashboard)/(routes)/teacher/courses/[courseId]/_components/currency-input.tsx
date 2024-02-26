@@ -2,11 +2,10 @@
 
 import Input from 'react-currency-input-field';
 
-import { Currency, Locale } from '@/constants/locale';
 import { getCurrencySymbol } from '@/lib/format';
 
 type CurrencyInputProps = {
-  intlConfig: { locale: Locale; currency: Currency };
+  intlConfig: { locale: string; currency: string };
   name?: string;
   onValueChange: (value: string | undefined, name?: string | undefined) => void;
   placeholder?: string;

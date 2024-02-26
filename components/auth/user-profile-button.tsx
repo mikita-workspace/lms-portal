@@ -152,7 +152,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           <DropdownMenuItem className="hover:cursor-pointer">
             <ExternalLink className="mr-2 h-4 w-4" />
             NovaChat&nbsp;|&nbsp;GPT&nbsp;&nbsp;
-            <TextBadge label="Bot" variant="lime" />
+            <TextBadge label="Telegram" variant="indigo" />
           </DropdownMenuItem>
         </Link>
         <LogoutButton>

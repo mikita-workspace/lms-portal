@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole, OPEN_AI_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,6 @@ import { cn } from '@/lib/utils';
 type ChatTopBarProps = {
   isSubmitting?: boolean;
   lastAssistantMessage: string;
-  models: { value: string; label: string }[];
   onAbortGenerating: () => void;
   onRegenerate: (event: SyntheticEvent) => void;
   setAssistantMessage: (value: string) => void;
@@ -31,7 +30,6 @@ type ChatTopBarProps = {
 export const ChatTopBar = ({
   isSubmitting = false,
   lastAssistantMessage,
-  models,
   onAbortGenerating,
   onRegenerate,
   setAssistantMessage,
@@ -71,7 +69,7 @@ export const ChatTopBar = ({
                 className="w-[180px] justify-between truncate"
               >
                 {currentModel
-                  ? models.find((model) => model.value === currentModel)?.label
+                  ? OPEN_AI_MODELS.find((model) => model.value === currentModel)?.label
                   : 'Select model...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -79,7 +77,7 @@ export const ChatTopBar = ({
             <PopoverContent className="w-[200px] p-0">
               <Command>
                 <CommandGroup>
-                  {models.map((model) => (
+                  {OPEN_AI_MODELS.map((model) => (
                     <CommandItem
                       key={model.value}
                       value={model.value}
