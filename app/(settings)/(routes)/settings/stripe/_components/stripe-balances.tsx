@@ -1,22 +1,21 @@
 'use client';
 
-import { format, fromUnixTime } from 'date-fns';
 import CountUp from 'react-countup';
 
-import { getAdminInfo } from '@/actions/db/get-admin-info';
-import { Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
+import { getStripeInfo } from '@/actions/db/get-stripe-info';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice, getConvertedPrice, getCurrencySymbol } from '@/lib/format';
+import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
-type AdminInfo = Awaited<ReturnType<typeof getAdminInfo>>;
+type AdminInfo = Awaited<ReturnType<typeof getStripeInfo>>;
 
 type StripeBalancesProps = {
   balances: AdminInfo['stripeBalances'];
   transactions: AdminInfo['stripeTransactions'];
 };
 
-export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) => {
+export const StripeBalances = ({ balances }: StripeBalancesProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -53,7 +52,8 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
             );
           })}
         </div>
-        <Card className="shadow-none xl:col-span-2">
+        {/* TODO: Stripe Balance Details refactoring. [https://trello.com/c/yHbjsk6T/12-stripe-balance-details-refactoring] */}
+        {/* <Card className="shadow-none xl:col-span-2">
           <CardHeader className="flex flex-col justify-center space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Last 100 Transactions</CardTitle>
           </CardHeader>
@@ -80,7 +80,6 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
                 <span className="text-base">&nbsp;Fees</span>
               </span>
             </div>
-            <p className="text-sm font-medium mb-2">Details:</p>
             <ScrollArea className="w-full h-[240px]">
               <div className="text-xs pr-4">
                 {transactions.map((tn) => {
@@ -124,7 +123,7 @@ export const StripeBalances = ({ balances, transactions }: StripeBalancesProps) 
               </div>
             </ScrollArea>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

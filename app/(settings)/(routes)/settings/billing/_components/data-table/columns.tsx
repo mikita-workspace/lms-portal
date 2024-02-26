@@ -9,7 +9,7 @@ import { getUserBilling } from '@/actions/db/get-user-billing';
 import { TextBadge } from '@/components/common/text-badge';
 import { Button } from '@/components/ui';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 const rootPageHref = '/settings/billing';
 
@@ -48,7 +48,10 @@ export const columns: ColumnDef<UserBilling>[] = [
     cell: ({ row }) => {
       const { amount, currency } = row.original;
 
-      const formatted = formatPrice(amount, { locale: DEFAULT_LOCALE, currency });
+      const formatted = formatPrice(getConvertedPrice(amount), {
+        locale: DEFAULT_LOCALE,
+        currency,
+      });
 
       return amount ? formatted : <TextBadge variant="lime" label="Free" />;
     },

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
+import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 
 type CourseEnrollButtonProps = {
@@ -15,6 +16,7 @@ type CourseEnrollButtonProps = {
 };
 
 export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrollButtonProps) => {
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
   const { amount, formattedPrice, isLoading } = useLocaleAmount(price, customRates);
 
   const [isFetching, setIsFetching] = useState(false);
@@ -29,7 +31,10 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
 
     await toast.promise(
       fetcher.post(`/api/courses/${courseId}/checkout`, {
-        body: {},
+        body: {
+          locale: localeInfo?.locale,
+          details: localeInfo?.details,
+        },
         responseType: 'json',
       }),
       {

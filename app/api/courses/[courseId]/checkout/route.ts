@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       where: { id: params.courseId, isPublished: true },
     });
 
-    const { locale, details: ipDetails } = await req.json();
+    const { locale, details } = await req.json();
 
     if (!course || !locale?.currency) {
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
@@ -74,7 +74,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true`,
       metadata: {
-        ...ipDetails,
+        ...details,
         courseId: course.id,
         userId: user.userId,
       },
