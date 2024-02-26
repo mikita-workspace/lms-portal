@@ -1,13 +1,15 @@
-import Redis from 'ioredis';
+import { createClient, VercelKV } from '@vercel/kv';
 import NodeCache from 'node-cache';
 
 const TTL_DEFAULT = 60;
 
-// TODO  add vercel
-
 export const cacheProvider = (() => {
   if (process.env.NODE_ENV === 'production') {
-    return new Redis(process.env.REDIS_URL as string);
+    return createClient({
+      url: process.env.REDIS_REST_API_URL as string,
+      token: process.env.REDIS_REST_API_TOKEN as string,
+      automaticDeserialization: false,
+    });
   }
 
   return new NodeCache({
@@ -16,8 +18,8 @@ export const cacheProvider = (() => {
 })();
 
 export const setValueToMemoryCache = async (key: string, value: string, expires = TTL_DEFAULT) => {
-  if (cacheProvider instanceof Redis) {
-    return cacheProvider.set(key, value, 'EX', expires);
+  if (cacheProvider instanceof VercelKV) {
+    return cacheProvider.set(key, value, { ex: expires });
   }
 
   return cacheProvider.set(key, value, expires);
