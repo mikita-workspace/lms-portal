@@ -10,7 +10,7 @@ datasource db {
 
 model User {
   id         String   @id @default(uuid())
-  Course     Course[]
+  course     Course[]
   createdAt  DateTime @default(now())
   email      String   @unique
   isPublic   Boolean? @default(false)
@@ -22,7 +22,6 @@ model User {
 
 model Course {
   id           String       @id @default(uuid())
-  Fees         Fees[]
   attachments  Attachment[]
   category     Category?    @relation(fields: [categoryId], references: [id])
   categoryId   String?
@@ -139,14 +138,12 @@ model StripeCustomer {
   userId           String   @unique
 }
 
-model Fees {
+model Fee {
   id        String   @id @default(uuid())
   amount    Int      @default(0)
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId  String
   createdAt DateTime @default(now())
   method    String
-  name      String
-  rate      Int      @default(0)
+  name      String   @unique
+  rate      Float    @default(0)
   updatedAt DateTime @updatedAt
 }

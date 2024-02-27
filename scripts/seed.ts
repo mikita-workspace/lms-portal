@@ -31,6 +31,13 @@ async function main() {
       ],
     });
 
+    await database.fee.createMany({
+      data: [
+        { amount: 0, method: 'percentage', rate: 2.9, name: 'Stripe Processing Fee' },
+        { amount: 30, method: 'fixed', rate: 0, name: 'Per Transaction Fee' },
+      ],
+    });
+
     console.info('Success');
   } catch (error) {
     console.error('Error seeding the database categories', error);

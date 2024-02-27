@@ -40,6 +40,8 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     },
   });
 
+  const fees = await db.fee.findMany();
+
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
 
   if (!course) {
@@ -123,14 +125,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <IconBadge icon={BadgeDollarSign} />
                 <h2 className="text-xl">Sell your course</h2>
               </div>
-              <PriceForm {...commonFormProps} />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={Globe} />
-                <h2 className="text-xl">Localization</h2>
-              </div>
-              <CountriesForm {...commonFormProps} />
+              <PriceForm {...commonFormProps} fees={fees} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
@@ -138,6 +133,13 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <h2 className="text-xl">Recourses & Attachments</h2>
               </div>
               <AttachmentForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Globe} />
+                <h2 className="text-xl">Localization</h2>
+              </div>
+              <CountriesForm {...commonFormProps} />
             </div>
           </div>
         </div>

@@ -1,13 +1,13 @@
 'use client';
 
-import { Course } from '@prisma/client';
+import { Course, Fee } from '@prisma/client';
 import { format, fromUnixTime } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { TextBadge } from '@/components/common/text-badge';
+import { Price } from '@/components/common/price';
 import {
   Input,
   Select,
@@ -28,14 +28,16 @@ import { CurrencyInput } from '../currency-input';
 
 type PriceFormProps = {
   courseId: string;
+  fees: Fee[];
   initialData: Course;
 };
 
-export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
+export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
   const { exchangeRates, localeInfo } = useLocaleStore((state) => ({
     exchangeRates: state.exchangeRates,
     localeInfo: state.localeInfo,
   }));
+
   const router = useRouter();
 
   const [price, setPrice] = useState<string | number>(
@@ -115,61 +117,55 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
           )}
         </Button>
       </div>
-      {!isEditing &&
-        (Number(price) ? (
-          <p className="text-sm mt-2">
-            {formatPrice(price as number, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY })}
-          </p>
-        ) : (
-          <TextBadge variant="lime" label="Free" />
-        ))}
+      {!isEditing && <Price price={getScaledPrice(price as number)} fees={fees} useDefaultLocale />}
       {isEditing && (
         <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2 justify-center">
-            <CurrencyInput
-              intlConfig={{ locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY }}
-              name="price"
-              onValueChange={handleOnPriceChange}
-              placeholder={`Set a price for course`}
-              value={price}
-            />
-            {exchangeRates?.rates && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>≈</span>
-                <div>
-                  {formatPrice(
-                    ((price || 0) as number) *
+            <div className="flex gap-2 items-center">
+              <CurrencyInput
+                intlConfig={{ locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY }}
+                name="price"
+                onValueChange={handleOnPriceChange}
+                placeholder={`Set a price for course`}
+                value={price}
+              />
+              {exchangeRates?.rates && (
+                <div
+                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                  title={`Updated at ${format(fromUnixTime(exchangeRates.updatedAt), 'HH:mm, dd MMM yyyy')}`}
+                >
+                  <span>≈</span>
+                  <div>
+                    {formatPrice(
+                      ((price || 0) as number) *
+                        {
+                          ...exchangeRates.rates,
+                          ...(isValidCustomRates && JSON.parse(customRates)),
+                        }[selectedCurrency],
                       {
-                        ...exchangeRates.rates,
-                        ...(isValidCustomRates && JSON.parse(customRates)),
-                      }[selectedCurrency],
-                    {
-                      locale: DEFAULT_LOCALE,
-                      currency: selectedCurrency,
-                    },
-                  )}
+                        locale: DEFAULT_LOCALE,
+                        currency: selectedCurrency,
+                      },
+                    )}
+                  </div>
+                  <Select onValueChange={handleCurrencySelect} defaultValue={selectedCurrency}>
+                    <SelectTrigger className="w-[80px]">
+                      <SelectValue placeholder="Select a currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup className="z-10">
+                        {Object.keys(exchangeRates.rates).map((key) => (
+                          <SelectItem key={key} value={key}>
+                            {key}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Select onValueChange={handleCurrencySelect} defaultValue={selectedCurrency}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Select a currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup className="z-10">
-                      {Object.keys(exchangeRates.rates).map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {key}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-            {exchangeRates?.updatedAt && (
-              <span className="text-xs text-muted-foreground">
-                Updated at {format(fromUnixTime(exchangeRates.updatedAt), 'HH:mm, dd MMM yyyy')}
-              </span>
-            )}
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">Fees will be added to the price</p>
           </div>
           <p className="text-sm">You can also add a custom exchange rate</p>
           <Input
