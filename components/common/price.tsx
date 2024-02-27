@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
 
-import { Skeleton } from '../ui';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Skeleton } from '../ui';
 import { TextBadge } from './text-badge';
 
 type PriceProps = {
@@ -16,7 +16,14 @@ type PriceProps = {
 };
 
 export const Price = ({ customRates, fees = [], price, useDefaultLocale }: PriceProps) => {
-  const { amount, formattedPrice, formattedTotalFees, formattedNet, isLoading } = useLocaleAmount({
+  const {
+    amount,
+    formattedPrice,
+    formattedCalculatedFees,
+    formattedTotalFees,
+    formattedNet,
+    isLoading,
+  } = useLocaleAmount({
     customRates,
     fees,
     price,
@@ -40,11 +47,27 @@ export const Price = ({ customRates, fees = [], price, useDefaultLocale }: Price
         <div className="flex flex-col gap-1">
           <span>{formattedPrice}</span>
           {formattedNet && formattedTotalFees && (
-            <div className="flex gap-1 text-xs font-normal text-muted-foreground">
-              <span>{formattedNet}</span>
-              <span>+&nbsp;{formattedTotalFees}</span>
-              <span className="">Fees</span>
-            </div>
+            <Accordion type="single" collapsible>
+              <AccordionItem value="fees" className="border-none">
+                <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
+                  <div className="flex gap-1 text-xs font-normal text-muted-foreground">
+                    <span>{formattedNet}</span>
+                    <span>+&nbsp;{formattedTotalFees}</span>
+                    <span className="">Fees</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
+                  {formattedCalculatedFees.map((fee) => (
+                    <div key={fee.id} className="flex gap-2 items-center justify-between">
+                      <div>
+                        {fee.name}&nbsp;(x{fee.quantity})
+                      </div>
+                      <div>{fee.amount}</div>
+                    </div>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           )}
         </div>
       )}

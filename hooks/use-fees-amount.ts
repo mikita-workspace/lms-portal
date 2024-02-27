@@ -7,6 +7,7 @@ export const useFeesAmount = (price: number | null, fees: Fee[]) => {
     return {
       net: 0,
       calculatedFees: [],
+      quantity: 0,
     };
   }
 
@@ -25,6 +26,7 @@ export const useFeesAmount = (price: number | null, fees: Fee[]) => {
       amount,
       id: fee.id,
       name: fee.name,
+      quantity: 1,
     };
   });
 
