@@ -40,7 +40,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     },
   });
 
-  const fees = await db.fee.findMany();
+  const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
 

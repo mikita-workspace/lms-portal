@@ -1,5 +1,6 @@
 'use client';
 
+import { Fee } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 
 import { IconBadge } from '@/components/common/icon-badge';
@@ -11,6 +12,7 @@ type PreviewDescriptionProps = {
   chaptersLength: number;
   customRates: string | null;
   description: string;
+  fees?: Fee[];
   price: number | null;
   title: string;
 };
@@ -20,6 +22,7 @@ export const PreviewDescription = ({
   chaptersLength,
   customRates,
   description,
+  fees,
   price,
   title,
 }: PreviewDescriptionProps) => {
@@ -39,7 +42,7 @@ export const PreviewDescription = ({
         ))}
       </div>
       <div className="mt-4">
-        <Price customRates={customRates} price={price} />
+        <Price customRates={customRates} price={price} fees={fees} showFeesAccordion />
       </div>
     </div>
   );

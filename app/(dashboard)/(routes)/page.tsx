@@ -16,6 +16,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const user = await getCurrentUser();
 
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
+  const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
+
   const courses = await getCourses({ ...searchParams, userId: user?.userId });
 
   return (
@@ -27,7 +29,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       </Suspense>
       <div className="p-6 space-y-4">
         <Categories items={categories} />
-        <CoursesList items={courses} />
+        <CoursesList items={courses} fees={fees} />
       </div>
     </>
   );

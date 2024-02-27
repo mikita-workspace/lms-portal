@@ -1,5 +1,6 @@
 'use client';
 
+import { Fee } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,16 +8,17 @@ import Link from 'next/link';
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { ProgressBar } from '@/components/common/progress-bar';
-import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
   category?: string;
   chaptersLength: number;
   customRates: string | null;
+  fees?: Fee[];
   id: string;
   imageUrl: string | null;
   isPublished?: boolean;
+  isPurchased?: boolean;
   price: number | null;
   progress: number | null;
   title: string;
@@ -26,16 +28,16 @@ export const CourseCard = ({
   category,
   chaptersLength,
   customRates,
+  fees = [],
   id,
   imageUrl,
   isPublished,
+  isPurchased,
   price,
   progress,
   title,
 }: CourseCardProps) => {
-  const { user } = useCurrentUser();
-
-  const href = `/${user?.userId ? 'courses' : 'landing-course'}/${id}`;
+  const href = `/${isPurchased ? 'courses' : 'landing-course'}/${id}`;
 
   return (
     <Link href={href} title={title} className={cn(!isPublished && 'pointer-events-none')}>
@@ -69,7 +71,7 @@ export const CourseCard = ({
               value={progress}
             />
           ) : (
-            <Price customRates={customRates} price={price} />
+            <Price customRates={customRates} price={price} fees={fees} />
           )}
         </div>
       </div>

@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { CourseEnrollButton } from '@/app/(course)/(routes)/courses/[courseId]/chapters/[chapterId]/_components/course-enroll-button';
 import { LoginButton } from '@/components/auth/login-button';
 import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
+import { cn } from '@/lib/utils';
 
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
@@ -29,7 +31,11 @@ export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Pr
 const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const user = await getCurrentUser();
 
-  if (user) {
+  const purchase = await db.purchase.findUnique({
+    where: { userId_courseId: { userId: user?.userId ?? '', courseId: params.courseId } },
+  });
+
+  if (purchase) {
     redirect(`/courses/${params.courseId}`);
   }
 
@@ -43,6 +49,8 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
       category: true,
     },
   });
+
+  const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
   if (!course) {
     redirect('/');
@@ -72,12 +80,20 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             chaptersLength={course.chapters.length}
             customRates={course.customRates}
             description={course.description!}
+            fees={fees}
             price={course.price}
             title={course.title}
           />
         </div>
         <div className="space-y-6 md:col-span-2">
-          <div className="w-full border rounded-lg p-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <div
+            className={cn(
+              'w-full border rounded-lg p-6',
+              user?.userId &&
+                'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%',
+              !user?.userId && 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500',
+            )}
+          >
             <div className="mb-8 space-y-2 text-white">
               <h4 className="font-semibold text-xl">Ready to start learning?</h4>
               <p className="text-sm">
@@ -85,12 +101,20 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
               </p>
             </div>
             <div className="w-full">
-              <LoginButton>
-                <Button className="w-full" variant="outline">
-                  Login to continue
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </LoginButton>
+              {user?.userId ? (
+                <CourseEnrollButton
+                  courseId={params.courseId}
+                  customRates={course.customRates}
+                  price={course.price}
+                />
+              ) : (
+                <LoginButton>
+                  <Button className="w-full" variant="outline">
+                    Login to continue
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </LoginButton>
+              )}
             </div>
           </div>
           {/* TODO: External recourses. [https://trello.com/c/R4RkoqmC/13-add-external-resources-for-landing-course-page] */}

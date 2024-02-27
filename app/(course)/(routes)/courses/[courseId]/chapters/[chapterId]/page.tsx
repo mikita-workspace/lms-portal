@@ -65,11 +65,13 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
               nextChapterId={nextChapter?.id}
             />
           ) : (
-            <CourseEnrollButton
-              courseId={params.courseId}
-              customRates={course.customRates}
-              price={course.price}
-            />
+            <div className="w-full md:w-auto">
+              <CourseEnrollButton
+                courseId={params.courseId}
+                customRates={course.customRates}
+                price={course.price}
+              />
+            </div>
           )}
         </div>
         {!isLocked && chapter.description && (
