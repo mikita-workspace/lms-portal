@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
@@ -12,14 +11,9 @@ import { capitalize } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
 
-const SlackIcon = () => (
-  <Image className="ml-0.5 mr-4" src="/assets/slack.svg" alt="slack" height={18} width={18} />
-);
-
 const iconMap = {
   [Provider.GITHUB]: FaGithub,
   [Provider.GOOGLE]: FcGoogle,
-  [Provider.SLACK]: SlackIcon,
 };
 
 type OAuthButton = {
