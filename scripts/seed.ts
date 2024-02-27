@@ -34,7 +34,8 @@ async function main() {
     await database.fee.createMany({
       data: [
         { amount: 0, method: 'percentage', rate: 2.9, name: 'Stripe Processing Fee' },
-        { amount: 30, method: 'fixed', rate: 0, name: 'Per Transaction Fee' },
+        { amount: 30, method: 'fixed', rate: 0, name: 'Stripe Transaction Fee' },
+        { amount: 0, method: 'fixed', rate: 5, name: 'Nova LMS Service Fee' },
       ],
     });
 
