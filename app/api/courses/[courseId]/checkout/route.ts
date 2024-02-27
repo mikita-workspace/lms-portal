@@ -64,6 +64,8 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
 
     const session = await stripe.checkout.sessions.create({
       allow_promotion_codes: true,
+      automatic_tax: { enabled: true },
+      customer_update: { address: 'auto' },
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true`,
       customer: stripeCustomer.stripeCustomerId,
       expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
