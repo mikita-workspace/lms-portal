@@ -1,8 +1,19 @@
 import { Fee } from '@prisma/client';
 
 import { CalculationMethod } from '@/constants/fees';
+import { DEFAULT_CURRENCY_RATE } from '@/constants/locale';
 
-export const useFeesAmount = (price: number | null, fees: Fee[]) => {
+type UseFeesAmount = {
+  fees: Fee[];
+  price: number | null;
+  rate?: number;
+};
+
+export const useFeesAmount = ({
+  fees = [],
+  price,
+  rate = DEFAULT_CURRENCY_RATE,
+}: UseFeesAmount) => {
   if (!price) {
     return {
       net: 0,
@@ -15,7 +26,7 @@ export const useFeesAmount = (price: number | null, fees: Fee[]) => {
     let amount = 0;
 
     if (fee.method === CalculationMethod.FIXED) {
-      amount = fee.amount;
+      amount = fee.amount * rate;
     }
 
     if (fee.method === CalculationMethod.PERCENTAGE) {
