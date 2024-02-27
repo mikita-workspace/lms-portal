@@ -62,6 +62,7 @@ export const POST = async (req: NextRequest) => {
         invoiceId,
         latitude: Number(session?.metadata?.latitude),
         longitude: Number(session?.metadata?.longitude),
+        paymentIntent: session.payment_intent,
         price: session.amount_total ?? 0,
         purchaseId: purchase.id,
       },

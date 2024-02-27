@@ -99,19 +99,20 @@ model UserProgress {
 }
 
 model PurchaseDetails {
-  id          String   @id @default(uuid())
-  city        String?
-  country     String?
-  countryCode String?
-  createdAt   DateTime @default(now())
-  currency    String?
-  invoiceId   String?
-  latitude    Float?
-  longitude   Float?
-  price       Int?
-  purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
-  purchaseId  String
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid())
+  city          String?
+  country       String?
+  countryCode   String?
+  createdAt     DateTime @default(now())
+  currency      String?
+  invoiceId     String?
+  latitude      Float?
+  longitude     Float?
+  paymentIntent String?
+  price         Int?
+  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  purchaseId    String
+  updatedAt     DateTime @updatedAt
 
   @@unique([purchaseId])
 }
