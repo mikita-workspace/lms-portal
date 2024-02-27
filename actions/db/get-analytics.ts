@@ -93,11 +93,10 @@ export const getAnalytics = async (userId: string) => {
       return {
         name: key,
         ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
-          const price =
-            groupedByCurrency[key].reduce(
-              (total, current) => total + (current.price ?? 0) * 100,
-              0,
-            ) / 100;
+          const price = groupedByCurrency[key].reduce(
+            (total, current) => total + (current.price ?? 0),
+            0,
+          );
 
           acc[key] = acc[key] ?? 0 + price;
 

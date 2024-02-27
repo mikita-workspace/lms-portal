@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAnalytics } from '@/actions/db/get-analytics';
 import Map from '@/components/map';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 import { Chart } from './_components/chart';
 import { DataCard } from './_components/data-card';
@@ -30,7 +30,7 @@ const AnalyticsPage = async () => {
             {mp.country}, {mp.city}
           </h2>
           <span>
-            {formatPrice(mp.total, {
+            {formatPrice(getConvertedPrice(mp.total), {
               locale: DEFAULT_LOCALE,
               currency: mp.currency ?? DEFAULT_CURRENCY,
             })}

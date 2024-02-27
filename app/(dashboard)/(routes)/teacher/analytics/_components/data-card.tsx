@@ -7,7 +7,7 @@ import CountUp from 'react-countup';
 import { ScrollArea } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { getCurrencySymbol } from '@/lib/format';
+import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 
 type DataCardProps = {
   label: string;
@@ -64,7 +64,7 @@ export const DataCard = ({
                   className="text-2xl font-bold"
                   decimals={2}
                   duration={2.75}
-                  end={totalRevenue?.[curr] ?? 0}
+                  end={getConvertedPrice(totalRevenue?.[curr] ?? 0)}
                   prefix={`${getCurrencySymbol(DEFAULT_LOCALE, curr)} `}
                 />
               ))}
