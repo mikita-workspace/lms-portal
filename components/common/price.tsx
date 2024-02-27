@@ -28,7 +28,13 @@ export const Price = ({ customRates, price }: PriceProps) => {
   return (
     <p className="text-md md:text-small font-bold text-neutral-700 dark:text-neutral-300">
       {isLoading && <Skeleton className="h-[20px] w-[100px]" />}
-      {!isLoading && amount > 0 && formattedPrice}
+      {!isLoading && amount > 0 && (
+        <div className="flex items-center">
+          <span>{formattedPrice}</span>
+          {/* TODO */}
+          {/* &nbsp;<span className="text-xs font-light">+&nbsp;Fees</span> */}
+        </div>
+      )}
       {!isLoading && amount === 0 && <TextBadge variant="lime" label="Free" />}
     </p>
   );
