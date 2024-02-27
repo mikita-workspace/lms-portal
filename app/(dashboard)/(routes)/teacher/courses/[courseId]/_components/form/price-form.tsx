@@ -117,7 +117,14 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
           )}
         </Button>
       </div>
-      {!isEditing && <Price price={getScaledPrice(price as number)} fees={fees} useDefaultLocale />}
+      {!isEditing && (
+        <Price
+          fees={fees}
+          price={getScaledPrice(price as number)}
+          showFeesAccordion
+          useDefaultLocale
+        />
+      )}
       {isEditing && (
         <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2 justify-center">

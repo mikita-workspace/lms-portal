@@ -12,10 +12,17 @@ type PriceProps = {
   customRates?: string | null;
   fees?: Fee[];
   price: number | null;
+  showFeesAccordion?: boolean;
   useDefaultLocale?: boolean;
 };
 
-export const Price = ({ customRates, fees = [], price, useDefaultLocale }: PriceProps) => {
+export const Price = ({
+  customRates,
+  fees = [],
+  price,
+  showFeesAccordion = false,
+  useDefaultLocale = false,
+}: PriceProps) => {
   const {
     amount,
     formattedPrice,
@@ -47,27 +54,38 @@ export const Price = ({ customRates, fees = [], price, useDefaultLocale }: Price
         <div className="flex flex-col gap-1">
           <span>{formattedPrice}</span>
           {formattedNet && formattedTotalFees && (
-            <Accordion type="single" collapsible>
-              <AccordionItem value="fees" className="border-none">
-                <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
-                  <div className="flex gap-1 text-xs font-normal text-muted-foreground">
-                    <span>{formattedNet}</span>
-                    <span>+&nbsp;{formattedTotalFees}</span>
-                    <span className="">Fees</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
-                  {formattedCalculatedFees.map((fee) => (
-                    <div key={fee.id} className="flex gap-2 items-center justify-between">
-                      <div>
-                        {fee.name}&nbsp;(x{fee.quantity})
+            <>
+              {showFeesAccordion && (
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="fees" className="border-none">
+                    <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
+                      <div className="flex gap-1 text-xs font-normal text-muted-foreground">
+                        <span>{formattedNet}</span>
+                        <span>+&nbsp;{formattedTotalFees}</span>
+                        <span className="">Fees</span>
                       </div>
-                      <div>{fee.amount}</div>
-                    </div>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
+                      {formattedCalculatedFees.map((fee) => (
+                        <div key={fee.id} className="flex gap-2 items-center justify-between">
+                          <div>
+                            {fee.name}&nbsp;(x{fee.quantity})
+                          </div>
+                          <div>{fee.amount}</div>
+                        </div>
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              )}
+              {!showFeesAccordion && (
+                <div className="flex gap-1 text-xs font-normal text-muted-foreground">
+                  <span>{formattedNet}</span>
+                  <span>+&nbsp;{formattedTotalFees}</span>
+                  <span className="">Fees</span>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
