@@ -17,7 +17,7 @@ type CourseEnrollButtonProps = {
 
 export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrollButtonProps) => {
   const localeInfo = useLocaleStore((state) => state.localeInfo);
-  const { amount, formattedPrice, isLoading } = useLocaleAmount(price, customRates);
+  const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
 
   const [isFetching, setIsFetching] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -73,9 +73,9 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
       variant="success"
     >
       {isLoading && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
-      {!isLoading && amount > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
+      {!isLoading && (amount ?? 0) > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
       Enroll for&nbsp;
-      {!isLoading && amount > 0 && formattedPrice}
+      {!isLoading && (amount ?? 0) > 0 && formattedPrice}
       {!isLoading && amount === 0 && (
         <>
           Free
