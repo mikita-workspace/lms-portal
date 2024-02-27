@@ -1,19 +1,25 @@
 'use client';
 
+import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
-import { Provider } from '@/constants/auth';
+import { OAUTH_LABELS, Provider } from '@/constants/auth';
 import { capitalize } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
 
+const YandexIcon = () => (
+  <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} />
+);
+
 const iconMap = {
   [Provider.GITHUB]: FaGithub,
   [Provider.GOOGLE]: FcGoogle,
+  [Provider.YANDEX]: YandexIcon,
 };
 
 type OAuthButton = {
@@ -42,6 +48,7 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
   };
 
   const Icon = iconMap[provider];
+  const oAuthLabel = OAUTH_LABELS[provider as keyof typeof OAUTH_LABELS] ?? capitalize(provider);
 
   return (
     <Button
@@ -51,7 +58,7 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
       onClick={handleSignIn}
     >
       <Icon className="mr-4" size={20} />
-      {`Continue with ${capitalize(provider)}`}
+      {`Continue with ${oAuthLabel}`}
     </Button>
   );
 };

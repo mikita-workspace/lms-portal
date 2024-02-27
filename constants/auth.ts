@@ -1,5 +1,6 @@
 export enum Provider {
   GOOGLE = 'google',
+  YANDEX = 'yandex',
   GITHUB = 'github',
 }
 
@@ -14,3 +15,7 @@ export enum UserRole {
   STUDENT = 'student',
   TEACHER = 'teacher',
 }
+
+export const OAUTH_LABELS = {
+  [Provider.YANDEX]: 'Yandex ID',
+};
