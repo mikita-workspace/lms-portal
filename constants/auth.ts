@@ -17,5 +17,6 @@ export enum UserRole {
 }
 
 export const OAUTH_LABELS = {
+  [Provider.GITHUB]: 'GitHub',
   [Provider.YANDEX]: 'Yandex ID',
 };
