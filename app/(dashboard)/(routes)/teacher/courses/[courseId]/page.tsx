@@ -1,11 +1,4 @@
-import {
-  ArrowLeft,
-  BadgeDollarSign,
-  Files,
-  Globe,
-  LayoutDashboard,
-  ListChecks,
-} from 'lucide-react';
+import { ArrowLeft, BadgeDollarSign, Files, Hash, LayoutDashboard, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -18,7 +11,7 @@ import { Actions } from './_components/actions';
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
 import { ChaptersForm } from './_components/form/chapters-form';
-import { CountriesForm } from './_components/form/countries-form';
+import { CustomTagsForm } from './_components/form/custom-tags-form';
 import { DescriptionForm } from './_components/form/description-form';
 import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
@@ -51,7 +44,6 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const requiredFields = [
     course.categoryId,
     course.chapters.some((chapter) => chapter.isPublished),
-    course.countryCodes.length,
     course.description,
     course.imageUrl,
     course.title,
@@ -136,10 +128,10 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
             </div>
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={Globe} />
-                <h2 className="text-xl">Localization</h2>
+                <IconBadge icon={Hash} />
+                <h2 className="text-xl">Custom tags</h2>
               </div>
-              <CountriesForm {...commonFormProps} />
+              <CustomTagsForm {...commonFormProps} />
             </div>
           </div>
         </div>
