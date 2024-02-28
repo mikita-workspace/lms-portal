@@ -4,7 +4,7 @@ import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { Button } from '@/components/ui';
+import { Button, ButtonProps } from '@/components/ui';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -13,9 +13,15 @@ type CourseEnrollButtonProps = {
   courseId: string;
   customRates: string | null;
   price: number | null;
+  variant?: ButtonProps['variant'];
 };
 
-export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrollButtonProps) => {
+export const CourseEnrollButton = ({
+  courseId,
+  customRates,
+  price,
+  variant = 'success',
+}: CourseEnrollButtonProps) => {
   const localeInfo = useLocaleStore((state) => state.localeInfo);
   const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
 
@@ -58,7 +64,7 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
 
   if (!isMounted) {
     return (
-      <Button className="w-full" size="lg" variant="success" disabled>
+      <Button className="w-full" size="lg" variant={variant} disabled>
         <MoreHorizontal className="w-6 h-6 animate-pulse" />
       </Button>
     );
@@ -70,7 +76,7 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
       disabled={isFetching || isLoading}
       onClick={handleClick}
       size="lg"
-      variant="success"
+      variant={variant}
     >
       {isLoading && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
       {!isLoading && (amount ?? 0) > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}

@@ -107,6 +107,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
                   courseId={params.courseId}
                   customRates={course.customRates}
                   price={course.price}
+                  variant="outline"
                 />
               ) : (
                 <LoginButton>
