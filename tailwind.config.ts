@@ -75,11 +75,16 @@ const config = withUt({
           '25%': { transform: 'rotate(-15deg)' },
           '75%': { transform: 'rotate(15deg)' },
         },
+        'cookie-consent-up': {
+          from: { bottom: '-100px' },
+          to: { bottom: '0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-once': 'spin-once 0.5s ease-in-out',
+        'cookie-consent-up': 'cookie-consent-up 1s ease-out',
       },
     },
   },
