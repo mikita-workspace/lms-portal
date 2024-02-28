@@ -13,3 +13,6 @@ export const OWNER_COPYRIGHT = 'Mikita Kandratsyeu. All rights reserved.';
 
 export const TEXTAREA_MAX_LENGTH = 256;
 export const CHAPTER_XP = 20;
+
+export const ONE_YEAR_SEC = 60 * 60 * 24 * 365;
+export const ONE_DAY_SEC = 60 * 60 * 24;
