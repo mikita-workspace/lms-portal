@@ -13,7 +13,7 @@ import { capitalize } from '@/lib/utils';
 import { Button, ButtonProps } from '../ui';
 
 const YandexIcon = () => (
-  <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} />
+  <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} priority />
 );
 
 const SlackIcon = () => (
@@ -23,6 +23,7 @@ const SlackIcon = () => (
     alt="slack"
     height={16}
     width={16}
+    priority
   />
 );
 const iconMap = {
