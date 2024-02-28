@@ -4,6 +4,8 @@ import { hasCookie, setCookie } from 'cookies-next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+import { COOKIE_POLICY_URL } from '@/constants/common';
+
 import { Button } from '../ui';
 
 export const CookieConsent = () => {
@@ -28,7 +30,7 @@ export const CookieConsent = () => {
         <span className="text-dark text-sm font-medium mr-16">
           We use cookies to enhance the user experience. By using our website, you consent to all
           cookies in accordance with our{' '}
-          <Link href="#" target="_blank" className="hover:underline font-bold">
+          <Link href={COOKIE_POLICY_URL} target="_blank" className="hover:underline font-bold">
             Cookie Policy
           </Link>
           .
