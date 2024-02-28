@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
 
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
+import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -31,6 +32,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', GeistSans.className)}>
         <Providers exchangeRates={exchangeRates}>{children}</Providers>
+        <CookieConsent />
       </body>
     </html>
   );
