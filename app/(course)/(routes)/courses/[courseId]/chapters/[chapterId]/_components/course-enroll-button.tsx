@@ -64,7 +64,7 @@ export const CourseEnrollButton = ({
 
   if (!isMounted) {
     return (
-      <Button className="w-full" size="lg" variant={variant} disabled>
+      <Button className="w-full truncate" size="lg" variant={variant} disabled>
         <MoreHorizontal className="w-6 h-6 animate-pulse" />
       </Button>
     );
