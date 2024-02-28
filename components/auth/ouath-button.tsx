@@ -16,9 +16,19 @@ const YandexIcon = () => (
   <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} />
 );
 
+const SlackIcon = () => (
+  <Image
+    className="ml-0.5 mr-[1.125rem]"
+    src="/assets/slack.svg"
+    alt="slack"
+    height={16}
+    width={16}
+  />
+);
 const iconMap = {
   [Provider.GITHUB]: FaGithub,
   [Provider.GOOGLE]: FcGoogle,
+  [Provider.SLACK]: SlackIcon,
   [Provider.YANDEX]: YandexIcon,
 };
 

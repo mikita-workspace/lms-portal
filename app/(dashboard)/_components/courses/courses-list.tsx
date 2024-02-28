@@ -1,14 +1,17 @@
 'use client';
 
+import { Fee } from '@prisma/client';
+
 import { getCourses } from '@/actions/db/get-courses';
 
 import { CourseCard } from './course-card';
 
 type CoursesListProps = {
+  fees?: Fee[];
   items: Awaited<ReturnType<typeof getCourses>>;
 };
 
-export const CoursesList = ({ items }: CoursesListProps) => {
+export const CoursesList = ({ fees, items }: CoursesListProps) => {
   return (
     <div>
       <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
@@ -17,9 +20,11 @@ export const CoursesList = ({ items }: CoursesListProps) => {
             category={item?.category?.name}
             chaptersLength={item.chapters.length}
             customRates={item.customRates}
+            fees={fees}
             id={item.id}
             imageUrl={item.imageUrl}
             isPublished={item.isPublished}
+            isPurchased={Boolean(item?.purchases?.length)}
             key={item.id}
             price={item.price}
             progress={item.progress}

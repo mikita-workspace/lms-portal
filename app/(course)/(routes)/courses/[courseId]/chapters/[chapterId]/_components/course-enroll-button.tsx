@@ -17,7 +17,7 @@ type CourseEnrollButtonProps = {
 
 export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrollButtonProps) => {
   const localeInfo = useLocaleStore((state) => state.localeInfo);
-  const { amount, formattedPrice, isLoading } = useLocaleAmount(price, customRates);
+  const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
 
   const [isFetching, setIsFetching] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -58,7 +58,7 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
 
   if (!isMounted) {
     return (
-      <Button className="w-full md:w-auto" size="lg" variant="success" disabled>
+      <Button className="w-full" size="lg" variant="success" disabled>
         <MoreHorizontal className="w-6 h-6 animate-pulse" />
       </Button>
     );
@@ -66,16 +66,16 @@ export const CourseEnrollButton = ({ courseId, customRates, price }: CourseEnrol
 
   return (
     <Button
-      className="w-full md:w-auto"
+      className="w-full"
       disabled={isFetching || isLoading}
       onClick={handleClick}
       size="lg"
       variant="success"
     >
       {isLoading && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
-      {!isLoading && amount > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
-      Enroll for&nbsp;
-      {!isLoading && amount > 0 && formattedPrice}
+      {!isLoading && (amount ?? 0) > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
+      {!isLoading && <span>Enroll for&nbsp;</span>}
+      {!isLoading && (amount ?? 0) > 0 && formattedPrice}
       {!isLoading && amount === 0 && (
         <>
           Free

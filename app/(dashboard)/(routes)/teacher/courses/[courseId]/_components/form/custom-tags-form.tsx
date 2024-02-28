@@ -8,55 +8,45 @@ import toast from 'react-hot-toast';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 
 import { Button } from '@/components/ui/button';
-import { COUNTRY_CODES } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
+import { cn } from '@/lib/utils';
 
-type CountriesFormProps = {
+type CustomTagsFormProps = {
   courseId: string;
   initialData: Course;
 };
 
-export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => {
-  const initialCountries = initialData.countryCodes.reduce<Tag[]>((acc, code) => {
-    const country = COUNTRY_CODES[code as keyof typeof COUNTRY_CODES];
+export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) => {
+  const initialCustomTags = initialData.customTags.map((tag) => ({
+    label: `#${tag}`,
+    value: tag,
+  }));
 
-    if (country) {
-      acc.push({ label: country, value: country });
-    }
-
-    return acc;
-  }, []);
-
-  const [selectedCountries, setSelectedCountries] = useState(initialCountries);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(initialCustomTags);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
   const router = useRouter();
 
   const handleAdd = useCallback(
-    (country: Tag) => {
-      setSelectedCountries([...selectedCountries, country]);
+    (tag: Tag) => {
+      setSelectedTags([...selectedTags, { ...tag, label: `#${tag.label}` }]);
     },
-    [selectedCountries],
+    [selectedTags],
   );
-
-  const handleAddAll = () => {
-    setSelectedCountries(
-      Object.values(COUNTRY_CODES).map((country) => ({ label: country, value: country })),
-    );
-  };
 
   const handleRemove = useCallback(
     (index: number) => {
-      setSelectedCountries(selectedCountries.filter((_, i) => i !== index));
+      setSelectedTags(selectedTags.filter((_, i) => i !== index));
     },
-    [selectedCountries],
+    [selectedTags],
   );
 
   const handleRemoveAll = () => {
-    setSelectedCountries([]);
+    setSelectedTags([]);
   };
 
   const handleSubmit = async () => {
@@ -65,13 +55,7 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
     try {
       await fetcher.patch(`/api/courses/${courseId}`, {
         body: {
-          countryCodes: selectedCountries.map(({ label }) => {
-            const code = Object.keys(COUNTRY_CODES).find(
-              (key) => COUNTRY_CODES[key as keyof typeof COUNTRY_CODES] === label,
-            );
-
-            return code;
-          }),
+          customTags: selectedTags.map(({ value }) => value),
         },
       });
 
@@ -86,6 +70,14 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
     }
   };
 
+  const handleValid = (value: string) => {
+    const testRegexp = /^[a-z]{2,12}$/i.test(value);
+
+    setIsValid(testRegexp);
+
+    return testRegexp;
+  };
+
   const commonProps = {
     classNames: {
       root: 'react-tags text-primary bg-background border rounded-md',
@@ -98,7 +90,10 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
       tag: 'react-tags__tag bg-accent',
       tagName: 'react-tags__tag-name',
       comboBox: 'react-tags__combobox',
-      listBox: 'react-tags__listbox bg-popover text-popover-foreground rounded-md border shadow-md',
+      listBox: cn(
+        'react-tags__listbox bg-popover text-popover-foreground rounded-md border shadow-md',
+        !isValid && 'cursor-not-allowed pointer-events-none text-muted-foreground',
+      ),
       option: 'react-tags__listbox-option hover:bg-accent',
       optionIsActive: 'is-active bg-accent',
       highlight: 'react-tags__listbox-option-highlight bg-accent',
@@ -112,17 +107,12 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
   return (
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Countries
+        Tags
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <>
-              <Button onClick={handleAddAll} variant="outline" size="sm">
-                Add all
-              </Button>
-              <Button onClick={handleRemoveAll} variant="outline" size="sm">
-                Remove all
-              </Button>
-            </>
+            <Button onClick={handleRemoveAll} variant="outline" size="sm">
+              Remove all
+            </Button>
           )}
           <Button onClick={handleToggleEdit} variant="outline" size="sm">
             {isEditing ? (
@@ -142,7 +132,7 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
             {...commonProps}
             isDisabled
             placeholderText=""
-            selected={selectedCountries}
+            selected={selectedTags}
             suggestions={[]}
           />
         )}
@@ -150,17 +140,20 @@ export const CountriesForm = ({ courseId, initialData }: CountriesFormProps) => 
           <>
             <ReactTags
               {...commonProps}
+              allowNew
+              collapseOnSelect
               isDisabled={isSubmitting}
-              noOptionsText="No matching countries"
-              placeholderText="Select countries"
-              selected={selectedCountries}
-              suggestions={Object.values(COUNTRY_CODES).map((name, index) => ({
-                value: index,
-                label: name,
-              }))}
+              onValidate={handleValid}
+              placeholderText="Enter new tags"
+              selected={selectedTags}
+              suggestions={[]}
             />
             <div className="flex items-center gap-x-2 mt-4">
-              <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={handleSubmit}>
+              <Button
+                disabled={isSubmitting || !selectedTags.length}
+                isLoading={isSubmitting}
+                onClick={handleSubmit}
+              >
                 Save
               </Button>
             </div>

@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Chapter, Course } from '@prisma/client';
+import { Category, Chapter, Course, Purchase } from '@prisma/client';
 
 import { db } from '@/lib/db';
 
@@ -11,6 +11,7 @@ type CourseWithProgressAndCategory = Course & {
   chapters: Chapter[];
   price: number | null;
   progress: number | null;
+  purchases?: Purchase[];
 };
 
 export const getDashboardCourses = async (userId: string) => {

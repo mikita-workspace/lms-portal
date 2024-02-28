@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Course } from '@prisma/client';
+import { Category, Course, Purchase } from '@prisma/client';
 
 import { db } from '@/lib/db';
 
@@ -11,6 +11,7 @@ type CourseWithProgressWithCategory = Course & {
   chapters: { id: string }[];
   price: number | null;
   progress: number | null;
+  purchases?: Purchase[];
 };
 
 type GetCourses = { userId?: string; title?: string; categoryId?: string };

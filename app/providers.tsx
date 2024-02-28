@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Toaster } from 'react-hot-toast';
 
-import { DEFAULT_CURRENCY, DEFAULT_CURRENCY_EXCHANGE, DEFAULT_LOCALE } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_CURRENCY_RATE, DEFAULT_LOCALE } from '@/constants/locale';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { ExchangeRates, useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -67,7 +67,7 @@ export const Providers = ({
           latitude: userIp.latitude,
           longitude: userIp.longitude,
         },
-        rate: exchangeRates?.rates?.[currency] ?? DEFAULT_CURRENCY_EXCHANGE,
+        rate: exchangeRates?.rates?.[currency] ?? DEFAULT_CURRENCY_RATE,
       });
     };
 

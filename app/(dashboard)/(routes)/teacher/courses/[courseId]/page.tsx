@@ -1,11 +1,4 @@
-import {
-  ArrowLeft,
-  BadgeDollarSign,
-  Files,
-  Globe,
-  LayoutDashboard,
-  ListChecks,
-} from 'lucide-react';
+import { ArrowLeft, BadgeDollarSign, Files, Hash, LayoutDashboard, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -18,7 +11,7 @@ import { Actions } from './_components/actions';
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
 import { ChaptersForm } from './_components/form/chapters-form';
-import { CountriesForm } from './_components/form/countries-form';
+import { CustomTagsForm } from './_components/form/custom-tags-form';
 import { DescriptionForm } from './_components/form/description-form';
 import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
@@ -40,6 +33,8 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
     },
   });
 
+  const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
+
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
 
   if (!course) {
@@ -49,7 +44,6 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
   const requiredFields = [
     course.categoryId,
     course.chapters.some((chapter) => chapter.isPublished),
-    course.countryCodes.length,
     course.description,
     course.imageUrl,
     course.title,
@@ -123,14 +117,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <IconBadge icon={BadgeDollarSign} />
                 <h2 className="text-xl">Sell your course</h2>
               </div>
-              <PriceForm {...commonFormProps} />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={Globe} />
-                <h2 className="text-xl">Localization</h2>
-              </div>
-              <CountriesForm {...commonFormProps} />
+              <PriceForm {...commonFormProps} fees={fees} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
@@ -138,6 +125,13 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
                 <h2 className="text-xl">Recourses & Attachments</h2>
               </div>
               <AttachmentForm {...commonFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Hash} />
+                <h2 className="text-xl">Custom tags</h2>
+              </div>
+              <CustomTagsForm {...commonFormProps} />
             </div>
           </div>
         </div>
