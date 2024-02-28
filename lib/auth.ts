@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import SlackProvider from 'next-auth/providers/slack';
 import YandexProvider from 'next-auth/providers/yandex';
 
 import { Provider, UserRole } from '@/constants/auth';
@@ -24,6 +25,10 @@ export const authOptions = {
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID as string,
       clientSecret: process.env.YANDEX_CLIENT_SECRET as string,
+    }),
+    SlackProvider({
+      clientId: process.env.SLACK_CLIENT_ID as string,
+      clientSecret: process.env.SLACK_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {

@@ -1,6 +1,7 @@
 export enum Provider {
   GOOGLE = 'google',
   YANDEX = 'yandex',
+  SLACK = 'slack',
   GITHUB = 'github',
 }
 
