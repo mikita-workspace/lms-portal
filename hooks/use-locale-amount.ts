@@ -23,6 +23,8 @@ export const useLocaleAmount = ({
 }: UseLocaleAmount) => {
   const localeInfo = useLocaleStore((state) => state.localeInfo);
 
+  const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
+
   const rate = useMemo(() => {
     if (useDefaultLocale) {
       return DEFAULT_CURRENCY_RATE;
@@ -66,27 +68,15 @@ export const useLocaleAmount = ({
     ...(useDefaultLocale
       ? {
           amount: price,
-          formattedNet: formatPrice(getConvertedPrice(net), {
-            locale: DEFAULT_LOCALE,
-            currency: DEFAULT_CURRENCY,
-          }),
-          formattedPrice: formatPrice(getConvertedPrice(price ?? 0), {
-            locale: DEFAULT_LOCALE,
-            currency: DEFAULT_CURRENCY,
-          }),
+          formattedNet: formatPrice(getConvertedPrice(net), defaultLocale),
+          formattedPrice: formatPrice(getConvertedPrice(price ?? 0), defaultLocale),
           formattedCalculatedFees: calculatedFees.map((fee) => ({
             ...fee,
-            amount: formatPrice(getConvertedPrice(fee.amount), {
-              locale: DEFAULT_LOCALE,
-              currency: DEFAULT_CURRENCY,
-            }),
+            amount: formatPrice(getConvertedPrice(fee.amount), defaultLocale),
           })),
           formattedTotalFees: formatPrice(
             getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
-            {
-              locale: DEFAULT_LOCALE,
-              currency: DEFAULT_CURRENCY,
-            },
+            defaultLocale,
           ),
         }
       : { amount, formattedNet, formattedPrice, formattedCalculatedFees, formattedTotalFees }),
