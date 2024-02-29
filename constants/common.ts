@@ -5,6 +5,7 @@ export const PRIVACY_POLICY_URL =
 export const COOKIE_POLICY_URL =
   'https://www.termsfeed.com/live/efaa02dc-0a94-4520-bce1-3890f08258a9';
 
+export const GITHUB_ISSUE_URL = 'https://github.com/mikita-workspace/lms-portal/issues/new';
 export const NOVA_CHAT_URL = 'https://t.me/novachat_gpt_bot';
 export const STRIPE_COUPONS_URL = 'https://dashboard.stripe.com/coupons';
 

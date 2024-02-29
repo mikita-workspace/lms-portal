@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
+  GITHUB_ISSUE_URL,
   OWNER_COPYRIGHT,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
@@ -28,6 +29,9 @@ export const Footer = () => {
             </div>
             <div className="md:space-x-2 font-semibold flex flex-col md:flex-row">
               <Link href={`mailto:${OWNER_EMAIL}`}>Contact</Link>
+              <Link href={GITHUB_ISSUE_URL} target="_blank">
+                Report Issue
+              </Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
                 Terms and Conditions
               </Link>
