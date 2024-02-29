@@ -4,7 +4,7 @@ import { hasCookie, setCookie } from 'cookies-next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { COOKIE_POLICY_URL } from '@/constants/common';
+import { COOKIE_POLICY_URL, ONE_YEAR_SEC } from '@/constants/common';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui';
@@ -26,7 +26,7 @@ export const CookieConsent = () => {
 
   const handleAcceptCookie = () => {
     setIsClosing(true);
-    setCookie('cookie-consent', 'true', {});
+    setCookie('cookie-consent', 'true', { maxAge: ONE_YEAR_SEC });
 
     setTimeout(() => {
       setShownConsent(true);
