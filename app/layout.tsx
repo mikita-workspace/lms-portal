@@ -9,6 +9,8 @@ import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
 
+export const runtime = 'edge';
+
 export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
