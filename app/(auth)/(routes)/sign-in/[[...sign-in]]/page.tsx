@@ -1,11 +1,12 @@
 import { Lock, LogIn } from 'lucide-react';
 
 import { LoginButton } from '@/components/auth/login-button';
+import { Logo } from '@/components/common/logo';
 import { Button } from '@/components/ui/button';
 
 const SignInPage = () => {
   return (
-    <div className="h-full flex gap-y-4 items-center w-full">
+    <div className="relative h-full flex gap-y-4 items-center w-full">
       <div className="flex items-center gap-y-4 flex-col w-full text-muted-foreground">
         <Lock className="h-10 w-10" />
         <h1 className="text-xl md:text-3xl font-semibold">This content is protected.</h1>
@@ -16,6 +17,15 @@ const SignInPage = () => {
             Login
           </Button>
         </LoginButton>
+      </div>
+      <div className="absolute flex justify-center items-center mb-8 bottom-0 gap-x-1 w-full text-sm text-muted-foreground">
+        Powered by
+        <div className="font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-x-1">
+          <div className="h-4 w-4">
+            <Logo onlyLogoIcon isChat />
+          </div>
+          <span>Nova LMS</span>
+        </div>
       </div>
     </div>
   );

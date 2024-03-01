@@ -8,9 +8,10 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
 
 type LogoProps = {
   isChat?: boolean;
+  onlyLogoIcon?: boolean;
 };
 
-export const Logo = ({ isChat }: LogoProps) => {
+export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
   return (
     <Link href="/">
       <div
@@ -20,10 +21,16 @@ export const Logo = ({ isChat }: LogoProps) => {
         )}
       >
         <Image src="/assets/logo.svg" alt="Nova LMS Logo" height={40} width={40} />
-        <div className={cn(poppins.className, isChat && 'hidden md:block')}>
-          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
-          <p className="text-xs text-muted-foreground">Portal&nbsp;for&nbsp;educational purposes</p>
-        </div>
+        {!onlyLogoIcon && (
+          <div className={cn(poppins.className, isChat && 'hidden md:block')}>
+            <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">
+              Nova LMS
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Portal&nbsp;for&nbsp;educational purposes
+            </p>
+          </div>
+        )}
       </div>
     </Link>
   );

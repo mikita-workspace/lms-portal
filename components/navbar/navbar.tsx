@@ -1,4 +1,4 @@
-import { Logo } from '../../app/(dashboard)/_components/common/logo';
+import { Logo } from '../common/logo';
 import { SideBarMobile } from '../sidebar/sidebar-mobile';
 import { NavBarRoutes } from './navbar-routes';
 
