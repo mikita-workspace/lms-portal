@@ -18,12 +18,15 @@ import { TermsAndPrivacy } from './terms-and-privacy';
 
 type LoginButtonProps = {
   children: React.ReactNode;
+  ignore?: boolean;
 };
 
-export const LoginButton = ({ children }: LoginButtonProps) => {
+export const LoginButton = ({ children, ignore = false }: LoginButtonProps) => {
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
 
-  return (
+  return ignore ? (
+    children
+  ) : (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[445px] p-9">

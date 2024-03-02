@@ -20,48 +20,68 @@ import { SideBarItem } from './sidebar-item';
 
 const studentRoutes = [
   {
-    icon: Compass,
-    label: 'Browse',
     href: '/',
+    icon: Compass,
+    isNew: false,
+    isProtected: false,
+    label: 'Browse',
   },
   {
-    icon: Layout,
-    label: 'Dashboard',
     href: '/dashboard',
+    icon: Layout,
+    isNew: false,
+    isProtected: true,
+    label: 'Dashboard',
   },
-  { icon: Crown, label: 'Leaderboard', href: '/leaderboard' },
+  {
+    href: '/leaderboard',
+    icon: Crown,
+    isNew: true,
+    isProtected: true,
+    label: 'Leaderboard',
+  },
 ];
 
 const teacherRoutes = [
   {
-    icon: List,
-    label: 'Courses',
     href: '/teacher/courses',
+    icon: List,
+    isNew: false,
+    isProtected: true,
+    label: 'Courses',
   },
   {
+    href: '/teacher/analytics',
+    isNew: false,
+    isProtected: true,
     icon: BarChart4,
     label: 'Analytics',
-    href: '/teacher/analytics',
   },
 ];
 
 const settingsRoutes = (userId?: string) => [
   {
-    icon: Settings2,
-    label: 'General',
     href: '/settings',
+    icon: Settings2,
+    isNew: false,
+    isProtected: true,
+    label: 'General',
   },
   {
-    icon: Wallet2,
-    label: 'Billing',
     href: '/settings/billing',
+    icon: Wallet2,
+    isNew: false,
+    isProtected: true,
+    label: 'Billing',
   },
   ...(isOwner(userId)
     ? [
         {
-          icon: CreditCard,
-          label: 'Stripe',
           href: '/settings/stripe',
+          icon: CreditCard,
+          isNew: false,
+          isProtected: true,
+          label: 'Stripe',
         },
       ]
     : []),
@@ -87,7 +107,14 @@ export const SideBarRoutes = () => {
     <div className="flex flex-col w-full h-full p-3 justify-between">
       <div className="flex flex-col w-full space-y-1.5">
         {routes.map((route) => (
-          <SideBarItem href={route.href} icon={route.icon} key={route.href} label={route.label} />
+          <SideBarItem
+            href={route.href}
+            icon={route.icon}
+            isNew={route.isNew}
+            isProtected={route.isProtected}
+            key={route.href}
+            label={route.label}
+          />
         ))}
       </div>
     </div>

@@ -5,19 +5,24 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
+
+import { LoginButton } from '../auth/login-button';
 
 type SideBarItemProps = {
   href: string;
   icon: LucideIcon;
+  isNew?: boolean;
+  isProtected?: boolean;
   label: string;
 };
 
-export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
+export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: SideBarItemProps) => {
+  const { user } = useCurrentUser();
+
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleClick = () => router.push(href);
 
   const isActive = useMemo(() => {
     if (pathname.startsWith('/settings')) {
@@ -32,28 +37,34 @@ export const SideBarItem = ({ href, icon: Icon, label }: SideBarItemProps) => {
     );
   }, [href, pathname]);
 
+  const ignoreLogin = Boolean(user?.userId || !isProtected);
+
+  const handleClick = () => (ignoreLogin ? router.push(href) : null);
+
   return (
-    <button
-      onClick={handleClick}
-      type="button"
-      className={cn(
-        'flex w-full text-sm text-muted-foreground items-center py-3.5 px-3 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out ',
-        isActive && 'bg-muted text-primary font-medium',
-      )}
-    >
-      <div className="flex justify-between items-center w-full">
-        <div className="flex items-center gap-x-2">
-          <Icon
-            size={20}
-            className={cn(
-              'h-5 w-5 font-medium',
-              isActive && 'text-primary font-medium animate-spin-once',
-            )}
-          />
-          {label}
+    <LoginButton ignore={ignoreLogin}>
+      <button
+        onClick={handleClick}
+        type="button"
+        className={cn(
+          'flex w-full text-sm text-muted-foreground items-center py-3.5 px-3 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out ',
+          isActive && 'bg-muted text-primary font-medium',
+        )}
+      >
+        <div className="flex justify-between items-center w-full">
+          <div className="flex items-center gap-x-2">
+            <Icon
+              size={20}
+              className={cn(
+                'h-5 w-5 font-medium',
+                isActive && 'text-primary font-medium animate-spin-once',
+              )}
+            />
+            {label}
+          </div>
+          {isNew && <TextBadge label="new" variant="green" />}
         </div>
-        {['Leaderboard'].includes(label) && <TextBadge label="new" variant="green" />}
-      </div>
-    </button>
+      </button>
+    </LoginButton>
   );
 };
