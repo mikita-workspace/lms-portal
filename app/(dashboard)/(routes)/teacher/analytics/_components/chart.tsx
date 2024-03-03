@@ -23,7 +23,6 @@ export const Chart = ({ data }: ChartProps) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis axisLine={false} dataKey="title" fontSize={10} tickLine={false} />
         <YAxis axisLine={false} fontSize={12} tickLine={false} />
-        <Legend height={36} />
         <Bar dataKey="qty" barSize={36} fill="#8884d8" />
       </BarChart>
     </ResponsiveContainer>
