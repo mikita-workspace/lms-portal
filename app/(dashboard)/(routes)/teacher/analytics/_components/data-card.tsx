@@ -1,11 +1,10 @@
 'use client';
 
 import { User } from '@prisma/client';
-import { format } from 'date-fns';
 import CountUp from 'react-countup';
 
 import { getAnalytics } from '@/actions/db/get-analytics';
-import { ScrollArea, Separator } from '@/components/ui';
+import { Separator } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice, getCurrencySymbol } from '@/lib/format';
@@ -25,14 +24,7 @@ type DataCardProps = {
   totalSales?: number;
 } & Partial<Analytics>;
 
-export const DataCard = ({
-  label,
-  lastPurchases,
-  topSales,
-  totalProfit,
-  totalRevenue,
-  totalSales,
-}: DataCardProps) => {
+export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) => {
   const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
 
   return (
@@ -42,24 +34,6 @@ export const DataCard = ({
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {lastPurchases && (
-            <ScrollArea className="text-xs flex flex-col max-h-[240px]">
-              <div className="pr-4">
-                {lastPurchases.map((lp) => (
-                  <div
-                    key={lp.courseTitle}
-                    className="flex justify-between border-b last:border-none py-1"
-                  >
-                    <div className="flex flex-col gap-1 truncate">
-                      <p className="font-medium">{lp.courseTitle}</p>
-                      <p>{lp.user?.email}</p>
-                    </div>
-                    <span className="text-right">{format(lp.timestamp, 'HH:mm, dd MMM yyyy')}</span>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
           {totalRevenue && (
             <CountUp
               className="text-2xl font-bold"
@@ -92,27 +66,6 @@ export const DataCard = ({
                   {formatPrice(getConvertedPrice(totalProfit.net), defaultLocale)}
                 </span>
               </div>
-            </div>
-          )}
-          {totalSales && (
-            <div className="flex flex-col gap-2">
-              <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
-              <ScrollArea className="flex flex-col text-sm gap-1 max-h-[200px]">
-                <div className="pr-4">
-                  <p className="font-medium mb-2">Top Locations</p>
-                  <ul className="space-y-1">
-                    {topSales?.map((sale) => {
-                      const [country, city] = sale.key.split('-');
-
-                      return (
-                        <li key={sale.key}>
-                          {country}, {city}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </ScrollArea>
             </div>
           )}
         </div>

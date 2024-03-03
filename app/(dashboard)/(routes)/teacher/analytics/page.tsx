@@ -12,15 +12,7 @@ import { DataCard } from './_components/data-card';
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
 
-  const {
-    data,
-    lastPurchases,
-    map: mapData,
-    topSales,
-    totalRevenue,
-    totalSales,
-    totalProfit,
-  } = await getAnalytics(user!.userId);
+  const { chart, map: mapData, totalRevenue, totalProfit } = await getAnalytics(user!.userId);
 
   const mapMarkers = mapData.map((mp) => {
     return {
@@ -67,18 +59,13 @@ const AnalyticsPage = async () => {
           />
         </div>
       </div>
-      <div className="mt-8">
+      <div className="flex flex-col gap-4 mt-8">
         <p className="font-medium text-xl">Sales chart</p>
+        <Chart data={chart} />
       </div>
-      <div className="mt-8">
+      <div className="flex flex-col gap-4 mt-4">
         <p className="font-medium text-xl">Client Transactions</p>
       </div>
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
-        <DataCard label="Total Revenue" totalRevenue={totalRevenue} />
-        <DataCard label="Total Sales" totalSales={totalSales} topSales={topSales} />
-        <DataCard label="Purchases" lastPurchases={lastPurchases} />
-      </div> */}
-      {/* <Chart data={data} /> */}
     </div>
   );
 };

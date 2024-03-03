@@ -237,6 +237,10 @@ export const getAnalytics = async (userId: string) => {
     //   };
     // });
 
+    const chart = Object.entries(groupedEarnings).map(([title, others]) => ({
+      title,
+      qty: others.length,
+    }));
     const map = getMap(sales);
     const totalRevenue = stripeBalanceTransactions.reduce(
       (revenue, current) => revenue + current.amount,
@@ -245,6 +249,7 @@ export const getAnalytics = async (userId: string) => {
     const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
 
     return {
+      chart,
       map,
       totalProfit,
       totalRevenue,
@@ -253,9 +258,10 @@ export const getAnalytics = async (userId: string) => {
     console.error('[GET_ANALYTICS_ACTION]', error);
 
     return {
+      chart: [],
       map: [],
-      totalRevenue: 0,
       totalProfit: null,
+      totalRevenue: 0,
     };
   }
 };

@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 type ChartProps = {
   data: Record<string, number | string>[];
@@ -16,10 +8,10 @@ type ChartProps = {
 
 export const Chart = ({ data }: ChartProps) => {
   return (
-    <ResponsiveContainer width="100%" height={350}>
-      <LineChart
-        width={250}
-        height={150}
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart
+        width={500}
+        height={300}
         data={data}
         margin={{
           top: 5,
@@ -29,13 +21,11 @@ export const Chart = ({ data }: ChartProps) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Line type="monotone" dataKey="BYN" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line type="monotone" dataKey="EUR" stroke="#82ca9d" />
-        <Line type="monotone" dataKey="USD" stroke="#ffc658" />
-      </LineChart>
+        <XAxis axisLine={false} dataKey="title" fontSize={10} tickLine={false} />
+        <YAxis axisLine={false} fontSize={12} tickLine={false} />
+        <Legend height={36} />
+        <Bar dataKey="qty" barSize={36} fill="#8884d8" />
+      </BarChart>
     </ResponsiveContainer>
   );
 };
