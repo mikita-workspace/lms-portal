@@ -7,7 +7,9 @@ import Link from 'next/link';
 
 import { getAnalytics } from '@/actions/db/get-analytics';
 import { TextBadge } from '@/components/common/text-badge';
+import { PriceColumn } from '@/components/data-table/price-column';
 import { Button } from '@/components/ui';
+import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
@@ -52,12 +54,13 @@ export const columns: ColumnDef<ClientTransactions>[] = [
     cell: ({ row }) => {
       const { amount, currency } = row.original;
 
-      const formatted = formatPrice(getConvertedPrice(amount), {
-        locale: DEFAULT_LOCALE,
-        currency,
-      });
-
-      return amount ? formatted : <TextBadge variant="lime" label="Free" />;
+      <PriceColumn
+        amount={amount}
+        locale={{
+          locale: DEFAULT_LOCALE,
+          currency,
+        }}
+      />;
     },
   },
   {
@@ -66,7 +69,7 @@ export const columns: ColumnDef<ClientTransactions>[] = [
     cell: ({ row }) => {
       const { purchaseDate } = row.original;
 
-      return <span>{format(fromUnixTime(purchaseDate), 'HH:mm, dd MMM yyyy')}</span>;
+      return <span>{format(fromUnixTime(purchaseDate), TIMESTAMP_TEMPLATE)}</span>;
     },
   },
   {

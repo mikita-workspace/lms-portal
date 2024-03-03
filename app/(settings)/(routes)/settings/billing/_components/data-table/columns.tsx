@@ -7,7 +7,9 @@ import Link from 'next/link';
 
 import { getUserBilling } from '@/actions/db/get-user-billing';
 import { TextBadge } from '@/components/common/text-badge';
+import { PriceColumn } from '@/components/data-table/price-column';
 import { Button } from '@/components/ui';
+import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
@@ -48,12 +50,15 @@ export const columns: ColumnDef<UserBilling>[] = [
     cell: ({ row }) => {
       const { amount, currency } = row.original;
 
-      const formatted = formatPrice(getConvertedPrice(amount), {
-        locale: DEFAULT_LOCALE,
-        currency,
-      });
-
-      return amount ? formatted : <TextBadge variant="lime" label="Free" />;
+      return (
+        <PriceColumn
+          amount={amount}
+          locale={{
+            locale: DEFAULT_LOCALE,
+            currency,
+          }}
+        />
+      );
     },
   },
   {
@@ -62,7 +67,7 @@ export const columns: ColumnDef<UserBilling>[] = [
     cell: ({ row }) => {
       const { timestamp } = row.original;
 
-      return <span>{format(fromUnixTime(timestamp), 'HH:mm, dd MMM yyyy')}</span>;
+      return <span>{format(fromUnixTime(timestamp), TIMESTAMP_TEMPLATE)}</span>;
     },
   },
   {
