@@ -9,5 +9,5 @@ type PriceColumnProps = {
 export const PriceColumn = ({ amount, locale }: PriceColumnProps) => {
   const formatted = formatPrice(getConvertedPrice(amount), locale);
 
-  return amount ? formatted : <TextBadge variant="lime" label="Free" />;
+  return amount ? <span>{formatted}</span> : <TextBadge variant="lime" label="Free" />;
 };
