@@ -1,9 +1,11 @@
 import { LatLngExpression } from 'leaflet';
+import { HandCoins } from 'lucide-react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAnalytics } from '@/actions/db/get-analytics';
 import { DataTable } from '@/components/data-table/data-table';
 import Map from '@/components/map';
+import { Button } from '@/components/ui/button';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
@@ -51,9 +53,15 @@ const AnalyticsPage = async () => {
     <div className="p-6">
       <h1 className="text-2xl font-medium mb-12">Analytic Dashboard</h1>
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <p className="font-medium text-xl">Income</p>
-          <span className="text-xs text-muted-foreground">Balances are updated every hour</span>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-1">
+            <p className="font-medium text-xl">Income</p>
+            <span className="text-xs text-muted-foreground">Balances are updated every hour</span>
+          </div>
+          <Button disabled>
+            <HandCoins className="h-4 w-4 mr-2" />
+            Withdrawal
+          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
           <div className="flex flex-col gap-4 mb-4 md:mb-0">

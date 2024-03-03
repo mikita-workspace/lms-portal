@@ -11,9 +11,11 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
 import * as React from 'react';
 
-import { Button } from '@/components/ui';
+import { Button, Input } from '@/components/ui';
 import {
   Table,
   TableBody,
@@ -26,12 +28,14 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isTeacherCoursesPage?: boolean;
   noLabel?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isTeacherCoursesPage = false,
   noLabel,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -54,6 +58,22 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      {isTeacherCoursesPage && (
+        <div className="flex items-center py-4 justify-between space-x-2">
+          <Input
+            placeholder="Filter courses..."
+            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
+            className="max-w-sm"
+          />
+          <Link href="/teacher/create">
+            <Button>
+              <PlusCircle className="h-4 w-4 mr-2" />
+              New Course
+            </Button>
+          </Link>
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

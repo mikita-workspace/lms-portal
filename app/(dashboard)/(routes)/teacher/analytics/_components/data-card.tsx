@@ -52,9 +52,13 @@ export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) =>
               <Separator className="my-2" />
               <div className="flex gap-2 items-center justify-between text-sm">
                 <span className="font-medium">Total</span>
-                <span className="font-semibold">
-                  {formatPrice(getConvertedPrice(totalProfit.net), defaultLocale)}
-                </span>
+                <CountUp
+                  className="font-semibold"
+                  decimals={2}
+                  duration={2.75}
+                  end={getConvertedPrice(totalProfit.net)}
+                  prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
+                />
               </div>
             </div>
           )}
