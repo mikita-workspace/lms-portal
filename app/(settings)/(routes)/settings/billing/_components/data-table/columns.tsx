@@ -69,14 +69,14 @@ export const columns: ColumnDef<UserBilling>[] = [
     cell: ({ row }) => {
       const { url } = row.original;
 
-      return (
-        <Link href={url || rootPageHref} target="_blank" className="hover:underline">
+      return url ? (
+        <Link href={url} target="_blank" className="hover:underline">
           <div className="flex gap-2 items-center">
             <ReceiptText className="h-4 w-4" />
             View
           </div>
         </Link>
-      );
+      ) : null;
     },
   },
 ];

@@ -11,8 +11,6 @@ import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 
-const rootPageHref = '/teacher/analytics';
-
 type ClientTransactions = Awaited<ReturnType<typeof getAnalytics>>['transactions'][number];
 
 const handleSortingHeader = <T extends Column<ClientTransactions, unknown>>(
@@ -73,14 +71,14 @@ export const columns: ColumnDef<ClientTransactions>[] = [
     cell: ({ row }) => {
       const { receiptUrl } = row.original;
 
-      return (
-        <Link href={receiptUrl || rootPageHref} target="_blank" className="hover:underline">
+      return receiptUrl ? (
+        <Link href={receiptUrl} target="_blank" className="hover:underline">
           <div className="flex gap-2 items-center">
             <ReceiptText className="h-4 w-4" />
             Receipt
           </div>
         </Link>
-      );
+      ) : null;
     },
   },
 ];

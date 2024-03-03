@@ -1,16 +1,28 @@
 'use server';
 
 import { Course, Fee, Purchase, PurchaseDetails, User } from '@prisma/client';
+import { getUnixTime } from 'date-fns';
 import groupBy from 'lodash.groupby';
 import Stripe from 'stripe';
 
 import { ONE_HOUR_SEC } from '@/constants/common';
 import { CalculationMethod } from '@/constants/fees';
+import { DEFAULT_CURRENCY } from '@/constants/locale';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { stripe } from '@/server/stripe';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
+type Sales = (ReturnType<typeof groupByCourse>[number][number]['details'] & { title: string })[];
+type Transaction = {
+  amount: number;
+  billingDetails: Stripe.Charge.BillingDetails;
+  currency: string;
+  id: string;
+  purchaseDate: number;
+  receiptUrl: string | null;
+  title: string;
+};
 
 const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
   const grouped: { [courseTitle: string]: { user?: User; details: PurchaseDetails }[] } = {};
@@ -51,8 +63,6 @@ const getCalculatedServiceFee = (price: number, fee: Fee) => {
     quantity: 1,
   };
 };
-
-type Sales = (ReturnType<typeof groupByCourse>[number][number]['details'] & { title: string })[];
 
 const getMap = (sales: Sales) => {
   const groupedByPosition = groupBy(
@@ -120,21 +130,14 @@ const getTotalProfit = (
 const getTransactions = (
   charges: Stripe.Response<Stripe.ApiList<Stripe.Charge>>['data'],
   purchases: PurchaseWithCourse[],
+  users: User[],
 ) => {
-  return charges.reduce<
-    {
-      amount: number;
-      billingDetails: Stripe.Charge.BillingDetails;
-      currency: string;
-      id: string;
-      purchaseDate: number;
-      receiptUrl: string | null;
-      title: string;
-    }[]
-  >((userCharges, ch) => {
-    const purchase = purchases.find((pc) => pc.details?.paymentIntent === ch.payment_intent);
+  const userCharges = charges.reduce<Transaction[]>((userCharges, ch) => {
+    const purchaseWithPaymentIntent = purchases.find(
+      (pc) => pc.details?.paymentIntent === ch.payment_intent,
+    );
 
-    if (purchase) {
+    if (purchaseWithPaymentIntent) {
       userCharges.push({
         amount: ch.amount,
         billingDetails: ch.billing_details,
@@ -142,12 +145,36 @@ const getTransactions = (
         id: ch.id,
         purchaseDate: ch.created,
         receiptUrl: ch.receipt_url,
-        title: purchase.course.title,
+        title: purchaseWithPaymentIntent.course.title,
       });
     }
 
     return userCharges;
   }, []);
+
+  const userFreePurchases = purchases.reduce<Transaction[]>((userFreePurchases, pc) => {
+    const user = users.find((user) => user.id === pc.userId);
+
+    if (pc.details?.price === 0) {
+      userFreePurchases.push({
+        amount: 0,
+        billingDetails: {
+          name: user?.name ?? null,
+          address: null,
+          email: user?.email ?? null,
+          phone: null,
+        },
+        currency: DEFAULT_CURRENCY,
+        id: pc.id,
+        purchaseDate: getUnixTime(pc.createdAt),
+        receiptUrl: null,
+        title: pc.course.title,
+      });
+    }
+
+    return userFreePurchases;
+  }, []);
+  return [...userCharges, ...userFreePurchases].sort((a, b) => a.title.localeCompare(b.title));
 };
 
 export const getAnalytics = async (userId: string) => {
@@ -219,7 +246,7 @@ export const getAnalytics = async (userId: string) => {
       0,
     );
     const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
-    const transactions = getTransactions(stripeCharges, purchases);
+    const transactions = getTransactions(stripeCharges, purchases, users);
 
     return {
       chart,
