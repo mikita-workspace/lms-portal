@@ -40,7 +40,7 @@ const AnalyticsPage = async () => {
                 currency: mp.currency ?? DEFAULT_CURRENCY,
               })}
             </span>
-            .
+            {'.'}
           </div>
         </div>
       ),
