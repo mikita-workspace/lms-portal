@@ -47,16 +47,12 @@ export const columns: ColumnDef<UserBilling>[] = [
     header: ({ column }) => handleSortingHeader(column, 'Price'),
     cell: ({ row }) => {
       const { amount, currency } = row.original;
+      const locale = {
+        locale: DEFAULT_LOCALE,
+        currency,
+      };
 
-      return (
-        <PriceColumn
-          amount={amount}
-          locale={{
-            locale: DEFAULT_LOCALE,
-            currency,
-          }}
-        />
-      );
+      return <PriceColumn amount={amount} locale={locale} />;
     },
   },
   {
