@@ -17,3 +17,4 @@ export const CHAPTER_XP = 20;
 
 export const ONE_YEAR_SEC = 60 * 60 * 24 * 365;
 export const ONE_DAY_SEC = 60 * 60 * 24;
+export const ONE_HOUR_SEC = 60 * 60;

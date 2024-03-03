@@ -1,9 +1,13 @@
 'use server';
 
-import { Course, Purchase, PurchaseDetails, User } from '@prisma/client';
+import { Course, Fee, Purchase, PurchaseDetails, User } from '@prisma/client';
 import groupBy from 'lodash.groupby';
 
+import { ONE_HOUR_SEC } from '@/constants/common';
+import { CalculationMethod } from '@/constants/fees';
+import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
+import { stripe } from '@/server/stripe';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
 
@@ -28,6 +32,66 @@ const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
   return grouped;
 };
 
+const getCalculatedServiceFee = (price: number, fee: Fee) => {
+  let amount = 0;
+
+  if (fee.method === CalculationMethod.FIXED) {
+    amount = fee.amount;
+  }
+
+  if (fee.method === CalculationMethod.PERCENTAGE) {
+    amount = (price * fee.rate) / 100;
+  }
+
+  return {
+    amount: Math.round(amount),
+    id: fee.id,
+    name: fee.name,
+    quantity: 1,
+  };
+};
+
+const getTotalProfit = (
+  stripeBalanceTransactions: Record<string, any>[],
+  totalRevenue: number,
+  serviceFeeDetails: Fee | null,
+) => {
+  const totalFees = stripeBalanceTransactions
+    .reduce((totalFees, current) => {
+      const stripeFees = current.fee_details.map((fee: Record<string, string | number>) => ({
+        amount: fee.amount,
+        id: `${current.id}-${fee.amount}`,
+        name: fee.description,
+        quantity: 1,
+      }));
+
+      const serviceFee = serviceFeeDetails
+        ? getCalculatedServiceFee(current.amount, serviceFeeDetails)
+        : {};
+
+      totalFees.push([...stripeFees, serviceFee]);
+
+      return totalFees;
+    }, [])
+    .flat();
+
+  const groupedFeesByName = groupBy(totalFees, (item) => item.name);
+
+  const feeDetails = Object.keys(groupedFeesByName).map((key) => ({
+    name: key,
+    amount: groupedFeesByName[key].reduce((total, current) => total + current.amount, 0),
+  }));
+
+  const feeAmount = feeDetails.reduce((amount, current) => amount + current.amount, 0);
+
+  return {
+    fee: feeAmount,
+    feeDetails,
+    net: totalRevenue - feeAmount,
+    total: totalRevenue,
+  };
+};
+
 export const getAnalytics = async (userId: string) => {
   try {
     const purchases = await db.purchase.findMany({
@@ -39,108 +103,168 @@ export const getAnalytics = async (userId: string) => {
       },
     });
 
-    const users = await db.user.findMany();
+    const userIds = [...new Set(purchases.map((ps) => ps.userId))];
 
-    const groupedEarnings = groupByCourse(purchases, users);
-    const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
-      others.map((other) => ({ ...other.details, title })),
-    );
+    const stripeCustomerIds = await db.stripeCustomer.findMany({
+      where: { userId: { in: userIds } },
+      select: { stripeCustomerId: true },
+    });
 
-    const groupedByCity = groupBy(
-      sales,
-      (item: (typeof sales)[number]) => `${item.country}-${item.city}`,
-    );
-    const groupedByTitle = groupBy(sales, 'title');
-    const uniqCurrencies = Array.from(new Set(sales.map(({ currency }) => currency)));
-    const groupedByPosition = groupBy(
-      sales,
-      (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
-    );
+    const stripeCharges = (
+      await Promise.all(
+        stripeCustomerIds.map(async (sc) => {
+          const data = await fetchCachedData(
+            `customerId-${sc.stripeCustomerId}`,
+            async () => {
+              const res = await stripe.charges.list({ customer: sc.stripeCustomerId });
 
-    const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
-      if (currency && price) {
-        total[currency] = (total[currency] ?? 0) + price;
-      }
-
-      return total;
-    }, {});
-
-    const lastPurchases = purchases.map((ps) => ({
-      courseTitle: ps.course.title,
-      timestamp: ps.updatedAt,
-      user: users.find((user) => user.id === ps.userId),
-    }));
-
-    const totalSales = sales.length;
-
-    const topSales = Object.keys(groupedByCity)
-      .map((key) => {
-        const item = groupedByCity[key];
-        return {
-          currency: item[0].currency,
-          key,
-          position: [item[0].latitude, item[0].longitude],
-          sales: item.length,
-          totalPrice: item.reduce((acc, current) => acc + (current.price ?? 0), 0),
-        };
-      })
-      .sort((a, b) => b.sales - a.sales);
-
-    const data = Object.keys(groupedByTitle).map((key) => {
-      const items = groupedByTitle[key];
-      const groupedByCurrency = groupBy(items, 'currency');
-
-      return {
-        name: key,
-        ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
-          const price = groupedByCurrency[key].reduce(
-            (total, current) => total + (current.price ?? 0),
-            0,
+              return res.data;
+            },
+            ONE_HOUR_SEC,
           );
 
-          acc[key] = acc[key] ?? 0 + price;
+          return data;
+        }),
+      )
+    ).flat();
 
-          uniqCurrencies.forEach((curr) => {
-            if (curr) {
-              acc[curr] = acc[curr] ?? 0;
-            }
-          });
+    const stripeBalanceTransactions = await Promise.all(
+      stripeCharges.map(async (sc) => {
+        const data = await fetchCachedData(
+          `chargeId-${sc.id}`,
+          async () => {
+            const res = await stripe.balanceTransactions.retrieve(sc.balance_transaction);
 
-          return acc;
-        }, {}),
-      };
-    });
+            return res;
+          },
+          ONE_HOUR_SEC,
+        );
 
-    const map = Object.keys(groupedByPosition).map((key) => {
-      const [lt, lg] = key.split('*');
+        return data;
+      }),
+    );
 
-      return {
-        city: groupedByPosition[key][0].city,
-        country: groupedByPosition[key][0].country,
-        currency: groupedByPosition[key][0].currency,
-        position: [Number(lt), Number(lg)],
-        total: groupedByPosition[key].reduce((total, current) => total + (current.price ?? 0), 0),
-      };
-    });
+    const serviceFeeDetails = await db.fee.findUnique({ where: { name: 'Nova LMS Service Fee' } });
+
+    const totalRevenue = stripeBalanceTransactions.reduce(
+      (revenue, current) => revenue + current.amount,
+      0,
+    );
+
+    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
+
+    // console.log(totalProfit.feeDetails.flat());
+
+    // console.log(stripeBalanceTransactions);
+
+    // const users = await db.user.findMany();
+
+    // const t = await stripe.paymentIntents.list({ customer: 'cus_PaplIMVcuYfNGO' });
+
+    // console.log(t.data[0].amount_details);
+
+    // const c = await stripe.charges.list({ customer: 'cus_PaplIMVcuYfNGO' });
+
+    // console.log(c.data);
+
+    // const e = await stripe.balanceTransactions.retrieve('txn_3Ole6TBxr6wddNuk0pIvIv09');
+
+    // console.log(e);
+
+    // const groupedEarnings = groupByCourse(purchases, users);
+    // const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
+    //   others.map((other) => ({ ...other.details, title })),
+    // );
+
+    // const groupedByCity = groupBy(
+    //   sales,
+    //   (item: (typeof sales)[number]) => `${item.country}-${item.city}`,
+    // );
+    // const groupedByTitle = groupBy(sales, 'title');
+    // const uniqCurrencies = Array.from(new Set(sales.map(({ currency }) => currency)));
+    // const groupedByPosition = groupBy(
+    //   sales,
+    //   (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
+    // );
+
+    // const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
+    //   if (currency && price) {
+    //     total[currency] = (total[currency] ?? 0) + price;
+    //   }
+
+    //   return total;
+    // }, {});
+
+    // const lastPurchases = purchases.map((ps) => ({
+    //   courseTitle: ps.course.title,
+    //   timestamp: ps.updatedAt,
+    //   user: users.find((user) => user.id === ps.userId),
+    // }));
+
+    // const totalSales = sales.length;
+
+    // const topSales = Object.keys(groupedByCity)
+    //   .map((key) => {
+    //     const item = groupedByCity[key];
+    //     return {
+    //       currency: item[0].currency,
+    //       key,
+    //       position: [item[0].latitude, item[0].longitude],
+    //       sales: item.length,
+    //       totalPrice: item.reduce((acc, current) => acc + (current.price ?? 0), 0),
+    //     };
+    //   })
+    //   .sort((a, b) => b.sales - a.sales);
+
+    // const data = Object.keys(groupedByTitle).map((key) => {
+    //   const items = groupedByTitle[key];
+    //   const groupedByCurrency = groupBy(items, 'currency');
+
+    //   return {
+    //     name: key,
+    //     ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
+    //       const price = groupedByCurrency[key].reduce(
+    //         (total, current) => total + (current.price ?? 0),
+    //         0,
+    //       );
+
+    //       acc[key] = acc[key] ?? 0 + price;
+
+    //       uniqCurrencies.forEach((curr) => {
+    //         if (curr) {
+    //           acc[curr] = acc[curr] ?? 0;
+    //         }
+    //       });
+
+    //       return acc;
+    //     }, {}),
+    //   };
+    // });
+
+    // const map = Object.keys(groupedByPosition).map((key) => {
+    //   const [lt, lg] = key.split('*');
+
+    //   return {
+    //     city: groupedByPosition[key][0].city,
+    //     country: groupedByPosition[key][0].country,
+    //     currency: groupedByPosition[key][0].currency,
+    //     position: [Number(lt), Number(lg)],
+    //     total: groupedByPosition[key].reduce((total, current) => total + (current.price ?? 0), 0),
+    //   };
+    // });
 
     return {
-      data,
-      lastPurchases,
-      map,
-      topSales,
+      map: [],
       totalRevenue,
-      totalSales,
+      totalProfit,
     };
   } catch (error) {
     console.error('[GET_ANALYTICS_ACTION]', error);
 
     return {
-      data: [],
-      lastPurchases: [],
       map: [],
-      topSales: [],
-      totalRevenue: {},
-      totalSales: 0,
+      totalRevenue: 0,
+      totalProfit: null,
     };
   }
 };

@@ -1,7 +1,7 @@
 import { Fee } from '@prisma/client';
 import { useMemo } from 'react';
 
-import { DEFAULT_CURRENCY, DEFAULT_CURRENCY_RATE, DEFAULT_LOCALE } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_EXCHANGE_RATE, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { hasJsonStructure } from '@/lib/utils';
 
@@ -25,20 +25,20 @@ export const useLocaleAmount = ({
 
   const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
 
-  const rate = useMemo(() => {
+  const exchangeRate = useMemo(() => {
     if (useDefaultLocale) {
-      return DEFAULT_CURRENCY_RATE;
+      return DEFAULT_EXCHANGE_RATE;
     }
 
     if (localeInfo?.locale.currency && hasJsonStructure(customRates ?? '')) {
       return JSON.parse(customRates!)[localeInfo.locale.currency];
     }
-    return localeInfo?.rate ?? DEFAULT_CURRENCY_RATE;
+    return localeInfo?.rate ?? DEFAULT_EXCHANGE_RATE;
   }, [customRates, localeInfo?.locale.currency, localeInfo?.rate, useDefaultLocale]);
 
-  const amount = (price ?? 0) * rate;
+  const amount = (price ?? 0) * exchangeRate;
 
-  const { net, calculatedFees } = useFeesAmount({ fees, price: amount, rate });
+  const { net, calculatedFees } = useFeesAmount({ exchangeRate, fees, price: amount });
 
   const formattedPrice = localeInfo?.locale
     ? formatPrice(getConvertedPrice(amount), localeInfo.locale)
