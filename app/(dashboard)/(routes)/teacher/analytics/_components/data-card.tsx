@@ -1,6 +1,5 @@
 'use client';
 
-import { User } from '@prisma/client';
 import CountUp from 'react-countup';
 
 import { getAnalytics } from '@/actions/db/get-analytics';
@@ -13,15 +12,6 @@ type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type DataCardProps = {
   label: string;
-  lastPurchases?: { courseTitle: string; timestamp: Date; user?: User }[];
-  topSales?: {
-    currency: string | null;
-    key: string;
-    position: (number | null)[];
-    sales: number;
-    totalPrice: number;
-  }[];
-  totalSales?: number;
 } & Partial<Analytics>;
 
 export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) => {
