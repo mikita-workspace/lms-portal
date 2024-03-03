@@ -1,8 +1,8 @@
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getUserBilling } from '@/actions/db/get-user-billing';
+import { DataTable } from '@/components/data-table/data-table';
 
 import { columns } from './_components/data-table/columns';
-import { DataTable } from './_components/data-table/data-table';
 
 const BillingPage = async () => {
   const user = await getCurrentUser();
@@ -12,7 +12,7 @@ const BillingPage = async () => {
     <div className="p-6 flex flex-col">
       <h1 className="text-2xl font-medium">Billing History</h1>
       <div className="mt-12">
-        <DataTable columns={columns} data={userBilling} />
+        <DataTable columns={columns} data={userBilling} noLabel="No invoices" />
       </div>
     </div>
   );

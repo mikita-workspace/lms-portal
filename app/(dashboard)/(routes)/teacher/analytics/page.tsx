@@ -2,6 +2,7 @@ import { LatLngExpression } from 'leaflet';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAnalytics } from '@/actions/db/get-analytics';
+import { DataTable } from '@/components/data-table/data-table';
 import Map from '@/components/map';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
@@ -9,7 +10,6 @@ import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { Chart } from './_components/chart';
 import { DataCard } from './_components/data-card';
 import { columns } from './_components/data-table/columns';
-import { DataTable } from './_components/data-table/data-table';
 
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
@@ -77,7 +77,7 @@ const AnalyticsPage = async () => {
           <span className="text-xs text-muted-foreground">Transactions are updated every hour</span>
         </div>
 
-        <DataTable columns={columns} data={transactions} />
+        <DataTable columns={columns} data={transactions} noLabel="No client transactions" />
       </div>
     </div>
   );
