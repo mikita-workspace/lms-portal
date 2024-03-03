@@ -2,6 +2,7 @@
 
 import { Course, Fee, Purchase, PurchaseDetails, User } from '@prisma/client';
 import groupBy from 'lodash.groupby';
+import Stripe from 'stripe';
 
 import { ONE_HOUR_SEC } from '@/constants/common';
 import { CalculationMethod } from '@/constants/fees';
@@ -116,6 +117,39 @@ const getTotalProfit = (
   };
 };
 
+const getTransactions = (
+  charges: Stripe.Response<Stripe.ApiList<Stripe.Charge>>['data'],
+  purchases: PurchaseWithCourse[],
+) => {
+  return charges.reduce<
+    {
+      amount: number;
+      billingDetails: Stripe.Charge.BillingDetails;
+      currency: string;
+      id: string;
+      purchaseDate: number;
+      receiptUrl: string | null;
+      title: string;
+    }[]
+  >((userCharges, ch) => {
+    const purchase = purchases.find((pc) => pc.details?.paymentIntent === ch.payment_intent);
+
+    if (purchase) {
+      userCharges.push({
+        amount: ch.amount,
+        billingDetails: ch.billing_details,
+        currency: ch.currency,
+        id: ch.id,
+        purchaseDate: ch.created,
+        receiptUrl: ch.receipt_url,
+        title: purchase.course.title,
+      });
+    }
+
+    return userCharges;
+  }, []);
+};
+
 export const getAnalytics = async (userId: string) => {
   try {
     const purchases = await db.purchase.findMany({
@@ -175,7 +209,6 @@ export const getAnalytics = async (userId: string) => {
     const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
       others.map((other) => ({ ...other.details, title })),
     );
-
     const chart = Object.entries(groupedEarnings).map(([title, others]) => ({
       title,
       qty: others.length,
@@ -186,12 +219,14 @@ export const getAnalytics = async (userId: string) => {
       0,
     );
     const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
+    const transactions = getTransactions(stripeCharges, purchases);
 
     return {
       chart,
       map,
       totalProfit,
       totalRevenue,
+      transactions,
     };
   } catch (error) {
     console.error('[GET_ANALYTICS_ACTION]', error);
@@ -201,6 +236,7 @@ export const getAnalytics = async (userId: string) => {
       map: [],
       totalProfit: null,
       totalRevenue: 0,
+      transactions: [] as ReturnType<typeof getTransactions>,
     };
   }
 };

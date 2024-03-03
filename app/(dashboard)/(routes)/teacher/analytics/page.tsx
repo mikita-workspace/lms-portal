@@ -8,11 +8,19 @@ import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 import { Chart } from './_components/chart';
 import { DataCard } from './_components/data-card';
+import { columns } from './_components/data-table/columns';
+import { DataTable } from './_components/data-table/data-table';
 
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
 
-  const { chart, map: mapData, totalRevenue, totalProfit } = await getAnalytics(user!.userId);
+  const {
+    chart,
+    map: mapData,
+    totalProfit,
+    totalRevenue,
+    transactions,
+  } = await getAnalytics(user!.userId);
 
   const mapMarkers = mapData.map((mp) => {
     return {
@@ -64,7 +72,12 @@ const AnalyticsPage = async () => {
         <Chart data={chart} />
       </div>
       <div className="flex flex-col gap-4 mt-4">
-        <p className="font-medium text-xl">Client Transactions</p>
+        <div className="flex flex-col gap-1">
+          <p className="font-medium text-xl">Client Transactions</p>
+          <span className="text-xs text-muted-foreground">Transactions are updated every hour</span>
+        </div>
+
+        <DataTable columns={columns} data={transactions} />
       </div>
     </div>
   );
