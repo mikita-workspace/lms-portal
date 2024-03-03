@@ -26,16 +26,22 @@ const AnalyticsPage = async () => {
     return {
       position: mp.position,
       content: (
-        <div className="flex flex-col text-sm">
-          <h2 className="text-medium font-semibold gap-2">
+        <div className="flex flex-col text-sm max-w-[150px]">
+          <h2 className="text-medium font-semibold">
             {mp.country}, {mp.city}
           </h2>
-          <span>
-            {formatPrice(getConvertedPrice(mp.total), {
-              locale: DEFAULT_LOCALE,
-              currency: mp.currency ?? DEFAULT_CURRENCY,
-            })}
-          </span>
+          <div className="text-xs">
+            In this region, <span className="font-semibold">{mp.totalSales} </span>sales have been
+            made. The total amount of spending by client is
+            <span className="font-semibold">
+              {' '}
+              {formatPrice(getConvertedPrice(mp.totalAmount), {
+                locale: DEFAULT_LOCALE,
+                currency: mp.currency ?? DEFAULT_CURRENCY,
+              })}
+            </span>
+            .
+          </div>
         </div>
       ),
     };

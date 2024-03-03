@@ -51,6 +51,30 @@ const getCalculatedServiceFee = (price: number, fee: Fee) => {
   };
 };
 
+type Sales = (ReturnType<typeof groupByCourse>[number][number]['details'] & { title: string })[];
+
+const getMap = (sales: Sales) => {
+  const groupedByPosition = groupBy(
+    sales,
+    (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
+  );
+
+  return Object.keys(groupedByPosition).map((key) => {
+    const [lt, lg] = key.split('*');
+    return {
+      city: groupedByPosition[key][0].city,
+      country: groupedByPosition[key][0].country,
+      currency: groupedByPosition[key][0].currency,
+      position: [Number(lt), Number(lg)],
+      totalAmount: groupedByPosition[key].reduce(
+        (total, current) => total + (current.price ?? 0),
+        0,
+      ),
+      totalSales: groupedByPosition[key].length,
+    };
+  });
+};
+
 const getTotalProfit = (
   stripeBalanceTransactions: Record<string, any>[],
   totalRevenue: number,
@@ -104,6 +128,7 @@ export const getAnalytics = async (userId: string) => {
     });
 
     const userIds = [...new Set(purchases.map((ps) => ps.userId))];
+    const users = await db.user.findMany({ where: { id: { in: userIds } } });
 
     const stripeCustomerIds = await db.stripeCustomer.findMany({
       where: { userId: { in: userIds } },
@@ -146,35 +171,10 @@ export const getAnalytics = async (userId: string) => {
 
     const serviceFeeDetails = await db.fee.findUnique({ where: { name: 'Nova LMS Service Fee' } });
 
-    const totalRevenue = stripeBalanceTransactions.reduce(
-      (revenue, current) => revenue + current.amount,
-      0,
+    const groupedEarnings = groupByCourse(purchases, users);
+    const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
+      others.map((other) => ({ ...other.details, title })),
     );
-
-    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
-
-    // console.log(totalProfit.feeDetails.flat());
-
-    // console.log(stripeBalanceTransactions);
-
-    // const users = await db.user.findMany();
-
-    // const t = await stripe.paymentIntents.list({ customer: 'cus_PaplIMVcuYfNGO' });
-
-    // console.log(t.data[0].amount_details);
-
-    // const c = await stripe.charges.list({ customer: 'cus_PaplIMVcuYfNGO' });
-
-    // console.log(c.data);
-
-    // const e = await stripe.balanceTransactions.retrieve('txn_3Ole6TBxr6wddNuk0pIvIv09');
-
-    // console.log(e);
-
-    // const groupedEarnings = groupByCourse(purchases, users);
-    // const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
-    //   others.map((other) => ({ ...other.details, title })),
-    // );
 
     // const groupedByCity = groupBy(
     //   sales,
@@ -182,10 +182,6 @@ export const getAnalytics = async (userId: string) => {
     // );
     // const groupedByTitle = groupBy(sales, 'title');
     // const uniqCurrencies = Array.from(new Set(sales.map(({ currency }) => currency)));
-    // const groupedByPosition = groupBy(
-    //   sales,
-    //   (item: (typeof sales)[number]) => `${item.latitude}*${item.longitude}`,
-    // );
 
     // const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
     //   if (currency && price) {
@@ -241,22 +237,17 @@ export const getAnalytics = async (userId: string) => {
     //   };
     // });
 
-    // const map = Object.keys(groupedByPosition).map((key) => {
-    //   const [lt, lg] = key.split('*');
-
-    //   return {
-    //     city: groupedByPosition[key][0].city,
-    //     country: groupedByPosition[key][0].country,
-    //     currency: groupedByPosition[key][0].currency,
-    //     position: [Number(lt), Number(lg)],
-    //     total: groupedByPosition[key].reduce((total, current) => total + (current.price ?? 0), 0),
-    //   };
-    // });
+    const map = getMap(sales);
+    const totalRevenue = stripeBalanceTransactions.reduce(
+      (revenue, current) => revenue + current.amount,
+      0,
+    );
+    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
 
     return {
-      map: [],
-      totalRevenue,
+      map,
       totalProfit,
+      totalRevenue,
     };
   } catch (error) {
     console.error('[GET_ANALYTICS_ACTION]', error);

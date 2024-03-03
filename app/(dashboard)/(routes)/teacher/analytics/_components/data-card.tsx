@@ -29,9 +29,9 @@ export const DataCard = ({
   label,
   lastPurchases,
   topSales,
+  totalProfit,
   totalRevenue,
   totalSales,
-  totalProfit,
 }: DataCardProps) => {
   const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
 
