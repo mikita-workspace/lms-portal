@@ -52,13 +52,15 @@ export const columns: ColumnDef<ClientTransactions>[] = [
     cell: ({ row }) => {
       const { amount, currency } = row.original;
 
-      <PriceColumn
-        amount={amount}
-        locale={{
-          locale: DEFAULT_LOCALE,
-          currency,
-        }}
-      />;
+      return (
+        <PriceColumn
+          amount={amount}
+          locale={{
+            locale: DEFAULT_LOCALE,
+            currency,
+          }}
+        />
+      );
     },
   },
   {
