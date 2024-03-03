@@ -176,67 +176,6 @@ export const getAnalytics = async (userId: string) => {
       others.map((other) => ({ ...other.details, title })),
     );
 
-    // const groupedByCity = groupBy(
-    //   sales,
-    //   (item: (typeof sales)[number]) => `${item.country}-${item.city}`,
-    // );
-    // const groupedByTitle = groupBy(sales, 'title');
-    // const uniqCurrencies = Array.from(new Set(sales.map(({ currency }) => currency)));
-
-    // const totalRevenue = sales.reduce<Record<string, number>>((total, { currency, price }) => {
-    //   if (currency && price) {
-    //     total[currency] = (total[currency] ?? 0) + price;
-    //   }
-
-    //   return total;
-    // }, {});
-
-    // const lastPurchases = purchases.map((ps) => ({
-    //   courseTitle: ps.course.title,
-    //   timestamp: ps.updatedAt,
-    //   user: users.find((user) => user.id === ps.userId),
-    // }));
-
-    // const totalSales = sales.length;
-
-    // const topSales = Object.keys(groupedByCity)
-    //   .map((key) => {
-    //     const item = groupedByCity[key];
-    //     return {
-    //       currency: item[0].currency,
-    //       key,
-    //       position: [item[0].latitude, item[0].longitude],
-    //       sales: item.length,
-    //       totalPrice: item.reduce((acc, current) => acc + (current.price ?? 0), 0),
-    //     };
-    //   })
-    //   .sort((a, b) => b.sales - a.sales);
-
-    // const data = Object.keys(groupedByTitle).map((key) => {
-    //   const items = groupedByTitle[key];
-    //   const groupedByCurrency = groupBy(items, 'currency');
-
-    //   return {
-    //     name: key,
-    //     ...Object.keys(groupedByCurrency).reduce<Record<string, number>>((acc, key) => {
-    //       const price = groupedByCurrency[key].reduce(
-    //         (total, current) => total + (current.price ?? 0),
-    //         0,
-    //       );
-
-    //       acc[key] = acc[key] ?? 0 + price;
-
-    //       uniqCurrencies.forEach((curr) => {
-    //         if (curr) {
-    //           acc[curr] = acc[curr] ?? 0;
-    //         }
-    //       });
-
-    //       return acc;
-    //     }, {}),
-    //   };
-    // });
-
     const chart = Object.entries(groupedEarnings).map(([title, others]) => ({
       title,
       qty: others.length,
