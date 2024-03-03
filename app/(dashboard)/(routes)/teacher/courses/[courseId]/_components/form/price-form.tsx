@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -139,7 +140,7 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
               {exchangeRates?.rates && (
                 <div
                   className="flex items-center gap-2 text-sm text-muted-foreground"
-                  title={`Updated at ${format(fromUnixTime(exchangeRates.updatedAt), 'HH:mm, dd MMM yyyy')}`}
+                  title={`Updated at ${format(fromUnixTime(exchangeRates.updatedAt), TIMESTAMP_TEMPLATE)}`}
                 >
                   <span>≈</span>
                   <div>

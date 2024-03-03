@@ -1,92 +1,61 @@
 'use client';
 
-import { User } from '@prisma/client';
-import { format } from 'date-fns';
 import CountUp from 'react-countup';
 
-import { ScrollArea } from '@/components/ui';
+import { getAnalytics } from '@/actions/db/get-analytics';
+import { Separator } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DEFAULT_LOCALE } from '@/constants/locale';
-import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
+import { formatPrice, getConvertedPrice, getCurrencySymbol } from '@/lib/format';
+
+type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type DataCardProps = {
   label: string;
-  lastPurchases?: { courseTitle: string; timestamp: Date; user?: User }[];
-  topSales?: {
-    currency: string | null;
-    key: string;
-    position: (number | null)[];
-    sales: number;
-    totalPrice: number;
-  }[];
-  totalRevenue?: Record<string, number>;
-  totalSales?: number;
-};
+} & Partial<Analytics>;
 
-export const DataCard = ({
-  label,
-  lastPurchases,
-  topSales,
-  totalRevenue,
-  totalSales,
-}: DataCardProps) => {
+export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) => {
+  const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
+
   return (
-    <Card className="shadow-none">
+    <Card className="shadow-none h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{label}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {lastPurchases && (
-            <ScrollArea className="text-xs flex flex-col max-h-[240px]">
-              <div className="pr-4">
-                {lastPurchases.map((lp) => (
-                  <div
-                    key={lp.courseTitle}
-                    className="flex justify-between border-b last:border-none py-1"
-                  >
-                    <div className="flex flex-col gap-1 truncate">
-                      <p className="font-medium">{lp.courseTitle}</p>
-                      <p>{lp.user?.email}</p>
-                    </div>
-                    <span className="text-right">{format(lp.timestamp, 'HH:mm, dd MMM yyyy')}</span>
+          {totalRevenue && (
+            <CountUp
+              className="text-2xl font-bold"
+              decimals={2}
+              duration={2.75}
+              end={getConvertedPrice(totalRevenue)}
+              prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
+            />
+          )}
+          {totalProfit && (
+            <div className="flex flex-col">
+              <div className="text-xs font-normal text-muted-foreground">
+                <div className="flex gap-2 items-center justify-between">
+                  <span>Total Revenue</span>
+                  <span>{formatPrice(getConvertedPrice(totalProfit.total), defaultLocale)}</span>
+                </div>
+                {totalProfit.feeDetails.map((fee) => (
+                  <div key={fee.name} className="flex gap-2 items-center justify-between ">
+                    <span>{fee.name}</span>
+                    <span>
+                      &#8722;&nbsp;{formatPrice(getConvertedPrice(fee.amount), defaultLocale)}
+                    </span>
                   </div>
                 ))}
               </div>
-            </ScrollArea>
-          )}
-          {totalRevenue &&
-            Object.keys(totalRevenue)
-              .sort((a, b) => a.localeCompare(b))
-              .map((curr) => (
-                <CountUp
-                  key={curr}
-                  className="text-2xl font-bold"
-                  decimals={2}
-                  duration={2.75}
-                  end={getConvertedPrice(totalRevenue?.[curr] ?? 0)}
-                  prefix={`${getCurrencySymbol(DEFAULT_LOCALE, curr)} `}
-                />
-              ))}
-          {totalSales && (
-            <div className="flex flex-col gap-2">
-              <CountUp className="text-2xl font-bold" end={totalSales} duration={2.75} />
-              <ScrollArea className="flex flex-col text-sm gap-1 max-h-[200px]">
-                <div className="pr-4">
-                  <p className="font-medium mb-2">Top Locations</p>
-                  <ul className="space-y-1">
-                    {topSales?.map((sale) => {
-                      const [country, city] = sale.key.split('-');
-
-                      return (
-                        <li key={sale.key}>
-                          {country}, {city}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </ScrollArea>
+              <Separator className="my-2" />
+              <div className="flex gap-2 items-center justify-between text-sm">
+                <span className="font-medium">Total</span>
+                <span className="font-semibold">
+                  {formatPrice(getConvertedPrice(totalProfit.net), defaultLocale)}
+                </span>
+              </div>
             </div>
           )}
         </div>
