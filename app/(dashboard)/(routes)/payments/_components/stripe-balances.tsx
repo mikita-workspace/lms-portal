@@ -8,10 +8,10 @@ import { DEFAULT_LOCALE } from '@/constants/locale';
 import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
-type AdminInfo = Awaited<ReturnType<typeof getStripeInfo>>;
+type StripeInfo = Awaited<ReturnType<typeof getStripeInfo>>;
 
 type StripeBalancesProps = {
-  balances: AdminInfo['stripeBalances'];
+  balances: StripeInfo['stripeBalances'];
 };
 
 export const StripeBalances = ({ balances }: StripeBalancesProps) => {

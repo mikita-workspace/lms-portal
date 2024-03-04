@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { UserRole } from '@/constants/auth';
+import { isOwner } from '@/lib/owner';
 
 type AdminLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -10,7 +11,7 @@ type AdminLayoutProps = Readonly<{
 const AdminLayout = async ({ children }: AdminLayoutProps) => {
   const user = await getCurrentUser();
 
-  if (!user?.userId || ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (user?.role !== UserRole.ADMIN && !isOwner(user?.userId)) {
     return redirect('/');
   }
 
