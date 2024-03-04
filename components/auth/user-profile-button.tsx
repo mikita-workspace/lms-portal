@@ -80,7 +80,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
               </div>
               <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
             </div>
-            <div>
+            <div className="ml-2">
               {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
               {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
               {isStudent && <TextBadge label="Student" variant="default" />}
@@ -107,9 +107,9 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             </div>
           </>
         )}
-        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         {(isAdmin || isTeacher) && (
           <>
+            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}
