@@ -174,7 +174,7 @@ const getTransactions = (
 
     return userFreePurchases;
   }, []);
-  return [...userCharges, ...userFreePurchases].sort((a, b) => a.title.localeCompare(b.title));
+  return [...userCharges, ...userFreePurchases].sort((a, b) => b.purchaseDate - a.purchaseDate);
 };
 
 export const getAnalytics = async (userId: string) => {
