@@ -1,6 +1,6 @@
 'use client';
 
-import { BookMarked, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense } from 'react';
@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 import { UserProfileButton } from '@/components/auth/user-profile-button';
 import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
-import { AuthStatus, UserRole } from '@/constants/auth';
+import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 type NavBarRoutesProps = {
@@ -29,8 +29,6 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
   const isSettingsPage = pathname?.startsWith('/settings');
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isTeacherPage = pathname?.startsWith('/teacher');
-
-  const hasTeacherMode = [UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole);
 
   return (
     <>
@@ -53,26 +51,13 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
         <div className="flex gap-x-2 ml-auto items-center">
           {user?.userId && (
             <>
-              {isCoursePage || isStudentPage || isTeacherPage || isChatPage || isSettingsPage ? (
+              {(isCoursePage || isStudentPage || isTeacherPage || isChatPage || isSettingsPage) && (
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
                     {isTeacherPage ? 'Exit' : 'Back to courses'}
                   </Button>
                 </Link>
-              ) : (
-                <>
-                  {hasTeacherMode && (
-                    <div className="flex items-center">
-                      <Link href="/teacher/courses">
-                        <Button size="sm" variant="ghost">
-                          <BookMarked className="h-4 w-4 mr-2" />
-                          Teacher mode
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                </>
               )}
             </>
           )}

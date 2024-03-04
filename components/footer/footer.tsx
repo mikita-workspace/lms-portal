@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import {
   GITHUB_ISSUE_URL,
+  NOVA_CHAT_URL,
   OWNER_COPYRIGHT,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
@@ -43,6 +44,9 @@ export const Footer = () => {
               </Link>
               <Link href={PRIVACY_POLICY_URL} target="_blank">
                 Privacy Policy
+              </Link>
+              <Link href={NOVA_CHAT_URL} target="_blank">
+                NovaChat&nbsp;|&nbsp;GPT
               </Link>
             </div>
           </div>

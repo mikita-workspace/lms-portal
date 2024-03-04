@@ -1,17 +1,12 @@
 'use client';
 
-import { ExternalLink, Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
-import Link from 'next/link';
+import { BookMarked, Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { FaChalkboardTeacher } from 'react-icons/fa';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
-import { MdOutlineWorkspacePremium } from 'react-icons/md';
-import { PiStudentBold } from 'react-icons/pi';
 
 import { UserRole } from '@/constants/auth';
-import { NOVA_CHAT_URL } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { isOwner } from '@/lib/owner';
 import { getFallbackName } from '@/lib/utils';
@@ -78,19 +73,20 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72 mr-4 mt-1">
         <DropdownMenuLabel className="font-normal p-2">
-          <div className="flex flex-col space-y-1">
-            <div className="flex gap-1 items-center">
-              <p className="text-sm font-semibold">{user.name}</p>
-              {(isOwner(user.userId) || isAdmin) && (
-                <MdOutlineWorkspacePremium className="w-4 h-4 text-yellow-500/90 dark:text-yellow-400" />
-              )}
-              {isTeacher && <FaChalkboardTeacher className="w-4 h-4 text-purple-700" />}
-              {isStudent && <PiStudentBold className="w-4 h-4 text-indigo-700" />}
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col space-y-1">
+              <div className="flex gap-1 items-center">
+                <p className="text-sm font-semibold">{user.name}</p>
+              </div>
+              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
             </div>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <div>
+              {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
+              {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
+              {isStudent && <TextBadge label="Student" variant="default" />}
+            </div>
           </div>
         </DropdownMenuLabel>
-
         {globalProgress && globalProgress.total > 0 && (
           <>
             <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
@@ -113,16 +109,21 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         )}
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         {(isAdmin || isTeacher) && (
-          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
-            <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
-            Chat&nbsp;&nbsp;
-            <TextBadge label="AI" variant="yellow" />
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={() => router.push('/teacher/courses')}
+            >
+              <BookMarked className="h-4 w-4 mr-2" />
+              Teacher mode
+            </DropdownMenuItem>
+            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
+              <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
+              Chat&nbsp;&nbsp;
+              <TextBadge label="AI" variant="yellow" />
+            </DropdownMenuItem>
+          </>
         )}
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
-          <Settings2 className="mr-2 h-4 w-4" />
-          Settings
-        </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer">
           <div className="flex justify-between items-center w-full">
@@ -144,16 +145,13 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             </Select>
           </div>
         </DropdownMenuItem>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
+          <Settings2 className="mr-2 h-4 w-4" />
+          Settings
+        </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <Link href={NOVA_CHAT_URL} target="_blank">
-          <DropdownMenuItem className="hover:cursor-pointer">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            NovaChat&nbsp;|&nbsp;GPT&nbsp;&nbsp;
-            <TextBadge label="Telegram" variant="indigo" />
-          </DropdownMenuItem>
-        </Link>
         <LogoutButton>
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem className="hover:cursor-pointer text-red-500">
             <LogOut className="mr-2 h-4 w-4" />
             Log out
           </DropdownMenuItem>
