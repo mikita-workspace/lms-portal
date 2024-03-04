@@ -1,6 +1,15 @@
 'use client';
 
-import { BookMarked, Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import {
+  BookMarked,
+  CreditCard,
+  Laptop2,
+  LogIn,
+  LogOut,
+  MoonStar,
+  Settings2,
+  Sun,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
@@ -105,9 +114,20 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             </div>
           </>
         )}
+        {(isOwner(user.userId) || isAdmin || isTeacher) && (
+          <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        )}
+        {isOwner(user.userId) && (
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => router.push('/payments')}
+          >
+            <CreditCard className="h-4 w-4 mr-2" />
+            Payments
+          </DropdownMenuItem>
+        )}
         {(isAdmin || isTeacher) && (
           <>
-            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}

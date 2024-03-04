@@ -25,6 +25,7 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
 
   const isChatPage = pathname?.startsWith('/chat');
   const isCoursePage = pathname?.startsWith('/courses');
+  const isPaymentsPage = pathname?.startsWith('/payments');
   const isSearchPage = pathname === '/';
   const isSettingsPage = pathname?.startsWith('/settings');
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
@@ -51,11 +52,16 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
         <div className="flex gap-x-2 ml-auto items-center">
           {user?.userId && (
             <>
-              {(isCoursePage || isStudentPage || isTeacherPage || isChatPage || isSettingsPage) && (
+              {(isCoursePage ||
+                isStudentPage ||
+                isTeacherPage ||
+                isChatPage ||
+                isSettingsPage ||
+                isPaymentsPage) && (
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
-                    {isTeacherPage ? 'Exit' : 'Back to courses'}
+                    {isTeacherPage || isPaymentsPage ? 'Exit' : 'Back to courses'}
                   </Button>
                 </Link>
               )}

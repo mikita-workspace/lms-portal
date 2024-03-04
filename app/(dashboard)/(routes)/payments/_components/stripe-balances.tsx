@@ -23,34 +23,32 @@ export const StripeBalances = ({ balances }: StripeBalancesProps) => {
           The balance of all sales using service
         </span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:grid-cols-3">
-        <div className="flex flex-col gap-4 h-full justify-between">
-          {Object.keys(balances).map((key) => {
-            const balance = balances[key as keyof typeof balances];
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+        {Object.keys(balances).map((key) => {
+          const balance = balances[key as keyof typeof balances];
 
-            return (
-              <Card key={key} className="shadow-none h-full">
-                <CardHeader className="flex flex-col justify-center space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{capitalize(key)}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col gap-2 mt-2">
-                    {balance.map((bl) => (
-                      <CountUp
-                        key={`${bl.amount}-${bl.currency}`}
-                        className="text-2xl font-bold"
-                        decimals={2}
-                        duration={2.75}
-                        end={getConvertedPrice(bl.amount)}
-                        prefix={`${getCurrencySymbol(DEFAULT_LOCALE, bl.currency.toUpperCase())} `}
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+          return (
+            <Card key={key} className="shadow-none">
+              <CardHeader className="flex flex-col justify-center space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{capitalize(key)}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-2 mt-2">
+                  {balance.map((bl) => (
+                    <CountUp
+                      key={`${bl.amount}-${bl.currency}`}
+                      className="text-2xl font-bold"
+                      decimals={2}
+                      duration={2.75}
+                      end={getConvertedPrice(bl.amount)}
+                      prefix={`${getCurrencySymbol(DEFAULT_LOCALE, bl.currency.toUpperCase())} `}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
         {/* TODO: Stripe Balance Details refactoring. [https://trello.com/c/yHbjsk6T/12-stripe-balance-details-refactoring] */}
         {/* <Card className="shadow-none xl:col-span-2">
           <CardHeader className="flex flex-col justify-center space-y-0 pb-2">

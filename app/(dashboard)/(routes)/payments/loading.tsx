@@ -1,7 +1,7 @@
 import { GeneralSettingsSkeleton } from '@/components/loaders/general-settings-skeleton';
 
-const AdminLoading = () => {
+const BalancesLoading = () => {
   return <GeneralSettingsSkeleton />;
 };
 
-export default AdminLoading;
+export default BalancesLoading;

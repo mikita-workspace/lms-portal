@@ -31,7 +31,7 @@ export const getStripeInfo = async () => {
       })),
     };
   } catch (error) {
-    console.error('[GET_ADMIN_INITIAL_ACTION]', error);
+    console.error('[GET_STRIPE_INFO_ACTION]', error);
 
     return {
       stripeCoupons: [],
