@@ -58,7 +58,7 @@ export const columns: ColumnDef<ClientTransactions>[] = [
     },
   },
   {
-    accessorKey: 'timestamp',
+    accessorKey: 'purchaseDate',
     header: ({ column }) => handleSortingHeader(column, 'Purchase date'),
     cell: ({ row }) => {
       const { purchaseDate } = row.original;
