@@ -61,7 +61,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">Chapter Creation</h1>
-                <span className="text-sm text-neutral-700">
+                <span className="text-sm text-muted-foreground">
                   Complete all fields {completionText}
                 </span>
               </div>
