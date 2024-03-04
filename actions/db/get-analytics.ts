@@ -6,10 +6,11 @@ import groupBy from 'lodash.groupby';
 import Stripe from 'stripe';
 
 import { ONE_HOUR_SEC } from '@/constants/common';
-import { CalculationMethod } from '@/constants/fees';
+import { CalculationMethod, FeeType } from '@/constants/fees';
 import { DEFAULT_CURRENCY } from '@/constants/locale';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
+import { getCalculatedFee } from '@/lib/fees';
 import { stripe } from '@/server/stripe';
 
 type PurchaseWithCourse = Purchase & { course: Course } & { details: PurchaseDetails | null };
@@ -19,6 +20,13 @@ type Transaction = {
   billingDetails: Stripe.Charge.BillingDetails;
   currency: string;
   id: string;
+  paymentMethod: {
+    brand?: string | null;
+    country?: string | null;
+    expMonth?: number | null;
+    expYear?: number | null;
+    last4?: string | null;
+  } | null;
   purchaseDate: number;
   receiptUrl: string | null;
   title: string;
@@ -43,25 +51,6 @@ const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
   });
 
   return grouped;
-};
-
-const getCalculatedServiceFee = (price: number, fee: Fee) => {
-  let amount = 0;
-
-  if (fee.method === CalculationMethod.FIXED) {
-    amount = fee.amount;
-  }
-
-  if (fee.method === CalculationMethod.PERCENTAGE) {
-    amount = (price * fee.rate) / 100;
-  }
-
-  return {
-    amount: Math.round(amount),
-    id: fee.id,
-    name: fee.name,
-    quantity: 1,
-  };
 };
 
 const getMap = (sales: Sales) => {
@@ -89,24 +78,39 @@ const getMap = (sales: Sales) => {
 const getTotalProfit = (
   stripeBalanceTransactions: Record<string, any>[],
   totalRevenue: number,
-  serviceFeeDetails: Fee | null,
+  fees: Fee[],
 ) => {
   const totalFees = stripeBalanceTransactions
-    .reduce((totalFees, current) => {
-      const stripeFees = current.fee_details.map((fee: Record<string, string | number>) => ({
-        amount: fee.amount,
-        id: `${current.id}-${fee.amount}`,
-        name: fee.description,
-        quantity: 1,
-      }));
+    .reduce<ReturnType<typeof getCalculatedFee>[]>((totalFees, current) => {
+      const calculatedFees = fees.map((fee) => getCalculatedFee(current.amount, fee));
+      const stripeDiff = Math.abs(
+        current.fee -
+          calculatedFees.reduce(
+            (acc, current) => acc + (current.type === FeeType.STRIPE ? current.amount : 0),
+            0,
+          ),
+      );
 
-      const serviceFee = serviceFeeDetails
-        ? getCalculatedServiceFee(current.amount, serviceFeeDetails)
-        : {};
+      const stripeProcessingFee = calculatedFees.find(
+        (fee) => fee.method === CalculationMethod.PERCENTAGE && fee.type === FeeType.STRIPE,
+      );
 
-      totalFees.push([...stripeFees, serviceFee]);
-
-      return totalFees;
+      return [
+        ...totalFees,
+        ...calculatedFees,
+        ...(stripeProcessingFee
+          ? [
+              {
+                amount: Math.round(stripeDiff),
+                id: stripeProcessingFee.id,
+                method: stripeProcessingFee.method,
+                name: stripeProcessingFee.name,
+                quantity: 1,
+                type: stripeProcessingFee.type,
+              },
+            ]
+          : []),
+      ];
     }, [])
     .flat();
 
@@ -143,6 +147,13 @@ const getTransactions = (
         billingDetails: ch.billing_details,
         currency: ch.currency,
         id: ch.id,
+        paymentMethod: {
+          brand: ch.payment_method_details?.card?.brand,
+          country: ch.payment_method_details?.card?.country,
+          expMonth: ch.payment_method_details?.card?.exp_month,
+          expYear: ch.payment_method_details?.card?.exp_year,
+          last4: ch.payment_method_details?.card?.last4,
+        },
         purchaseDate: ch.created,
         receiptUrl: ch.receipt_url,
         title: purchaseWithPaymentIntent.course.title,
@@ -166,6 +177,7 @@ const getTransactions = (
         },
         currency: DEFAULT_CURRENCY,
         id: pc.id,
+        paymentMethod: null,
         purchaseDate: getUnixTime(pc.createdAt),
         receiptUrl: null,
         title: pc.course.title,
@@ -230,7 +242,7 @@ export const getAnalytics = async (userId: string) => {
       }),
     );
 
-    const serviceFeeDetails = await db.fee.findUnique({ where: { name: 'Nova LMS Service Fee' } });
+    const fees = await db.fee.findMany();
 
     const groupedEarnings = groupByCourse(purchases, users);
     const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
@@ -245,7 +257,7 @@ export const getAnalytics = async (userId: string) => {
       (revenue, current) => revenue + current.amount,
       0,
     );
-    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, serviceFeeDetails);
+    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, fees);
     const transactions = getTransactions(stripeCharges, purchases, users);
 
     return {

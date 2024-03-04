@@ -1,7 +1,7 @@
 import { Fee } from '@prisma/client';
 
-import { CalculationMethod } from '@/constants/fees';
 import { DEFAULT_EXCHANGE_RATE } from '@/constants/locale';
+import { getCalculatedFee } from '@/lib/fees';
 
 type UseFeesAmount = {
   exchangeRate?: number;
@@ -22,27 +22,11 @@ export const useFeesAmount = ({
     };
   }
 
-  const calculatedFees = fees.map((fee) => {
-    let amount = 0;
-
-    if (fee.method === CalculationMethod.FIXED) {
-      amount = fee.amount * exchangeRate;
-    }
-
-    if (fee.method === CalculationMethod.PERCENTAGE) {
-      amount = (price * fee.rate) / 100;
-    }
-
-    return {
-      amount: Math.round(amount),
-      id: fee.id,
-      name: fee.name,
-      quantity: 1,
-    };
-  });
+  const calculatedFees = fees.map((fee) => getCalculatedFee(price, fee, exchangeRate));
+  const calculatedFeesAmount = calculatedFees.reduce((total, fee) => total + fee.amount, 0);
 
   return {
-    net: price - calculatedFees.reduce((total, fee) => total + fee.amount, 0),
+    net: price - calculatedFeesAmount,
     calculatedFees,
   };
 };

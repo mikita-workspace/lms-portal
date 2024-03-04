@@ -145,5 +145,6 @@ model Fee {
   method    String
   name      String   @unique
   rate      Float    @default(0)
+  type      String?
   updatedAt DateTime @updatedAt
 }

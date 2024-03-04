@@ -51,7 +51,7 @@ const AnalyticsPage = async () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-medium mb-12">Analytic Dashboard</h1>
+      <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-1">
@@ -84,7 +84,6 @@ const AnalyticsPage = async () => {
           <p className="font-medium text-xl">Client Transactions</p>
           <span className="text-xs text-muted-foreground">Transactions are updated every hour</span>
         </div>
-
         <DataTable columns={columns} data={transactions} noLabel="No client transactions" />
       </div>
     </div>

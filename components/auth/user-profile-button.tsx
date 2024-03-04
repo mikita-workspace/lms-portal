@@ -113,7 +113,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
               onClick={() => router.push('/teacher/courses')}
             >
               <BookMarked className="h-4 w-4 mr-2" />
-              Teacher mode
+              Manage courses
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
               <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
