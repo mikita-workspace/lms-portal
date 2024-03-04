@@ -34,7 +34,7 @@ const AnalyticsPage = async () => {
           </h2>
           <div className="text-xs">
             In this region, <span className="font-semibold">{mp.totalSales} </span>sales have been
-            made. The total amount of spending by client is{' '}
+            made. The total amount of clients expenses is{' '}
             <span className="font-semibold">
               {' '}
               {formatPrice(getConvertedPrice(mp.totalAmount), {
