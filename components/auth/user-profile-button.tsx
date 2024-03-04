@@ -71,20 +71,18 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-72 mr-4 mt-1">
+      <DropdownMenuContent className="w-[260px] mr-4 mt-1">
         <DropdownMenuLabel className="font-normal p-2">
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col space-y-1">
-              <div className="flex gap-1 items-center">
-                <p className="text-sm font-semibold">{user.name}</p>
+          <div className="flex flex-col space-y-1">
+            <div className="flex gap-1 items-center">
+              <p className="text-sm font-semibold">{user.name}</p>
+              <div className="ml-1">
+                {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
+                {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
+                {isStudent && <TextBadge label="Student" variant="default" />}
               </div>
-              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
             </div>
-            <div className="ml-2">
-              {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
-              {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
-              {isStudent && <TextBadge label="Student" variant="default" />}
-            </div>
+            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         {globalProgress && globalProgress.total > 0 && (
