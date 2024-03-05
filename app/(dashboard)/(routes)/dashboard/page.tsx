@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getDashboardCourses } from '@/actions/db/get-dashboard-courses';
+import { getDashboardCourses } from '@/actions/courses/get-dashboard-courses';
 
 import { CoursesList } from '../../_components/courses/courses-list';
 import { InfoCard } from './_components/info-card';

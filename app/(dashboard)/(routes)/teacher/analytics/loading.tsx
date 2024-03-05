@@ -1,7 +1,7 @@
 import { CommonLoader } from '@/components/loaders/common-loader';
 
-const AnalyticLoading = () => {
+const AnalyticsLoading = () => {
   return <CommonLoader />;
 };
 
-export default AnalyticLoading;
+export default AnalyticsLoading;

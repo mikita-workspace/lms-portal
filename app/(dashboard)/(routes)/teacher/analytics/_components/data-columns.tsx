@@ -6,7 +6,7 @@ import { ArrowUpDown, ReceiptText } from 'lucide-react';
 import Link from 'next/link';
 import { PaymentIcon, PaymentTypeExtended } from 'react-svg-credit-card-payment-icons';
 
-import { getAnalytics } from '@/actions/db/get-analytics';
+import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { PriceColumn } from '@/components/data-table/price-column';
 import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';

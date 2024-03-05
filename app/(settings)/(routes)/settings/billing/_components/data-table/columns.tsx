@@ -5,7 +5,7 @@ import { format, fromUnixTime } from 'date-fns';
 import { ArrowUpDown, ReceiptText } from 'lucide-react';
 import Link from 'next/link';
 
-import { getUserBilling } from '@/actions/db/get-user-billing';
+import { getUserBilling } from '@/actions/payments/get-user-billing';
 import { PriceColumn } from '@/components/data-table/price-column';
 import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';

@@ -2,7 +2,7 @@
 
 import { stripe } from '@/server/stripe';
 
-export const getStripeInfo = async () => {
+export const getStripeDetails = async () => {
   try {
     const stripeBalance = await stripe.balance.retrieve();
     const stripeTransaction = await stripe.balanceTransactions.list({ limit: 100 });
@@ -54,7 +54,7 @@ export const getStripeInfo = async () => {
         ...dt,
         promotionCodes: stripePromotionCodes.data.filter((promo) => promo.coupon.id === dt.id),
       })),
-      stripeBalances: {
+      balances: {
         available: stripeBalance.available,
         pending: stripeBalance.pending,
       },
@@ -75,7 +75,7 @@ export const getStripeInfo = async () => {
 
     return {
       stripeCoupons: [],
-      stripeBalances: {
+      balances: {
         available: [],
         pending: [],
       },

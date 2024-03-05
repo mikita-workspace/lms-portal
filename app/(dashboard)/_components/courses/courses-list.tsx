@@ -2,7 +2,7 @@
 
 import { Fee } from '@prisma/client';
 
-import { getCourses } from '@/actions/db/get-courses';
+import { getCourses } from '@/actions/courses/get-courses';
 
 import { CourseCard } from './course-card';
 

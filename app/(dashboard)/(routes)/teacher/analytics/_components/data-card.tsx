@@ -2,7 +2,7 @@
 
 import CountUp from 'react-countup';
 
-import { getAnalytics } from '@/actions/db/get-analytics';
+import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { Separator } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';

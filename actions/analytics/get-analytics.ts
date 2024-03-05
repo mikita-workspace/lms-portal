@@ -275,7 +275,7 @@ export const getAnalytics = async (userId: string) => {
       map: [],
       totalProfit: null,
       totalRevenue: 0,
-      transactions: [] as ReturnType<typeof getTransactions>,
+      transactions: [] as Transaction[],
     };
   }
 };

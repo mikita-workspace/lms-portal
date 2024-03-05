@@ -2,16 +2,16 @@
 
 import CountUp from 'react-countup';
 
-import { getStripeInfo } from '@/actions/db/get-stripe-info';
+import { getStripeDetails } from '@/actions/payments/get-stripe-details';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
-type StripeInfo = Awaited<ReturnType<typeof getStripeInfo>>;
+type StripeDetails = Awaited<ReturnType<typeof getStripeDetails>>;
 
 type StripeBalancesProps = {
-  balances: StripeInfo['stripeBalances'];
+  balances: StripeDetails['balances'];
 };
 
 export const StripeBalances = ({ balances }: StripeBalancesProps) => {
