@@ -3,9 +3,11 @@
 import {
   BookMarked,
   CreditCard,
+  FolderKanban,
   Laptop2,
   LogIn,
   LogOut,
+  MessageSquare,
   MoonStar,
   Settings2,
   Sun,
@@ -13,7 +15,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -128,15 +129,24 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         )}
         {(isAdmin || isTeacher) && (
           <>
+            {isAdmin && (
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={() => router.push('/teacher/courses')}
+              >
+                <FolderKanban className="h-4 w-4 mr-2" />
+                Admin
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}
             >
               <BookMarked className="h-4 w-4 mr-2" />
-              Manage courses
+              Teacher
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
-              <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
+              <MessageSquare className="mr-2 h-4 w-4" />
               Chat&nbsp;&nbsp;
               <TextBadge label="AI" variant="yellow" />
             </DropdownMenuItem>

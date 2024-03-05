@@ -1,4 +1,5 @@
 import { CheckCircle, Clock } from 'lucide-react';
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -6,6 +7,11 @@ import { getDashboardCourses } from '@/actions/db/get-dashboard-courses';
 
 import { CoursesList } from '../../_components/courses/courses-list';
 import { InfoCard } from './_components/info-card';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'LMS Portal for educational purposes',
+};
 
 const DashboardPage = async () => {
   const user = await getCurrentUser();

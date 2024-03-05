@@ -1,9 +1,16 @@
+import { Metadata } from 'next';
+
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/db/get-global-progress';
 import { Footer } from '@/components/footer/footer';
 
 import { NavBar } from '../../components/navbar/navbar';
 import { SideBar } from '../../components/sidebar/sidebar';
+
+export const metadata: Metadata = {
+  title: 'Settings',
+  description: 'LMS Portal for educational purposes',
+};
 
 type SettingsLayoutProps = Readonly<{
   children: React.ReactNode;

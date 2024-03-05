@@ -45,9 +45,9 @@ export const getStripeInfo = async () => {
 
     // console.log(transfer);
 
-    const loginLink = await stripe.accounts.createLoginLink('acct_1OqshzR4orVU4SAg');
+    // const loginLink = await stripe.accounts.createLoginLink('acct_1OqshzR4orVU4SAg');
 
-    console.log(loginLink);
+    // console.log(loginLink);
 
     return {
       stripeCoupons: stripeCoupons.data.map((dt) => ({

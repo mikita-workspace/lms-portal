@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { isOwner } from '@/lib/owner';
+
+export const metadata: Metadata = {
+  title: 'Payments',
+  description: 'LMS Portal for educational purposes',
+};
 
 type PaymentsLayoutProps = Readonly<{
   children: React.ReactNode;

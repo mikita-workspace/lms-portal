@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { UserRole } from '@/constants/auth';
+
+export const metadata: Metadata = {
+  title: 'Teacher',
+  description: 'LMS Portal for educational purposes',
+};
 
 type TeacherLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -10,7 +16,7 @@ type TeacherLayoutProps = Readonly<{
 const TeacherLayout = async ({ children }: TeacherLayoutProps) => {
   const user = await getCurrentUser();
 
-  if (!user?.userId || ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
     return redirect('/');
   }
 

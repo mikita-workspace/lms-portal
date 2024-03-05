@@ -79,7 +79,7 @@ const paymentsRoutes = [
     icon: Landmark,
     isNew: false,
     isProtected: true,
-    label: 'Balances',
+    label: 'Payments',
   },
 ];
 
