@@ -138,6 +138,14 @@ model StripeCustomer {
   userId           String   @unique
 }
 
+model StripeAccount {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  stripeAccountId String   @unique
+  updatedAt       DateTime @updatedAt
+  userId          String   @unique
+}
+
 model Fee {
   id        String   @id @default(uuid())
   amount    Int      @default(0)
