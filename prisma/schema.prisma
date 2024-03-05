@@ -138,7 +138,7 @@ model StripeCustomer {
   userId           String   @unique
 }
 
-model StripeAccount {
+model StripeConnectAccount {
   id              String   @id @default(uuid())
   createdAt       DateTime @default(now())
   stripeAccountId String   @unique
