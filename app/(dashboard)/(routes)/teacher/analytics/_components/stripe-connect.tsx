@@ -79,7 +79,8 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Connect</p>
         <p className="text-xs text-muted-foreground">
-          Your balance in the <span className="text-blue-500 font-semibold">Stripe Connect</span>
+          Your available balance in the{' '}
+          <span className="text-blue-500 font-semibold">Stripe Connect</span>
         </p>
       </div>
       <Card className="shadow-none">
