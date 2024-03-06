@@ -38,7 +38,9 @@ export const StripeConnect = ({
             totalProfit={totalProfit}
             disableRequest={hasActivePayouts}
           />
-          {stripeConnect && <BalanceTransactions stripeConnectPayout={stripeConnectPayout} />}
+          {stripeConnect && stripeConnect.isActive && (
+            <BalanceTransactions stripeConnectPayout={stripeConnectPayout} />
+          )}
         </CardContent>
       </Card>
     </div>

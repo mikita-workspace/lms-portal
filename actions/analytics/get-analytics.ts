@@ -215,6 +215,7 @@ const getStripeConnect = (
     email: account.email,
     externalAccounts: account.external_accounts,
     id: account.id,
+    isActive: account.details_submitted,
     metadata: account.metadata,
     type: account.type,
   };

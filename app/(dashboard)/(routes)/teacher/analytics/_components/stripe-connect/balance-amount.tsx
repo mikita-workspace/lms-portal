@@ -50,7 +50,7 @@ export const BalanceAmount = ({ stripeConnect }: BalanceAmountProps) => {
           )}
         </div>
       </div>
-      {stripeConnect && (
+      {stripeConnect && stripeConnect.isActive && (
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 items-center">
             <p className="text-sm font-semibold">
