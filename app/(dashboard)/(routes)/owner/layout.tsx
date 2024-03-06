@@ -2,25 +2,25 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { UserRole } from '@/constants/auth';
+import { isOwner } from '@/lib/owner';
 
 export const metadata: Metadata = {
-  title: 'Teacher',
+  title: 'Owner',
   description: 'LMS Portal for educational purposes',
 };
 
-type TeacherLayoutProps = Readonly<{
+type OwnerLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const TeacherLayout = async ({ children }: TeacherLayoutProps) => {
+const OwnerLayout = async ({ children }: OwnerLayoutProps) => {
   const user = await getCurrentUser();
 
-  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (!isOwner(user?.userId)) {
     return redirect('/');
   }
 
   return <>{children}</>;
 };
 
-export default TeacherLayout;
+export default OwnerLayout;

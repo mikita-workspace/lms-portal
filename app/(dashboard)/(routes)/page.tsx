@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getCourses } from '@/actions/db/get-courses';
+import { getCourses } from '@/actions/courses/get-courses';
 import { SearchInput } from '@/components/common/search-input';
 import { db } from '@/lib/db';
 

@@ -5,6 +5,7 @@ import { format, fromUnixTime } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
+import CurrencyInput from 'react-currency-input-field';
 import toast from 'react-hot-toast';
 
 import { Price } from '@/components/common/price';
@@ -24,8 +25,6 @@ import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { hasJsonStructure } from '@/lib/utils';
-
-import { CurrencyInput } from '../currency-input';
 
 type PriceFormProps = {
   courseId: string;
@@ -134,7 +133,7 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
                 intlConfig={{ locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY }}
                 name="price"
                 onValueChange={handleOnPriceChange}
-                placeholder={`Set a price for course`}
+                placeholder="Set a price for course"
                 value={price}
               />
               {exchangeRates?.rates && (
@@ -173,7 +172,7 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
                 </div>
               )}
             </div>
-            <p className="text-xs text-muted-foreground">Fees will be added to the price</p>
+            <p className="text-xs text-muted-foreground">Fees will be included in the price</p>
           </div>
           <p className="text-sm">You can also add a custom exchange rate</p>
           <Input

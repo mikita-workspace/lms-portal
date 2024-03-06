@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getChapter } from '@/actions/db/get-chapter';
+import { getChapter } from '@/actions/courses/get-chapter';
 import { Banner } from '@/components/common/banner';
 import { Preview } from '@/components/common/preview';
 import { Separator } from '@/components/ui/separator';

@@ -1,92 +1,57 @@
-import { LatLngExpression } from 'leaflet';
-import { HandCoins } from 'lucide-react';
-
+import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getAnalytics } from '@/actions/db/get-analytics';
-import { DataTable } from '@/components/data-table/data-table';
-import Map from '@/components/map';
-import { Button } from '@/components/ui/button';
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
+import { Banner } from '@/components/common/banner';
+import { DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
-import { Chart } from './_components/chart';
-import { DataCard } from './_components/data-card';
-import { columns } from './_components/data-table/columns';
+import { ClientTransactions } from './_components/client-transactions/client-transactions';
+import { Income } from './_components/income/income';
+import { SalesChart } from './_components/sales-chart';
+import { StripeConnect } from './_components/stripe-connect/stripe-connect';
 
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
 
   const {
+    activePayouts,
     chart,
     map: mapData,
+    stripeConnect,
+    stripeConnectPayouts,
     totalProfit,
     totalRevenue,
     transactions,
   } = await getAnalytics(user!.userId);
 
-  const mapMarkers = mapData.map((mp) => {
-    return {
-      position: mp.position,
-      content: (
-        <div className="flex flex-col text-sm max-w-[150px]">
-          <h2 className="text-medium font-semibold">
-            {mp.country}, {mp.city}
-          </h2>
-          <div className="text-xs">
-            In this region, <span className="font-semibold">{mp.totalSales} </span>sales have been
-            made. The total amount of clients expenses is{' '}
-            <span className="font-semibold">
-              {' '}
-              {formatPrice(getConvertedPrice(mp.totalAmount), {
-                locale: DEFAULT_LOCALE,
-                currency: mp.currency ?? DEFAULT_CURRENCY,
-              })}
-            </span>
-            {'.'}
-          </div>
-        </div>
-      ),
-    };
-  }) as { position: LatLngExpression; content: React.ReactNode }[];
+  const hasActivePayouts = Boolean(activePayouts?.length);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-1">
-            <p className="font-medium text-xl">Income</p>
-            <span className="text-xs text-muted-foreground">Balances are updated every hour</span>
-          </div>
-          <Button disabled>
-            <HandCoins className="h-4 w-4 mr-2" />
-            Withdrawal
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
-          <div className="flex flex-col gap-4 mb-4 md:mb-0">
-            <DataCard label="Total Revenue" totalRevenue={totalRevenue} />
-            <DataCard label="Total Profit" totalProfit={totalProfit} />
-          </div>
-          <Map
-            className="w-full h-[400px] border rounded-lg col-span-2"
-            mapStyles={{ width: '100%', height: '100%', borderRadius: '8px', zIndex: 1 }}
-            markers={mapMarkers}
-          />
-        </div>
+    <>
+      {hasActivePayouts && (
+        <Banner
+          label={`You have a pending payment request for ${formatPrice(
+            getConvertedPrice(activePayouts[0].amount),
+            {
+              locale: DEFAULT_LOCALE,
+              currency: activePayouts[0].currency,
+            },
+          )}. A new request will be available after the current one is completed.`}
+          variant="warning"
+        />
+      )}
+      <div className="p-6">
+        <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
+        <StripeConnect
+          hasActivePayouts={hasActivePayouts}
+          stripeConnect={stripeConnect}
+          stripeConnectPayout={stripeConnectPayouts}
+          totalProfit={totalProfit}
+        />
+        <Income mapData={mapData} totalProfit={totalProfit} totalRevenue={totalRevenue} />
+        <SalesChart data={chart} />
+        <ClientTransactions transactions={transactions} />
       </div>
-      <div className="flex flex-col gap-4 mt-8">
-        <p className="font-medium text-xl">Sales chart</p>
-        <Chart data={chart} />
-      </div>
-      <div className="flex flex-col gap-4 mt-4">
-        <div className="flex flex-col gap-1">
-          <p className="font-medium text-xl">Client Transactions</p>
-          <span className="text-xs text-muted-foreground">Transactions are updated every hour</span>
-        </div>
-        <DataTable columns={columns} data={transactions} noLabel="No client transactions" />
-      </div>
-    </div>
+    </>
   );
 };
 

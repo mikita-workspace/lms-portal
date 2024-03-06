@@ -1,0 +1,26 @@
+'use client';
+
+import { getAnalytics } from '@/actions/analytics/get-analytics';
+import { DataTable } from '@/components/data-table/data-table';
+
+import { columns } from './columns';
+
+type ClientTransactionsProps = {
+  transactions: Awaited<ReturnType<typeof getAnalytics>>['transactions'];
+};
+
+export const ClientTransactions = ({ transactions }: ClientTransactionsProps) => {
+  return (
+    <div className="flex flex-col gap-4 mt-4">
+      <div className="flex flex-col gap-1">
+        <p className="font-medium text-xl">Client Transactions</p>
+      </div>
+      <DataTable
+        columns={columns}
+        data={transactions}
+        initialPageSize={3}
+        noLabel="No client transactions"
+      />
+    </div>
+  );
+};

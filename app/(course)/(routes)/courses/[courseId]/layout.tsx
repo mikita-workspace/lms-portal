@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getGlobalProgress } from '@/actions/db/get-global-progress';
-import { getProgress } from '@/actions/db/get-progress';
+import { getGlobalProgress } from '@/actions/courses/get-global-progress';
+import { getProgress } from '@/actions/courses/get-progress';
 import { db } from '@/lib/db';
 
 import { CourseNavBar } from './_components/course-navbar/course-navbar';

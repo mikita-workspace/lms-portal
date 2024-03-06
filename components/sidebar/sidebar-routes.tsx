@@ -3,18 +3,17 @@
 import {
   BarChart4,
   Compass,
-  CreditCard,
   Crown,
+  Landmark,
   Layout,
   List,
   Settings2,
+  Tags,
+  Users,
   Wallet2,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-
-import { useCurrentUser } from '@/hooks/use-current-user';
-import { isOwner } from '@/lib/owner';
 
 import { SideBarItem } from './sidebar-item';
 
@@ -59,7 +58,7 @@ const teacherRoutes = [
   },
 ];
 
-const settingsRoutes = (userId?: string) => [
+const settingsRoutes = [
   {
     href: '/settings',
     icon: Settings2,
@@ -74,34 +73,50 @@ const settingsRoutes = (userId?: string) => [
     isProtected: true,
     label: 'Billing',
   },
-  ...(isOwner(userId)
-    ? [
-        {
-          href: '/settings/stripe',
-          icon: CreditCard,
-          isNew: false,
-          isProtected: true,
-          label: 'Stripe',
-        },
-      ]
-    : []),
+];
+
+const paymentsRoutes = [
+  {
+    href: '/owner',
+    icon: Landmark,
+    isNew: false,
+    isProtected: true,
+    label: 'Payments',
+  },
+  {
+    href: '/owner/promo',
+    isProtected: true,
+    label: 'Promo',
+    isNew: false,
+    icon: Tags,
+  },
+  {
+    href: '/owner/users',
+    isProtected: true,
+    label: 'Users',
+    isNew: false,
+    icon: Users,
+  },
 ];
 
 export const SideBarRoutes = () => {
-  const { user } = useCurrentUser();
-
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
   const isTeacherPage = pathname?.includes('/teacher');
+  const isPaymentsPage = pathname?.includes('/owner');
 
   const routes = useMemo(() => {
     if (isSettingsPage) {
-      return settingsRoutes(user?.userId);
+      return settingsRoutes;
+    }
+
+    if (isPaymentsPage) {
+      return paymentsRoutes;
     }
 
     return isTeacherPage ? teacherRoutes : studentRoutes;
-  }, [isSettingsPage, isTeacherPage, user?.userId]);
+  }, [isPaymentsPage, isSettingsPage, isTeacherPage]);
 
   return (
     <div className="flex flex-col w-full h-full p-3 justify-between">

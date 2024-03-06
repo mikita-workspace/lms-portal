@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getLeaders } from '@/actions/db/get-leaders';
+import { getLeaders } from '@/actions/courses/get-leaders';
 import { LeaderBoardSkeleton } from '@/components/loaders/leaderboard-skeleton';
 
 import { LeadersTable } from './_components/leaders-table';

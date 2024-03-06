@@ -1,7 +1,7 @@
 import { CommonLoader } from '@/components/loaders/common-loader';
 
-const AnalyticsLoading = () => {
+const OwnerLoading = () => {
   return <CommonLoader />;
 };
 
-export default AnalyticsLoading;
+export default OwnerLoading;

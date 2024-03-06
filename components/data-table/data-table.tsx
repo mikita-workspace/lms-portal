@@ -28,6 +28,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  initialPageSize?: number;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
 }
@@ -35,6 +36,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  initialPageSize = 10,
   isTeacherCoursesPage = false,
   noLabel,
 }: Readonly<DataTableProps<TData, TValue>>) {
@@ -50,6 +52,11 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
+    initialState: {
+      pagination: {
+        pageSize: initialPageSize,
+      },
+    },
     state: {
       columnFilters,
       sorting,

@@ -1,10 +1,19 @@
 'use client';
 
-import { BookMarked, Laptop2, LogIn, LogOut, MoonStar, Settings2, Sun } from 'lucide-react';
+import {
+  BookMarked,
+  Gitlab,
+  Laptop2,
+  LogIn,
+  LogOut,
+  MessageSquare,
+  MoonStar,
+  Settings2,
+  Sun,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -66,7 +75,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
-        <Avatar>
+        <Avatar className="w-[40px] h-[40px]">
           <AvatarImage src={user.image || ''} />
           <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
         </Avatar>
@@ -105,18 +114,26 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             </div>
           </>
         )}
+        {(isOwner(user.userId) || isAdmin || isTeacher) && (
+          <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        )}
+        {isOwner(user.userId) && (
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/owner')}>
+            <Gitlab className="h-4 w-4 mr-2" />
+            Owner
+          </DropdownMenuItem>
+        )}
         {(isAdmin || isTeacher) && (
           <>
-            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}
             >
               <BookMarked className="h-4 w-4 mr-2" />
-              Manage courses
+              Teacher
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
-              <IoChatboxEllipsesOutline className="mr-2 h-4 w-4" />
+              <MessageSquare className="mr-2 h-4 w-4" />
               Chat&nbsp;&nbsp;
               <TextBadge label="AI" variant="yellow" />
             </DropdownMenuItem>

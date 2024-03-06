@@ -2,7 +2,7 @@
 
 import CountUp from 'react-countup';
 
-import { getAnalytics } from '@/actions/db/get-analytics';
+import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { Separator } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
@@ -57,6 +57,17 @@ export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) =>
                   decimals={2}
                   duration={2.75}
                   end={getConvertedPrice(totalProfit.net)}
+                  prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
+                />
+              </div>
+              <Separator className="my-2" />
+              <div className="flex gap-2 items-center justify-between text-sm">
+                <span className="font-medium">Available for payout</span>
+                <CountUp
+                  className="font-semibold"
+                  decimals={2}
+                  duration={2.75}
+                  end={getConvertedPrice(totalProfit.availableForPayout)}
                   prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
                 />
               </div>

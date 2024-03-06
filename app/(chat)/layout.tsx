@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getGlobalProgress } from '@/actions/db/get-global-progress';
+import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { NavBar } from '@/components/navbar/navbar';
 import { UserRole } from '@/constants/auth';
 
@@ -19,7 +19,7 @@ const ChatLayout = async ({ children }: ChatLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
 
-  if (!user?.userId || ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
     return redirect('/');
   }
 

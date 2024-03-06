@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getGlobalProgress } from '@/actions/db/get-global-progress';
+import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { Footer } from '@/components/footer/footer';
 
 import { NavBar } from '../../components/navbar/navbar';
