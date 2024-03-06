@@ -1,5 +1,8 @@
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { Banner } from '@/components/common/banner';
+import { DEFAULT_LOCALE } from '@/constants/locale';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 import { ClientTransactions } from './_components/client-transactions/client-transactions';
 import { Income } from './_components/income/income';
@@ -10,6 +13,7 @@ const AnalyticsPage = async () => {
   const user = await getCurrentUser();
 
   const {
+    activePayouts,
     chart,
     map: mapData,
     stripeConnect,
@@ -19,18 +23,35 @@ const AnalyticsPage = async () => {
     transactions,
   } = await getAnalytics(user!.userId);
 
+  const hasActivePayouts = Boolean(activePayouts?.length);
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
-      <StripeConnect
-        stripeConnect={stripeConnect}
-        stripeConnectPayout={stripeConnectPayouts}
-        totalProfit={totalProfit}
-      />
-      <Income mapData={mapData} totalProfit={totalProfit} totalRevenue={totalRevenue} />
-      <SalesChart data={chart} />
-      <ClientTransactions transactions={transactions} />
-    </div>
+    <>
+      {hasActivePayouts && (
+        <Banner
+          label={`You have a pending payment request for ${formatPrice(
+            getConvertedPrice(activePayouts[0].amount),
+            {
+              locale: DEFAULT_LOCALE,
+              currency: activePayouts[0].currency,
+            },
+          )}. A new request will be available after the current one is completed.`}
+          variant="warning"
+        />
+      )}
+      <div className="p-6">
+        <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
+        <StripeConnect
+          hasActivePayouts={hasActivePayouts}
+          stripeConnect={stripeConnect}
+          stripeConnectPayout={stripeConnectPayouts}
+          totalProfit={totalProfit}
+        />
+        <Income mapData={mapData} totalProfit={totalProfit} totalRevenue={totalRevenue} />
+        <SalesChart data={chart} />
+        <ClientTransactions transactions={transactions} />
+      </div>
+    </>
   );
 };
 

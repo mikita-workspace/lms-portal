@@ -1,6 +1,7 @@
 export enum PayoutRequestStatus {
-  PAID = 'paid',
+  AVAILABLE = 'available',
   DECLINED = 'declined',
+  PAID = 'paid',
   PENDING = 'pending',
 }
 

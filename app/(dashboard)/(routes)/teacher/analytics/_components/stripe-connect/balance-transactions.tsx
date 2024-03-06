@@ -18,6 +18,7 @@ import {
 } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
+import { PayoutRequestStatus } from '@/constants/payments';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
@@ -46,36 +47,39 @@ export const BalanceTransactions = ({ stripeConnectPayout }: BalanceTransactions
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stripeConnectPayout.map((scp) => (
-                  <TableRow key={scp.id}>
-                    <TableCell className="font-medium">{capitalize(scp.type)}</TableCell>
-                    <TableCell>{format(fromUnixTime(scp.created), TIMESTAMP_TEMPLATE)}</TableCell>
-                    <TableCell>
-                      <TextBadge
-                        label={capitalize(scp.status)}
-                        variant={scp.status === 'available' ? 'green' : 'default'}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {formatPrice(getConvertedPrice(scp.amount), {
-                        locale: DEFAULT_LOCALE,
-                        currency: scp.currency,
-                      })}
-                    </TableCell>
-                    <TableCell>
-                      {formatPrice(getConvertedPrice(scp.fee), {
-                        locale: DEFAULT_LOCALE,
-                        currency: scp.currency,
-                      })}
-                    </TableCell>
-                    <TableCell className="text-right font-semibold">
-                      {formatPrice(getConvertedPrice(scp.net), {
-                        locale: DEFAULT_LOCALE,
-                        currency: scp.currency,
-                      })}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {stripeConnectPayout.map((scp) => {
+                  const locale = {
+                    locale: DEFAULT_LOCALE,
+                    currency: scp.currency,
+                  };
+
+                  const variant = (() => {
+                    if (scp.status === PayoutRequestStatus.AVAILABLE) {
+                      return 'green';
+                    }
+
+                    if (scp.status === PayoutRequestStatus.DECLINED) {
+                      return 'red';
+                    }
+
+                    return 'default';
+                  })();
+
+                  return (
+                    <TableRow key={scp.id}>
+                      <TableCell className="font-medium">{capitalize(scp.type)}</TableCell>
+                      <TableCell>{format(fromUnixTime(scp.created), TIMESTAMP_TEMPLATE)}</TableCell>
+                      <TableCell>
+                        <TextBadge label={capitalize(scp.status)} variant={variant} />
+                      </TableCell>
+                      <TableCell>{formatPrice(getConvertedPrice(scp.amount), locale)}</TableCell>
+                      <TableCell>{formatPrice(getConvertedPrice(scp.fee), locale)}</TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {formatPrice(getConvertedPrice(scp.net), locale)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </AccordionContent>

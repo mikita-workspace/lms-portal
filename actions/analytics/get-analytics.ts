@@ -220,19 +220,33 @@ const getStripeConnect = (
   };
 };
 
-const getStripeConnectPayouts = (payouts: Stripe.Response<Stripe.BalanceTransaction>[]) => {
-  return payouts
-    .map((py) => ({
-      amount: Math.abs(py.amount),
-      created: py.created,
-      currency: py.currency,
-      fee: py.fee,
-      id: py.id,
-      net: Math.abs(py.net),
-      status: py.status,
-      type: py.type,
-    }))
-    .sort((a, b) => b.created - a.created);
+const getStripeConnectPayouts = (
+  payouts: Stripe.Response<Stripe.BalanceTransaction>[],
+  declinedPayouts: PayoutRequest[],
+) => {
+  const stripePayouts = payouts.map((py) => ({
+    amount: Math.abs(py.amount),
+    created: py.created,
+    currency: py.currency,
+    fee: py.fee,
+    id: py.id,
+    net: Math.abs(py.net),
+    status: py.status,
+    type: py.type,
+  }));
+
+  const declined = declinedPayouts.map((dp) => ({
+    amount: Math.abs(dp.amount),
+    created: getUnixTime(dp.updatedAt),
+    currency: dp.currency,
+    fee: 0,
+    id: dp.id,
+    net: Math.abs(dp.amount),
+    status: dp.status,
+    type: 'Request',
+  }));
+
+  return [...stripePayouts, ...declined].sort((a, b) => b.created - a.created);
 };
 
 export const getAnalytics = async (userId: string) => {
@@ -264,18 +278,23 @@ export const getAnalytics = async (userId: string) => {
       ? await stripe.balance.retrieve({ stripeAccount: stripeAccountId?.stripeAccountId })
       : null;
 
-    const successfulPayouts = await db.payoutRequest.findMany({
+    const payouts = await db.payoutRequest.findMany({
       where: {
-        status: PayoutRequestStatus.PAID,
         connectAccount: { stripeAccountId: stripeAccount?.id },
       },
       select: {
         amount: true,
         currency: true,
         id: true,
+        status: true,
         transactionId: true,
+        updatedAt: true,
       },
     });
+
+    const activePayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PENDING);
+    const declinedPayouts = payouts.filter((py) => py.status === PayoutRequestStatus.DECLINED);
+    const successfulPayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PAID);
 
     const stripeCharges = (
       await Promise.all(
@@ -351,9 +370,13 @@ export const getAnalytics = async (userId: string) => {
     );
     const transactions = getTransactions(stripeCharges, purchases, users);
     const stripeConnect = getStripeConnect(stripeAccount, stripeAccountBalance);
-    const stripeConnectPayouts = getStripeConnectPayouts(stripeConnectBalanceTransactions);
+    const stripeConnectPayouts = getStripeConnectPayouts(
+      stripeConnectBalanceTransactions,
+      declinedPayouts as PayoutRequest[],
+    );
 
     return {
+      activePayouts,
       chart,
       map,
       stripeConnect,
@@ -366,6 +389,7 @@ export const getAnalytics = async (userId: string) => {
     console.error('[GET_ANALYTICS_ACTION]', error);
 
     return {
+      activePayouts: [] as PayoutRequest[],
       chart: [],
       map: [],
       stripeConnect: null,

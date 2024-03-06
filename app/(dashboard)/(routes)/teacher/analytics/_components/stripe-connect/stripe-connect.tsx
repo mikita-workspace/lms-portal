@@ -9,12 +9,14 @@ import { BalanceTransactions } from './balance-transactions';
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type StripeConnectProps = {
+  hasActivePayouts?: boolean;
   stripeConnect: Analytics['stripeConnect'];
   stripeConnectPayout: Analytics['stripeConnectPayouts'];
   totalProfit: Analytics['totalProfit'];
 };
 
 export const StripeConnect = ({
+  hasActivePayouts,
   stripeConnect,
   stripeConnectPayout,
   totalProfit,
@@ -28,9 +30,14 @@ export const StripeConnect = ({
           <span className="text-blue-500 font-semibold">Stripe Connect</span>
         </p>
       </div>
+
       <Card className="shadow-none">
         <CardContent>
-          <Actions stripeConnect={stripeConnect} totalProfit={totalProfit} />
+          <Actions
+            stripeConnect={stripeConnect}
+            totalProfit={totalProfit}
+            disableRequest={hasActivePayouts}
+          />
           {stripeConnect && <BalanceTransactions stripeConnectPayout={stripeConnectPayout} />}
         </CardContent>
       </Card>
