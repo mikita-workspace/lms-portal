@@ -13,6 +13,7 @@ const AnalyticsPage = async () => {
     chart,
     map: mapData,
     stripeConnect,
+    stripeConnectPayouts,
     totalProfit,
     totalRevenue,
     transactions,
@@ -21,7 +22,7 @@ const AnalyticsPage = async () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-medium mb-12">Analytics Dashboard</h1>
-      <StripeConnect stripeConnect={stripeConnect} />
+      <StripeConnect stripeConnect={stripeConnect} stripeConnectPayout={stripeConnectPayouts} />
       <Income mapData={mapData} totalProfit={totalProfit} totalRevenue={totalRevenue} />
       <SalesChart data={chart} />
       <ClientTransactions transactions={transactions} />

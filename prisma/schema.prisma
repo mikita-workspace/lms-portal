@@ -159,13 +159,14 @@ model Fee {
 }
 
 model PayoutRequest {
-  id               String               @id @default(uuid())
-  amount           Int
-  connectAccount   StripeConnectAccount @relation(fields: [connectAccountId], references: [id], onDelete: Cascade)
-  connectAccountId String
-  createdAt        DateTime             @default(now())
-  currency         String
-  status           String
-  transactionId    String?
-  updatedAt        DateTime             @updatedAt
+  id                   String               @id @default(uuid())
+  amount               Int
+  connectAccount       StripeConnectAccount @relation(fields: [connectAccountId], references: [id], onDelete: Cascade)
+  connectAccountId     String
+  createdAt            DateTime             @default(now())
+  currency             String
+  destinationPaymentId String?
+  status               String
+  transactionId        String?
+  updatedAt            DateTime             @updatedAt
 }

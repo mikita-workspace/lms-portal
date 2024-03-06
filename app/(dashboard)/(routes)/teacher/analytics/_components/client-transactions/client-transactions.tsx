@@ -14,9 +14,13 @@ export const ClientTransactions = ({ transactions }: ClientTransactionsProps) =>
     <div className="flex flex-col gap-4 mt-4">
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Client Transactions</p>
-        <span className="text-xs text-muted-foreground">Transactions are updated every hour</span>
       </div>
-      <DataTable columns={columns} data={transactions} noLabel="No client transactions" />
+      <DataTable
+        columns={columns}
+        data={transactions}
+        initialPageSize={3}
+        noLabel="No client transactions"
+      />
     </div>
   );
 };

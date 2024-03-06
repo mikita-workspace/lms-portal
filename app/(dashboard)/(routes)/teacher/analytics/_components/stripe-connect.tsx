@@ -1,28 +1,57 @@
 'use client';
 
+import { format, fromUnixTime } from 'date-fns';
 import { ExternalLink, Eye, EyeOff, HandCoins } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdVerified } from 'react-icons/md';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
-import { Button, Card, CardContent } from '@/components/ui';
+import { TextBadge } from '@/components/common/text-badge';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui';
+import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { capitalize } from '@/lib/utils';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type StripeConnectProps = {
   stripeConnect: Analytics['stripeConnect'];
+  stripeConnectPayout: Analytics['stripeConnectPayouts'];
 };
 
-export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
+export const StripeConnect = ({ stripeConnect, stripeConnectPayout }: StripeConnectProps) => {
   const { user } = useCurrentUser();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [showBalance, setShowBalance] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <Skeleton className="h-[120px] w-full mb-8" />;
+  }
 
   const handleShowBalance = () => setShowBalance((prev) => !prev);
 
@@ -97,7 +126,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
                 <div className="text-2xl font-bold min-h-[32px] flex items-center">
                   {showBalance && (
                     <span>
-                      {formatPrice(stripeConnect?.balance?.available ?? 0, {
+                      {formatPrice(getConvertedPrice(stripeConnect?.balance?.available ?? 0), {
                         locale: DEFAULT_LOCALE,
                         currency: stripeConnect?.currency ?? DEFAULT_CURRENCY,
                       })}
@@ -129,7 +158,6 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
                 </div>
               )}
             </div>
-
             <div className="flex flex-col md:flex-row gap-3 md:gap-2 items-center w-full md:w-auto">
               {!stripeConnect && (
                 <Button className="w-full" disabled={isFetching} onClick={handleCreateAccount}>
@@ -155,6 +183,65 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
               )}
             </div>
           </div>
+          {stripeConnect && (
+            <div className="w-full mt-6">
+              <Accordion type="single" collapsible>
+                <AccordionItem value="transactions" className="border-none">
+                  <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
+                    <p>Balance Transactions</p>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[100px]">Type</TableHead>
+                          <TableHead>Date of transaction</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Total amount</TableHead>
+                          <TableHead>Fee amount</TableHead>
+                          <TableHead className="text-right">Net amount</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {stripeConnectPayout.map((scp) => (
+                          <TableRow key={scp.id}>
+                            <TableCell className="font-medium">{capitalize(scp.type)}</TableCell>
+                            <TableCell>
+                              {format(fromUnixTime(scp.created), TIMESTAMP_TEMPLATE)}
+                            </TableCell>
+                            <TableCell>
+                              <TextBadge
+                                label={capitalize(scp.status)}
+                                variant={scp.status === 'available' ? 'green' : 'default'}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              {formatPrice(getConvertedPrice(scp.amount), {
+                                locale: DEFAULT_LOCALE,
+                                currency: scp.currency,
+                              })}
+                            </TableCell>
+                            <TableCell>
+                              {formatPrice(getConvertedPrice(scp.fee), {
+                                locale: DEFAULT_LOCALE,
+                                currency: scp.currency,
+                              })}
+                            </TableCell>
+                            <TableCell className="text-right font-semibold">
+                              {formatPrice(getConvertedPrice(scp.net), {
+                                locale: DEFAULT_LOCALE,
+                                currency: scp.currency,
+                              })}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

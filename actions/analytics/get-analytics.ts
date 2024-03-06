@@ -1,13 +1,14 @@
 'use server';
 
-import { Course, Fee, Purchase, PurchaseDetails, User } from '@prisma/client';
+import { Course, Fee, PayoutRequest, Purchase, PurchaseDetails, User } from '@prisma/client';
 import { getUnixTime } from 'date-fns';
 import groupBy from 'lodash.groupby';
 import Stripe from 'stripe';
 
-import { ONE_HOUR_SEC } from '@/constants/common';
+import { ONE_MINUTE_SEC } from '@/constants/common';
 import { CalculationMethod, FeeType } from '@/constants/fees';
 import { DEFAULT_CURRENCY } from '@/constants/locale';
+import { PayoutRequestStatus } from '@/constants/payments';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { getCalculatedFee } from '@/lib/fees';
@@ -31,6 +32,7 @@ type Transaction = {
   receiptUrl: string | null;
   title: string;
 };
+type StripeConnectPayouts = ReturnType<typeof getStripeConnectPayouts>;
 
 const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
   const grouped: { [courseTitle: string]: { user?: User; details: PurchaseDetails }[] } = {};
@@ -79,6 +81,7 @@ const getTotalProfit = (
   stripeBalanceTransactions: Record<string, any>[],
   totalRevenue: number,
   fees: Fee[],
+  successfulPayouts: Pick<PayoutRequest, 'amount' | 'currency'>[],
 ) => {
   const totalFees = stripeBalanceTransactions
     .reduce<ReturnType<typeof getCalculatedFee>[]>((totalFees, current) => {
@@ -122,11 +125,15 @@ const getTotalProfit = (
   }));
 
   const feeAmount = feeDetails.reduce((amount, current) => amount + current.amount, 0);
+  const net = totalRevenue - feeAmount;
+  const availableForPayout =
+    net - successfulPayouts.reduce((acc, current) => acc + current.amount, 0);
 
   return {
+    availableForPayout,
     fee: feeAmount,
     feeDetails,
-    net: totalRevenue - feeAmount,
+    net,
     total: totalRevenue,
   };
 };
@@ -213,6 +220,21 @@ const getStripeConnect = (
   };
 };
 
+const getStripeConnectPayouts = (payouts: Stripe.Response<Stripe.BalanceTransaction>[]) => {
+  return payouts
+    .map((py) => ({
+      amount: Math.abs(py.amount),
+      created: py.created,
+      currency: py.currency,
+      fee: py.fee,
+      id: py.id,
+      net: Math.abs(py.net),
+      status: py.status,
+      type: py.type,
+    }))
+    .sort((a, b) => b.created - a.created);
+};
+
 export const getAnalytics = async (userId: string) => {
   try {
     const purchases = await db.purchase.findMany({
@@ -242,6 +264,19 @@ export const getAnalytics = async (userId: string) => {
       ? await stripe.balance.retrieve({ stripeAccount: stripeAccountId?.stripeAccountId })
       : null;
 
+    const successfulPayouts = await db.payoutRequest.findMany({
+      where: {
+        status: PayoutRequestStatus.PAID,
+        connectAccount: { stripeAccountId: stripeAccount?.id },
+      },
+      select: {
+        amount: true,
+        currency: true,
+        id: true,
+        transactionId: true,
+      },
+    });
+
     const stripeCharges = (
       await Promise.all(
         stripeCustomerIds.map(async (sc) => {
@@ -252,7 +287,7 @@ export const getAnalytics = async (userId: string) => {
 
               return res.data;
             },
-            ONE_HOUR_SEC,
+            ONE_MINUTE_SEC,
           );
 
           return data;
@@ -269,7 +304,23 @@ export const getAnalytics = async (userId: string) => {
 
             return res;
           },
-          ONE_HOUR_SEC,
+          ONE_MINUTE_SEC,
+        );
+
+        return data;
+      }),
+    );
+
+    const stripeConnectBalanceTransactions = await Promise.all(
+      successfulPayouts.map(async (sp) => {
+        const data = await fetchCachedData(
+          `${userId}-${sp.id}`,
+          async () => {
+            const res = await stripe.balanceTransactions.retrieve(sp.transactionId!);
+
+            return res;
+          },
+          ONE_MINUTE_SEC,
         );
 
         return data;
@@ -292,14 +343,21 @@ export const getAnalytics = async (userId: string) => {
       (revenue, current) => revenue + current.amount,
       0,
     );
-    const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, fees);
+    const totalProfit = getTotalProfit(
+      stripeBalanceTransactions,
+      totalRevenue,
+      fees,
+      successfulPayouts,
+    );
     const transactions = getTransactions(stripeCharges, purchases, users);
     const stripeConnect = getStripeConnect(stripeAccount, stripeAccountBalance);
+    const stripeConnectPayouts = getStripeConnectPayouts(stripeConnectBalanceTransactions);
 
     return {
       chart,
       map,
       stripeConnect,
+      stripeConnectPayouts,
       totalProfit,
       totalRevenue,
       transactions,
@@ -311,6 +369,7 @@ export const getAnalytics = async (userId: string) => {
       chart: [],
       map: [],
       stripeConnect: null,
+      stripeConnectPayouts: [] as StripeConnectPayouts,
       totalProfit: null,
       totalRevenue: 0,
       transactions: [] as Transaction[],

@@ -2,22 +2,18 @@
 
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { ArrowUpDown, Banknote, MoreHorizontal, XCircle } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 
 import { getStripeDetails } from '@/actions/stripe/get-stripe-details';
 import { TextBadge } from '@/components/common/text-badge';
 import { PriceColumn } from '@/components/data-table/columns/price-column';
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui';
+import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { capitalize } from '@/lib/utils';
+
+import { ColumnActions } from './column-actions';
 
 type PayoutRequests = Awaited<ReturnType<typeof getStripeDetails>>['payoutRequests'][number];
 
@@ -103,28 +99,9 @@ export const columns: ColumnDef<PayoutRequests>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const { id } = row.original;
+      const { id, status } = row.original;
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="h-4 w-8 p-0" variant="ghost">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="hover:cursor-pointer">
-              <Banknote className="h-4 w-4  mr-2" />
-              Pay out
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:cursor-pointer text-red-500">
-              <XCircle className="h-4 w-4  mr-2" />
-              Decline
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <ColumnActions requestId={id} status={status} />;
     },
   },
 ];

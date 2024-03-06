@@ -45,7 +45,7 @@ export const Income = ({ mapData, totalProfit, totalRevenue }: IncomeProps) => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Income</p>
-        <span className="text-xs text-muted-foreground">Balances are updated every hour</span>
+        <span className="text-xs text-muted-foreground">Total revenue from all sales</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <div className="flex flex-col gap-4 mb-4 md:mb-0">

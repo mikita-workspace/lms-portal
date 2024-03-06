@@ -60,6 +60,17 @@ export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) =>
                   prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
                 />
               </div>
+              <Separator className="my-2" />
+              <div className="flex gap-2 items-center justify-between text-sm">
+                <span className="font-medium">Available for payout</span>
+                <CountUp
+                  className="font-semibold"
+                  decimals={2}
+                  duration={2.75}
+                  end={getConvertedPrice(totalProfit.availableForPayout)}
+                  prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
+                />
+              </div>
             </div>
           )}
         </div>
