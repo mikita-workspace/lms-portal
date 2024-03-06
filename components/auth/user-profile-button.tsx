@@ -2,7 +2,6 @@
 
 import {
   BookMarked,
-  FolderKanban,
   Gitlab,
   Laptop2,
   LogIn,
@@ -126,16 +125,6 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         )}
         {(isAdmin || isTeacher) && (
           <>
-            {/* Trello Ticket [] */}
-            {/* {isAdmin && (
-              <DropdownMenuItem
-                className="hover:cursor-pointer"
-                onClick={() => router.push('/teacher/courses')}
-              >
-                <FolderKanban className="h-4 w-4 mr-2" />
-                Admin
-              </DropdownMenuItem>
-            )} */}
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}

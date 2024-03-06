@@ -10,14 +10,16 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
 
 import { BalanceAmount } from './balance-amount';
+import { RequestPayoutModal } from './request-payout-modal';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type ActionsProps = {
   stripeConnect: Analytics['stripeConnect'];
+  totalProfit: Analytics['totalProfit'];
 };
 
-export const Actions = ({ stripeConnect }: ActionsProps) => {
+export const Actions = ({ stripeConnect, totalProfit }: ActionsProps) => {
   const { user } = useCurrentUser();
 
   const [isFetching, setIsFetching] = useState(false);
@@ -83,10 +85,12 @@ export const Actions = ({ stripeConnect }: ActionsProps) => {
         )}
         {stripeConnect && (
           <div className="flex flex-col gap-2 w-full">
-            <Button disabled={isFetching} className="w-full">
-              <HandCoins className="h-4 w-4 mr-2" />
-              <span>Request a payout</span>
-            </Button>
+            <RequestPayoutModal stripeConnect={stripeConnect} totalProfit={totalProfit}>
+              <Button disabled={isFetching || !totalProfit?.availableForPayout} className="w-full">
+                <HandCoins className="h-4 w-4 mr-2" />
+                <span>Request a payout</span>
+              </Button>
+            </RequestPayoutModal>
             <Button
               disabled={isFetching}
               onClick={handleLoginAccount}

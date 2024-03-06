@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { getAnalytics } from '@/actions/analytics/get-analytics';
-import { Card, CardContent, Skeleton } from '@/components/ui';
+import { Card, CardContent } from '@/components/ui';
 
 import { Actions } from './actions';
 import { BalanceTransactions } from './balance-transactions';
@@ -13,19 +11,14 @@ type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 type StripeConnectProps = {
   stripeConnect: Analytics['stripeConnect'];
   stripeConnectPayout: Analytics['stripeConnectPayouts'];
+  totalProfit: Analytics['totalProfit'];
 };
 
-export const StripeConnect = ({ stripeConnect, stripeConnectPayout }: StripeConnectProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return <Skeleton className="h-[120px] w-full mb-8" />;
-  }
-
+export const StripeConnect = ({
+  stripeConnect,
+  stripeConnectPayout,
+  totalProfit,
+}: StripeConnectProps) => {
   return (
     <div className="flex flex-col gap-4 mb-8">
       <div className="flex flex-col gap-1">
@@ -37,7 +30,7 @@ export const StripeConnect = ({ stripeConnect, stripeConnectPayout }: StripeConn
       </div>
       <Card className="shadow-none">
         <CardContent>
-          <Actions stripeConnect={stripeConnect} />
+          <Actions stripeConnect={stripeConnect} totalProfit={totalProfit} />
           {stripeConnect && <BalanceTransactions stripeConnectPayout={stripeConnectPayout} />}
         </CardContent>
       </Card>

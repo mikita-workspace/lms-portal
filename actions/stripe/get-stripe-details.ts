@@ -35,6 +35,7 @@ export const getStripeDetails = async () => {
             amount: current.amount,
             createdAt: current.createdAt,
             currency: current.currency,
+            destinationPaymentId: current.destinationPaymentId,
             id: current.id,
             status: current.status,
             stripeAccountId: current.connectAccount.stripeAccountId,

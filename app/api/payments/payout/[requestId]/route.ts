@@ -1,6 +1,5 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { PayoutRequestStatus } from '@/constants/payments';

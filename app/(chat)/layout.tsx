@@ -19,7 +19,7 @@ const ChatLayout = async ({ children }: ChatLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
 
-  if (!user?.userId || ![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
     return redirect('/');
   }
 
