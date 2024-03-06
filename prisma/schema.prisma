@@ -139,11 +139,12 @@ model StripeCustomer {
 }
 
 model StripeConnectAccount {
-  id              String   @id @default(uuid())
-  createdAt       DateTime @default(now())
-  stripeAccountId String   @unique
-  updatedAt       DateTime @updatedAt
-  userId          String   @unique
+  id              String          @id @default(uuid())
+  createdAt       DateTime        @default(now())
+  payoutRequests  PayoutRequest[]
+  stripeAccountId String          @unique
+  updatedAt       DateTime        @updatedAt
+  userId          String          @unique
 }
 
 model Fee {
@@ -155,4 +156,16 @@ model Fee {
   rate      Float    @default(0)
   type      String?
   updatedAt DateTime @updatedAt
+}
+
+model PayoutRequest {
+  id               String               @id @default(uuid())
+  amount           Int
+  connectAccount   StripeConnectAccount @relation(fields: [connectAccountId], references: [id], onDelete: Cascade)
+  connectAccountId String
+  createdAt        DateTime             @default(now())
+  currency         String
+  status           String
+  transactionId    String?
+  updatedAt        DateTime             @updatedAt
 }

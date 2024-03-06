@@ -3,7 +3,7 @@
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { DataTable } from '@/components/data-table/data-table';
 
-import { columns } from './data-columns';
+import { columns } from './columns';
 
 type ClientTransactionsProps = {
   transactions: Awaited<ReturnType<typeof getAnalytics>>['transactions'];

@@ -2,9 +2,9 @@
 
 import CountUp from 'react-countup';
 
-import { getStripeDetails } from '@/actions/payments/get-stripe-details';
+import { getStripeDetails } from '@/actions/stripe/get-stripe-details';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { DEFAULT_LOCALE } from '@/constants/locale';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { getConvertedPrice, getCurrencySymbol } from '@/lib/format';
 import { capitalize } from '@/lib/utils';
 
@@ -39,7 +39,7 @@ export const StripeBalances = ({ balances }: StripeBalancesProps) => {
                     decimals={2}
                     duration={2.75}
                     end={getConvertedPrice(balance)}
-                    prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_LOCALE)} `}
+                    prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_CURRENCY)} `}
                   />
                 </div>
               </CardContent>

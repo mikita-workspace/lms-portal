@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getUserBilling } from '@/actions/payments/get-user-billing';
+import { getUserBilling } from '@/actions/stripe/get-user-billing';
 import { DataTable } from '@/components/data-table/data-table';
 
 import { columns } from './_components/data-table/columns';

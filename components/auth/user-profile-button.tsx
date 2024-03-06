@@ -2,8 +2,8 @@
 
 import {
   BookMarked,
-  CreditCard,
   FolderKanban,
+  Gitlab,
   Laptop2,
   LogIn,
   LogOut,
@@ -119,12 +119,9 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         )}
         {isOwner(user.userId) && (
-          <DropdownMenuItem
-            className="hover:cursor-pointer"
-            onClick={() => router.push('/payments')}
-          >
-            <CreditCard className="h-4 w-4 mr-2" />
-            Payments
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/owner')}>
+            <Gitlab className="h-4 w-4 mr-2" />
+            Owner
           </DropdownMenuItem>
         )}
         {(isAdmin || isTeacher) && (

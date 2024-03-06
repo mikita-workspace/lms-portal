@@ -1,8 +1,8 @@
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 
-import { ClientTransactions } from './_components/client-transactions';
-import { Income } from './_components/income';
+import { ClientTransactions } from './_components/client-transactions/client-transactions';
+import { Income } from './_components/income/income';
 import { SalesChart } from './_components/sales-chart';
 import { StripeConnect } from './_components/stripe-connect';
 

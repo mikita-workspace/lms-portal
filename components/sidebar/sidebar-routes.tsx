@@ -8,6 +8,8 @@ import {
   Layout,
   List,
   Settings2,
+  Tags,
+  Users,
   Wallet2,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -75,11 +77,25 @@ const settingsRoutes = [
 
 const paymentsRoutes = [
   {
-    href: '/payments',
+    href: '/owner',
     icon: Landmark,
     isNew: false,
     isProtected: true,
     label: 'Payments',
+  },
+  {
+    href: '/owner/promo',
+    isProtected: true,
+    label: 'Promo',
+    isNew: false,
+    icon: Tags,
+  },
+  {
+    href: '/owner/users',
+    isProtected: true,
+    label: 'Users',
+    isNew: false,
+    icon: Users,
   },
 ];
 
@@ -88,7 +104,7 @@ export const SideBarRoutes = () => {
 
   const isSettingsPage = pathname?.includes('/settings');
   const isTeacherPage = pathname?.includes('/teacher');
-  const isPaymentsPage = pathname?.includes('/payments');
+  const isPaymentsPage = pathname?.includes('/owner');
 
   const routes = useMemo(() => {
     if (isSettingsPage) {

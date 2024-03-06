@@ -5,15 +5,15 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { isOwner } from '@/lib/owner';
 
 export const metadata: Metadata = {
-  title: 'Payments',
+  title: 'Owner',
   description: 'LMS Portal for educational purposes',
 };
 
-type PaymentsLayoutProps = Readonly<{
+type OwnerLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const PaymentsLayout = async ({ children }: PaymentsLayoutProps) => {
+const OwnerLayout = async ({ children }: OwnerLayoutProps) => {
   const user = await getCurrentUser();
 
   if (!isOwner(user?.userId)) {
@@ -23,4 +23,4 @@ const PaymentsLayout = async ({ children }: PaymentsLayoutProps) => {
   return <>{children}</>;
 };
 
-export default PaymentsLayout;
+export default OwnerLayout;

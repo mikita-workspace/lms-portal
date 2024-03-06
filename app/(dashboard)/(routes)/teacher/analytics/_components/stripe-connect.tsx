@@ -40,7 +40,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
 
           window.location.assign(data.url);
 
-          return 'Onboarding';
+          return 'Stripe Onboarding';
         },
         error: () => {
           setIsFetching(false);
@@ -65,7 +65,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
 
           window.open(data.url, '_blank');
 
-          return 'Connect Account';
+          return 'Stripe Express';
         },
         error: () => {
           setIsFetching(false);
@@ -79,7 +79,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
   return (
     <div className="flex flex-col gap-4 mb-8">
       <div className="flex flex-col gap-1">
-        <p className="font-medium text-xl">Connect</p>
+        <p className="font-medium text-xl">Stripe Connect</p>
         <p className="text-xs text-muted-foreground">
           Your available balance in the{' '}
           <span className="text-blue-500 font-semibold">Stripe Connect</span>
@@ -149,7 +149,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
                     className="w-full"
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    <span>Stripe Connect</span>
+                    <span>Stripe Express</span>
                   </Button>
                 </div>
               )}
