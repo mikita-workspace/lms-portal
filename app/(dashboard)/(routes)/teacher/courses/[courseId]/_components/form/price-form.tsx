@@ -173,7 +173,7 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
                 </div>
               )}
             </div>
-            <p className="text-xs text-muted-foreground">Fees will be added to the price</p>
+            <p className="text-xs text-muted-foreground">Fees will be included in the price</p>
           </div>
           <p className="text-sm">You can also add a custom exchange rate</p>
           <Input
