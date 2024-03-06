@@ -278,22 +278,24 @@ export const getAnalytics = async (userId: string) => {
       ? await stripe.balance.retrieve({ stripeAccount: stripeAccountId?.stripeAccountId })
       : null;
 
-    const payouts = await db.payoutRequest.findMany({
-      where: {
-        connectAccount: { stripeAccountId: stripeAccount?.id },
-      },
-      select: {
-        amount: true,
-        currency: true,
-        id: true,
-        status: true,
-        transactionId: true,
-        updatedAt: true,
-      },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
+    const payouts = stripeAccount?.id
+      ? await db.payoutRequest.findMany({
+          where: {
+            connectAccount: { stripeAccountId: stripeAccount.id },
+          },
+          select: {
+            amount: true,
+            currency: true,
+            id: true,
+            status: true,
+            transactionId: true,
+            updatedAt: true,
+          },
+          orderBy: {
+            updatedAt: 'desc',
+          },
+        })
+      : [];
 
     const activePayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PENDING);
     const declinedPayouts = payouts
