@@ -126,7 +126,8 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         )}
         {(isAdmin || isTeacher) && (
           <>
-            {isAdmin && (
+            {/* Trello Ticket [] */}
+            {/* {isAdmin && (
               <DropdownMenuItem
                 className="hover:cursor-pointer"
                 onClick={() => router.push('/teacher/courses')}
@@ -134,7 +135,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
                 <FolderKanban className="h-4 w-4 mr-2" />
                 Admin
               </DropdownMenuItem>
-            )}
+            )} */}
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={() => router.push('/teacher/courses')}

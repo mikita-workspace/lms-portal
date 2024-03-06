@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { ClientTransactions } from './_components/client-transactions/client-transactions';
 import { Income } from './_components/income/income';
 import { SalesChart } from './_components/sales-chart';
-import { StripeConnect } from './_components/stripe-connect';
+import { StripeConnect } from './_components/stripe-connect/stripe-connect';
 
 const AnalyticsPage = async () => {
   const user = await getCurrentUser();
