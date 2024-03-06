@@ -62,7 +62,7 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
         success: (data) => {
           setIsFetching(false);
 
-          window.open(data.url, '_blank');
+          window.location.assign(data.url);
 
           return 'Stripe Express';
         },

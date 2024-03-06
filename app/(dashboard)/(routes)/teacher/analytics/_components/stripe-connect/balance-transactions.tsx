@@ -32,7 +32,7 @@ export const BalanceTransactions = ({ stripeConnectPayout }: BalanceTransactions
       <Accordion type="single" collapsible>
         <AccordionItem value="transactions" className="border-none">
           <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
-            <p>Balance Transactions</p>
+            <p>Recent balance transactions</p>
           </AccordionTrigger>
           <AccordionContent>
             <Table>

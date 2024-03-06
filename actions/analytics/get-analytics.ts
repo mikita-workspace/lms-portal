@@ -290,11 +290,18 @@ export const getAnalytics = async (userId: string) => {
         transactionId: true,
         updatedAt: true,
       },
+      orderBy: {
+        updatedAt: 'desc',
+      },
     });
 
     const activePayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PENDING);
-    const declinedPayouts = payouts.filter((py) => py.status === PayoutRequestStatus.DECLINED);
-    const successfulPayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PAID);
+    const declinedPayouts = payouts
+      .filter((py) => py.status === PayoutRequestStatus.DECLINED)
+      .slice(0, 5);
+    const successfulPayouts = payouts
+      .filter((py) => py.status === PayoutRequestStatus.PAID)
+      .slice(0, 5);
 
     const stripeCharges = (
       await Promise.all(
