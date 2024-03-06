@@ -189,6 +189,30 @@ const getTransactions = (
   return [...userCharges, ...userFreePurchases].sort((a, b) => b.purchaseDate - a.purchaseDate);
 };
 
+const getStripeConnect = (
+  account: Stripe.Response<Stripe.Account> | null,
+  balance: Stripe.Response<Stripe.Balance> | null,
+) => {
+  if (!account) {
+    return null;
+  }
+
+  return {
+    balance: {
+      available: balance?.available ?? [],
+      pending: balance?.pending ?? [],
+    },
+    country: account.country,
+    created: account.created,
+    currency: account.default_currency,
+    email: account.email,
+    externalAccounts: account.external_accounts,
+    id: account.id,
+    metadata: account.metadata,
+    type: account.type,
+  };
+};
+
 export const getAnalytics = async (userId: string) => {
   try {
     const purchases = await db.purchase.findMany({
@@ -203,16 +227,26 @@ export const getAnalytics = async (userId: string) => {
     const userIds = [...new Set(purchases.map((ps) => ps.userId))];
     const users = await db.user.findMany({ where: { id: { in: userIds } } });
 
+    const stripeAccountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
+
     const stripeCustomerIds = await db.stripeCustomer.findMany({
       where: { userId: { in: userIds } },
       select: { stripeCustomerId: true },
     });
 
+    const stripeAccount = stripeAccountId?.stripeAccountId
+      ? await stripe.accounts.retrieve(stripeAccountId.stripeAccountId)
+      : null;
+
+    const stripeAccountBalance = stripeAccountId?.stripeAccountId
+      ? await stripe.balance.retrieve({ stripeAccount: stripeAccountId?.stripeAccountId })
+      : null;
+
     const stripeCharges = (
       await Promise.all(
         stripeCustomerIds.map(async (sc) => {
           const data = await fetchCachedData(
-            `customerId-${sc.stripeCustomerId}`,
+            `${userId}-${sc.stripeCustomerId}`,
             async () => {
               const res = await stripe.charges.list({ customer: sc.stripeCustomerId });
 
@@ -229,7 +263,7 @@ export const getAnalytics = async (userId: string) => {
     const stripeBalanceTransactions = await Promise.all(
       stripeCharges.map(async (sc) => {
         const data = await fetchCachedData(
-          `chargeId-${sc.id}`,
+          `${userId}-${sc.id}`,
           async () => {
             const res = await stripe.balanceTransactions.retrieve(sc.balance_transaction);
 
@@ -248,6 +282,7 @@ export const getAnalytics = async (userId: string) => {
     const sales = Object.entries(groupedEarnings).flatMap(([title, others]) =>
       others.map((other) => ({ ...other.details, title })),
     );
+
     const chart = Object.entries(groupedEarnings).map(([title, others]) => ({
       title,
       qty: others.length,
@@ -259,10 +294,12 @@ export const getAnalytics = async (userId: string) => {
     );
     const totalProfit = getTotalProfit(stripeBalanceTransactions, totalRevenue, fees);
     const transactions = getTransactions(stripeCharges, purchases, users);
+    const stripeConnect = getStripeConnect(stripeAccount, stripeAccountBalance);
 
     return {
       chart,
       map,
+      stripeConnect,
       totalProfit,
       totalRevenue,
       transactions,
@@ -273,6 +310,7 @@ export const getAnalytics = async (userId: string) => {
     return {
       chart: [],
       map: [],
+      stripeConnect: null,
       totalProfit: null,
       totalRevenue: 0,
       transactions: [] as Transaction[],

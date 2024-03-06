@@ -1,0 +1,67 @@
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { DEFAULT_COUNTRY_CODE } from '@/constants/locale';
+import { db } from '@/lib/db';
+import { stripe } from '@/server/stripe';
+
+export const POST = async (_: NextRequest, { params }: { params: { userId: string } }) => {
+  try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
+    const existingConnectAccount = await db.stripeConnectAccount.findUnique({
+      where: { userId: params.userId },
+    });
+
+    let connectAccountId = existingConnectAccount?.stripeAccountId;
+
+    if (!existingConnectAccount) {
+      const connectAccount = await stripe.accounts.create({
+        metadata: {
+          name: user.name!,
+          userId: params.userId,
+        },
+        type: 'express',
+        country: DEFAULT_COUNTRY_CODE,
+        email: user.email!,
+        settings: {
+          payouts: {
+            schedule: {
+              interval: 'manual',
+            },
+          },
+        },
+      });
+
+      await db.stripeConnectAccount.create({
+        data: { userId: params.userId, stripeAccountId: connectAccount.id },
+      });
+
+      connectAccountId = connectAccount.id;
+    }
+
+    if (!connectAccountId) {
+      return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
+    }
+
+    const connectAccountLink = await stripe.accountLinks.create({
+      account: connectAccountId,
+      refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/teacher/analytics`,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/teacher/analytics`,
+      type: 'account_onboarding',
+    });
+
+    return NextResponse.json(connectAccountLink);
+  } catch (error) {
+    console.error('[PAYMENTS_STRIPE_CREATE]', error);
+
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
