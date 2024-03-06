@@ -88,7 +88,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
       <Card className="shadow-none">
         <CardContent>
           <div className="pt-6 flex flex-col md:flex-row gap-4 items-center md:justify-between">
-            <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-2 w-full md:w-auto">
               <div className="flex gap-4 items-center">
                 <button onClick={handleShowBalance}>
                   {showBalance && <Eye className="h-4 w-4" />}
