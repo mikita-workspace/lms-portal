@@ -34,16 +34,13 @@ export const StripeBalances = ({ balances }: StripeBalancesProps) => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-2 mt-2">
-                  {balance.map((bl) => (
-                    <CountUp
-                      key={`${bl.amount}-${bl.currency}`}
-                      className="text-2xl font-bold"
-                      decimals={2}
-                      duration={2.75}
-                      end={getConvertedPrice(bl.amount)}
-                      prefix={`${getCurrencySymbol(DEFAULT_LOCALE, bl.currency.toUpperCase())} `}
-                    />
-                  ))}
+                  <CountUp
+                    className="text-2xl font-bold"
+                    decimals={2}
+                    duration={2.75}
+                    end={getConvertedPrice(balance)}
+                    prefix={`${getCurrencySymbol(DEFAULT_LOCALE, DEFAULT_LOCALE)} `}
+                  />
                 </div>
               </CardContent>
             </Card>

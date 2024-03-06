@@ -5,7 +5,6 @@ import { stripe } from '@/server/stripe';
 export const getStripeDetails = async () => {
   try {
     const stripeBalance = await stripe.balance.retrieve();
-    const stripeTransaction = await stripe.balanceTransactions.list({ limit: 100 });
     const stripeCoupons = await stripe.coupons.list();
     const stripePromotionCodes = await stripe.promotionCodes.list();
 
@@ -15,20 +14,9 @@ export const getStripeDetails = async () => {
         promotionCodes: stripePromotionCodes.data.filter((promo) => promo.coupon.id === dt.id),
       })),
       balances: {
-        available: stripeBalance.available,
-        pending: stripeBalance.pending,
+        available: stripeBalance?.available?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
+        pending: stripeBalance?.pending?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
       },
-      stripeTransactions: stripeTransaction.data.map((dt) => ({
-        amount: dt.amount,
-        created: dt.created,
-        currency: dt.currency,
-        fee: dt.fee,
-        feeDetails: dt.fee_details,
-        id: dt.id,
-        net: dt.net,
-        status: dt.status,
-        type: dt.type,
-      })),
     };
   } catch (error) {
     console.error('[GET_STRIPE_INFO_ACTION]', error);
@@ -36,8 +24,8 @@ export const getStripeDetails = async () => {
     return {
       stripeCoupons: [],
       balances: {
-        available: [],
-        pending: [],
+        available: 0,
+        pending: 0,
       },
       stripeTransactions: [],
     };

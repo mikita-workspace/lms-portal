@@ -97,16 +97,10 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
                 <div className="text-2xl font-bold min-h-[32px] flex items-center">
                   {showBalance && (
                     <span>
-                      {formatPrice(
-                        stripeConnect?.balance?.available?.reduce(
-                          (acc, current) => acc + current.amount,
-                          0,
-                        ) ?? 0,
-                        {
-                          locale: DEFAULT_LOCALE,
-                          currency: stripeConnect?.currency ?? DEFAULT_CURRENCY,
-                        },
-                      )}
+                      {formatPrice(stripeConnect?.balance?.available ?? 0, {
+                        locale: DEFAULT_LOCALE,
+                        currency: stripeConnect?.currency ?? DEFAULT_CURRENCY,
+                      })}
                     </span>
                   )}
                   {!showBalance && (

@@ -199,8 +199,8 @@ const getStripeConnect = (
 
   return {
     balance: {
-      available: balance?.available ?? [],
-      pending: balance?.pending ?? [],
+      available: balance?.available?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
+      pending: balance?.pending?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
     },
     country: account.country,
     created: account.created,
