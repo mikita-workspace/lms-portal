@@ -30,7 +30,7 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
     setIsFetching(true);
 
     await toast.promise(
-      fetcher.post(`/api/payments/${user?.userId}/stripe/create`, { responseType: 'json' }),
+      fetcher.post(`/api/payments/${user?.userId}/stripe-connect/create`, { responseType: 'json' }),
       {
         loading: 'Creating an account...',
         success: (data) => {
@@ -53,7 +53,9 @@ export const StripeConnect = ({ stripeConnect }: StripeConnectProps) => {
     setIsFetching(true);
 
     await toast.promise(
-      fetcher.post(`/api/payments/${user?.userId}/stripe/account`, { responseType: 'json' }),
+      fetcher.post(`/api/payments/${user?.userId}/stripe-connect/login`, {
+        responseType: 'json',
+      }),
       {
         loading: 'Logging to your account...',
         success: (data) => {
