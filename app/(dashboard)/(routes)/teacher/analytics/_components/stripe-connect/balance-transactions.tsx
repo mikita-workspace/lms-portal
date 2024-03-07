@@ -72,9 +72,13 @@ export const BalanceTransactions = ({ stripeConnectPayout }: BalanceTransactions
                       <TableCell>
                         <TextBadge label={capitalize(scp.status)} variant={variant} />
                       </TableCell>
-                      <TableCell>{formatPrice(getConvertedPrice(scp.amount), locale)}</TableCell>
-                      <TableCell>{formatPrice(getConvertedPrice(scp.fee), locale)}</TableCell>
-                      <TableCell className="text-right font-semibold">
+                      <TableCell className="whitespace-nowrap">
+                        {formatPrice(getConvertedPrice(scp.amount), locale)}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {formatPrice(getConvertedPrice(scp.fee), locale)}
+                      </TableCell>
+                      <TableCell className="text-right font-semibold whitespace-nowrap">
                         {formatPrice(getConvertedPrice(scp.net), locale)}
                       </TableCell>
                     </TableRow>

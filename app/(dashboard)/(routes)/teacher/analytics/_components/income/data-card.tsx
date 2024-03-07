@@ -24,7 +24,7 @@ export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) =>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {totalRevenue && (
+          {Number.isFinite(totalRevenue) && (
             <CountUp
               className="text-2xl font-bold"
               decimals={2}
