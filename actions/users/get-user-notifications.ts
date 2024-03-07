@@ -23,6 +23,7 @@ export const getUserNotifications = async (
         title: true,
         updatedAt: true,
       },
+      take: 5,
     });
 
     return userNotifications;
