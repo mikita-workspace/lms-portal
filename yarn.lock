@@ -1416,10 +1416,10 @@
     attr-accept "^2.2.2"
     file-selector "^0.6.0"
 
-"@uploadthing/mime-types@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@uploadthing/mime-types/-/mime-types-0.2.4.tgz#ee2a7f62ccf7aeb18b504de0813caad5ad8cf4a2"
-  integrity sha512-P8rcS++LA8x9DTcL5FFAY7FB4z4frSWaSKztxv2duT4Mea/GxZe9pAXyMWX+ZfGYbt3n12SlSfvV28ZvC5XLqw==
+"@uploadthing/mime-types@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@uploadthing/mime-types/-/mime-types-0.2.6.tgz#fff8647dcd161c7673bfd50540c9e4c68750de69"
+  integrity sha512-mB7XAKy5ARltUWZxb2oE0OwUW5Wplxi7Z3cqCvf/ZFvQ1E6lcGVNNKbmJI8c4GaONyEYnalo0Yl228zzHzyZnQ==
 
 "@uploadthing/react@^6.2.2":
   version "6.2.3"
@@ -1432,17 +1432,17 @@
     file-selector "^0.6.0"
     tailwind-merge "^1.14.0"
 
+"@uploadthing/shared@6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.3.4.tgz#e34cd94e59e04271943443f10eba907760f635fb"
+  integrity sha512-qMf7BiwQth14Gxt2Zerkrbpy/gIHUIkxBz7aN+OEh1T+z2gv8qLRhMXoWFaU56Q+3/NegdR6J+9jwPWc9WwMug==
+  dependencies:
+    std-env "^3.7.0"
+
 "@uploadthing/shared@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.3.0.tgz#46a7620a34915e9b57ec0b4a374aa8bd03d960c7"
   integrity sha512-IXh/Y8v3JUEPb+n9e92X37hZywqjDJsOq8rrfKhZRmB6bMJNJncHz3X4fqofexDB96dmB8KwizdRYTQAxZvYQg==
-  dependencies:
-    std-env "^3.7.0"
-
-"@uploadthing/shared@^6.3.1":
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.3.1.tgz#2a38d283f53942fc811f41a55eea58e141986697"
-  integrity sha512-4RH1ZD/FuVxU/wYstx5VGR20ZGEWi4NlTRUCufFsllRurwKcT9spf1mMcZjKwm0hQ0fPGj1mXjh6UouormZ8jA==
   dependencies:
     std-env "^3.7.0"
 
@@ -5543,13 +5543,13 @@ update-browserslist-db@^1.0.13:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-uploadthing@^6.4.1:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/uploadthing/-/uploadthing-6.4.1.tgz#fd1ead6036a51cf33af3d7c8300748a204d3754f"
-  integrity sha512-FIj3lNKDF2YSHNnn/OpDr9ZUFYRENqiQJ8u6VS5nqgZdmmnPNgwEdVkyIPrMNZzFpPsSeZhDskBXkIfSfxrONQ==
+uploadthing@^6.5.2:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/uploadthing/-/uploadthing-6.5.2.tgz#2eb6fff87f1bd67f7d60da8a30db5534fe5d1c15"
+  integrity sha512-p5vH+d8A07lbiVz49/ZmLsRc/sX+A+JcTLXZHt7zKPFETJC5ld0Be6L1oWnumiCtt4E15JRJ15x5rjyRg2Zp4Q==
   dependencies:
-    "@uploadthing/mime-types" "^0.2.4"
-    "@uploadthing/shared" "^6.3.1"
+    "@uploadthing/mime-types" "0.2.6"
+    "@uploadthing/shared" "6.3.4"
     consola "^3.2.3"
     std-env "^3.7.0"
 
