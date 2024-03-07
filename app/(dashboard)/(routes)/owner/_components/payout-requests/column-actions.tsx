@@ -4,6 +4,7 @@ import { Banknote, MoreHorizontal, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 import {
   Button,
@@ -48,9 +49,14 @@ export const ColumnActions = ({ requestId, status }: ColumnActionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-4 w-8 p-0" variant="ghost" disabled={isFetching || isDisabledActions}>
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
+        <Button className="h-4 w-8 p-0" variant="ghost" disabled={isDisabledActions || isFetching}>
+          {isFetching && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
+          {!isFetching && (
+            <>
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

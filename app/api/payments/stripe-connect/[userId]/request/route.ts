@@ -43,6 +43,15 @@ export const POST = async (req: NextRequest, { params }: { params: { userId: str
       },
     });
 
+    // Notification for the bank account holder
+    await db.notification.create({
+      data: {
+        userId: process.env.NEXT_PUBLIC_OWNER_ID as string,
+        title: `Payout Request #${payoutRequest.id}`,
+        body: `${user.name} has requested a withdrawal of funds.`,
+      },
+    });
+
     return NextResponse.json(payoutRequest);
   } catch (error) {
     console.error('[PAYMENTS_STRIPE_CREATE]', error);

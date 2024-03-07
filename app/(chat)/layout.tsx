@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
+import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { NavBar } from '@/components/navbar/navbar';
 import { UserRole } from '@/constants/auth';
 
@@ -18,6 +19,7 @@ type ChatLayoutProps = Readonly<{
 const ChatLayout = async ({ children }: ChatLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
+  const userNotifications = await getUserNotifications(user?.userId);
 
   if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
     return redirect('/');
@@ -27,7 +29,7 @@ const ChatLayout = async ({ children }: ChatLayoutProps) => {
     <div className="h-full flex flex-col">
       <div className="flex-1 h-full">
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
-          <NavBar isChat globalProgress={globalProgress} />
+          <NavBar isChat globalProgress={globalProgress} userNotifications={userNotifications} />
         </div>
         <main className="pt-[80px] h-full">{children}</main>
       </div>

@@ -2,8 +2,10 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { DEFAULT_LOCALE } from '@/constants/locale';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { isOwner } from '@/lib/owner';
 import { stripe } from '@/server/stripe';
 
@@ -25,6 +27,15 @@ export const POST = async (
         where: { id: params.requestId },
         data: {
           status: action,
+        },
+        include: { connectAccount: true },
+      });
+
+      await db.notification.create({
+        data: {
+          userId: payoutRequest.connectAccount.userId,
+          title: `Payout Request #${payoutRequest.id}`,
+          body: 'Your payout request has been declined.',
         },
       });
 
@@ -53,6 +64,14 @@ export const POST = async (
           destinationPaymentId: transfer.destination_payment?.toString(),
           status: action,
           transactionId: transfer.balance_transaction?.toString(),
+        },
+      });
+
+      await db.notification.create({
+        data: {
+          userId: payoutRequest.connectAccount.userId,
+          title: `Payout Request #${payoutRequest.id}`,
+          body: `The payout request has been successfully completed. ${formatPrice(getConvertedPrice(updatedPayoutRequest.amount), { locale: DEFAULT_LOCALE, currency: updatedPayoutRequest.currency })} was transferred to your Stripe account.`,
         },
       });
 
