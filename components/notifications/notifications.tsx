@@ -132,6 +132,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               className={cn(
                 'border rounded-sm p-3 mb-2 flex flex-col',
                 notifications.length > 1 ? 'mr-1' : 'mr-auto',
+                un.isRead ? 'text-muted-foreground' : '',
               )}
             >
               <p className="text-sm font-medium">{un.title}</p>
