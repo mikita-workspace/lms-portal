@@ -9,16 +9,16 @@ datasource db {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  course       Course[]
-  createdAt    DateTime       @default(now())
-  email        String         @unique
-  isPublic     Boolean?       @default(false)
-  name         String?
-  notification Notification[]
-  pictureUrl   String?
-  role         String         @default("student")
-  updatedAt    DateTime       @updatedAt
+  id            String         @id @default(uuid())
+  course        Course[]
+  createdAt     DateTime       @default(now())
+  email         String         @unique
+  isPublic      Boolean?       @default(false)
+  name          String?
+  notifications Notification[]
+  pictureUrl    String?
+  role          String         @default("student")
+  updatedAt     DateTime       @updatedAt
 }
 
 model Course {
