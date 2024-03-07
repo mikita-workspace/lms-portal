@@ -1,5 +1,4 @@
-import { Chapter, Course, UserProgress } from '@prisma/client';
-import { Notification } from '@prisma/client';
+import { Chapter, Course, Notification, UserProgress } from '@prisma/client';
 
 import { NavBarRoutes } from '@/components/navbar/navbar-routes';
 
