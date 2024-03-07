@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
+import { GenerateDescriptionAi } from '@/components/ai/generate-description-ai';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -23,8 +24,6 @@ import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
-
-import { GenerateDescriptionAi } from '../../../_components/generate-description-ai';
 
 type DescriptionFormProps = {
   courseId: string;

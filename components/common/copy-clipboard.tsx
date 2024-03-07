@@ -6,10 +6,11 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type CopyClipboardProps = {
+  disabled?: boolean;
   textToCopy: string;
 };
 
-export const CopyClipboard = ({ textToCopy }: CopyClipboardProps) => {
+export const CopyClipboard = ({ disabled = false, textToCopy }: CopyClipboardProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyToClipboard = () => {
@@ -22,7 +23,7 @@ export const CopyClipboard = ({ textToCopy }: CopyClipboardProps) => {
   };
 
   return (
-    <button onClick={handleCopyToClipboard}>
+    <button onClick={handleCopyToClipboard} disabled={disabled}>
       <Copy className={cn('h-4 w-4', copied ? 'animate-spin-once' : '')} />
     </button>
   );
