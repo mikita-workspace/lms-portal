@@ -1408,12 +1408,11 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uploadthing/dropzone@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@uploadthing/dropzone/-/dropzone-0.1.2.tgz#062b6ba245ecdd0bbb61be2f1160afca53a58c16"
-  integrity sha512-wV074/Vu6WIpqtaLUZI8V/IU+WrcOh/PlwBnRPpnz0JmxNDruDeKcIw2nAOcYVdnX2/oZWTvx+un4WYz/l9P4Q==
+"@uploadthing/dropzone@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@uploadthing/dropzone/-/dropzone-0.2.1.tgz#e373496b3b59b3cf61c8993b5c12db294c48467e"
+  integrity sha512-OK4rSFnQ2woJ07t78hTfxjMxXedLoj+Jp34kIEtYPYBTPOnNwoKhDXfRojSu8cBilkQROzIe67i0p6F4B6LQhQ==
   dependencies:
-    attr-accept "^2.2.2"
     file-selector "^0.6.0"
 
 "@uploadthing/mime-types@0.2.6":
@@ -1421,28 +1420,20 @@
   resolved "https://registry.yarnpkg.com/@uploadthing/mime-types/-/mime-types-0.2.6.tgz#fff8647dcd161c7673bfd50540c9e4c68750de69"
   integrity sha512-mB7XAKy5ARltUWZxb2oE0OwUW5Wplxi7Z3cqCvf/ZFvQ1E6lcGVNNKbmJI8c4GaONyEYnalo0Yl228zzHzyZnQ==
 
-"@uploadthing/react@^6.2.2":
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/@uploadthing/react/-/react-6.2.3.tgz#6aa798c1f6994e945ec3f55b6041758f78aec7bb"
-  integrity sha512-hUnPDHQBPykcAisHqIhGaOi7BU9tjE6EP4hyXnaeVsUeWGh8VTED5+ofYiulelCwBYv+/8mDOJ9nj5WU0v6FIg==
+"@uploadthing/react@^6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@uploadthing/react/-/react-6.3.4.tgz#f8157aaee8834156ffcbc8039ac6ee8d97394bcc"
+  integrity sha512-sSFfU3yYwvudMvbdVxrFWG8am7W80Vvr+pBSYDT1+lIMiHh7w3NhomyTr4HfQDHejfPmHQBCL2NGAlmcY6N9Vw==
   dependencies:
-    "@uploadthing/dropzone" "^0.1.2"
-    "@uploadthing/shared" "^6.3.0"
-    attr-accept "^2.2.2"
+    "@uploadthing/dropzone" "0.2.1"
+    "@uploadthing/shared" "6.3.4"
     file-selector "^0.6.0"
-    tailwind-merge "^1.14.0"
+    tailwind-merge "^2.2.1"
 
 "@uploadthing/shared@6.3.4":
   version "6.3.4"
   resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.3.4.tgz#e34cd94e59e04271943443f10eba907760f635fb"
   integrity sha512-qMf7BiwQth14Gxt2Zerkrbpy/gIHUIkxBz7aN+OEh1T+z2gv8qLRhMXoWFaU56Q+3/NegdR6J+9jwPWc9WwMug==
-  dependencies:
-    std-env "^3.7.0"
-
-"@uploadthing/shared@^6.3.0":
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.3.0.tgz#46a7620a34915e9b57ec0b4a374aa8bd03d960c7"
-  integrity sha512-IXh/Y8v3JUEPb+n9e92X37hZywqjDJsOq8rrfKhZRmB6bMJNJncHz3X4fqofexDB96dmB8KwizdRYTQAxZvYQg==
   dependencies:
     std-env "^3.7.0"
 
@@ -1680,11 +1671,6 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
-
-attr-accept@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.2.tgz#646613809660110749e92f2c10833b70968d929b"
-  integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
 
 autoprefixer@^10.0.1:
   version "10.4.17"
@@ -5273,11 +5259,6 @@ synckit@^0.8.6:
   dependencies:
     "@pkgr/core" "^0.1.0"
     tslib "^2.6.2"
-
-tailwind-merge@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz#e677f55d864edc6794562c63f5001f45093cdb8b"
-  integrity sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==
 
 tailwind-merge@^2.2.1:
   version "2.2.1"

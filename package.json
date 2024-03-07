@@ -33,7 +33,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@tanstack/react-table": "^8.11.8",
-    "@uploadthing/react": "^6.2.2",
+    "@uploadthing/react": "^6.3.4",
     "@vercel/kv": "^1.0.1",
     "ai": "^2.2.34",
     "class-variance-authority": "^0.7.0",
