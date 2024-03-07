@@ -67,9 +67,10 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
                   </Button>
                 </Link>
               )}
+              <Notifications userNotifications={[]} />
             </>
           )}
-          <Notifications />
+
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}

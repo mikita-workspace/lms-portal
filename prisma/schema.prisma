@@ -9,15 +9,16 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  course     Course[]
-  createdAt  DateTime @default(now())
-  email      String   @unique
-  isPublic   Boolean? @default(false)
-  name       String?
-  pictureUrl String?
-  role       String   @default("student")
-  updatedAt  DateTime @updatedAt
+  id           String         @id @default(uuid())
+  course       Course[]
+  createdAt    DateTime       @default(now())
+  email        String         @unique
+  isPublic     Boolean?       @default(false)
+  name         String?
+  notification Notification[]
+  pictureUrl   String?
+  role         String         @default("student")
+  updatedAt    DateTime       @updatedAt
 }
 
 model Course {
@@ -169,4 +170,15 @@ model PayoutRequest {
   status               String
   transactionId        String?
   updatedAt            DateTime             @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  body      String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  title     String
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
 }
