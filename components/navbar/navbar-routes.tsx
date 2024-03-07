@@ -1,5 +1,6 @@
 'use client';
 
+import { Notification } from '@prisma/client';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,9 +20,10 @@ type NavBarRoutesProps = {
     total: number;
     value: number;
   } | null;
+  userNotifications?: Notification[];
 };
 
-export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
+export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutesProps) => {
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
 
@@ -67,7 +69,7 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
                   </Button>
                 </Link>
               )}
-              <Notifications userNotifications={[]} />
+              <Notifications userNotifications={userNotifications} />
             </>
           )}
 

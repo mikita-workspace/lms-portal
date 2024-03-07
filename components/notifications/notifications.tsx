@@ -17,10 +17,10 @@ import {
 } from '../ui';
 
 type NotificationsProps = {
-  userNotifications: Notification[];
+  userNotifications?: Notification[];
 };
 
-export const Notifications = ({ userNotifications }: NotificationsProps) => {
+export const Notifications = ({ userNotifications = [] }: NotificationsProps) => {
   const [open, setOpen] = useState(false);
 
   const amountOfNotifications = userNotifications.length;
