@@ -49,13 +49,15 @@ export const ColumnActions = ({ requestId, status }: ColumnActionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {isFetching && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
-        {!isFetching && (
-          <Button className="h-4 w-8 p-0" variant="ghost" disabled={isDisabledActions}>
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        )}
+        <Button className="h-4 w-8 p-0" variant="ghost" disabled={isDisabledActions || isFetching}>
+          {isFetching && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
+          {!isFetching && (
+            <>
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </>
+          )}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem

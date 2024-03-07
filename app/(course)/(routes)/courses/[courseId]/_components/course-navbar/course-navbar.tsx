@@ -1,4 +1,5 @@
 import { Chapter, Course, UserProgress } from '@prisma/client';
+import { Notification } from '@prisma/client';
 
 import { NavBarRoutes } from '@/components/navbar/navbar-routes';
 
@@ -12,13 +13,19 @@ type CourseNavBarProps = {
     value: number;
   } | null;
   progressCount: number;
+  userNotifications?: Omit<Notification, 'userId'>[];
 };
 
-export const CourseNavBar = ({ course, globalProgress, progressCount }: CourseNavBarProps) => {
+export const CourseNavBar = ({
+  course,
+  globalProgress,
+  progressCount,
+  userNotifications,
+}: CourseNavBarProps) => {
   return (
     <div className="p-4 border-b h-full flex items-center bg-white dark:bg-neutral-800 shadow-sm">
       <CourseNobileSideBar course={course} progressCount={progressCount} />
-      <NavBarRoutes globalProgress={globalProgress} />
+      <NavBarRoutes globalProgress={globalProgress} userNotifications={userNotifications} />
     </div>
   );
 };

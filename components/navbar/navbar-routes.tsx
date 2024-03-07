@@ -20,7 +20,7 @@ type NavBarRoutesProps = {
     total: number;
     value: number;
   } | null;
-  userNotifications?: Notification[];
+  userNotifications?: Omit<Notification, 'userId'>[];
 };
 
 export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutesProps) => {

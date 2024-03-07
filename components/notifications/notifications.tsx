@@ -1,10 +1,16 @@
 'use client';
 
 import { Notification } from '@prisma/client';
-import { RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+import { CheckCheck, RefreshCcw } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
+import toast from 'react-hot-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 import { TbBellRinging2Filled } from 'react-icons/tb';
 
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
 import {
@@ -17,13 +23,62 @@ import {
 } from '../ui';
 
 type NotificationsProps = {
-  userNotifications?: Notification[];
+  userNotifications?: Omit<Notification, 'userId'>[];
 };
 
 export const Notifications = ({ userNotifications = [] }: NotificationsProps) => {
+  const { user } = useCurrentUser();
+  const router = useRouter();
+
+  const [isFetching, startTransition] = useTransition();
+
+  const [unreadNotifications, setUnreadNotifications] = useState<typeof userNotifications>([]);
+
   const [open, setOpen] = useState(false);
+  const [isSwitched, setIsSwitched] = useState(false);
+  const [notificationId, setNotificationId] = useState<string | null>(null);
 
   const amountOfNotifications = userNotifications.length;
+  const amountOfUnreadNotifications = userNotifications.filter((un) => !un.isRead)?.length;
+
+  const handleSwitchFilter = (checked: boolean) => {
+    setIsSwitched(checked);
+
+    const filteredNotifications = userNotifications.filter((nt) => (checked ? !nt.isRead : false));
+
+    setUnreadNotifications(filteredNotifications);
+  };
+
+  const handleFetchNotifications = () =>
+    startTransition(() => {
+      setIsSwitched(false);
+      router.refresh();
+    });
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      setNotificationId(id);
+
+      await fetcher.patch(`/api/users/${user?.userId}/notifications`, {
+        body: {
+          id,
+          isRead: true,
+        },
+      });
+
+      if (isSwitched) {
+        setUnreadNotifications((prev) => prev.filter((nt) => nt.id !== id));
+      }
+
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong!');
+    } finally {
+      setNotificationId(null);
+    }
+  };
+
+  const notifications = isSwitched ? unreadNotifications : userNotifications;
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -35,9 +90,11 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
           )}
         >
           <TbBellRinging2Filled className="h-5 w-5" />
-          {Boolean(amountOfNotifications) && (
+          {Boolean(amountOfUnreadNotifications) && (
             <div className="absolute w-[14px] h-[14px] rounded-full bg-red-500 top-2 right-1 flex items-center justify-center truncate">
-              <span className="text-white font-semibold text-[8px]">{amountOfNotifications}</span>
+              <span className="text-white font-semibold text-[8px]">
+                {amountOfUnreadNotifications}
+              </span>
             </div>
           )}
         </div>
@@ -48,10 +105,15 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
           <div className="flex items-center gap-4">
             <div className="text-xs text-muted-foreground flex gap-2 items-center">
               <span>Show only unread</span>
-              <Switch />
+              <Switch
+                aria-readonly
+                disabled={isFetching}
+                checked={isSwitched}
+                onCheckedChange={handleSwitchFilter}
+              />
             </div>
-            <button>
-              <RefreshCcw className="w-4 h-4" />
+            <button onClick={handleFetchNotifications} disabled={isFetching}>
+              <RefreshCcw className={cn('w-4 h-4', isFetching ? 'animate-spin' : '')} />
             </button>
           </div>
         </div>
@@ -59,22 +121,49 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
         <ScrollArea
           className={cn(
             'px-2 pb-2 h-72 w-full',
-            !amountOfNotifications ? 'text-center align-middle' : '',
+            !amountOfNotifications || (!unreadNotifications.length && isSwitched)
+              ? 'text-center align-middle'
+              : '',
           )}
         >
-          {userNotifications.map((un) => (
-            <div key={un.id} className="border rounded-sm p-3 mb-2 flex flex-col">
+          {notifications.map((un) => (
+            <div
+              key={un.id}
+              className={cn(
+                'border rounded-sm p-3 mb-2 flex flex-col',
+                notifications.length > 1 ? 'mr-1' : 'mr-auto',
+              )}
+            >
               <p className="text-sm font-medium">{un.title}</p>
               <p className="text-xs">{un.body}</p>
+              <div className="text-xs text-muted-foreground mt-2 flex justify-between items-center">
+                <p>{formatDistanceToNow(un.createdAt, { addSuffix: true })}</p>
+                {un.isRead && <CheckCheck className="h-4 w-4" />}
+                {!un.isRead && (
+                  <>
+                    {notificationId === un.id && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
+                    {notificationId !== un.id && (
+                      <button
+                        className="hover:underline"
+                        onClick={() => handleMarkAsRead(un.id)}
+                        disabled={Boolean(notificationId) || isFetching}
+                      >
+                        Mark as read
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           ))}
           {!amountOfNotifications && (
             <p className="text-sm font-medium mt-32">There are no notifications</p>
+          )}
+          {!unreadNotifications.length && isSwitched && (
+            <p className="text-sm font-medium mt-32">There are no unread notifications</p>
           )}
         </ScrollArea>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
-
-// There are no unread notifications

@@ -11,7 +11,7 @@ type NavBarProps = {
     total: number;
     value: number;
   } | null;
-  userNotifications?: Notification[];
+  userNotifications?: Omit<Notification, 'userId'>[];
 };
 
 export const NavBar = ({ isChat = false, globalProgress, userNotifications }: NavBarProps) => {
