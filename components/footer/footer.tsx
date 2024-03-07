@@ -32,17 +32,17 @@ export const Footer = () => {
               </div>
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
-              <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
-                Contact
-              </Link>
-              <Link href={GITHUB_ISSUE_URL} target="_blank">
-                Report Issue
-              </Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
                 Terms and Conditions
               </Link>
               <Link href={PRIVACY_POLICY_URL} target="_blank">
                 Privacy Policy
+              </Link>
+              <Link href={GITHUB_ISSUE_URL} target="_blank">
+                Report Issue
+              </Link>
+              <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
+                Contact
               </Link>
             </div>
           </div>
