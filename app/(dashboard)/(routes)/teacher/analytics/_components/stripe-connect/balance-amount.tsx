@@ -3,8 +3,10 @@
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { MdVerified } from 'react-icons/md';
+import Stripe from 'stripe';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
+import { CreditCardInfo } from '@/components/common/credit-card-info';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
@@ -21,6 +23,14 @@ export const BalanceAmount = ({ stripeConnect }: BalanceAmountProps) => {
   const [showBalance, setShowBalance] = useState(false);
 
   const handleShowBalance = () => setShowBalance((prev) => !prev);
+
+  const creditCard = stripeConnect?.externalAccounts?.data?.find(
+    (ea) => ea.object === 'card',
+  ) as Stripe.Card;
+
+  const bankAccount = stripeConnect?.externalAccounts?.data?.find(
+    (ea) => ea.object === 'bank_account',
+  ) as Stripe.BankAccount;
 
   return (
     <div className="flex flex-col gap-2 w-full md:w-auto">
@@ -51,14 +61,31 @@ export const BalanceAmount = ({ stripeConnect }: BalanceAmountProps) => {
         </div>
       </div>
       {stripeConnect && stripeConnect.isActive && (
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-1 items-center">
-            <p className="text-sm font-semibold">
-              {stripeConnect?.metadata?.['name'] ?? user?.name}
-            </p>
-            <MdVerified className="h-3 w-3 text-green-500" />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-1 items-center">
+              <p className="text-sm font-semibold">
+                {stripeConnect?.metadata?.['name'] ?? user?.name}
+              </p>
+              <MdVerified className="h-3 w-3 text-green-500" />
+            </div>
+            <p className="text-xs leading-none text-muted-foreground">{stripeConnect.email}</p>
           </div>
-          <p className="text-xs leading-none text-muted-foreground">{stripeConnect.email}</p>
+          {creditCard && (
+            <CreditCardInfo
+              brand={creditCard.brand}
+              expMonth={creditCard.exp_month}
+              expYear={creditCard.exp_year}
+              last4={creditCard.last4}
+            />
+          )}
+          {bankAccount && (
+            <div className="flex flex-col text-sm">
+              <p className="font-semibold">{bankAccount.bank_name}</p>
+              <span className="text-xs text-muted-foreground">{bankAccount.routing_number}</span>
+              <span className="text-xs text-muted-foreground">****{bankAccount.last4}</span>
+            </div>
+          )}
         </div>
       )}
     </div>

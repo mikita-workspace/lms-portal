@@ -32,7 +32,9 @@ export const POST = async (_: NextRequest, { params }: { params: { userId: strin
         settings: {
           payouts: {
             schedule: {
-              interval: 'manual',
+              delay_days: 2,
+              interval: 'weekly',
+              weekly_anchor: 'friday',
             },
           },
         },

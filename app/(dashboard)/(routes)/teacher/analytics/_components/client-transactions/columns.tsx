@@ -4,14 +4,13 @@ import { Column, ColumnDef } from '@tanstack/react-table';
 import { format, fromUnixTime } from 'date-fns';
 import { ArrowUpDown, ReceiptText } from 'lucide-react';
 import Link from 'next/link';
-import { PaymentIcon, PaymentTypeExtended } from 'react-svg-credit-card-payment-icons';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
+import { CreditCardInfo } from '@/components/common/credit-card-info';
 import { PriceColumn } from '@/components/data-table/columns/price-column';
 import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { capitalize } from '@/lib/utils';
 
 type ClientTransactions = Awaited<ReturnType<typeof getAnalytics>>['transactions'][number];
 
@@ -42,19 +41,15 @@ export const columns: ColumnDef<ClientTransactions>[] = [
         <div className="flex flex-col text-sm">
           <p className="font-medium">{billingDetails.name}</p>
           <p>{billingDetails.email}</p>
+
           {paymentMethod && (
-            <div className="flex gap-2 mt-2 items-center">
-              <PaymentIcon
-                type={capitalize(paymentMethod.brand || 'generic') as PaymentTypeExtended}
-                format="flatRounded"
-                width={50}
+            <div className="mt-2">
+              <CreditCardInfo
+                brand={paymentMethod.brand}
+                expMonth={paymentMethod.expMonth}
+                expYear={paymentMethod.expYear}
+                last4={paymentMethod.last4}
               />
-              <div className="flex flex-col text-xs text-muted-foreground">
-                <span>****{paymentMethod.last4}</span>
-                <span>
-                  {paymentMethod.expMonth}/{paymentMethod.expYear}
-                </span>
-              </div>
             </div>
           )}
         </div>
