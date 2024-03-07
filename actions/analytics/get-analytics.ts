@@ -320,7 +320,9 @@ export const getAnalytics = async (userId: string) => {
             async () => {
               const res = await stripe.charges.list({ customer: sc.stripeCustomerId });
 
-              return res.data;
+              return res.data.filter((ch) =>
+                purchases.find((pc) => pc.details?.paymentIntent === ch.payment_intent),
+              );
             },
             ONE_MINUTE_SEC,
           );
