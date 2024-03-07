@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 
 const formSchema = z.object({
@@ -26,8 +25,6 @@ const formSchema = z.object({
 });
 
 const CreatePage = () => {
-  const localeInfo = useLocaleStore((state) => state.localeInfo);
-
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,7 +38,6 @@ const CreatePage = () => {
       const data = await fetcher.post('/api/courses', {
         body: {
           ...values,
-          countryCodes: localeInfo?.details.countryCode ? [localeInfo.details.countryCode] : [],
         },
         responseType: 'json',
       });
