@@ -11,6 +11,8 @@ import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
+import { Notifications } from '../notifications/notifications';
+
 type NavBarRoutesProps = {
   globalProgress?: {
     progressPercentage: number;
@@ -67,6 +69,7 @@ export const NavBarRoutes = ({ globalProgress }: NavBarRoutesProps) => {
               )}
             </>
           )}
+          <Notifications />
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
