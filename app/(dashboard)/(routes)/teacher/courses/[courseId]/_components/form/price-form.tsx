@@ -5,9 +5,9 @@ import { format, fromUnixTime } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import CurrencyInput from 'react-currency-input-field';
 import toast from 'react-hot-toast';
 
+import { CurrencyInput } from '@/components/common/currency-input';
 import { Price } from '@/components/common/price';
 import {
   Input,
