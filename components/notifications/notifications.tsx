@@ -1,6 +1,7 @@
 'use client';
 
 import { Notification } from '@prisma/client';
+import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import { TbBellRinging2Filled } from 'react-icons/tb';
 
@@ -41,12 +42,17 @@ export const Notifications = ({ userNotifications }: NotificationsProps) => {
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-screen md:w-[340px] md:mr-16 mt-1">
+      <DropdownMenuContent className="w-[340px] sm:mr-16 mr-4 mt-1">
         <div className="flex justify-between items-center px-2 pt-4">
           <p className="font-semibold text-sm">Notifications</p>
-          <div className="text-xs text-muted-foreground flex gap-2 items-center">
-            <span>Show only unread</span>
-            <Switch />
+          <div className="flex items-center gap-4">
+            <div className="text-xs text-muted-foreground flex gap-2 items-center">
+              <span>Show only unread</span>
+              <Switch />
+            </div>
+            <button>
+              <RefreshCcw className="w-4 h-4" />
+            </button>
           </div>
         </div>
         <DropdownMenuSeparator className="-mx-1 my-4 h-px bg-muted" />
