@@ -25,7 +25,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
   const router = useRouter();
 
   const isActive = useMemo(() => {
-    if (pathname.startsWith('/settings')) {
+    if (pathname.startsWith('/settings') || pathname.startsWith('/owner')) {
       return pathname === href;
     }
 
