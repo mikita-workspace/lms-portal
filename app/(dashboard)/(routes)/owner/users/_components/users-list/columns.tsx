@@ -2,12 +2,11 @@
 
 import { User } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
 import { ArrowUpDown } from 'lucide-react';
 
 import { TextBadge } from '@/components/common/text-badge';
+import { DateColumn } from '@/components/data-table/columns/date-column';
 import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
-import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { getFallbackName } from '@/lib/utils';
 
 import { ColumnActions } from './column-actions';
@@ -60,18 +59,14 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'createdAt',
     header: ({ column }) => handleSortingHeader(column, 'Date of creation'),
     cell: ({ row }) => {
-      const { createdAt } = row.original;
-
-      return <span>{format(createdAt, TIMESTAMP_TEMPLATE)}</span>;
+      return <DateColumn date={row.original.createdAt} />;
     },
   },
   {
     accessorKey: 'updatedAt',
     header: ({ column }) => handleSortingHeader(column, 'Last update'),
     cell: ({ row }) => {
-      const { updatedAt } = row.original;
-
-      return <span>{format(updatedAt, TIMESTAMP_TEMPLATE)}</span>;
+      return <DateColumn date={row.original.updatedAt} />;
     },
   },
   {
