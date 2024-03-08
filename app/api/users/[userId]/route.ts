@@ -12,12 +12,21 @@ export const PATCH = async (req: NextRequest, { params }: { params: { userId: st
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const values = await req.json();
+    const { notification, ...values } = await req.json();
 
     const updatedUser = await db.user.update({
       where: { id: params.userId },
       data: { ...values },
     });
+
+    if (notification) {
+      await db.notification.create({
+        data: {
+          userId: params.userId,
+          ...notification,
+        },
+      });
+    }
 
     return NextResponse.json(updatedUser);
   } catch (error) {

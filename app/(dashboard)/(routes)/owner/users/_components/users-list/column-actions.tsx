@@ -38,6 +38,10 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
 
       await fetcher.patch(`/api/users/${userId}`, {
         body: {
+          notification: {
+            title: 'Profile changes',
+            body: `Your user role has been updated with "${capitalize(role)}" on "${capitalize(newRole)}". Please log in again.`,
+          },
           role: newRole,
         },
       });
