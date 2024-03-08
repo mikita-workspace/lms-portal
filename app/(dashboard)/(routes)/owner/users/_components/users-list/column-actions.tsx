@@ -27,14 +27,14 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  const [isFetching, setIdFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [currentRole, setCurrentRole] = useState(role);
 
   const handleAction = async (newRole: string) => {
     try {
-      setIdFetching(true);
+      setIsFetching(true);
 
       await fetcher.patch(`/api/users/${userId}`, {
         body: {
@@ -47,7 +47,7 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
     } catch (error) {
       toast.error('Something went wrong!');
     } finally {
-      setIdFetching(false);
+      setIsFetching(false);
     }
   };
 
@@ -56,7 +56,6 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-[180px] justify-between truncate"
           disabled={isFetching || pending}
