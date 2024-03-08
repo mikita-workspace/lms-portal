@@ -3,7 +3,7 @@
 import { getStripeDetails } from '@/actions/stripe/get-stripe-details';
 import { DataTable } from '@/components/data-table/data-table';
 
-import { columns } from './column';
+import { columns } from './columns';
 
 type StripeDetails = Awaited<ReturnType<typeof getStripeDetails>>;
 

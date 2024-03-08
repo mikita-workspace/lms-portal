@@ -1,3 +1,5 @@
+'use client';
+
 import { TextBadge } from '@/components/common/text-badge';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
