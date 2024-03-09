@@ -13,15 +13,15 @@ import {
 } from '@/components/ui/dialog';
 import { Provider } from '@/constants/auth';
 
-import { OAuthButton } from './ouath-button';
-import { TermsAndPrivacy } from './terms-and-privacy';
+import { OAuthButton } from '../auth/ouath-button';
+import { TermsAndPrivacy } from '../auth/terms-and-privacy';
 
-type LoginButtonProps = {
+type AuthModalProps = {
   children: React.ReactNode;
   ignore?: boolean;
 };
 
-export const LoginButton = ({ children, ignore = false }: LoginButtonProps) => {
+export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
 
   return ignore ? (

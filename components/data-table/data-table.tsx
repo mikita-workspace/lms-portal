@@ -25,7 +25,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { PromoButton } from '../common/promo-button';
+import { PromoModal } from '../modals/promo-modal';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,12 +86,12 @@ export function DataTable<TData, TValue>({
             </Link>
           )}
           {isPromoPage && (
-            <PromoButton>
+            <PromoModal>
               <Button>
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add a Code
               </Button>
-            </PromoButton>
+            </PromoModal>
           )}
         </div>
       )}

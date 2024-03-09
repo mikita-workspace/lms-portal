@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsStars } from 'react-icons/bs';
 
-import { Button } from '@/components/ui';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 
@@ -87,16 +86,18 @@ export const GenerateDescriptionAi = ({
   };
 
   return (
-    <Button
-      className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10 px-2"
+    <button
       disabled={isSubmitting || !isValid}
-      variant="outline"
-      size="sm"
       onClick={isImproving ? handleAbortGenerating : handleGenerate}
     >
-      {!isImproving && <BsStars className="mr-1" />}
-      {isImproving && <StopCircle className="w-4 h-4 mr-1" />}
-      {isImproving ? 'Stop' : 'Improve'}
-    </Button>
+      <div className="relative group z-10">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+        <div className="relative px-3 py-2 h-8 bg-white text-black rounded-md flex items-center text-sm">
+          {!isImproving && <BsStars className="mr-1" />}
+          {isImproving && <StopCircle className="w-4 h-4 mr-1" />}
+          {isImproving ? 'Stop' : 'Improve'}
+        </div>
+      </div>
+    </button>
   );
 };

@@ -11,11 +11,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-type PromoButtonProps = {
+type PromoModalProps = {
   children: React.ReactNode;
 };
 
-export const PromoButton = ({ children }: PromoButtonProps) => {
+export const PromoModal = ({ children }: PromoModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
