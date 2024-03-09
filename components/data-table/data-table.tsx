@@ -25,10 +25,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { PromoButton } from '../common/promo-button';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   initialPageSize?: number;
+  isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
 }
@@ -37,6 +40,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   initialPageSize = 10,
+  isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
 }: Readonly<DataTableProps<TData, TValue>>) {
@@ -65,20 +69,30 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {isTeacherCoursesPage && (
+      {(isTeacherCoursesPage || isPromoPage) && (
         <div className="flex items-center py-4 justify-between space-x-2">
           <Input
-            placeholder="Filter courses..."
+            placeholder={isTeacherCoursesPage ? 'Filter courses...' : 'Filter promotion codes...'}
             value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
             className="max-w-sm"
           />
-          <Link href="/teacher/create">
-            <Button>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              New Course
-            </Button>
-          </Link>
+          {isTeacherCoursesPage && (
+            <Link href="/teacher/create">
+              <Button>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                New Course
+              </Button>
+            </Link>
+          )}
+          {isPromoPage && (
+            <PromoButton>
+              <Button>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add Code
+              </Button>
+            </PromoButton>
+          )}
         </div>
       )}
       <div className="rounded-md border">
