@@ -30,9 +30,9 @@ export const PreviewDescription = ({
 }: PreviewDescriptionProps) => {
   return (
     <div className="border rounded-lg p-6">
-      <div className="flex items-center gap-x-2 mb-1">
+      <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
         <IconBadge size="sm" icon={BookOpen} />
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs">
           {chaptersLength} {chaptersLength > 1 ? 'Chapters' : 'Chapter'}
         </span>
       </div>
