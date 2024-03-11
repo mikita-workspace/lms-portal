@@ -66,6 +66,7 @@ export const Providers = ({
           countryCode: userIp.country_code,
           latitude: userIp.latitude,
           longitude: userIp.longitude,
+          timezone: userIp.timezone,
         },
         rate: exchangeRates?.rates?.[currency] ?? DEFAULT_EXCHANGE_RATE,
       });

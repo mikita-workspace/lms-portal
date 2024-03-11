@@ -8,6 +8,7 @@ export type LocaleInfo = {
     countryCode: string;
     latitude: number;
     longitude: number;
+    timezone: string;
   };
   rate: number;
 } | null;
