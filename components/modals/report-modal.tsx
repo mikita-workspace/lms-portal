@@ -168,7 +168,7 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
           isLoading={isFetching}
         >
           {!isFetching && <Clock className="h-4 w-4 mr-2" />}
-          Check status of report
+          Check report status
         </Button>
       )}
     </>
