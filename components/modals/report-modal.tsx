@@ -72,10 +72,6 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
 
       if (response?.url) {
         setCookie(cookieKey, response.url, { maxAge: ONE_DAY_SEC });
-
-        window.location.href = response.url;
-
-        return;
       }
 
       if (!isRequested) {
