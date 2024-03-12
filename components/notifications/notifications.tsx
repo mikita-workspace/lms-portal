@@ -1,10 +1,9 @@
 'use client';
 
 import { Notification } from '@prisma/client';
-import { RefreshCcw } from 'lucide-react';
+import { Inbox, RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import { TbBellRinging2Filled } from 'react-icons/tb';
 
 import { cn } from '@/lib/utils';
 
@@ -46,7 +45,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
             open ? 'bg-muted ' : 'hover:bg-muted ',
           )}
         >
-          <TbBellRinging2Filled className="h-5 w-5" />
+          <Inbox className="h-5 w-5" />
           {Boolean(amountOfUnreadNotifications) && (
             <div className="absolute w-[14px] h-[14px] rounded-full bg-red-500 top-2 right-1 flex items-center justify-center truncate">
               <span className="text-white font-semibold text-[8px]">

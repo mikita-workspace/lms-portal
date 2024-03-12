@@ -44,7 +44,7 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
   const [open, setOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
-  const cookieKey = `report-${stripeConnect?.id}-${reportType}`;
+  const cookieKey = `report-${stripeConnect?.id ?? 'nonId'}-${reportType}`;
 
   const isRequested = Boolean(getCookie([cookieKey, 'requested'].join('-')));
   const fileUrl = getCookie(cookieKey);
@@ -61,7 +61,7 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
     try {
       setIsFetching(true);
 
-      const response = await fetcher.post(`/api/payments/report/${stripeConnect?.id}`, {
+      const response = await fetcher.post(`/api/payments/report/${stripeConnect?.id ?? 'nonId'}`, {
         responseType: 'json',
         body: {
           endDate: roundDate(date?.to as Date),
@@ -162,7 +162,6 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
       {!fileUrl && (
         <Button
           variant="outline"
-          className="w-full"
           onClick={handleSubmit}
           disabled={isFetching}
           isLoading={isFetching}
