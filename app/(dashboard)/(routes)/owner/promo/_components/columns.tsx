@@ -1,22 +1,19 @@
 'use client';
 
-import { Course } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
-import Link from 'next/link';
+import { fromUnixTime } from 'date-fns';
+import { ArrowUpDown } from 'lucide-react';
 
+import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
 import { TextBadge } from '@/components/common/text-badge';
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui';
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { DateColumn } from '@/components/data-table/columns/date-column';
+import { Button } from '@/components/ui';
 
-const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label: string) => {
+import { ColumnActions } from './column-actions';
+
+type Promo = Awaited<ReturnType<typeof getStripePromo>>['promos'][number];
+
+const handleSortingHeader = <T extends Column<Promo, unknown>>(column: T, label: string) => {
   return (
     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
       {label}
@@ -25,32 +22,76 @@ const handleSortingHeader = <T extends Column<Course, unknown>>(column: T, label
   );
 };
 
-export const columns: ColumnDef<Course>[] = [
+export const columns: ColumnDef<Promo>[] = [
   {
-    accessorKey: 'title',
-    header: ({ column }) => handleSortingHeader(column, 'Title'),
+    accessorKey: 'code',
+    id: 'title',
+    header: ({ column }) => handleSortingHeader(column, 'Promotion code'),
   },
   {
-    accessorKey: 'price',
-    header: ({ column }) => handleSortingHeader(column, 'Price'),
+    accessorKey: 'createdAt',
+    header: ({ column }) => handleSortingHeader(column, 'Date of creation'),
     cell: ({ row }) => {
-      const price = getConvertedPrice(row.getValue('price') || 0);
-      const formatted = formatPrice(price, { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY });
-
-      return price ? formatted : <TextBadge variant="lime" label="Free" />;
+      return <DateColumn date={fromUnixTime(row.original.created)} />;
     },
   },
   {
-    accessorKey: 'isPublished',
-    header: ({ column }) => handleSortingHeader(column, 'Published'),
+    id: 'status',
+    header: () => <span>Status</span>,
     cell: ({ row }) => {
-      const isPublished = row.getValue('isPublished') || false;
+      const variant = row.original.active ? 'green' : 'default';
+      const label = row.original.active ? 'Active' : 'Inactive';
 
+      return <TextBadge variant={variant} label={label} />;
+    },
+  },
+  {
+    id: 'coupon',
+    header: () => <span>Coupon</span>,
+    cell: ({ row }) => {
       return (
-        <TextBadge
-          variant={isPublished ? 'yellow' : 'default'}
-          label={isPublished ? 'Published' : 'Draft'}
-        />
+        <div className="flex flex-col text-xs">
+          <p className="font-medium">{row.original.coupon.name}</p>
+          <p className="text-muted-foreground">{row.original.coupon.description}</p>
+        </div>
+      );
+    },
+  },
+  {
+    id: 'customer',
+    header: () => <span>Customer</span>,
+    cell: ({ row }) => {
+      return row.original.customer?.name ? (
+        <div className="flex flex-col text-xs">
+          <p className="font-medium">{row.original.customer.name}</p>
+          {row.original.customer.email && (
+            <p className="text-muted-foreground">{row.original.customer.email}</p>
+          )}
+        </div>
+      ) : (
+        <p className="text-center">&#8212;</p>
+      );
+    },
+  },
+  {
+    id: 'restrictions',
+    header: () => <span>Restrictions</span>,
+    cell: ({ row }) => {
+      return row.original.restrictions ? (
+        <p>{row.original.restrictions}</p>
+      ) : (
+        <p className="text-center">&#8212;</p>
+      );
+    },
+  },
+  {
+    id: 'redemptions',
+    header: () => <span>Redemptions</span>,
+    cell: ({ row }) => {
+      return (
+        <p>
+          {row.original.timesRedeemed}/{row.original.timesRedeemed}
+        </p>
       );
     },
   },
@@ -59,24 +100,7 @@ export const columns: ColumnDef<Course>[] = [
     cell: ({ row }) => {
       const { id } = row.original;
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="h-4 w-8 p-0" variant="ghost">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/teacher/courses/${id}`}>
-              <DropdownMenuItem className="hover:cursor-pointer">
-                <Pencil className="h-4 w-4  mr-2" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <ColumnActions promoId={id} />;
     },
   },
 ];

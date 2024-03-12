@@ -148,6 +148,16 @@ model StripeConnectAccount {
   userId          String          @unique
 }
 
+model StripePromo {
+  id             String   @id @default(uuid())
+  code           String
+  createdAt      DateTime @default(now())
+  isActive       Boolean  @default(true)
+  stripeCouponId String
+  stripePromoId  String   @unique
+  updatedAt      DateTime @updatedAt
+}
+
 model Fee {
   id        String   @id @default(uuid())
   amount    Int      @default(0)

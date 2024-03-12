@@ -1,5 +1,6 @@
 'use client';
 
+import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
 import { Button } from '@/components/ui';
 import {
   Dialog,
@@ -11,8 +12,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+type Coupon = Awaited<ReturnType<typeof getStripePromo>>['coupons'][number];
+
 type PromoModalProps = {
   children: React.ReactNode;
+  coupons: Coupon[];
 };
 
 export const PromoModal = ({ children }: PromoModalProps) => {

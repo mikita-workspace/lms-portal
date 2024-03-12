@@ -15,6 +15,7 @@ import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import * as React from 'react';
 
+import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
 import { Button, Input } from '@/components/ui';
 import {
   Table,
@@ -27,8 +28,11 @@ import {
 
 import { PromoModal } from '../modals/promo-modal';
 
+type Coupon = Awaited<ReturnType<typeof getStripePromo>>['coupons'][number];
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  coupons?: Coupon[];
   data: TData[];
   initialPageSize?: number;
   isPromoPage?: boolean;
@@ -38,6 +42,7 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
   columns,
+  coupons = [],
   data,
   initialPageSize = 10,
   isPromoPage = false,
@@ -86,10 +91,10 @@ export function DataTable<TData, TValue>({
             </Link>
           )}
           {isPromoPage && (
-            <PromoModal>
+            <PromoModal coupons={coupons}>
               <Button>
                 <PlusCircle className="h-4 w-4 mr-2" />
-                Add a Code
+                Add a code
               </Button>
             </PromoModal>
           )}
