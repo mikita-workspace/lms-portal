@@ -1,12 +1,14 @@
 'use client';
 
-import { ExternalLink, HandCoins } from 'lucide-react';
+import { Download, ExternalLink, HandCoins } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
+import { ReportModal } from '@/components/modals/report-modal';
 import { RequestPayoutModal } from '@/components/modals/request-payout-modal';
 import { Button } from '@/components/ui';
+import { Report } from '@/constants/payments';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
 
@@ -97,6 +99,12 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
                 <span>Request a payout</span>
               </Button>
             </RequestPayoutModal>
+            <ReportModal reportType={Report.CONNECT} stripeConnect={stripeConnect}>
+              <Button variant="outline" className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Download report
+              </Button>
+            </ReportModal>
             <Button
               disabled={isFetching}
               onClick={handleLoginAccount}

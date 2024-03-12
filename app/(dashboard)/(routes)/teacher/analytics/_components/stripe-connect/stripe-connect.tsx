@@ -37,7 +37,7 @@ export const StripeConnect = ({
           {autoPaymentSchedule.weeklyAnchor && autoPaymentSchedule.interval && (
             <span>
               Automatic payments to a card or bank account are made {autoPaymentSchedule.interval}{' '}
-              on {capitalize(autoPaymentSchedule.weeklyAnchor)}s.
+              on {capitalize(autoPaymentSchedule.weeklyAnchor)}s
             </span>
           )}
         </p>

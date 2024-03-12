@@ -43,7 +43,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
     where: { id: params.courseId },
     include: {
       chapters: {
-        where: { isPublished: true, position: 0 },
         orderBy: { position: 'asc' },
       },
       category: true,

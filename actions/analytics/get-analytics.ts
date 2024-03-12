@@ -308,9 +308,7 @@ export const getAnalytics = async (userId: string) => {
     const declinedPayouts = payouts
       .filter((py) => py.status === PayoutRequestStatus.DECLINED)
       .slice(0, 5);
-    const successfulPayouts = payouts
-      .filter((py) => py.status === PayoutRequestStatus.PAID)
-      .slice(0, 5);
+    const successfulPayouts = payouts.filter((py) => py.status === PayoutRequestStatus.PAID);
 
     const stripeCharges = (
       await Promise.all(
