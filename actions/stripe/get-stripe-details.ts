@@ -17,6 +17,7 @@ export const getStripeDetails = async () => {
       include: { connectAccount: true },
       orderBy: { createdAt: 'desc' },
     });
+    const ownerAccount = await stripe.accounts.retrieve(process.env.OWNER_ACC as string);
 
     const userIds = payoutRequests.map((pr) => pr.connectAccount.userId);
 
@@ -47,6 +48,9 @@ export const getStripeDetails = async () => {
 
         return pr;
       }, []),
+      owner: {
+        dashboard: ownerAccount.settings?.dashboard,
+      },
     };
   } catch (error) {
     console.error('[GET_STRIPE_DETAILS_ACTION]', error);
@@ -57,6 +61,7 @@ export const getStripeDetails = async () => {
         pending: 0,
       },
       payoutRequests: [] as PayoutRequests,
+      owner: null,
     };
   }
 };
