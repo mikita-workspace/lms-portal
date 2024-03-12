@@ -90,7 +90,7 @@ export const columns: ColumnDef<Promo>[] = [
     cell: ({ row }) => {
       return (
         <p>
-          {row.original.timesRedeemed}/{row.original.timesRedeemed}
+          {row.original.timesRedeemed}/{row.original.maxRedemptions}
         </p>
       );
     },
