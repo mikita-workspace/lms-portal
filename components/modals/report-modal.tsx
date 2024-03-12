@@ -97,7 +97,9 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Request report</DialogTitle>
-            <DialogDescription>Select the start and end dates of the report.</DialogDescription>
+            <DialogDescription>
+              Select the start and end dates of the report. The report can be requested once a day.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-2 my-4">
             <Popover>
