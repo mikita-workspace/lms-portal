@@ -78,7 +78,7 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
         setCookie([cookieKey, 'requested'].join('-'), 'true', { maxAge: ONE_DAY_SEC });
         toast.success('Report was requested');
       } else {
-        toast.success('Report in progress...');
+        toast.success(response?.url ? 'Report is ready' : 'Report in progress...');
       }
 
       router.refresh();
