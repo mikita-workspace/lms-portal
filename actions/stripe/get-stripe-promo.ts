@@ -72,9 +72,18 @@ const getPromos = (promos: StripePromotionCodes, customers: StripeCustomers) => 
   });
 };
 
+const getCustomers = (customers: StripeCustomers) => {
+  return customers.map((cs) => ({
+    email: cs.email,
+    id: cs.id,
+    name: cs.name,
+  }));
+};
+
 export const getStripePromo = async () => {
   try {
     const promos = await db.stripePromo.findMany({ orderBy: { createdAt: 'desc' } });
+    const customers = await db.stripeCustomer.findMany();
 
     const coupons = await stripe.coupons.list({ limit: 10 });
 
@@ -95,17 +104,13 @@ export const getStripePromo = async () => {
     );
 
     const stripeCustomers = await Promise.all(
-      stripePromos.map(async (promo) => {
+      customers.map(async (cs) => {
         const data = await fetchCachedData(
-          `${promo.customer}`,
+          `${cs.stripeCustomerId}`,
           async () => {
-            if (promo.customer) {
-              const res = await stripe.customers.retrieve(promo.customer);
+            const res = await stripe.customers.retrieve(cs.stripeCustomerId);
 
-              return res;
-            }
-
-            return null;
+            return res;
           },
           ONE_MINUTE_SEC,
         );
@@ -116,6 +121,7 @@ export const getStripePromo = async () => {
 
     return {
       coupons: getCoupons(coupons.data),
+      customers: getCustomers(stripeCustomers),
       promos: getPromos(stripePromos, stripeCustomers),
     };
   } catch (error) {
@@ -123,6 +129,7 @@ export const getStripePromo = async () => {
 
     return {
       coupons: [] as ReturnType<typeof getCoupons>,
+      customers: [] as ReturnType<typeof getCustomers>,
       promos: [] as ReturnType<typeof getPromos>,
     };
   }

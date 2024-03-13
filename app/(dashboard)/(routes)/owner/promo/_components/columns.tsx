@@ -5,6 +5,7 @@ import { fromUnixTime } from 'date-fns';
 import { ArrowUpDown } from 'lucide-react';
 
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
+import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { TextBadge } from '@/components/common/text-badge';
 import { DateColumn } from '@/components/data-table/columns/date-column';
 import { Button } from '@/components/ui';
@@ -27,6 +28,14 @@ export const columns: ColumnDef<Promo>[] = [
     accessorKey: 'code',
     id: 'title',
     header: ({ column }) => handleSortingHeader(column, 'Promotion code'),
+    cell: ({ row }) => {
+      return (
+        <div className="font-medium flex gap-2 items-center">
+          <span>{row.original.code}</span>
+          <CopyClipboard textToCopy={row.original.code} />
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'createdAt',
@@ -50,7 +59,7 @@ export const columns: ColumnDef<Promo>[] = [
     header: () => <span>Coupon</span>,
     cell: ({ row }) => {
       return (
-        <div className="flex flex-col text-xs">
+        <div className="flex flex-col text-sm">
           <p className="font-medium">{row.original.coupon.name}</p>
           <p className="text-muted-foreground">{row.original.coupon.description}</p>
         </div>
@@ -62,7 +71,7 @@ export const columns: ColumnDef<Promo>[] = [
     header: () => <span>Customer</span>,
     cell: ({ row }) => {
       return row.original.customer?.name ? (
-        <div className="flex flex-col text-xs">
+        <div className="flex flex-col text-sm">
           <p className="font-medium">{row.original.customer.name}</p>
           {row.original.customer.email && (
             <p className="text-muted-foreground">{row.original.customer.email}</p>
