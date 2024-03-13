@@ -27,7 +27,7 @@ export const hasJsonStructure = (str: string) => {
 
 export function getRandomInt(min: number, max: number) {
   const byteArray = new Uint8Array(1);
-  window.crypto.getRandomValues(byteArray);
+  crypto.getRandomValues(byteArray);
 
   const range = max - min + 1;
   const max_range = 256;
