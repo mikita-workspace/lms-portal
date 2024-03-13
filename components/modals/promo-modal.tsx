@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -38,8 +39,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
+import { PromoStatus } from '@/constants/payments';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
+import { getScaledPrice } from '@/lib/format';
 import { generatePromotionCode } from '@/lib/promo';
 import { cn } from '@/lib/utils';
 
@@ -64,7 +67,7 @@ const formSchema = z.object({
   limitToSpecificCustomer: z.boolean().default(false),
   minAmount: z.string(),
   minAmountCurrency: z.string(),
-  numberOfRedeemed: z.number(),
+  numberOfRedeemed: z.string(),
   requireMinimumAmount: z.boolean().default(false),
 });
 
@@ -81,7 +84,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
       customerId: '',
       minAmount: '',
       minAmountCurrency: DEFAULT_CURRENCY,
-      numberOfRedeemed: 10,
+      numberOfRedeemed: '10',
     },
   });
 
@@ -89,25 +92,33 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
 
   const { isSubmitting, isValid } = form.formState;
 
+  const [open, setOpen] = useState(false);
+
   const watchLimitToSpecificCustomer = form.watch('limitToSpecificCustomer');
   const watchLimitNumberOfRedeemed = form.watch('limitNumberOfRedeemed');
   const watchRequireMinimumAmount = form.watch('requireMinimumAmount');
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, { body: values });
-
-      // getScaledPrice(
-      //   typeof price === 'string' ? Number(price.replace(/,/g, '.')) : price,
-      // ),
-
-      console.log(values);
+      await fetcher.post(`/api/payments/promo?action=${PromoStatus.NEW}`, {
+        body: {
+          ...values,
+          numberOfRedeemed: Number(values.numberOfRedeemed),
+          minAmount: getScaledPrice(
+            typeof values.minAmount === 'string'
+              ? Number(values.minAmount.replace(/,/g, '.'))
+              : values.minAmount,
+          ),
+        },
+      });
 
       toast.success('Promotion code has been created');
 
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong!');
+    } finally {
+      setOpen(false);
     }
   };
 
@@ -127,7 +138,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
