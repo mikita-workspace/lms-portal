@@ -22,6 +22,7 @@ import { getFallbackName } from '@/lib/utils';
 
 import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
+import { AuthModal } from '../modals/auth-modal';
 import {
   Avatar,
   AvatarFallback,
@@ -40,7 +41,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui';
-import { LoginButton } from './login-button';
 import { LogoutButton } from './logout-button';
 
 type UserProfileButtonProps = {
@@ -174,11 +174,11 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <LoginButton>
+    <AuthModal>
       <Button variant="outline">
         <LogIn className="h-4 w-4 mr-2" />
         Login
       </Button>
-    </LoginButton>
+    </AuthModal>
   );
 };

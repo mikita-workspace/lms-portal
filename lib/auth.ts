@@ -4,9 +4,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import SlackProvider from 'next-auth/providers/slack';
 import YandexProvider from 'next-auth/providers/yandex';
 
+import { LoginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
-
-import { db } from './db';
 
 export const authOptions = {
   pages: {
@@ -34,20 +33,10 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (Object.values(Provider).includes(account?.provider as Provider) && user?.email) {
-        const dbUser = await db.user.upsert({
-          where: {
-            email: user.email,
-          },
-          update: {},
-          create: {
-            email: user.email,
-            name: user.name,
-            pictureUrl: user.image,
-          },
-        });
+        const dbUser = await LoginUser(user.email, user.name, user.image);
 
         user.id = dbUser.id;
-        user.image = dbUser.pictureUrl;
+        user.image = dbUser.image;
         user.isPublic = Boolean(dbUser.isPublic);
         user.name = dbUser.name;
         user.role = dbUser.role;

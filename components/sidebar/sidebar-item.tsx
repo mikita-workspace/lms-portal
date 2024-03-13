@@ -8,7 +8,7 @@ import { TextBadge } from '@/components/common/text-badge';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
-import { LoginButton } from '../auth/login-button';
+import { AuthModal } from '../modals/auth-modal';
 
 type SideBarItemProps = {
   href: string;
@@ -42,7 +42,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
   const handleClick = () => (ignoreLogin ? router.push(href) : null);
 
   return (
-    <LoginButton ignore={ignoreLogin}>
+    <AuthModal ignore={ignoreLogin}>
       <button
         onClick={handleClick}
         type="button"
@@ -65,6 +65,6 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
           {isNew && <TextBadge label="new" variant="green" />}
         </div>
       </button>
-    </LoginButton>
+    </AuthModal>
   );
 };

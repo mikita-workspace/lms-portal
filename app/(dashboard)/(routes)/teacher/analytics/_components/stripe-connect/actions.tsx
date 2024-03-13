@@ -6,13 +6,13 @@ import toast from 'react-hot-toast';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { ReportModal } from '@/components/modals/report-modal';
+import { RequestPayoutModal } from '@/components/modals/request-payout-modal';
 import { Button } from '@/components/ui';
 import { Report } from '@/constants/payments';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
 
 import { BalanceAmount } from './balance-amount';
-import { RequestPayoutModal } from './request-payout-modal';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 

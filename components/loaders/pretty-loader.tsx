@@ -1,24 +1,23 @@
 import { Poppins } from 'next/font/google';
 
+import { Logo } from '../common/logo';
+
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
 
 export const PrettyLoader = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="loadingio-spinner-blocks-5424qohlmgh">
-        <div className="ldio-n11zyy0r5u">
-          <div style={{ left: '9px', top: '9px', animationDelay: '0s' }}></div>
-          <div style={{ left: '20px', top: '9px', animationDelay: '0.0625s' }}></div>
-          <div style={{ left: '31px', top: '9px', animationDelay: '0.125s' }}></div>
-          <div style={{ left: '9px', top: '20px', animationDelay: '0.4375s' }}></div>
-          <div style={{ left: '31px', top: '20px', animationDelay: '0.1875s' }}></div>
-          <div style={{ left: '9px', top: '31px', animationDelay: '0.375s' }}></div>
-          <div style={{ left: '20px', top: '31px', animationDelay: '0.3125s' }}></div>
-          <div style={{ left: '31px', top: '31px', animationDelay: '0.25s' }}></div>
-        </div>
-      </div>
+    <div className="w-full h-full flex items-center justify-center gap-2">
+      <Logo onlyLogoIcon isChat />
       <div className={poppins.className}>
-        <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
+        <div className="flex items-center gap-2">
+          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
+          <div className="flex">
+            <span className="w-1 h-1 mr-1 rounded-full bg-neutral-400 inline-block animate-flash"></span>
+            <span className="w-1 h-1 mr-1 rounded-full bg-neutral-400 inline-block animate-flash [animation-delay:0.2s]"></span>
+            <span className="w-1 h-1 mr-1 rounded-full bg-neutral-400 inline-block animate-flash [animation-delay:0.4s]"></span>
+          </div>
+        </div>
+
         <p className="text-xs text-muted-foreground">Portal&nbsp;for&nbsp;educational purposes</p>
       </div>
     </div>

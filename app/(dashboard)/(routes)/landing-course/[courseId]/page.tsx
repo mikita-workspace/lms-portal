@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { CourseEnrollButton } from '@/app/(course)/(routes)/courses/[courseId]/chapters/[chapterId]/_components/course-enroll-button';
-import { LoginButton } from '@/components/auth/login-button';
+import { AuthModal } from '@/components/modals/auth-modal';
 import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
@@ -109,12 +109,12 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
                   variant="outline"
                 />
               ) : (
-                <LoginButton>
+                <AuthModal>
                   <Button className="w-full" variant="outline">
                     Login to continue
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                </LoginButton>
+                </AuthModal>
               )}
             </div>
           </div>

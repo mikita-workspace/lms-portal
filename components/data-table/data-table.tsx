@@ -15,6 +15,7 @@ import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import * as React from 'react';
 
+import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
 import { Button, Input } from '@/components/ui';
 import {
   Table,
@@ -25,18 +26,30 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { PromoModal } from '../modals/promo-modal';
+
+type StripePromo = Awaited<ReturnType<typeof getStripePromo>>;
+type Coupon = StripePromo['coupons'][number];
+type Customer = StripePromo['customers'][number];
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  coupons?: Coupon[];
+  customers?: Customer[];
   data: TData[];
   initialPageSize?: number;
+  isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
+  coupons = [],
+  customers = [],
   data,
   initialPageSize = 10,
+  isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
 }: Readonly<DataTableProps<TData, TValue>>) {
@@ -65,20 +78,30 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {isTeacherCoursesPage && (
+      {(isTeacherCoursesPage || isPromoPage) && (
         <div className="flex items-center py-4 justify-between space-x-2">
           <Input
-            placeholder="Filter courses..."
+            placeholder={isTeacherCoursesPage ? 'Filter courses...' : 'Filter promotion codes...'}
             value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
             className="max-w-sm"
           />
-          <Link href="/teacher/create">
-            <Button>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              New Course
-            </Button>
-          </Link>
+          {isTeacherCoursesPage && (
+            <Link href="/teacher/create">
+              <Button>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                New Course
+              </Button>
+            </Link>
+          )}
+          {isPromoPage && (
+            <PromoModal coupons={coupons} customers={customers}>
+              <Button>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add promotion code
+              </Button>
+            </PromoModal>
+          )}
         </div>
       )}
       <div className="rounded-md border">

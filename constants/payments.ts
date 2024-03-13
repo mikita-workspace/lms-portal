@@ -5,6 +5,11 @@ export enum PayoutRequestStatus {
   PENDING = 'pending',
 }
 
+export enum PromoStatus {
+  DECLINED = 'declined',
+  NEW = 'new',
+}
+
 export enum Report {
   CONNECT = 'connect',
   OWNER = 'owner',
