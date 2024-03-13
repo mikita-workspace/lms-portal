@@ -77,17 +77,18 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
     );
   };
 
+  console.log(stripeConnect, stripeConnect?.isActive);
+
   return (
     <div className="pt-6 flex flex-col md:flex-row gap-4 items-center md:justify-between">
       <BalanceAmount stripeConnect={stripeConnect} />
       <div className="flex flex-col md:flex-row gap-3 md:gap-2 items-center w-full md:w-auto">
-        {!stripeConnect ||
-          (!stripeConnect?.isActive && (
-            <Button className="w-full" disabled={isFetching} onClick={handleCreateAccount}>
-              {!stripeConnect && <span> Create Stripe Connect</span>}
-              {!stripeConnect?.isActive && <span>Continue creating an account</span>}
-            </Button>
-          ))}
+        {(!stripeConnect || !stripeConnect?.isActive) && (
+          <Button className="w-full" disabled={isFetching} onClick={handleCreateAccount}>
+            {!stripeConnect && <span> Create Stripe Connect</span>}
+            {stripeConnect && !stripeConnect?.isActive && <span>Continue creating an account</span>}
+          </Button>
+        )}
         {stripeConnect && stripeConnect.isActive && (
           <div className="flex flex-col gap-2 w-full">
             <RequestPayoutModal stripeConnect={stripeConnect} totalProfit={totalProfit}>
