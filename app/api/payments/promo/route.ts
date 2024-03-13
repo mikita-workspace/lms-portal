@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { PromoStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
 import { isOwner } from '@/lib/owner';
+import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest) => {
@@ -71,6 +72,14 @@ export const POST = async (req: NextRequest) => {
               body: `Congratulations on receiving the promo code - ${promotionCode.code}. Please take advantage of it as soon as possible!`,
             },
           });
+
+          await pusher.trigger(
+            `notification_channel_${stripeCustomer.userId}`,
+            `private_event_${stripeCustomer.userId}`,
+            {
+              trigger: true,
+            },
+          );
         }
       }
 

@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
+import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, { params }: { params: { userId: string } }) => {
@@ -51,6 +52,14 @@ export const POST = async (req: NextRequest, { params }: { params: { userId: str
         body: `${user.name} has requested a withdrawal of funds.`,
       },
     });
+
+    await pusher.trigger(
+      `notification_channel_${process.env.NEXT_PUBLIC_OWNER_ID}`,
+      `private_event_${process.env.NEXT_PUBLIC_OWNER_ID}`,
+      {
+        trigger: true,
+      },
+    );
 
     return NextResponse.json(payoutRequest);
   } catch (error) {

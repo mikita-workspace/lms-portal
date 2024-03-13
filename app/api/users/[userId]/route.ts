@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
+import { pusher } from '@/server/pusher';
 
 export const PATCH = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
@@ -26,6 +27,14 @@ export const PATCH = async (req: NextRequest, { params }: { params: { userId: st
           ...notification,
         },
       });
+
+      await pusher.trigger(
+        `notification_channel_${params.userId}`,
+        `private_event_${params.userId}`,
+        {
+          trigger: true,
+        },
+      );
     }
 
     return NextResponse.json(updatedUser);

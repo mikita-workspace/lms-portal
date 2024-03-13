@@ -3,8 +3,10 @@
 import { Notification } from '@prisma/client';
 import { Inbox, RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import Pusher from 'pusher-js';
+import { useEffect, useState, useTransition } from 'react';
 
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 import {
@@ -19,11 +21,17 @@ import {
 } from '../ui';
 import { NotificationCards } from './notification-cards';
 
+if (process.env.NODE_ENV === 'development') {
+  Pusher.logToConsole = true;
+}
+
 type NotificationsProps = {
   userNotifications?: Omit<Notification, 'userId'>[];
 };
 
 export const Notifications = ({ userNotifications = [] }: NotificationsProps) => {
+  const { user } = useCurrentUser();
+
   const router = useRouter();
   const [isFetching, startTransition] = useTransition();
 
@@ -35,6 +43,28 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
   const amountOfUnreadNotifications = unreadNotifications.length;
 
   const handleFetchNotifications = () => startTransition(() => router.refresh());
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER as string,
+    });
+
+    const channelName = `notification_channel_${user?.userId}`;
+
+    const channel = pusher.subscribe(channelName);
+    channel.bind(`private_event_${user?.userId}`, function (data: { trigger: boolean }) {
+      const trigger = data?.trigger;
+
+      if (trigger) {
+        router.refresh();
+      }
+    });
+
+    return () => {
+      pusher.unsubscribe(channelName);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>

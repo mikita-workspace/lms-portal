@@ -7,6 +7,7 @@ import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { isOwner } from '@/lib/owner';
+import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (
@@ -38,6 +39,14 @@ export const POST = async (
           body: 'Your payout request has been declined.',
         },
       });
+
+      await pusher.trigger(
+        `notification_channel_${payoutRequest.connectAccount.userId}`,
+        `private_event_${payoutRequest.connectAccount.userId}`,
+        {
+          trigger: true,
+        },
+      );
 
       return NextResponse.json(payoutRequest);
     }
@@ -74,6 +83,14 @@ export const POST = async (
           body: `The payout request has been successfully completed. ${formatPrice(getConvertedPrice(updatedPayoutRequest.amount), { locale: DEFAULT_LOCALE, currency: updatedPayoutRequest.currency })} was transferred to your Stripe account.`,
         },
       });
+
+      await pusher.trigger(
+        `notification_channel_${payoutRequest.connectAccount.userId}`,
+        `private_event_${payoutRequest.connectAccount.userId}`,
+        {
+          trigger: true,
+        },
+      );
 
       return NextResponse.json(updatedPayoutRequest);
     }
