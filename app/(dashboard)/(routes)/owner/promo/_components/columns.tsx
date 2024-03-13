@@ -38,7 +38,7 @@ export const columns: ColumnDef<Promo>[] = [
     },
   },
   {
-    accessorKey: 'createdAt',
+    accessorKey: 'created',
     header: ({ column }) => handleSortingHeader(column, 'Date of creation'),
     cell: ({ row }) => {
       return <DateColumn date={fromUnixTime(row.original.created)} />;
