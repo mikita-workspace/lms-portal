@@ -65,7 +65,7 @@ const getPromos = (promos: StripePromotionCodes, customers: StripeCustomers) => 
         : null,
       created: pc.created,
       id: pc.id,
-      maxRedemptions: pc.max_redemptions,
+      maxRedemptions: pc.max_redemptions ?? 0,
       timesRedeemed: pc.times_redeemed,
       restrictions,
     };

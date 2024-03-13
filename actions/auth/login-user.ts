@@ -54,6 +54,7 @@ export const LoginUser = async (
     code: generatePromotionCode(),
     coupon: process.env.WELCOME_COUPON_ID as string,
     customer: stripeCustomer.stripeCustomerId,
+    max_redemptions: 1,
     restrictions: { first_time_transaction: true },
   });
 
