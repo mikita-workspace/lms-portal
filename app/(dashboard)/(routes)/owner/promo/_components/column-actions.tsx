@@ -13,28 +13,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui';
-import { PayoutRequestStatus } from '@/constants/payments';
+import { PromoStatus } from '@/constants/payments';
+import { fetcher } from '@/lib/fetcher';
 
 type ColumnActionsProps = {
   promoId: string;
 };
 
-export const ColumnActions = ({}: ColumnActionsProps) => {
+export const ColumnActions = ({ promoId }: ColumnActionsProps) => {
   const router = useRouter();
 
   const [isFetching, setIsFetching] = useState(false);
 
-  const isDisabledActions = [PayoutRequestStatus.PAID, PayoutRequestStatus.DECLINED].includes(
-    status as PayoutRequestStatus,
-  );
-
-  const handleAction = () => async () => {
+  const handleAction = async () => {
     try {
       setIsFetching(true);
 
-      // await fetcher.post(`/api/payments/payout/${requestId}?action=${action}`, {
-      //   responseType: 'json',
-      // });
+      await fetcher.post(`/api/payments/promo?action=${PromoStatus.DECLINED}`, {
+        body: {
+          promoId,
+        },
+        responseType: 'json',
+      });
 
       router.refresh();
     } catch (error) {
@@ -47,7 +47,7 @@ export const ColumnActions = ({}: ColumnActionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-4 w-8 p-0" variant="ghost" disabled={isDisabledActions || isFetching}>
+        <Button className="h-4 w-8 p-0" variant="ghost" disabled={isFetching}>
           {isFetching && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
           {!isFetching && (
             <>

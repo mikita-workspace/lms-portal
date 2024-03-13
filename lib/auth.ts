@@ -7,8 +7,6 @@ import YandexProvider from 'next-auth/providers/yandex';
 import { LoginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
 
-import { db } from './db';
-
 export const authOptions = {
   pages: {
     signIn: '/sign-in',

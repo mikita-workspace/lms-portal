@@ -48,7 +48,7 @@ export const columns: ColumnDef<Promo>[] = [
     id: 'status',
     header: () => <span>Status</span>,
     cell: ({ row }) => {
-      const variant = row.original.active ? 'green' : 'default';
+      const variant = row.original.active ? 'green' : 'red';
       const label = row.original.active ? 'Active' : 'Inactive';
 
       return <TextBadge variant={variant} label={label} />;

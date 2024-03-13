@@ -3,10 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { DEFAULT_LOCALE } from '@/constants/locale';
 import { PromoStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
-import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { isOwner } from '@/lib/owner';
 import { stripe } from '@/server/stripe';
 
@@ -18,12 +16,12 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { codeId, ...other } = await req.json();
+    const { promoId, ...other } = await req.json();
 
     const action = req.nextUrl.searchParams.get('action');
 
-    if (action === PromoStatus.DECLINED && codeId) {
-      const stripePromotion = await stripe.promotionCodes.update(codeId, { active: false });
+    if (action === PromoStatus.DECLINED && promoId) {
+      const stripePromotion = await stripe.promotionCodes.update(promoId, { active: false });
 
       const promotionCode = await db.stripePromo.update({
         where: { stripePromoId: stripePromotion.id },
@@ -60,16 +58,24 @@ export const POST = async (req: NextRequest) => {
         },
       });
 
+      if (other.customerId) {
+        const stripeCustomer = await db.stripeCustomer.findUnique({
+          where: { stripeCustomerId: other.customerId },
+        });
+
+        if (stripeCustomer) {
+          await db.notification.create({
+            data: {
+              userId: stripeCustomer.userId,
+              title: `New promotion code`,
+              body: `Congratulations on receiving the promo code - ${promotionCode.code}. Please take advantage of it as soon as possible!`,
+            },
+          });
+        }
+      }
+
       return NextResponse.json(promotionCode);
     }
-
-    //   await db.notification.create({
-    //     data: {
-    //       userId: payoutRequest.connectAccount.userId,
-    //       title: `Payout Request #${payoutRequest.id}`,
-    //       body: `The payout request has been successfully completed. ${formatPrice(getConvertedPrice(updatedPayoutRequest.amount), { locale: DEFAULT_LOCALE, currency: updatedPayoutRequest.currency })} was transferred to your Stripe account.`,
-    //     },
-    //   });
 
     return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
   } catch (error) {

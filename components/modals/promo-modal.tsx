@@ -110,6 +110,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
               : values.minAmount,
           ),
         },
+        responseType: 'json',
       });
 
       toast.success('Promotion code has been created');
