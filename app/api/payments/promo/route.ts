@@ -69,7 +69,7 @@ export const POST = async (req: NextRequest) => {
             data: {
               userId: stripeCustomer.userId,
               title: `New promotion code`,
-              body: `Congratulations on receiving the promo code - ${promotionCode.code}. Please take advantage of it as soon as possible!`,
+              body: `Congratulations on receiving the promo code - #${promotionCode.code}. Please take advantage of it as soon as possible!`,
             },
           });
 
