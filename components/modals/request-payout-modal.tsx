@@ -55,7 +55,7 @@ export const RequestPayoutModal = ({
       setErrorMessage(
         `The minimum withdrawal amount is ${formatPrice(getConvertedPrice(MIN_PAYOUT_AMOUNT), locale)}`,
       );
-    } else if (amount > (totalProfit?.availableForPayout ?? 0)) {
+    } else if (Math.round(amount) > (totalProfit?.availableForPayout ?? 0)) {
       setErrorMessage(
         `The maximum withdrawal amount is ${formatPrice(getConvertedPrice(totalProfit?.availableForPayout ?? 0), locale)}`,
       );
