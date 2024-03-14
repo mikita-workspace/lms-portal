@@ -20,6 +20,21 @@ export const VideoPlayer = ({
 }: VideoPlayerProps) => {
   const ReactPlayer = useMemo(() => dynamic(() => import('react-player/lazy'), { ssr: false }), []);
 
+  const isGoogleDrivePlayer = videoUrl.includes('drive.google.com');
+
+  if (isGoogleDrivePlayer) {
+    return (
+      <iframe
+        allow={autoPlay ? 'autoplay' : ''}
+        height="100%"
+        onEnded={onEnded}
+        onLoad={onReady}
+        src={videoUrl}
+        width="100%"
+      ></iframe>
+    );
+  }
+
   return (
     <div className="border aspect-w-16 aspect-h-9">
       <ReactPlayer
