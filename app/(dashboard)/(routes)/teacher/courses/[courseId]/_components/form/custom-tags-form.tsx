@@ -71,7 +71,7 @@ export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) =
   };
 
   const handleValid = (value: string) => {
-    const testRegexp = /^[a-z]{2,12}$/i.test(value);
+    const testRegexp = /^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$/i.test(value);
 
     setIsValid(testRegexp);
 
