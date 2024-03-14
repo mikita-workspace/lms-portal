@@ -86,7 +86,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             <div className="p-4">
               {attachments.map((attachment) => (
                 <Link
-                  className="flex items-center p-3 w-full rounded-md bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400"
+                  className="flex items-center p-3 w-full rounded-md bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400 mb-2"
                   key={attachment.id}
                   target="_blank"
                   href={attachment.url}
