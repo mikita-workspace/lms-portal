@@ -330,21 +330,25 @@ export const getAnalytics = async (userId: string) => {
       )
     ).flat();
 
-    const stripeBalanceTransactions = await Promise.all(
-      stripeCharges.map(async (sc) => {
-        const data = await fetchCachedData(
-          `${userId}-${sc.id}`,
-          async () => {
-            const res = await stripe.balanceTransactions.retrieve(sc.balance_transaction);
+    const stripeBalanceTransactions = await (
+      await Promise.all(
+        stripeCharges.map(async (sc) => {
+          const data = await fetchCachedData(
+            `${userId}-${sc.id}`,
+            async () => {
+              if (sc?.balance_transaction) {
+                const res = await stripe.balanceTransactions.retrieve(sc.balance_transaction);
 
-            return res;
-          },
-          ONE_MINUTE_SEC,
-        );
+                return res;
+              }
+            },
+            ONE_MINUTE_SEC,
+          );
 
-        return data;
-      }),
-    );
+          return data;
+        }),
+      )
+    ).filter((item) => item);
 
     const fees = await db.fee.findMany();
 
