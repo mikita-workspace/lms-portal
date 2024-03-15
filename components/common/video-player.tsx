@@ -26,6 +26,7 @@ export const VideoPlayer = ({
     return (
       <iframe
         allow={autoPlay ? 'autoplay' : ''}
+        allowFullScreen
         height="100%"
         onEnded={onEnded}
         onLoad={onReady}
