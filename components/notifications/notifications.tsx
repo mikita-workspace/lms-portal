@@ -108,7 +108,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               <ScrollArea className={cn('pl-4 pr-2.5 h-72 w-full')}>
                 <NotificationCards notifications={userNotifications} isFetching={isFetching} />
                 {!amountOfNotifications && (
-                  <p className="text-sm font-medium mt-32 text-center">
+                  <p className="text-sm font-medium mt-32 text-center text-muted-foreground">
                     There are no notifications
                   </p>
                 )}
@@ -118,7 +118,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               <ScrollArea className={cn('pl-4 pr-2.5 h-72 w-full')}>
                 <NotificationCards notifications={unreadNotifications} isFetching={isFetching} />
                 {!unreadNotifications.length && (
-                  <p className="text-sm font-medium mt-32 text-center">
+                  <p className="text-sm font-medium mt-32 text-center text-muted-foreground">
                     There are no unread notifications
                   </p>
                 )}
