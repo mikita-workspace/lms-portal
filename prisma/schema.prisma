@@ -111,7 +111,7 @@ model PurchaseDetails {
   longitude     Float?
   paymentIntent String?
   price         Int?
-  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  purchase      Purchase @relation(fields: [purchaseId], references: [id])
   purchaseId    String
   updatedAt     DateTime @updatedAt
 
@@ -120,7 +120,7 @@ model PurchaseDetails {
 
 model Purchase {
   id        String           @id @default(uuid())
-  course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course    Course           @relation(fields: [courseId], references: [id])
   courseId  String
   createdAt DateTime         @default(now())
   details   PurchaseDetails?
@@ -172,7 +172,7 @@ model Fee {
 model PayoutRequest {
   id                   String               @id @default(uuid())
   amount               Int
-  connectAccount       StripeConnectAccount @relation(fields: [connectAccountId], references: [id], onDelete: Cascade)
+  connectAccount       StripeConnectAccount @relation(fields: [connectAccountId], references: [id])
   connectAccountId     String
   createdAt            DateTime             @default(now())
   currency             String
