@@ -77,8 +77,6 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
     );
   };
 
-  console.log(stripeConnect, stripeConnect?.isActive);
-
   return (
     <div className="pt-6 flex flex-col md:flex-row gap-4 items-center md:justify-between">
       <BalanceAmount stripeConnect={stripeConnect} />
