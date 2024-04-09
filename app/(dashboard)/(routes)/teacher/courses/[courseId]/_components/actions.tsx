@@ -13,10 +13,16 @@ import { fetcher } from '@/lib/fetcher';
 type ActionsProps = {
   courseId: string;
   disabled?: boolean;
+  hasPurchases?: boolean;
   isPublished?: boolean;
 };
 
-export const Actions = ({ courseId, disabled = false, isPublished = false }: ActionsProps) => {
+export const Actions = ({
+  courseId,
+  disabled = false,
+  hasPurchases = false,
+  isPublished = false,
+}: ActionsProps) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +90,7 @@ export const Actions = ({ courseId, disabled = false, isPublished = false }: Act
         {isPublished ? 'Unpublish' : 'Publish'}
       </Button>
       <ConfirmModal onConfirm={handleDelete}>
-        <Button disabled={isLoading} size="sm">
+        <Button disabled={isLoading || hasPurchases} size="sm">
           <Trash2 className="h-4 w-4" />
         </Button>
       </ConfirmModal>

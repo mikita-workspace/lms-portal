@@ -28,6 +28,9 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
       userId: user!.userId,
     },
     include: {
+      _count: {
+        select: { purchases: true },
+      },
       attachments: { orderBy: { createdAt: 'desc' } },
       chapters: { orderBy: { position: 'asc' } },
     },
@@ -85,6 +88,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
               <Actions
                 courseId={params.courseId}
                 disabled={!isCompleted}
+                hasPurchases={Boolean(course?._count?.purchases)}
                 isPublished={course.isPublished}
               />
             </div>
