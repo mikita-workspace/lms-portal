@@ -43,7 +43,7 @@ export const CourseSideBarItem = ({
   return (
     <button
       className={cn(
-        'flex items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-4 pr-2 transition-all duration-300 hover:bg-muted rounded-lg mb-2',
+        'flex items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-4 pr-2 transition-all duration-300 hover:bg-muted border-b last:border-none',
         isActive && 'text-primary bg-muted',
         isCompleted && 'text-emerald-700 hover:text-emerald-700',
         isCompleted && isActive && 'bg-emerald-200/20',
@@ -51,7 +51,7 @@ export const CourseSideBarItem = ({
       type="button"
       onClick={handleOnClick}
     >
-      <div className="flex items-center gap-x-2 py-4">
+      <div className="flex items-center gap-x-2 py-5">
         <div>
           <Icon
             className={cn(

@@ -10,7 +10,7 @@ type CourseNobileSideBarProps = {
   progressCount: number;
 };
 
-export const CourseNobileSideBar = ({ course, progressCount }: CourseNobileSideBarProps) => {
+export const CourseMobileSideBar = ({ course, progressCount }: CourseNobileSideBarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition duration-300">

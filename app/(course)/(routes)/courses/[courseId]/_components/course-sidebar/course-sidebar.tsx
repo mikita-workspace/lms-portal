@@ -19,16 +19,16 @@ export const CourseSideBar = async ({ course, progressCount }: CourseSideBarProp
   });
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm bg-white dark:bg-neutral-900 px-4">
-      <div className="flex flex-col px-2 py-6">
+    <div className="h-full border-r flex flex-col shadow-sm bg-white dark:bg-neutral-900">
+      <div className="flex flex-col px-4 py-8 border-b">
         <h1 className="font-semibold">{course.title}</h1>
         {purchase && (
-          <div className="mt-8">
+          <div className="mt-4">
             <ProgressBar showText variant="success" value={progressCount} />
           </div>
         )}
       </div>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full overflow-y-auto">
         {course.chapters.map((chapter) => (
           <CourseSideBarItem
             key={chapter.id}
