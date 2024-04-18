@@ -9,7 +9,7 @@ export const GITHUB_ISSUE_URL = 'https://github.com/mikita-workspace/lms-portal/
 export const STRIPE_COUPONS_URL = 'https://dashboard.stripe.com/coupons';
 
 export const OWNER_EMAIL = 'mkandratsyeu@gmail.com';
-export const OWNER_COPYRIGHT = 'Mikita Kandratsyeu. All rights reserved.';
+export const OWNER_COPYRIGHT = 'Nova Technologies LLC. All rights reserved.';
 
 export const TEXTAREA_MAX_LENGTH = 256;
 export const CHAPTER_XP = 20;

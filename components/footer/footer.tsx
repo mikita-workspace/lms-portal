@@ -28,7 +28,7 @@ export const Footer = () => {
               </div>
               {/* Test Mode Declaimer */}
               <div className="items-end">
-                The portal is currently in TEST mode and all payments are fictitious.
+                The portal is currently in TEST mode. All payments and data are fictitious.
               </div>
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
