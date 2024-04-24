@@ -40,7 +40,7 @@ export const PreviewDescription = ({
       <p className="text-sm text-muted-foreground mb-4">{description}</p>
       {Boolean(customTags?.length) && (
         <div className="flex gap-2 items-center mb-2 flex-wrap">
-          {customTags?.map((tag) => <TextBadge key={tag} label={`#${tag}`} variant="yellow" />)}
+          {customTags?.map((tag) => <TextBadge key={tag} label={tag} variant="yellow" />)}
         </div>
       )}
       {Boolean(categories.length) && (

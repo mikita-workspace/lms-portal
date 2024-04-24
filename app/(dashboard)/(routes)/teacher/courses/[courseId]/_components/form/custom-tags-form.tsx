@@ -18,7 +18,7 @@ type CustomTagsFormProps = {
 
 export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) => {
   const initialCustomTags = initialData.customTags.map((tag) => ({
-    label: `#${tag}`,
+    label: tag,
     value: tag,
   }));
 

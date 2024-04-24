@@ -42,7 +42,6 @@
     "cmdk": "^0.2.1",
     "cookies-next": "^4.1.1",
     "date-fns": "^3.4.0",
-    "geist": "^1.2.2",
     "http-status-codes": "^2.3.0",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
