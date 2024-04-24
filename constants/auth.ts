@@ -1,6 +1,5 @@
 export enum Provider {
-  // Temporary disabled until the end of verification
-  // GOOGLE = 'google',
+  GOOGLE = 'google',
   YANDEX = 'yandex',
   LINKEDIN = 'linkedin',
   SLACK = 'slack',

@@ -5,8 +5,8 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
 import { FaGithub } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
-// import { FcGoogle } from 'react-icons/fc';
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
 import { capitalize } from '@/lib/utils';
 
@@ -33,7 +33,7 @@ const LinkedinIcon = () => (
 
 const iconMap = {
   [Provider.GITHUB]: FaGithub,
-  // [Provider.GOOGLE]: FcGoogle,
+  [Provider.GOOGLE]: FcGoogle,
   [Provider.LINKEDIN]: LinkedinIcon,
   [Provider.SLACK]: SlackIcon,
   [Provider.YANDEX]: YandexIcon,
