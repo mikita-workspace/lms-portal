@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import LinkedInProvider from 'next-auth/providers/linkedin';
 import SlackProvider from 'next-auth/providers/slack';
 import YandexProvider from 'next-auth/providers/yandex';
 
@@ -28,6 +29,24 @@ export const authOptions = {
     SlackProvider({
       clientId: process.env.SLACK_CLIENT_ID as string,
       clientSecret: process.env.SLACK_CLIENT_SECRET as string,
+    }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID as string,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
+      authorization: {
+        params: { scope: 'openid profile email' },
+      },
+      issuer: 'https://www.linkedin.com/oauth',
+      jwks_endpoint: 'https://www.linkedin.com/oauth/openid/jwks',
+      profile(profile) {
+        return {
+          email: profile.email,
+          id: profile.sub,
+          image: profile?.picture,
+          name: profile.name,
+          role: UserRole.STUDENT,
+        };
+      },
     }),
   ],
   callbacks: {

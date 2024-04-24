@@ -1,6 +1,7 @@
 export enum Provider {
   GOOGLE = 'google',
   YANDEX = 'yandex',
+  LINKEDIN = 'linkedin',
   SLACK = 'slack',
   GITHUB = 'github',
 }
@@ -19,5 +20,6 @@ export enum UserRole {
 
 export const OAUTH_LABELS = {
   [Provider.GITHUB]: 'GitHub',
+  [Provider.LINKEDIN]: 'LinkedIn',
   [Provider.YANDEX]: 'Yandex ID',
 };

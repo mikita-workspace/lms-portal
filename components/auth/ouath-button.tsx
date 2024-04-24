@@ -26,9 +26,15 @@ const SlackIcon = () => (
     priority
   />
 );
+
+const LinkedinIcon = () => (
+  <Image className="mr-4" src="/assets/linkedin.svg" alt="yandex" height={20} width={20} priority />
+);
+
 const iconMap = {
   [Provider.GITHUB]: FaGithub,
   [Provider.GOOGLE]: FcGoogle,
+  [Provider.LINKEDIN]: LinkedinIcon,
   [Provider.SLACK]: SlackIcon,
   [Provider.YANDEX]: YandexIcon,
 };
