@@ -10,6 +10,7 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -42,8 +43,6 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
   const amountOfNotifications = userNotifications.length;
   const amountOfUnreadNotifications = unreadNotifications.length;
 
-  const handleFetchNotifications = () => startTransition(() => router.refresh());
-
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER as string,
@@ -66,6 +65,10 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleFetchNotifications = () => startTransition(() => router.refresh());
+
+  const handleOnClick = () => router.push('settings/notifications');
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
@@ -87,44 +90,53 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[340px] sm:mr-16 mr-4 mt-1">
         <div className="flex justify-between items-center px-2 pt-4">
-          <p className="font-semibold text-sm">Recent Notifications</p>
+          <p className="font-semibold text-sm">Notifications</p>
           <div className="flex items-center gap-4">
             <button onClick={handleFetchNotifications} disabled={isFetching}>
               <RefreshCcw className={cn('w-4 h-4', isFetching ? 'animate-spin' : '')} />
             </button>
           </div>
         </div>
-        <div className="px-2 py-4">
-          <Tabs defaultValue="all" className="w-full">
+        <div className="px-2 pt-4">
+          <Tabs defaultValue="unread" className="w-full">
             <TabsList className="w-full">
-              <TabsTrigger className="w-full" value="all">
-                All
-              </TabsTrigger>
               <TabsTrigger className="w-full" value="unread">
                 Unread
               </TabsTrigger>
+              <TabsTrigger className="w-full" value="all">
+                All
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="w-[340px] ml-[-1em] pt-2">
-              <ScrollArea className={cn('pl-4 pr-2.5 h-72 w-full')}>
+              <ScrollArea className="pl-4 pr-2.5 w-full pb-2 max-h-[200px] overflow-auto">
                 <NotificationCards notifications={userNotifications} isFetching={isFetching} />
                 {!amountOfNotifications && (
-                  <p className="text-sm font-medium mt-32 text-center text-muted-foreground">
-                    There are no notifications
-                  </p>
+                  <div className="my-16 text-center flex flex-col gap-2">
+                    <p className="text-sm font-semibold">You are all up to date</p>
+                    <p className="text-sm text-muted-foreground">There are no notifications</p>
+                  </div>
                 )}
               </ScrollArea>
             </TabsContent>
             <TabsContent value="unread" className="w-[340px] ml-[-1em] pt-2">
-              <ScrollArea className={cn('pl-4 pr-2.5 h-72 w-full')}>
+              <ScrollArea className="pl-4 pr-2.5 w-full max-h-[200px] overflow-auto">
                 <NotificationCards notifications={unreadNotifications} isFetching={isFetching} />
                 {!unreadNotifications.length && (
-                  <p className="text-sm font-medium mt-32 text-center text-muted-foreground">
-                    There are no unread notifications
-                  </p>
+                  <div className="my-16 text-center flex flex-col gap-2">
+                    <p className="text-sm font-semibold">You are all up to date</p>
+                    <p className="text-sm text-muted-foreground">
+                      There are no new notifications at the moment
+                    </p>
+                  </div>
                 )}
               </ScrollArea>
             </TabsContent>
           </Tabs>
+          <div className="flex justify-end items-center border-t py-2">
+            <Button variant="outline" size="sm" onClick={handleOnClick}>
+              View all
+            </Button>
+          </div>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

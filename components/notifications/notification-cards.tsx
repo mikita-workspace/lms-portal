@@ -49,16 +49,17 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
 
   return (
     <div
-      className={cn(
-        'border rounded-sm p-3 mb-2 flex flex-col',
-        notification.isRead ? 'text-muted-foreground' : '',
-      )}
+      className={cn('py-2 mb-2 flex flex-col', notification.isRead ? 'text-muted-foreground' : '')}
     >
-      <p className="text-sm font-medium">{notification.title}</p>
+      <p className="text-sm font-medium">
+        {!notification.isRead && (
+          <div className="bg-green-500 rounded-full w-2 h-2 inline-block mr-1"></div>
+        )}
+        {notification.title}
+      </p>
       <p className="text-xs">{notification.body}</p>
       <div className="text-xs text-muted-foreground mt-2 flex justify-between items-center">
         <p>{formatDistanceToNow(notification.createdAt, { addSuffix: true })}</p>
-        {notification.isRead && <CheckCheck className="h-4 w-4" />}
         {!notification.isRead && (
           <>
             {(isLoading || pending) && <BiLoaderAlt className="h-4 w-4 animate-spin" />}

@@ -7,6 +7,7 @@ import {
   Landmark,
   Layout,
   List,
+  Rss,
   Settings2,
   Tags,
   Users,
@@ -65,6 +66,13 @@ const settingsRoutes = [
     isNew: false,
     isProtected: true,
     label: 'General',
+  },
+  {
+    href: '/settings/notifications',
+    icon: Rss,
+    isNew: false,
+    isProtected: true,
+    label: 'All Notifications',
   },
   {
     href: '/settings/billing',
