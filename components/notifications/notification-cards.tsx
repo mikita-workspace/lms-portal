@@ -2,7 +2,6 @@
 
 import { Notification } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
-import { CheckCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import toast from 'react-hot-toast';
