@@ -2,6 +2,7 @@
 
 import { Notification } from '@prisma/client';
 import { Inbox, RefreshCcw } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Pusher from 'pusher-js';
 import { useEffect, useState, useTransition } from 'react';
@@ -67,8 +68,6 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
 
   const handleFetchNotifications = () => startTransition(() => router.refresh());
 
-  const handleOnClick = () => router.push('settings/notifications');
-
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
@@ -133,9 +132,11 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
             </TabsContent>
           </Tabs>
           <div className="flex justify-end items-center border-t py-2">
-            <Button variant="outline" size="sm" onClick={handleOnClick}>
-              View all
-            </Button>
+            <Link href="/settings/notifications">
+              <Button variant="outline" size="sm">
+                View all
+              </Button>
+            </Link>
           </div>
         </div>
       </DropdownMenuContent>
