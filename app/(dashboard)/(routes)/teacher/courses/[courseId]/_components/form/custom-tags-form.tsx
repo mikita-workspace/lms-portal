@@ -33,7 +33,7 @@ export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) =
 
   const handleAdd = useCallback(
     (tag: Tag) => {
-      setSelectedTags([...selectedTags, { ...tag, label: `#${tag.label}` }]);
+      setSelectedTags([...selectedTags, { ...tag, label: tag.label }]);
     },
     [selectedTags],
   );

@@ -70,7 +70,7 @@ export const LoginUser = async (
     data: {
       userId: user.id,
       title: `Welcome bonus`,
-      body: `Hi! Thank you for registering on our platform. Catch the promotion code #${promotionCode.code} for your first purchase :)`,
+      body: `Hi! Thank you for registering on our platform. Catch the promotion code - ${promotionCode.code} for your first purchase 🤩`,
     },
   });
 

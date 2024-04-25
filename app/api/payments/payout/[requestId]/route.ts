@@ -35,7 +35,7 @@ export const POST = async (
       await db.notification.create({
         data: {
           userId: payoutRequest.connectAccount.userId,
-          title: `Payout Request #${payoutRequest.id}`,
+          title: `Payout Request ${payoutRequest.id}`,
           body: 'Your payout request has been declined.',
         },
       });
@@ -79,7 +79,7 @@ export const POST = async (
       await db.notification.create({
         data: {
           userId: payoutRequest.connectAccount.userId,
-          title: `Payout Request #${payoutRequest.id}`,
+          title: `Payout Request ${payoutRequest.id}`,
           body: `The payout request has been successfully completed. ${formatPrice(getConvertedPrice(updatedPayoutRequest.amount), { locale: DEFAULT_LOCALE, currency: updatedPayoutRequest.currency })} was transferred to your Stripe account.`,
         },
       });
