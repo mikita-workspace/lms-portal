@@ -60,7 +60,9 @@ export const Providers = ({
     const getUserLocation = async () => {
       const userIp = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
 
-      const currency = userIp?.currency ?? DEFAULT_CURRENCY;
+      const currency = ALLOWED_CURRENCY.includes(userIp?.currency)
+        ? userIp.currency
+        : DEFAULT_CURRENCY;
 
       if (exchangeRates) {
         handleExchangeRates({
