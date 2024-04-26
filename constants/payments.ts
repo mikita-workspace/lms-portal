@@ -21,3 +21,4 @@ export const REPORT_TYPES = {
 };
 
 export const MIN_PAYOUT_AMOUNT = 10000;
+export const MAX_PRICE_INT = 10000;

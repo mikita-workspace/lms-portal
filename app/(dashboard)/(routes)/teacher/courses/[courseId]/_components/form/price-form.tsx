@@ -21,6 +21,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
+import { MAX_PRICE_INT } from '@/constants/payments';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
@@ -58,7 +59,9 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
       return;
     }
 
-    setPrice(_price);
+    if (Number(_price) <= MAX_PRICE_INT) {
+      setPrice(_price);
+    }
   };
 
   const handleCustomRatesChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -118,12 +121,7 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
         </Button>
       </div>
       {!isEditing && (
-        <Price
-          fees={fees}
-          price={getScaledPrice(price as number)}
-          showFeesAccordion
-          useDefaultLocale
-        />
+        <Price fees={fees} price={initialData?.price ?? 0} showFeesAccordion useDefaultLocale />
       )}
       {isEditing && (
         <form className="space-y-4 mt-4" onSubmit={handleSubmit}>

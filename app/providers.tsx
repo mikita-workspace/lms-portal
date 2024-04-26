@@ -6,7 +6,12 @@ import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Toaster } from 'react-hot-toast';
 
-import { DEFAULT_CURRENCY, DEFAULT_EXCHANGE_RATE, DEFAULT_LOCALE } from '@/constants/locale';
+import {
+  ALLOWED_CURRENCY,
+  DEFAULT_CURRENCY,
+  DEFAULT_EXCHANGE_RATE,
+  DEFAULT_LOCALE,
+} from '@/constants/locale';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { ExchangeRates, useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -57,7 +62,18 @@ export const Providers = ({
 
       const currency = userIp?.currency ?? DEFAULT_CURRENCY;
 
-      handleExchangeRates(exchangeRates);
+      if (exchangeRates) {
+        handleExchangeRates({
+          ...exchangeRates,
+          rates: Object.keys(exchangeRates.rates)
+            .filter((key) => ALLOWED_CURRENCY.includes(key))
+            .reduce((rates, key) => {
+              rates[key as keyof typeof rates] = exchangeRates.rates[key] as never;
+              return rates;
+            }, {}),
+        });
+      }
+
       handleLocaleInfo({
         locale: { currency, locale: DEFAULT_LOCALE },
         details: {
