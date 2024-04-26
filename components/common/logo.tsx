@@ -1,10 +1,10 @@
-import { Poppins } from 'next/font/google';
+import { Baloo_2 } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
+const baloo2 = Baloo_2({ subsets: ['latin'], weight: ['400', '500'] });
 
 type LogoProps = {
   isChat?: boolean;
@@ -22,7 +22,7 @@ export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
       >
         <Image src="/assets/logo.svg" alt="Nova LMS Logo" height={40} width={40} />
         {!onlyLogoIcon && (
-          <div className={cn(poppins.className, isChat && 'hidden md:block')}>
+          <div className={cn(baloo2.className, isChat && 'hidden md:block')}>
             <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">
               Nova LMS
             </p>

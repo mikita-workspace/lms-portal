@@ -1,14 +1,14 @@
-import { Poppins } from 'next/font/google';
+import { Baloo_2 } from 'next/font/google';
 
 import { Logo } from '../common/logo';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
+const baloo2 = Baloo_2({ subsets: ['latin'], weight: ['400', '500'] });
 
 export const PrettyLoader = () => {
   return (
     <div className="w-full h-full flex items-center justify-center gap-2">
       <Logo onlyLogoIcon isChat />
-      <div className={poppins.className}>
+      <div className={baloo2.className}>
         <div className="flex items-center gap-2">
           <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
           <div className="flex">
