@@ -135,7 +135,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
       return;
     }
 
-    onChange(_price);
+    onChange(_price.toUpperCase());
   };
 
   return (
