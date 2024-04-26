@@ -1,7 +1,7 @@
 import { getRandomInt } from './utils';
 
 export const generatePromotionCode = (length = 8) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let promotionCode = '';
 
   for (let i = 0; i < length; i += 1) {
