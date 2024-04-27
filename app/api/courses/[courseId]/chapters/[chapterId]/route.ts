@@ -6,7 +6,7 @@ import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 
 export const DELETE = async (
-  req: NextRequest,
+  _: NextRequest,
   { params }: { params: { courseId: string; chapterId: string } },
 ) => {
   try {

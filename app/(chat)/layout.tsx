@@ -19,7 +19,7 @@ type ChatLayoutProps = Readonly<{
 const ChatLayout = async ({ children }: ChatLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
-  const userNotifications = await getUserNotifications(user?.userId);
+  const userNotifications = await getUserNotifications(user?.userId, 5);
 
   if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
     return redirect('/');

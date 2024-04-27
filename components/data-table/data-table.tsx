@@ -16,6 +16,7 @@ import Link from 'next/link';
 import * as React from 'react';
 
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
+import { MarkAllButton } from '@/app/(settings)/(routes)/settings/notifications/_components/MarkAllButton';
 import { Button, Input } from '@/components/ui';
 import {
   Table,
@@ -25,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { getNotificationActionName } from '@/lib/notifications';
 
 import { PromoModal } from '../modals/promo-modal';
 
@@ -38,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   customers?: Customer[];
   data: TData[];
   initialPageSize?: number;
+  isNotificationPage?: boolean;
   isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
@@ -49,6 +52,7 @@ export function DataTable<TData, TValue>({
   customers = [],
   data,
   initialPageSize = 10,
+  isNotificationPage = false,
   isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
@@ -76,16 +80,34 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const filterPlaceholder = (() => {
+    if (isTeacherCoursesPage) {
+      return 'Filter courses...';
+    }
+
+    if (isPromoPage) {
+      return 'Filter promotion codes...';
+    }
+
+    if (isNotificationPage) {
+      return 'Filter notifications...';
+    }
+
+    return '';
+  })();
+
   return (
     <div>
-      {(isTeacherCoursesPage || isPromoPage) && (
+      {(isTeacherCoursesPage || isPromoPage || isNotificationPage) && (
         <div className="flex items-center py-4 justify-between space-x-2">
-          <Input
-            placeholder={isTeacherCoursesPage ? 'Filter courses...' : 'Filter promotion codes...'}
-            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
-            className="max-w-sm"
-          />
+          <div className="flex gap-x-2 w-full">
+            <Input
+              placeholder={filterPlaceholder}
+              value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+              onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
+              className="max-w-sm"
+            />
+          </div>
           {isTeacherCoursesPage && (
             <Link href="/teacher/create">
               <Button>
@@ -101,6 +123,29 @@ export function DataTable<TData, TValue>({
                 Add promotion code
               </Button>
             </PromoModal>
+          )}
+          {isNotificationPage && (
+            <>
+              {(() => {
+                const filteredRows = table.getFilteredSelectedRowModel().rows;
+                const amountOfSelectedRows = filteredRows.length;
+
+                const { action, ids } = getNotificationActionName(
+                  filteredRows.map((row) => row.original) as unknown as any,
+                );
+
+                return (
+                  amountOfSelectedRows > 0 && (
+                    <MarkAllButton
+                      action={action}
+                      amount={amountOfSelectedRows}
+                      ids={ids}
+                      reset={table.resetRowSelection}
+                    />
+                  )
+                );
+              })()}
+            </>
           )}
         </div>
       )}

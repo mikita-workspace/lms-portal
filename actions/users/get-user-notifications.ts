@@ -6,7 +6,8 @@ import { db } from '@/lib/db';
 
 export const getUserNotifications = async (
   userId?: string,
-): Promise<Omit<Notification, 'userId'>[]> => {
+  take?: number,
+): Promise<Notification[]> => {
   if (!userId) {
     return [];
   }
@@ -22,8 +23,9 @@ export const getUserNotifications = async (
         isRead: true,
         title: true,
         updatedAt: true,
+        userId: true,
       },
-      take: 5,
+      take,
     });
 
     return userNotifications;

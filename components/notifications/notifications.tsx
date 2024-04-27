@@ -131,9 +131,9 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               </ScrollArea>
             </TabsContent>
           </Tabs>
-          <div className="flex justify-end items-center border-t py-2">
+          <div className="flex justify-center items-center border-t py-2">
             <Link href="/settings/notifications">
-              <Button variant="outline" size="sm">
+              <Button variant="ghost" size="sm">
                 View all
               </Button>
             </Link>

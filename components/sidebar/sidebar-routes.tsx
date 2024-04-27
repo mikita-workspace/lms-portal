@@ -72,7 +72,7 @@ const settingsRoutes = [
     icon: Rss,
     isNew: false,
     isProtected: true,
-    label: 'All Notifications',
+    label: 'Notifications',
   },
   {
     href: '/settings/billing',

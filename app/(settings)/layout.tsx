@@ -20,7 +20,7 @@ type SettingsLayoutProps = Readonly<{
 const SettingsLayout = async ({ children }: SettingsLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
-  const userNotifications = await getUserNotifications(user?.userId);
+  const userNotifications = await getUserNotifications(user?.userId, 5);
 
   return (
     <div className="h-full flex flex-col">
