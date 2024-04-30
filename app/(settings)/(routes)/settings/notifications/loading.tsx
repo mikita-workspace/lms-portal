@@ -1,7 +1,7 @@
-import { CommonLoader } from '@/components/loaders/common-loader';
+import { BillingSkeleton } from '@/components/loaders/billing-skeleton';
 
 const NotificationsLoading = () => {
-  return <CommonLoader />;
+  return <BillingSkeleton />;
 };
 
 export default NotificationsLoading;
