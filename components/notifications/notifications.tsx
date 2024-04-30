@@ -40,9 +40,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
   const [open, setOpen] = useState(false);
 
   const unreadNotifications = userNotifications.filter((un) => !un.isRead);
-
   const amountOfNotifications = userNotifications.length;
-  const amountOfUnreadNotifications = unreadNotifications.length;
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
@@ -78,12 +76,8 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
           )}
         >
           <Inbox className="h-5 w-5" />
-          {Boolean(amountOfUnreadNotifications) && (
-            <div className="absolute w-[14px] h-[14px] rounded-full bg-red-500 top-2 right-1 flex items-center justify-center truncate">
-              <span className="text-white font-semibold text-[8px]">
-                {amountOfUnreadNotifications}
-              </span>
-            </div>
+          {Boolean(unreadNotifications.length) && (
+            <div className="absolute w-[10px] h-[10px] rounded-full bg-red-500 top-2 right-2 flex items-center justify-center truncate"></div>
           )}
         </div>
       </DropdownMenuTrigger>
