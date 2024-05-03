@@ -16,7 +16,7 @@ import Link from 'next/link';
 import * as React from 'react';
 
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
-import { MarkAllButton } from '@/app/(settings)/(routes)/settings/notifications/_components/MarkAllButton';
+import { MarkAllButton } from '@/app/(dashboard)/(routes)/settings/notifications/_components/MarkAllButton';
 import { Button, Input } from '@/components/ui';
 import {
   Table,

@@ -1,8 +1,15 @@
+import { Metadata } from 'next';
+
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
 import { GeneralSettingsForm } from './_components/general-settings-form';
 import { PublicProfileForm } from './_components/public-profile-form';
+
+export const metadata: Metadata = {
+  title: 'Settings',
+  description: 'LMS Portal for educational purposes',
+};
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();

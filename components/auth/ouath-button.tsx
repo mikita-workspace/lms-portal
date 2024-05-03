@@ -1,43 +1,14 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
-import { FaGithub } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
 import { capitalize } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
-
-const YandexIcon = () => (
-  <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} priority />
-);
-
-const SlackIcon = () => (
-  <Image
-    className="ml-0.5 mr-[1.125rem]"
-    src="/assets/slack.svg"
-    alt="slack"
-    height={16}
-    width={16}
-    priority
-  />
-);
-
-const LinkedinIcon = () => (
-  <Image className="mr-4" src="/assets/linkedin.svg" alt="yandex" height={20} width={20} priority />
-);
-
-const iconMap = {
-  [Provider.GITHUB]: FaGithub,
-  [Provider.GOOGLE]: FcGoogle,
-  [Provider.LINKEDIN]: LinkedinIcon,
-  [Provider.SLACK]: SlackIcon,
-  [Provider.YANDEX]: YandexIcon,
-};
+import { authIcons } from './auth-icons';
 
 type OAuthButton = {
   provider: Provider;
@@ -64,7 +35,7 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
     await signIn(provider, { callbackUrl });
   };
 
-  const Icon = iconMap[provider];
+  const Icon = authIcons[provider];
   const oAuthLabel = OAUTH_LABELS[provider as keyof typeof OAUTH_LABELS] ?? capitalize(provider);
 
   return (
