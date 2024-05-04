@@ -265,14 +265,9 @@ export const getAnalytics = async (userId: string) => {
 
     const userIds = [...new Set(purchases.map((ps) => ps.userId))];
     const users = await db.user.findMany({ where: { id: { in: userIds } } });
+    const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))];
 
     const stripeAccountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
-
-    const stripeCustomerIds = await db.stripeCustomer.findMany({
-      where: { userId: { in: userIds } },
-      select: { stripeCustomerId: true },
-    });
-
     const stripeAccount = stripeAccountId?.stripeAccountId
       ? await stripe.accounts.retrieve(stripeAccountId.stripeAccountId)
       : null;
@@ -312,11 +307,11 @@ export const getAnalytics = async (userId: string) => {
 
     const stripeCharges = (
       await Promise.all(
-        stripeCustomerIds.map(async (sc) => {
+        paymentIntents.map(async (pi) => {
           const data = await fetchCachedData(
-            `${userId}-${sc.stripeCustomerId}`,
+            `${userId}-${pi}`,
             async () => {
-              const res = await stripe.charges.list({ customer: sc.stripeCustomerId });
+              const res = await stripe.charges.list({ payment_intent: pi as string });
 
               return res.data.filter((ch) =>
                 purchases.find((pc) => pc.details?.paymentIntent === ch.payment_intent),
