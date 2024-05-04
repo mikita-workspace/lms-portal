@@ -1,15 +1,25 @@
 'use server';
 
+import { TEN_MINUTE_SEC } from '@/constants/common';
+import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 
-type GetAppConfig = {
+export type GetAppConfig = {
   id: string | null;
   authFlow: Record<string, boolean>;
 };
 
-export const getAppConfig = async (): Promise<GetAppConfig> => {
+export const getAppConfig = async (noCache = false): Promise<GetAppConfig> => {
   try {
-    const config = await db.configuration.findMany();
+    const callback = async () => {
+      const configuration = await db.configuration.findMany();
+
+      return configuration;
+    };
+
+    const config = noCache
+      ? await callback()
+      : await fetchCachedData('app-config', callback, TEN_MINUTE_SEC);
 
     return {
       id: config[0].id,

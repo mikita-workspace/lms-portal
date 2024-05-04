@@ -18,6 +18,7 @@ export const ONE_YEAR_SEC = 60 * 60 * 24 * 365;
 export const ONE_DAY_SEC = 60 * 60 * 24;
 export const ONE_HOUR_SEC = 60 * 60;
 export const ONE_MINUTE_SEC = 60;
+export const TEN_MINUTE_SEC = 60 * 10;
 
 export const TIMESTAMP_TEMPLATE = 'HH:mm, dd MMM yyyy';
 export const DATE_RANGE_TEMPLATE = 'LLL dd, y';
