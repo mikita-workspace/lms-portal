@@ -54,7 +54,6 @@ export const AuthFlow = ({ id, initialFlows }: AuthFlowProps) => {
       <div className="flex justify-between items-center gap-2">
         <div className="flex flex-col gap-1">
           <p className="font-medium text-xl">Auth Flow</p>
-          <span className="text-xs text-muted-foreground">Caching every 10 minutes</span>
         </div>
       </div>
       <Form {...form}>
