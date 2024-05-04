@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 import { pusher } from '@/server/pusher';
+import { stripe } from '@/server/stripe';
 
 export const PATCH = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
@@ -59,7 +60,15 @@ export const DELETE = async (_: NextRequest, { params }: { params: { userId: str
       where: { id: params.userId },
     });
 
-    await db.stripeCustomer.delete({ where: { userId: params.userId } });
+    const stripeCustomer = await db.stripeCustomer.findUnique({
+      where: { userId: params.userId },
+      select: { stripeCustomerId: true },
+    });
+
+    if (stripeCustomer) {
+      await stripe.customers.del(stripeCustomer.stripeCustomerId);
+      await db.stripeCustomer.delete({ where: { userId: params.userId } });
+    }
 
     return NextResponse.json(deletedUser);
   } catch (error) {
