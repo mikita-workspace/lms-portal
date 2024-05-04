@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Provider } from '@/constants/auth';
+import { useAppConfigStore } from '@/hooks/use-app-config-store';
 
 import { OAuthButton } from '../auth/ouath-button';
 import { TermsAndPrivacy } from '../auth/terms-and-privacy';
@@ -22,6 +23,8 @@ type AuthModalProps = {
 };
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
+  const { authFlow } = useAppConfigStore((state) => ({ authFlow: state.authFlow }));
+
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
 
   return ignore ? (
@@ -36,14 +39,20 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         </DialogHeader>
         <Suspense>
           <div className="space-y-2 w-full mt-4">
-            {Object.values(Provider).map((provider) => (
-              <OAuthButton
-                key={provider}
-                disabled={isDisabledButtons}
-                provider={provider}
-                setIsDisabled={setIsDisabledButtons}
-              />
-            ))}
+            {Object.keys(authFlow).map((provider) => {
+              if (authFlow[provider]) {
+                return (
+                  <OAuthButton
+                    key={provider}
+                    disabled={isDisabledButtons}
+                    provider={provider as Provider}
+                    setIsDisabled={setIsDisabledButtons}
+                  />
+                );
+              }
+
+              return null;
+            })}
           </div>
         </Suspense>
         <DialogFooter>

@@ -6,12 +6,14 @@ import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Toaster } from 'react-hot-toast';
 
+import { GetAppConfig } from '@/actions/config/get-app-config';
 import {
   ALLOWED_CURRENCY,
   DEFAULT_CURRENCY,
   DEFAULT_EXCHANGE_RATE,
   DEFAULT_LOCALE,
 } from '@/constants/locale';
+import { useAppConfigStore } from '@/hooks/use-app-config-store';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { ExchangeRates, useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -45,9 +47,11 @@ const ConfettiProvider = () => {
 };
 
 export const Providers = ({
+  appConfig,
   children,
   exchangeRates,
 }: Readonly<{
+  appConfig: GetAppConfig;
   children: React.ReactNode;
   exchangeRates: ExchangeRates;
 }>) => {
@@ -55,6 +59,8 @@ export const Providers = ({
     handleExchangeRates: state.setExchangeRates,
     handleLocaleInfo: state.setLocaleInfo,
   }));
+
+  const { handleAuthFlow } = useAppConfigStore((state) => ({ handleAuthFlow: state.setAuthFlow }));
 
   useEffect(() => {
     const getUserLocation = async () => {
@@ -90,7 +96,12 @@ export const Providers = ({
       });
     };
 
+    const getAppConfig = () => {
+      handleAuthFlow(appConfig.authFlow);
+    };
+
     getUserLocation();
+    getAppConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

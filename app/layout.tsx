@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
 
+import { getAppConfig } from '@/actions/config/get-app-config';
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
 import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';
@@ -30,11 +31,14 @@ const notoSans = Noto_Sans({ subsets: ['latin'] });
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
   const { exchangeRates } = await getExchangeRates();
+  const appConfig = await getAppConfig();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', notoSans.className)}>
-        <Providers exchangeRates={exchangeRates}>{children}</Providers>
+        <Providers appConfig={appConfig} exchangeRates={exchangeRates}>
+          {children}
+        </Providers>
         <CookieConsent />
       </body>
     </html>
