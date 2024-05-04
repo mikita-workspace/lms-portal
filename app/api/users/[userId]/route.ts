@@ -39,7 +39,31 @@ export const PATCH = async (req: NextRequest, { params }: { params: { userId: st
 
     return NextResponse.json(updatedUser);
   } catch (error) {
-    console.error('[USER_ID]', error);
+    console.error('[PATCH_USER_ID]', error);
+
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const DELETE = async (_: NextRequest, { params }: { params: { userId: string } }) => {
+  try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
+    const deletedUser = await db.user.delete({
+      where: { id: params.userId },
+    });
+
+    await db.stripeCustomer.delete({ where: { userId: params.userId } });
+
+    return NextResponse.json(deletedUser);
+  } catch (error) {
+    console.error('[DELETE_USER_ID]', error);
 
     return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
       status: StatusCodes.INTERNAL_SERVER_ERROR,
