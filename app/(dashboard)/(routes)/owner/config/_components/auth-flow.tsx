@@ -10,9 +10,11 @@ import { authIcons } from '@/components/auth/auth-icons';
 import { Switch } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
+import { fetcher } from '@/lib/fetcher';
 import { capitalize } from '@/lib/utils';
 
 type AuthFlowProps = {
+  id: string | null;
   initialFlows: Record<Provider, boolean>;
 };
 
@@ -24,7 +26,7 @@ const formSchema = z.object(
   }, {}),
 );
 
-export const AuthFlow = ({ initialFlows }: AuthFlowProps) => {
+export const AuthFlow = ({ id, initialFlows }: AuthFlowProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,8 +39,7 @@ export const AuthFlow = ({ initialFlows }: AuthFlowProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
-      console.log(values);
+      await fetcher.patch(`/api/config/${id}`, { body: { authFlow: values } });
 
       toast.success('Auth flow updated');
 

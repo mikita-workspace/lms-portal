@@ -197,9 +197,9 @@ model Notification {
   @@index([userId])
 }
 
-model Config {
+model Configuration {
   id           String   @id @default(uuid())
-  authFlowJson Json
+  authFlowJson String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
