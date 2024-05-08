@@ -89,7 +89,7 @@ export const authOptions = {
         const dbUser = await LoginUser(email, user.name, user.image);
 
         user.id = dbUser.id;
-        user.email = dbUser.email;
+        user.email = email;
         user.image = dbUser.image;
         user.isPublic = Boolean(dbUser.isPublic);
         user.name = dbUser.name;
@@ -112,6 +112,7 @@ export const authOptions = {
     async session({ session, token }) {
       if (session.user) {
         if (token.sub) {
+          session.user.email = token.email;
           session.user.isPublic = Boolean(token.isPublic);
           session.user.userId = token.sub;
         }

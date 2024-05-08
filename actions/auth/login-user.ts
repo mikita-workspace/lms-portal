@@ -80,7 +80,6 @@ export const LoginUser = async (
 
   return {
     id: user.id,
-    email: user.email,
     image: user.pictureUrl,
     isPublic: user.isPublic,
     name: user.name,

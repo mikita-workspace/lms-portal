@@ -104,7 +104,6 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
                   {globalProgress.value}/{globalProgress.total} Points
                 </p>
               </div>
-
               <ProgressBar
                 showText={false}
                 variant="success"
