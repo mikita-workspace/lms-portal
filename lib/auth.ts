@@ -89,6 +89,7 @@ export const authOptions = {
         const dbUser = await LoginUser(email, user.name, user.image);
 
         user.id = dbUser.id;
+        user.email = dbUser.email;
         user.image = dbUser.image;
         user.isPublic = Boolean(dbUser.isPublic);
         user.name = dbUser.name;
@@ -101,6 +102,7 @@ export const authOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
+        token.email = user.email;
         token.isPublic = user.isPublic;
         token.role = user.role;
       }
