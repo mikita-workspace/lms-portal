@@ -5,6 +5,7 @@ import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 import { Provider } from '@/constants/auth';
+
 const YandexIcon = () => (
   <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} priority />
 );
@@ -21,7 +22,22 @@ const SlackIcon = () => (
 );
 
 const LinkedinIcon = () => (
-  <Image className="mr-4" src="/assets/linkedin.svg" alt="yandex" height={20} width={20} priority />
+  <Image
+    className="mr-4"
+    src="/assets/linkedin.svg"
+    alt="linkedin"
+    height={20}
+    width={20}
+    priority
+  />
+);
+
+const MailRuIcon = () => (
+  <Image className="mr-4" src="/assets/mail-ru.svg" alt="mailru" height={20} width={20} priority />
+);
+
+const VKIcon = () => (
+  <Image className="mr-4" src="/assets/vk.svg" alt="vk" height={20} width={20} priority />
 );
 
 export const authIcons = {
@@ -30,4 +46,6 @@ export const authIcons = {
   [Provider.LINKEDIN]: LinkedinIcon,
   [Provider.SLACK]: SlackIcon,
   [Provider.YANDEX]: YandexIcon,
+  [Provider.MAILRU]: MailRuIcon,
+  [Provider.VK]: VKIcon,
 };

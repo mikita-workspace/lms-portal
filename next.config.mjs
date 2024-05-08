@@ -18,6 +18,8 @@ const nextConfig = {
       },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: 'https://avatars.yandex.net' },
+      { protocol: 'https', hostname: 'https://filin.mail.ru/' },
+      { protocol: 'https', hostname: 'https://media.licdn.com/' },
     ],
   },
 };
