@@ -2,6 +2,7 @@
 
 import { Category, Chapter, Course, Purchase } from '@prisma/client';
 
+import { FilterStatus } from '@/constants/courses';
 import { db } from '@/lib/db';
 
 import { getProgress } from './get-progress';
@@ -14,7 +15,7 @@ type CourseWithProgressAndCategory = Course & {
   purchases?: Purchase[];
 };
 
-export const getDashboardCourses = async (userId: string) => {
+export const getDashboardCourses = async (userId: string, filter: string | null) => {
   const purchasedCourses = await db.purchase.findMany({
     where: { userId },
     select: {
@@ -28,6 +29,7 @@ export const getDashboardCourses = async (userId: string) => {
     return {
       completedCourses: [],
       coursesInProgress: [],
+      filterCourses: [],
     };
   }
 
@@ -43,9 +45,21 @@ export const getDashboardCourses = async (userId: string) => {
 
   const completedCourses = courses.filter((course) => course.progress === 100);
   const coursesInProgress = courses.filter((course) => (course.progress ?? 0) < 100);
+  const filterCourses = (() => {
+    if (filter === FilterStatus.PROGRESS) {
+      return coursesInProgress;
+    }
+
+    if (filter === FilterStatus.COMPLETED) {
+      return completedCourses;
+    }
+
+    return [...coursesInProgress, ...completedCourses];
+  })();
 
   return {
     completedCourses,
     coursesInProgress,
+    filterCourses,
   };
 };
