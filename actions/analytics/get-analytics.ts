@@ -265,7 +265,9 @@ export const getAnalytics = async (userId: string) => {
 
     const userIds = [...new Set(purchases.map((ps) => ps.userId))];
     const users = await db.user.findMany({ where: { id: { in: userIds } } });
-    const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))];
+    const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))].filter(
+      (pi) => pi,
+    );
 
     const stripeAccountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
     const stripeAccount = stripeAccountId?.stripeAccountId
