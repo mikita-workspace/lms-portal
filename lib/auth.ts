@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import LinkedInProvider from 'next-auth/providers/linkedin';
 import MailRuProvider from 'next-auth/providers/mailru';
 import SlackProvider from 'next-auth/providers/slack';
+import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
 
 import { LoginUser } from '@/actions/auth/login-user';
@@ -71,6 +72,10 @@ export const authOptions = {
           role: UserRole.STUDENT,
         };
       },
+    }),
+    VkProvider({
+      clientId: process.env.VK_CLIENT_ID as string,
+      clientSecret: process.env.VK_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
