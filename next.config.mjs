@@ -20,6 +20,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'https://avatars.yandex.net' },
       { protocol: 'https', hostname: 'https://filin.mail.ru/' },
       { protocol: 'https', hostname: 'https://media.licdn.com/' },
+      { protocol: 'https', hostname: 'https://sun23-2.userapi.com/' },
     ],
   },
 };

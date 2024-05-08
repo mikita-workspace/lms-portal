@@ -80,8 +80,13 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (Object.values(Provider).includes(account?.provider as Provider) && user?.email) {
-        const dbUser = await LoginUser(user.email, user.name, user.image);
+      const email = user?.email ?? account?.email;
+
+      if (
+        Object.values(Provider).includes(account?.provider as Provider) &&
+        typeof email === 'string'
+      ) {
+        const dbUser = await LoginUser(email, user.name, user.image);
 
         user.id = dbUser.id;
         user.image = dbUser.image;
