@@ -7,7 +7,7 @@ type CaptchaProps = { callback: (token: string | null) => void };
 export const Captcha = ({ callback }: CaptchaProps) => {
   console.log({
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
-    NEXT_PUBLIC_YCAPTCHA_SITEKEY: process.env.NEXT_PUBLIC_YCAPTCHA_SITEKEY,
+    NEXT_PUBLIC_YCAPTCHA_SITEKEY: process.env.NEXT_PUBLIC_CAPTCHA_KEY,
   });
   return (
     <SmartCaptcha
