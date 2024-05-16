@@ -8,7 +8,7 @@ export const Captcha = () => {
 
   return (
     <SmartCaptcha
-      sitekey={process.env.NEXT_PUBLIC_YCAPTCHA_SITEKEY as string}
+      sitekey={'ysc1_pi99MCqNmUapQ7tpdtmv8UtvyQ4oGHrMUF9wpgBDc6ac94ae' as string}
       onSuccess={setToken}
     />
   );
