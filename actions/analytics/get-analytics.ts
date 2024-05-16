@@ -64,10 +64,10 @@ const getMap = (sales: Sales) => {
   return Object.keys(groupedByPosition).map((key) => {
     const [lt, lg] = key.split('*');
     return {
-      city: groupedByPosition[key][0].city,
-      country: groupedByPosition[key][0].country,
+      city: groupedByPosition[key][0].city || 'Unknown',
+      country: groupedByPosition[key][0].country || 'Unknown',
       currency: groupedByPosition[key][0].currency,
-      position: [Number(lt), Number(lg)],
+      position: [Number(lt) || 0, Number(lg) || 0],
       totalAmount: groupedByPosition[key].reduce(
         (total, current) => total + (current.price ?? 0),
         0,
