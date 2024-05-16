@@ -16,6 +16,7 @@
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
     "@hookform/resolvers": "^3.3.4",
+    "@plaiceholder/next": "^3.0.0",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -52,6 +53,7 @@
     "next-themes": "^0.2.1",
     "node-cache": "^5.1.2",
     "openai": "^4.27.0",
+    "plaiceholder": "^3.0.0",
     "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
     "query-string": "^8.2.0",
@@ -73,6 +75,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-tag-autocomplete": "^7.2.0",
     "recharts": "^2.12.0",
+    "sharp": "^0.33.3",
     "stripe": "^14.16.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

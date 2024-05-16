@@ -33,7 +33,7 @@ const LinkedinIcon = () => (
 );
 
 const MailRuIcon = () => (
-  <Image className="mr-4" src="/assets/mail-ru.svg" alt="mailru" height={20} width={20} priority />
+  <Image className="mr-4" src="/assets/mailru.svg" alt="mailru" height={20} width={20} priority />
 );
 
 const VKIcon = () => (
