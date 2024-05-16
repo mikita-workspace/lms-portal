@@ -37,6 +37,7 @@
     "@tanstack/react-table": "^8.11.8",
     "@uploadthing/react": "^6.3.4",
     "@vercel/kv": "^1.0.1",
+    "@vercel/speed-insights": "^1.0.10",
     "@yandex/smart-captcha": "^2.6.0",
     "ai": "^2.2.34",
     "class-variance-authority": "^0.7.0",

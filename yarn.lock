@@ -2316,6 +2316,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/speed-insights@npm:^1.0.10":
+  version: 1.0.10
+  resolution: "@vercel/speed-insights@npm:1.0.10"
+  peerDependencies:
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    react: ^18 || ^19
+    svelte: ^4
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 10c0/b1c2f91b153d0203e3571e75a775fe457c1d61eb1954601ae63fff0903694b48a0684ea1761c3618ccda4bef3bf1ec1a7ffdf34c18ffd35079f202cf6372e139
+  languageName: node
+  linkType: hard
+
 "@yandex/smart-captcha@npm:^2.6.0":
   version: 2.6.0
   resolution: "@yandex/smart-captcha@npm:2.6.0"
@@ -5546,6 +5573,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
     "@uploadthing/react": "npm:^6.3.4"
     "@vercel/kv": "npm:^1.0.1"
+    "@vercel/speed-insights": "npm:^1.0.10"
     "@yandex/smart-captcha": "npm:^2.6.0"
     ai: "npm:^2.2.34"
     autoprefixer: "npm:^10.0.1"
