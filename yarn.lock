@@ -1471,6 +1471,11 @@
   dependencies:
     "@upstash/redis" "1.25.1"
 
+"@yandex/smart-captcha@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@yandex/smart-captcha/-/smart-captcha-2.6.0.tgz#65a54cd5b835997aa85b034d89e0a1540ee0f11d"
+  integrity sha512-7DRFR+fEfYChB6TSuyhoc9vXuAUzN7RuY+fIk4zrwlfazBrT0FjHwUlLLoDs39/AvX9jBNnGm7W/FVunRONBbg==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"

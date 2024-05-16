@@ -5,6 +5,7 @@ import { Noto_Sans } from 'next/font/google';
 
 import { getAppConfig } from '@/actions/config/get-app-config';
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
+import { Captcha } from '@/components/common/captcha';
 import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +41,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           {children}
         </Providers>
         <CookieConsent />
+        <Captcha />
       </body>
     </html>
   );
