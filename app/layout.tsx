@@ -40,7 +40,6 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
         <Providers appConfig={appConfig} exchangeRates={exchangeRates}>
           {children}
         </Providers>
-        <Captcha />
         <CookieConsent />
       </body>
     </html>
