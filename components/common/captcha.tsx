@@ -11,11 +11,12 @@ export const Captcha = ({ callback }: CaptchaProps) => {
   });
   console.log(process.env);
   return (
-    <SmartCaptcha
-      language="en"
-      onSuccess={callback}
-      sitekey={process.env.NEXT_PUBLIC_YCAPTCHA as string}
-      webview
-    />
+    <div>Test</div>
+    // <SmartCaptcha
+    //   language="en"
+    //   onSuccess={callback}
+    //   sitekey={process.env.NEXT_PUBLIC_YCAPTCHA as string}
+    //   webview
+    // />
   );
 };
