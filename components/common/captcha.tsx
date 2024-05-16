@@ -9,6 +9,7 @@ export const Captcha = ({ callback }: CaptchaProps) => {
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
     NEXT_PUBLIC_YCAPTCHA_SITEKEY: process.env.NEXT_PUBLIC_CAPTCHA_KEY,
   });
+  console.log(process.env);
   return (
     <SmartCaptcha
       language="en"
