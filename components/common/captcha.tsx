@@ -5,6 +5,7 @@ import { SmartCaptcha } from '@yandex/smart-captcha';
 type CaptchaProps = { callback: (token: string | null) => void };
 
 export const Captcha = ({ callback }: CaptchaProps) => {
+  console.log(process.env.NEXT_PUBLIC_YD_CAPTCHA);
   return (
     <SmartCaptcha
       language="en"
