@@ -17,7 +17,7 @@ export const getStripeDetails = async () => {
       include: { connectAccount: true },
       orderBy: { createdAt: 'desc' },
     });
-    const ownerAccount = await stripe.accounts.retrieve(process.env.OWNER_ACC as string);
+    const ownerAccount = await stripe.accounts.retrieve(process.env.STRIPE_OWNER_ACC as string);
 
     const userIds = payoutRequests.map((pr) => pr.connectAccount.userId);
 

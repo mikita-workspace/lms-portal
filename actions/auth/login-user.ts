@@ -50,35 +50,33 @@ export const LoginUser = async (
     });
   }
 
-  if (process.env.WELCOME_COUPON_ID) {
-    const stripePromotion = await stripe.promotionCodes.create({
-      code: generatePromotionCode(),
-      coupon: process.env.WELCOME_COUPON_ID as string,
-      customer: stripeCustomer.stripeCustomerId,
-      max_redemptions: 1,
-      restrictions: { first_time_transaction: true },
-    });
+  const stripePromotion = await stripe.promotionCodes.create({
+    code: generatePromotionCode(),
+    coupon: process.env.STRIPE_COUPON_ID as string,
+    customer: stripeCustomer.stripeCustomerId,
+    max_redemptions: 1,
+    restrictions: { first_time_transaction: true },
+  });
 
-    const promotionCode = await db.stripePromo.create({
-      data: {
-        code: stripePromotion.code,
-        stripeCouponId: stripePromotion.coupon.id,
-        stripePromoId: stripePromotion.id,
-      },
-    });
+  const promotionCode = await db.stripePromo.create({
+    data: {
+      code: stripePromotion.code,
+      stripeCouponId: stripePromotion.coupon.id,
+      stripePromoId: stripePromotion.id,
+    },
+  });
 
-    await db.notification.create({
-      data: {
-        userId: user.id,
-        title: `Welcome bonus`,
-        body: `Hi! Thank you for registering on our platform. Catch the promotion code - ${promotionCode.code} for your first purchase 🤩`,
-      },
-    });
+  await db.notification.create({
+    data: {
+      userId: user.id,
+      title: `Welcome bonus`,
+      body: `Hi! Thank you for registering on our platform. Catch the promotion code - ${promotionCode.code} for your first purchase 🤩`,
+    },
+  });
 
-    await pusher.trigger(`notification_channel_${user.id}`, `private_event_${user.id}`, {
-      trigger: true,
-    });
-  }
+  await pusher.trigger(`notification_channel_${user.id}`, `private_event_${user.id}`, {
+    trigger: true,
+  });
 
   return {
     id: user.id,
