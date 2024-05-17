@@ -1,11 +1,12 @@
+import { AuthFlow } from '@prisma/client';
 import { create } from 'zustand';
 
 type AppConfig = {
-  authFlow: Record<string, boolean>;
-  setAuthFlow: (flow: Record<string, boolean>) => void;
+  authFlow: AuthFlow[];
+  setAuthFlow: (flow: AuthFlow[]) => void;
 };
 
 export const useAppConfigStore = create<AppConfig>((set) => ({
-  authFlow: {},
+  authFlow: [],
   setAuthFlow: (flow) => set({ authFlow: flow }),
 }));

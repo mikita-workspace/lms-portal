@@ -39,8 +39,10 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         </DialogHeader>
         <Suspense>
           <div className="space-y-2 w-full mt-4">
-            {Object.keys(authFlow).map((provider) => {
-              if (authFlow[provider]) {
+            {Object.values(Provider).map((provider) => {
+              const flow = authFlow.find((fl) => fl.provider === provider);
+
+              if (flow && flow.isActive) {
                 return (
                   <OAuthButton
                     key={provider}

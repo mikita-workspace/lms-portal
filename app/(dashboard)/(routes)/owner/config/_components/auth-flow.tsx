@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthFlow as AuthFlowType } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -14,8 +15,7 @@ import { fetcher } from '@/lib/fetcher';
 import { capitalize } from '@/lib/utils';
 
 type AuthFlowProps = {
-  id: string | null;
-  initialFlows: Record<Provider, boolean>;
+  authFlow: AuthFlowType[];
 };
 
 const formSchema = z.object(
@@ -26,20 +26,29 @@ const formSchema = z.object(
   }, {}),
 );
 
-export const AuthFlow = ({ id, initialFlows }: AuthFlowProps) => {
+export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialFlows,
+    defaultValues: authFlow.reduce((acc, af) => {
+      acc[af.provider as keyof typeof acc] = af.isActive as never;
+
+      return acc;
+    }, {}),
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const flows = Object.keys(initialFlows);
-
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await fetcher.patch(`/api/config/${id}`, { body: { authFlow: values } });
+      await fetcher.patch('/api/config', {
+        body: {
+          authFlow: Object.entries(values).map(([provider, isActive]) => ({
+            id: authFlow.find((af) => af.provider === provider)?.id,
+            isActive: isActive,
+          })),
+        },
+      });
 
       toast.success('Auth flow updated');
 
@@ -58,34 +67,43 @@ export const AuthFlow = ({ id, initialFlows }: AuthFlowProps) => {
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          {flows.map((flow) => {
-            const Icon = authIcons[flow as Provider];
-            const flowLabel = OAUTH_LABELS[flow as keyof typeof OAUTH_LABELS] ?? capitalize(flow);
+          {Object.values(Provider).map((provider) => {
+            const Icon = authIcons[provider];
+            const flowLabel =
+              OAUTH_LABELS[provider as keyof typeof OAUTH_LABELS] ?? capitalize(provider);
 
-            return (
-              <FormField
-                key={flow}
-                control={form.control}
-                name={flow as never}
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4 mb-2">
-                    <div className="flex items-center">
-                      <Icon className="mr-4" size={20} />
-                      <FormLabel>{flowLabel}</FormLabel>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        aria-readonly
-                        checked={field.value}
-                        disabled={!isValid || isSubmitting}
-                        onCheckedChange={field.onChange}
-                        type="submit"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            );
+            const flow = authFlow.find((af) => af.provider === provider);
+
+            if (flow) {
+              return (
+                <FormField
+                  key={flow.id}
+                  control={form.control}
+                  name={flow.provider as never}
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4 mb-2">
+                        <div className="flex items-center">
+                          <Icon className="mr-4" size={20} />
+                          <FormLabel>{flowLabel}</FormLabel>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            aria-readonly
+                            checked={field.value}
+                            disabled={!isValid || isSubmitting}
+                            onCheckedChange={field.onChange}
+                            type="submit"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              );
+            }
+
+            return null;
           })}
         </form>
       </Form>

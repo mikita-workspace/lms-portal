@@ -14,15 +14,6 @@ async function main() {
           name: 'Music',
         },
         {
-          name: 'Fitness',
-        },
-        {
-          name: 'Photography',
-        },
-        {
-          name: 'Accounting',
-        },
-        {
           name: 'Engineering',
         },
         {
@@ -39,19 +30,15 @@ async function main() {
       ],
     });
 
-    await database.configuration.createMany({
+    await database.authFlow.createMany({
       data: [
-        {
-          authFlowJson: JSON.stringify({
-            google: true,
-            yandex: true,
-            vk: true,
-            mailru: false,
-            linkedin: false,
-            slack: false,
-            github: true,
-          }),
-        },
+        { isActive: true, provider: 'google' },
+        { isActive: true, provider: 'yandex' },
+        { isActive: true, provider: 'vk' },
+        { isActive: false, provider: 'mailru' },
+        { isActive: false, provider: 'linkedin' },
+        { isActive: false, provider: 'slack' },
+        { isActive: true, provider: 'github' },
       ],
     });
 
