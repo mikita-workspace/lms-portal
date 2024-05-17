@@ -39,6 +39,22 @@ async function main() {
       ],
     });
 
+    await database.configuration.createMany({
+      data: [
+        {
+          authFlowJson: JSON.stringify({
+            google: true,
+            yandex: true,
+            vk: true,
+            mailru: false,
+            linkedin: false,
+            slack: false,
+            github: true,
+          }),
+        },
+      ],
+    });
+
     console.info('Success');
   } catch (error) {
     console.error('Error seeding the database categories', error);
