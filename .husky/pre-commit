@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Hucky >> Starting pre-commnit hook"
+echo "Hucky >> Running ESLint"
+
+yarn lint-staged
