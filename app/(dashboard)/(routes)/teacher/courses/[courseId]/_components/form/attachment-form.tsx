@@ -10,7 +10,6 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
-import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { Button } from '@/components/ui/button';
 import { fetcher } from '@/lib/fetcher';
 
@@ -127,7 +126,6 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
             <div className="text-muted-foreground mt-4 basis-3/5">
               Add anything your students might need to complete the course
             </div>
-            <UploadThingIcon />
           </div>
         </div>
       )}

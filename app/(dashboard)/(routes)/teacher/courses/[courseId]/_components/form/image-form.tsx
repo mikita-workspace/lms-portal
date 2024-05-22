@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
-import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { Button } from '@/components/ui/button';
 import { fetcher } from '@/lib/fetcher';
 
@@ -89,7 +88,6 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
           />
           <div className="flex text-xs items-end justify-between">
             <div className="text-muted-foreground mt-4">16:9 aspect ratio recommend</div>
-            <UploadThingIcon />
           </div>
         </div>
       )}
