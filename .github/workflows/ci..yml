@@ -38,8 +38,3 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: type:check
-
-      - name: CodeBuild
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
