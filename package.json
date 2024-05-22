@@ -1,6 +1,6 @@
 {
   "name": "lms-portal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "git@github.com:mikita-workspace/lms-portal.git",
   "description": "Nova LMS",
   "author": "Mikita Kandratsyeu <nickondr.production@gmail.com>",
@@ -44,8 +44,8 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-table": "^8.11.8",
     "@uploadthing/react": "^6.3.4",
-    "@vercel/kv": "^1.0.1",
-    "@vercel/speed-insights": "^1.0.10",
+    "@vercel/kv": "^1.0.2",
+    "@vercel/speed-insights": "^1.0.20",
     "@yandex/smart-captcha": "^2.6.0",
     "ai": "^2.2.34",
     "class-variance-authority": "^0.7.0",
