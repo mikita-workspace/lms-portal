@@ -55,24 +55,26 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
           <Skeleton className="h-10 w-10 rounded-full" />
         </div>
       )}
-      {!isLoading && user?.userId && (
+      {!isLoading && (
         <div className="flex gap-x-2 ml-auto items-center">
-          <>
-            {(isCoursePage ||
-              isStudentPage ||
-              isTeacherPage ||
-              isChatPage ||
-              isSettingsPage ||
-              isOwnerPage) && (
-              <Link href="/">
-                <Button size="sm" variant="ghost">
-                  <LogOut className="h-4 w-4 mr-2" />
-                  {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
-                </Button>
-              </Link>
-            )}
-            <Notifications userNotifications={userNotifications} />
-          </>
+          {user?.userId && (
+            <>
+              {(isCoursePage ||
+                isStudentPage ||
+                isTeacherPage ||
+                isChatPage ||
+                isSettingsPage ||
+                isOwnerPage) && (
+                <Link href="/">
+                  <Button size="sm" variant="ghost">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
+                  </Button>
+                </Link>
+              )}
+              <Notifications userNotifications={userNotifications} />
+            </>
+          )}
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
