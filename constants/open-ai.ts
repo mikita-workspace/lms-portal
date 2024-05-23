@@ -11,4 +11,4 @@ export const OPEN_AI_MODELS = [
   { value: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo' },
 ];
 
-export const DEFAULT_MODEL = 'gpt-4-0125-preview';
+export const DEFAULT_MODEL = OPEN_AI_MODELS[0].value;
