@@ -35,6 +35,8 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isTeacherPage = pathname?.startsWith('/teacher');
 
+  const isLoading = status === AuthStatus.LOADING;
+
   return (
     <>
       {isSearchPage && (
@@ -44,7 +46,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
           </div>
         </Suspense>
       )}
-      {status === AuthStatus.LOADING ? (
+      {isLoading && (
         <div className="flex items-center space-x-4 ml-auto">
           <div className="space-y-2">
             <Skeleton className="h-3 w-[100px]" />
@@ -52,27 +54,25 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
           </div>
           <Skeleton className="h-10 w-10 rounded-full" />
         </div>
-      ) : (
+      )}
+      {!isLoading && user?.userId && (
         <div className="flex gap-x-2 ml-auto items-center">
-          {user?.userId && (
-            <>
-              {(isCoursePage ||
-                isStudentPage ||
-                isTeacherPage ||
-                isChatPage ||
-                isSettingsPage ||
-                isOwnerPage) && (
-                <Link href="/">
-                  <Button size="sm" variant="ghost">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
-                  </Button>
-                </Link>
-              )}
-              <Notifications userNotifications={userNotifications} />
-            </>
-          )}
-
+          <>
+            {(isCoursePage ||
+              isStudentPage ||
+              isTeacherPage ||
+              isChatPage ||
+              isSettingsPage ||
+              isOwnerPage) && (
+              <Link href="/">
+                <Button size="sm" variant="ghost">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
+                </Button>
+              </Link>
+            )}
+            <Notifications userNotifications={userNotifications} />
+          </>
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
