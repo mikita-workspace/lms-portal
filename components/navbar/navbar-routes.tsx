@@ -65,7 +65,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
-                    {isTeacherPage || isOwnerPage ? 'Exit' : 'Back to courses'}
+                    {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
                   </Button>
                 </Link>
               )}
