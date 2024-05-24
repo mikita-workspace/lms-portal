@@ -6,7 +6,6 @@ import qs from 'query-string';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
-import { INITIAL_PAGE_SIZE_USERS_LIST } from '@/constants/paginations';
 import { isNumber } from '@/lib/guard';
 
 import { columns } from './columns';
