@@ -45,7 +45,6 @@ interface DataTableProps<TData, TValue> {
   isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
-  tableName: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -58,7 +57,6 @@ export function DataTable<TData, TValue>({
   isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
-  tableName,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -197,7 +195,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} tableName={tableName} />
+      <DataTablePagination table={table} />
     </div>
   );
 }

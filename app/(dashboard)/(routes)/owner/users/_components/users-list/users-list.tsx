@@ -3,7 +3,6 @@
 import { User } from '@prisma/client';
 
 import { DataTable } from '@/components/data-table/data-table';
-import { DATA_TABLE_NAMES } from '@/constants/paginations';
 
 import { columns } from './columns';
 
@@ -18,13 +17,7 @@ export const UsersList = ({ users }: UsersListProps) => {
         <p className="font-medium text-xl">Users</p>
         <span className="text-xs text-muted-foreground">List of all users of the platform</span>
       </div>
-      <DataTable
-        columns={columns}
-        data={users}
-        initialPageSize={10}
-        noLabel="No users"
-        tableName={DATA_TABLE_NAMES.USERS_LIST}
-      />
+      <DataTable columns={columns} data={users} initialPageSize={10} noLabel="No users" />
     </div>
   );
 };

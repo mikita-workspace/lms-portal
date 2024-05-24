@@ -2,7 +2,6 @@
 
 import { getStripeDetails } from '@/actions/stripe/get-stripe-details';
 import { DataTable } from '@/components/data-table/data-table';
-import { DATA_TABLE_NAMES } from '@/constants/paginations';
 
 import { columns } from './columns';
 
@@ -24,7 +23,6 @@ export const PayoutRequests = ({ payoutRequests }: PayoutRequestsProps) => {
         data={payoutRequests}
         initialPageSize={3}
         noLabel="No payout requests"
-        tableName={DATA_TABLE_NAMES.PAYOUT_REQUESTS}
       />
     </div>
   );
