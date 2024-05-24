@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 
 import { ONE_MINUTE_SEC } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
+import { PAGE_SIZES } from '@/constants/paginations';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
@@ -12,6 +13,11 @@ import { stripe } from '@/server/stripe';
 type StripePromotionCodes = Stripe.Response<Stripe.ApiList<Stripe.PromotionCode>>['data'];
 type StripeCoupons = Stripe.Response<Stripe.ApiList<Stripe.Coupon>>['data'];
 type StripeCustomers = Stripe.Response<Stripe.ApiList<Stripe.Customer>>['data'];
+
+type GetStripePromo = {
+  pageIndex?: string | number;
+  pageSize?: string | number;
+};
 
 const getCoupons = (coupons: StripeCoupons) => {
   return coupons.map((cp) => {
@@ -80,9 +86,21 @@ const getCustomers = (customers: StripeCustomers) => {
   }));
 };
 
-export const getStripePromo = async () => {
+export const getStripePromo = async ({
+  pageIndex = 0,
+  pageSize = PAGE_SIZES[0],
+}: GetStripePromo) => {
+  const index = Number(pageIndex);
+  const size = Number(pageSize);
+
   try {
-    const promos = await db.stripePromo.findMany({ orderBy: { createdAt: 'desc' } });
+    const promos = await db.stripePromo.findMany({
+      orderBy: { createdAt: 'desc' },
+      skip: index * size,
+      take: size,
+    });
+    const count = await db.stripePromo.count();
+
     const customers = await db.stripeCustomer.findMany();
 
     const coupons = await stripe.coupons.list({ limit: 10 });
@@ -122,6 +140,7 @@ export const getStripePromo = async () => {
     return {
       coupons: getCoupons(coupons.data),
       customers: getCustomers(stripeCustomers),
+      pageCount: Math.ceil(count / size),
       promos: getPromos(stripePromos, stripeCustomers),
     };
   } catch (error) {
@@ -130,6 +149,7 @@ export const getStripePromo = async () => {
     return {
       coupons: [] as ReturnType<typeof getCoupons>,
       customers: [] as ReturnType<typeof getCustomers>,
+      pageCount: 0,
       promos: [] as ReturnType<typeof getPromos>,
     };
   }
