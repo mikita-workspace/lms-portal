@@ -58,7 +58,6 @@ export function DataTable<TData, TValue>({
   isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
-  setPagination,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
