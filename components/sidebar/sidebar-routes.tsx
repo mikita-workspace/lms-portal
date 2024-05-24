@@ -37,7 +37,7 @@ const studentRoutes = [
   {
     href: '/leaderboard',
     icon: Crown,
-    isNew: true,
+    isNew: false,
     isProtected: true,
     label: 'Leaderboard',
   },
