@@ -93,6 +93,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@effect/schema@npm:^0.66.12":
+  version: 0.66.16
+  resolution: "@effect/schema@npm:0.66.16"
+  peerDependencies:
+    effect: ^3.1.3
+    fast-check: ^3.13.2
+  checksum: 10c0/525c0e0750b28c03bf127ab54f2008580b08b6a731580b5bff74072431919684bcafb99028d083a5db0c69c8bc858f747d47918e34392e1ea4dcb8b9476561fa
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.0.0":
   version: 11.11.0
   resolution: "@emotion/babel-plugin@npm:11.11.0"
@@ -2241,60 +2251,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uploadthing/dropzone@npm:0.2.1":
-  version: 0.2.1
-  resolution: "@uploadthing/dropzone@npm:0.2.1"
+"@uploadthing/dropzone@npm:0.4.1":
+  version: 0.4.1
+  resolution: "@uploadthing/dropzone@npm:0.4.1"
   dependencies:
     file-selector: "npm:^0.6.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     solid-js: ^1.7.11
+    svelte: ^4.2.12
+    vue: ^3.4.0
   peerDependenciesMeta:
     react:
       optional: true
     solid-js:
       optional: true
-  checksum: 10c0/0375f10a8b79897130501387ef3d86165956e73110bb07a447c9460ee18c6df7382b1992aeb2eeda4e10eade87999d3fa270c2bf14c9cb45aca24f5a2f4d9b5a
+    svelte:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/b3848770c4c8b1c419717832d97ed2d33e194802d6937d4df41ea0e0d803f0edfc10af53b31aa5793bc0018fd59c91d4bbbe2c22df616f23b1ee7da58a1c758f
   languageName: node
   linkType: hard
 
-"@uploadthing/mime-types@npm:0.2.6":
-  version: 0.2.6
-  resolution: "@uploadthing/mime-types@npm:0.2.6"
-  checksum: 10c0/c470a9acafe7208ab918c70413d2fa0537915298b960980c243978cf509fcf4606aa02d79ded68d3536962ba438a961f55d40403adb52034f5e87181b9b24fe5
+"@uploadthing/mime-types@npm:0.2.10":
+  version: 0.2.10
+  resolution: "@uploadthing/mime-types@npm:0.2.10"
+  checksum: 10c0/f03b848cddec7977e391557d0713a8666c7daaabedd8259b712a9685cd9d905b17239abe0504f45b5e95d947d180cf595172b41c92b1d685f61559cae62e8d8d
   languageName: node
   linkType: hard
 
-"@uploadthing/react@npm:^6.3.4":
-  version: 6.3.4
-  resolution: "@uploadthing/react@npm:6.3.4"
+"@uploadthing/react@npm:^6.5.4":
+  version: 6.5.4
+  resolution: "@uploadthing/react@npm:6.5.4"
   dependencies:
-    "@uploadthing/dropzone": "npm:0.2.1"
-    "@uploadthing/shared": "npm:6.3.4"
+    "@uploadthing/dropzone": "npm:0.4.1"
+    "@uploadthing/shared": "npm:6.7.4"
     file-selector: "npm:^0.6.0"
     tailwind-merge: "npm:^2.2.1"
   peerDependencies:
     next: "*"
     react: ^17.0.2 || ^18.0.0
-    uploadthing: 6.5.2
+    uploadthing: 6.10.4
   peerDependenciesMeta:
     next:
       optional: true
-  checksum: 10c0/fa08c67cdad45c05229eeb95381f3b771a399ae216bc026992dbf2d260b25c951b2eb71b3311572ed8cc51b02078e1848e7d5e5c2a76285101265a698b4e8c2e
+  checksum: 10c0/18a744e52e8cbe6020126e4c225faa4b825f792e8510d6b4c6eaa7a74b40fae0fcfe9fb1a18f19b90ab8e20db12b7b4f789c3c3ef3f44d348d5d7c53c691af02
   languageName: node
   linkType: hard
 
-"@uploadthing/shared@npm:6.3.4":
-  version: 6.3.4
-  resolution: "@uploadthing/shared@npm:6.3.4"
+"@uploadthing/shared@npm:6.7.4":
+  version: 6.7.4
+  resolution: "@uploadthing/shared@npm:6.7.4"
   dependencies:
+    effect: "npm:^3.1.0"
     std-env: "npm:^3.7.0"
   peerDependencies:
-    "@uploadthing/mime-types": 0.2.6
+    "@uploadthing/mime-types": 0.2.10
   peerDependenciesMeta:
     "@uploadthing/mime-types":
       optional: true
-  checksum: 10c0/8eb5f918efadaa0e1454bb2cb70a299b41a2b56e290d07e190b90b0478f210062604024eb6a4c285791ab3469c6958608b59f2b7ce43e43b99c395f52e4e0ff3
+  checksum: 10c0/4619dee773ba5122d7df80ebbf0c3a79b70e0f97a06f4f6201bbae39b4221f5572a464017db11fe0fb35f1362a6c245644e016daf8c1189a06f8db95926e2e30
   languageName: node
   linkType: hard
 
@@ -3700,6 +3717,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"effect@npm:^3.1.0":
+  version: 3.2.5
+  resolution: "effect@npm:3.2.5"
+  checksum: 10c0/74ddd0f9fbf6d079f0deca3d659e57983568ba924ea9dfd47692801f76494ab8a02033c1d3cec991792fcb8c6249d4de20eaff4f1906b0b0804e4c76ea198eae
+  languageName: node
+  linkType: hard
+
 "electron-to-chromium@npm:^1.4.648":
   version: 1.4.667
   resolution: "electron-to-chromium@npm:1.4.667"
@@ -4301,6 +4325,15 @@ __metadata:
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
   checksum: 10c0/73bf6e27406e80aa3e85b0d1c4fd987261e628064e170ca781125c0b635a3dabad5e05adbf07595ea0cf1e6c5396cacb214af933da7cbaf24fe75ff14818e8f9
+  languageName: node
+  linkType: hard
+
+"fast-check@npm:^3.18.0":
+  version: 3.19.0
+  resolution: "fast-check@npm:3.19.0"
+  dependencies:
+    pure-rand: "npm:^6.1.0"
+  checksum: 10c0/5a15484d380fb5a3e94ec951c97e59b940ac4f2e1f3f7a05578d67851e5cb5283121bcf08c57e3238bc85899ce691b47ab477a6dd481a6f520e2e7ab4952d1ee
   languageName: node
   linkType: hard
 
@@ -5736,7 +5769,7 @@ __metadata:
     "@types/react-scroll-to-bottom": "npm:^4.2.4"
     "@types/react-syntax-highlighter": "npm:^15.5.11"
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
-    "@uploadthing/react": "npm:^6.3.4"
+    "@uploadthing/react": "npm:^6.5.4"
     "@vercel/kv": "npm:^1.0.1"
     "@vercel/speed-insights": "npm:^1.0.10"
     "@yandex/smart-captcha": "npm:^2.6.0"
@@ -5795,7 +5828,7 @@ __metadata:
     tailwindcss: "npm:^3.3.0"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:^5"
-    uploadthing: "npm:^6.5.2"
+    uploadthing: "npm:^6.10.4"
     zod: "npm:^3.22.4"
     zustand: "npm:^4.5.0"
   languageName: unknown
@@ -7458,6 +7491,13 @@ __metadata:
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
+  languageName: node
+  linkType: hard
+
+"pure-rand@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "pure-rand@npm:6.1.0"
+  checksum: 10c0/1abe217897bf74dcb3a0c9aba3555fe975023147b48db540aa2faf507aee91c03bf54f6aef0eb2bf59cc259a16d06b28eca37f0dc426d94f4692aeff02fb0e65
   languageName: node
   linkType: hard
 
@@ -9276,13 +9316,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uploadthing@npm:^6.5.2":
-  version: 6.5.2
-  resolution: "uploadthing@npm:6.5.2"
+"uploadthing@npm:^6.10.4":
+  version: 6.10.4
+  resolution: "uploadthing@npm:6.10.4"
   dependencies:
-    "@uploadthing/mime-types": "npm:0.2.6"
-    "@uploadthing/shared": "npm:6.3.4"
+    "@effect/schema": "npm:^0.66.12"
+    "@uploadthing/mime-types": "npm:0.2.10"
+    "@uploadthing/shared": "npm:6.7.4"
     consola: "npm:^3.2.3"
+    effect: "npm:^3.1.0"
+    fast-check: "npm:^3.18.0"
     std-env: "npm:^3.7.0"
   peerDependencies:
     express: "*"
@@ -9301,7 +9344,7 @@ __metadata:
       optional: true
     tailwindcss:
       optional: true
-  checksum: 10c0/6e58588e608bd185e511653e1a13c2e06424fa2044d645286fd09d78b7be36c79c44bc28ad4780d8df28b8c4689cbda40d260f4d9d015e54c430c03c2f17354a
+  checksum: 10c0/a3ccb2eabf6de05d604fe645ab7d50c5467d00339eb2907a2b577f83cee9859ec522defac43ae82c0714b548718e2a3c93671357c3f73ccdb7e6942052873681
   languageName: node
   linkType: hard
 
