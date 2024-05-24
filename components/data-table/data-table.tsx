@@ -6,6 +6,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -43,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   isNotificationPage?: boolean;
   isPromoPage?: boolean;
+  isServerSidePagination?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
   pageCount?: number;
@@ -55,6 +57,7 @@ export function DataTable<TData, TValue>({
   data,
   isNotificationPage = false,
   isPromoPage = false,
+  isServerSidePagination = true,
   isTeacherCoursesPage = false,
   noLabel,
   pageCount = 0,
@@ -74,17 +77,18 @@ export function DataTable<TData, TValue>({
     data,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: isServerSidePagination ? undefined : getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    onSortingChange: setSorting,
     onPaginationChange: setPagination,
-    manualPagination: true,
+    onSortingChange: setSorting,
+    manualPagination: isServerSidePagination,
     state: {
       columnFilters,
       sorting,
       pagination,
     },
-    pageCount,
+    pageCount: isServerSidePagination ? pageCount : undefined,
   });
 
   const filterPlaceholder = (() => {

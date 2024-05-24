@@ -12,7 +12,12 @@ const BillingPage = async () => {
     <div className="p-6 flex flex-col">
       <h1 className="text-2xl font-medium">Billing History</h1>
       <div className="mt-12">
-        <DataTable columns={columns} data={userBilling} noLabel="No invoices" />
+        <DataTable
+          columns={columns}
+          data={userBilling}
+          isServerSidePagination={false}
+          noLabel="No invoices"
+        />
       </div>
     </div>
   );

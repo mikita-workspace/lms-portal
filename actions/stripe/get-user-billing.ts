@@ -21,6 +21,7 @@ export const getUserBilling = async (userId?: string) => {
 
     const { data: invoices } = await stripe.invoices.list({
       customer: stripeCustomer?.stripeCustomerId,
+      limit: 50,
       status: 'paid',
     });
 
