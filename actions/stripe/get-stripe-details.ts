@@ -2,6 +2,7 @@
 
 import { PayoutRequest, User } from '@prisma/client';
 
+import { PAGE_SIZES } from '@/constants/paginations';
 import { db } from '@/lib/db';
 import { stripe } from '@/server/stripe';
 
@@ -10,17 +11,32 @@ type PayoutRequests = (Omit<PayoutRequest, 'connectAccount' | 'connectAccountId'
   teacher: User;
 })[];
 
-export const getStripeDetails = async () => {
+type GetStripeDetails = {
+  pageIndex?: string | number;
+  pageSize?: string | number;
+};
+
+export const getStripeDetails = async ({
+  pageIndex = 0,
+  pageSize = PAGE_SIZES[0],
+}: GetStripeDetails) => {
+  const index = Number(pageIndex);
+  const size = Number(pageSize);
+
   try {
     const stripeBalance = await stripe.balance.retrieve();
+
     const payoutRequests = await db.payoutRequest.findMany({
       include: { connectAccount: true },
       orderBy: { createdAt: 'desc' },
+      skip: index * size,
+      take: size,
     });
+    const count = await db.payoutRequest.count();
+
     const ownerAccount = await stripe.accounts.retrieve(process.env.STRIPE_OWNER_ACC as string);
 
     const userIds = payoutRequests.map((pr) => pr.connectAccount.userId);
-
     const users = await db.user.findMany({ where: { id: { in: userIds } } });
 
     return {
@@ -28,6 +44,7 @@ export const getStripeDetails = async () => {
         available: stripeBalance?.available?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
         pending: stripeBalance?.pending?.reduce((acc, current) => acc + current.amount, 0) ?? 0,
       },
+      pageCount: Math.ceil(count / size),
       payoutRequests: payoutRequests.reduce<PayoutRequests>((pr, current) => {
         const teacher = users.find((user) => user.id === current.connectAccount.userId);
 
@@ -60,6 +77,7 @@ export const getStripeDetails = async () => {
         available: 0,
         pending: 0,
       },
+      pageCount: 0,
       payoutRequests: [] as PayoutRequests,
       owner: null,
     };
