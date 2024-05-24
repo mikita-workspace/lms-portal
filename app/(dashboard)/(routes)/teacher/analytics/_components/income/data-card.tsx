@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice, getCurrencySymbol } from '@/lib/format';
+import { isNumber } from '@/lib/guard';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
@@ -24,7 +25,7 @@ export const DataCard = ({ label, totalProfit, totalRevenue }: DataCardProps) =>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
-          {Number.isFinite(totalRevenue) && (
+          {isNumber(totalRevenue) && (
             <CountUp
               className="text-2xl font-bold"
               decimals={2}

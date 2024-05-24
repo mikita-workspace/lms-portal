@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 import { DEFAULT_CURRENCY, DEFAULT_EXCHANGE_RATE, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { isNumber } from '@/lib/guard';
 import { hasJsonStructure } from '@/lib/utils';
 
 import { useFeesAmount } from './use-fees-amount';
@@ -62,7 +63,7 @@ export const useLocaleAmount = ({
       )
     : null;
 
-  const isLoading = !Number.isFinite(price) || !formattedPrice || !localeInfo;
+  const isLoading = !isNumber(price) || !formattedPrice || !localeInfo;
 
   return {
     ...(useDefaultLocale
