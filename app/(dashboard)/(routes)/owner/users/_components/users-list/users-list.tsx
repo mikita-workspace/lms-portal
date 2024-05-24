@@ -1,9 +1,6 @@
 'use client';
 
 import { User } from '@prisma/client';
-import { usePathname, useRouter } from 'next/navigation';
-import qs from 'query-string';
-import { useEffect, useState } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
 import { DATA_TABLE_NAMES } from '@/constants/paginations';
@@ -15,34 +12,6 @@ type UsersListProps = {
 };
 
 export const UsersList = ({ users }: UsersListProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  const [page] = useState(0);
-  const [pageSize, setPageSize] = useState(0);
-
-  const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: { pageSize, page },
-      },
-      { skipNull: true, skipEmptyString: true },
-    );
-
-    router.push(url);
-  }, [router, pathname, setPageSize, pageSize, page]);
-
-  if (!isMounted) {
-    return null;
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
