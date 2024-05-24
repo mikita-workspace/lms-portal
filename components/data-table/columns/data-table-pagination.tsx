@@ -20,6 +20,7 @@ import { PAGE_SIZES } from '@/constants/paginations';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  tableName: string;
 }
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {

@@ -1,5 +1,6 @@
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
 import { DataTable } from '@/components/data-table/data-table';
+import { DATA_TABLE_NAMES } from '@/constants/paginations';
 
 import { columns } from './_components/columns';
 
@@ -16,6 +17,7 @@ const PromoPage = async () => {
         data={promos}
         isPromoPage
         noLabel="No promotion codes"
+        tableName={DATA_TABLE_NAMES.PROMOTIONS}
       />
     </div>
   );

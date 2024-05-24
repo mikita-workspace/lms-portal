@@ -6,7 +6,7 @@ import qs from 'query-string';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
-import { isNumber } from '@/lib/guard';
+import { DATA_TABLE_NAMES } from '@/constants/paginations';
 
 import { columns } from './columns';
 
@@ -17,7 +17,7 @@ type UsersListProps = {
 export const UsersList = ({ users }: UsersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  const [page, setPage] = useState(0);
+  const [page] = useState(0);
   const [pageSize, setPageSize] = useState(0);
 
   const pathname = usePathname();
@@ -54,12 +54,7 @@ export const UsersList = ({ users }: UsersListProps) => {
         data={users}
         initialPageSize={10}
         noLabel="No users"
-        setPagination={({ page, pageSize }) => {
-          if (isNumber(page) && isNumber(pageSize)) {
-            setPage(page);
-            setPageSize(pageSize);
-          }
-        }}
+        tableName={DATA_TABLE_NAMES.USERS_LIST}
       />
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { DataTable } from '@/components/data-table/data-table';
+import { DATA_TABLE_NAMES } from '@/constants/paginations';
 
 import { columns } from './columns';
 
@@ -20,6 +21,7 @@ export const ClientTransactions = ({ transactions }: ClientTransactionsProps) =>
         data={transactions}
         initialPageSize={3}
         noLabel="No client transactions"
+        tableName={DATA_TABLE_NAMES.CLIENT_TRANSACTIONS}
       />
     </div>
   );
