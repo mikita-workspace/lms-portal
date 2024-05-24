@@ -4,9 +4,18 @@ import { User } from '@prisma/client';
 
 import { db } from '@/lib/db';
 
-export const getUsers = async (): Promise<User[]> => {
+type GetUsers = {
+  page?: number;
+  pageSize?: number;
+};
+
+export const getUsers = async ({ page = 0, pageSize = 10 }: GetUsers): Promise<User[]> => {
   try {
-    const users = await db.user.findMany({ orderBy: { createdAt: 'desc' } });
+    const users = await db.user.findMany({
+      orderBy: { createdAt: 'desc' },
+      skip: page * pageSize,
+      take: pageSize,
+    });
 
     return users;
   } catch (error) {

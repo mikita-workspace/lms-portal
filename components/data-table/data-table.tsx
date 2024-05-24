@@ -45,6 +45,7 @@ interface DataTableProps<TData, TValue> {
   isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
+  setPagination?: (args: Record<string, number | string>) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,6 +58,7 @@ export function DataTable<TData, TValue>({
   isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
+  setPagination,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);

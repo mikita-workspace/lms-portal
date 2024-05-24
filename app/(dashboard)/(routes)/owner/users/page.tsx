@@ -3,7 +3,7 @@ import { getUsers } from '@/actions/users/get-users';
 import { UsersList } from './_components/users-list/users-list';
 
 const UsersPage = async () => {
-  const users = await getUsers();
+  const users = await getUsers({});
 
   return (
     <div className="p-6 flex flex-col mb-6">
