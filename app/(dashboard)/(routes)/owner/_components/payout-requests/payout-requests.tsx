@@ -18,12 +18,7 @@ export const PayoutRequests = ({ payoutRequests }: PayoutRequestsProps) => {
         <p className="font-medium text-xl">Payout Requests</p>
         <span className="text-xs text-muted-foreground">Withdrawal requests from teachers</span>
       </div>
-      <DataTable
-        columns={columns}
-        data={payoutRequests}
-        initialPageSize={3}
-        noLabel="No payout requests"
-      />
+      <DataTable columns={columns} data={payoutRequests} noLabel="No payout requests" />
     </div>
   );
 };

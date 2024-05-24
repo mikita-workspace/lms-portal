@@ -6,7 +6,6 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -26,6 +25,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { PAGE_SIZES } from '@/constants/paginations';
+import { useSearchLineParams } from '@/hooks/use-search-params';
 import { getNotificationActionName } from '@/lib/notifications';
 
 import { PromoModal } from '../modals/promo-modal';
@@ -40,11 +41,11 @@ interface DataTableProps<TData, TValue> {
   coupons?: Coupon[];
   customers?: Customer[];
   data: TData[];
-  initialPageSize?: number;
   isNotificationPage?: boolean;
   isPromoPage?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
+  pageCount?: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -52,33 +53,38 @@ export function DataTable<TData, TValue>({
   coupons = [],
   customers = [],
   data,
-  initialPageSize = 10,
   isNotificationPage = false,
   isPromoPage = false,
   isTeacherCoursesPage = false,
   noLabel,
+  pageCount = 0,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: PAGE_SIZES[0],
+  });
+
+  useSearchLineParams(pagination);
 
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
-    initialState: {
-      pagination: {
-        pageSize: initialPageSize,
-      },
-    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     state: {
       columnFilters,
       sorting,
+      pagination,
     },
+    pageCount,
   });
 
   const filterPlaceholder = (() => {

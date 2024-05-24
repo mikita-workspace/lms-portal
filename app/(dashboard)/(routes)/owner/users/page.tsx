@@ -2,13 +2,17 @@ import { getUsers } from '@/actions/users/get-users';
 
 import { UsersList } from './_components/users-list/users-list';
 
-const UsersPage = async () => {
-  const users = await getUsers({});
+type UsersPageProps = {
+  searchParams: { pageIndex: string; pageSize: string };
+};
+
+const UsersPage = async ({ searchParams }: UsersPageProps) => {
+  const { pageCount, users } = await getUsers(searchParams);
 
   return (
     <div className="p-6 flex flex-col mb-6">
       <h1 className="text-2xl font-medium mb-12">Users Management</h1>
-      <UsersList users={users} />
+      <UsersList pageCount={pageCount} users={users} />
     </div>
   );
 };
