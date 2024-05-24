@@ -50,7 +50,7 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
         },
       });
 
-      toast.success('Auth flow updated');
+      toast.success('Auth providers updated');
 
       router.refresh();
     } catch (error) {
@@ -62,7 +62,7 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center gap-2">
         <div className="flex flex-col gap-1">
-          <p className="font-medium text-xl">Auth Flow</p>
+          <p className="font-medium text-xl">Auth Providers</p>
         </div>
       </div>
       <Form {...form}>
