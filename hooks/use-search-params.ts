@@ -2,7 +2,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import qs from 'query-string';
 import { useEffect, useState } from 'react';
 
-export const useSearchLineParams = (searchParams: Record<string, string | number | null>) => {
+export const useSearchLineParams = (
+  searchParams: Record<string, string | number | null>,
+  ignore = false,
+) => {
   const [isMounted, setIsMounted] = useState(false);
 
   const pathname = usePathname();
@@ -13,6 +16,10 @@ export const useSearchLineParams = (searchParams: Record<string, string | number
   }, []);
 
   useEffect(() => {
+    if (ignore) {
+      return;
+    }
+
     const url = qs.stringifyUrl(
       {
         url: pathname,

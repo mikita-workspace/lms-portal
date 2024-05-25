@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
     pageSize: PAGE_SIZES[0],
   });
 
-  useSearchLineParams(pagination);
+  useSearchLineParams(pagination, !isServerSidePagination);
 
   const table = useReactTable({
     columns,
