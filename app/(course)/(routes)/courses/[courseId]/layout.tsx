@@ -51,7 +51,10 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   }
 
   const progressCount = await getProgress({ userId: user.userId, courseId: course.id });
-  const userNotifications = await getUserNotifications(user?.userId, 5);
+  const { notifications: userNotifications } = await getUserNotifications({
+    userId: user?.userId,
+    take: 5,
+  });
 
   const commonCourseProps = { course, progressCount };
 

@@ -22,7 +22,7 @@ const CoursesPage = async ({ searchParams: { pageIndex, pageSize } }: CoursesPag
     where: { userId: user!.userId },
   });
 
-  const count = await db.course.count();
+  const count = await db.course.count({ where: { userId: user!.userId } });
 
   return (
     <div className="p-6">
