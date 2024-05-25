@@ -18,7 +18,7 @@ export const ClientTransactions = ({ transactions }: ClientTransactionsProps) =>
       <DataTable
         columns={columns}
         data={transactions}
-        initialPageSize={3}
+        isServerSidePagination={false}
         noLabel="No client transactions"
       />
     </div>
