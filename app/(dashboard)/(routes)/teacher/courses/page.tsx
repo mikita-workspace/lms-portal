@@ -4,18 +4,35 @@ import { db } from '@/lib/db';
 
 import { columns } from './_components/data-table/columns';
 
-const CoursesPage = async () => {
+type CoursesPageProps = {
+  searchParams: { pageIndex: string; pageSize: string };
+};
+
+const CoursesPage = async ({ searchParams: { pageIndex, pageSize } }: CoursesPageProps) => {
   const user = await getCurrentUser();
 
+  const index = Number(pageIndex);
+  const size = Number(pageSize);
+
   const courses = await db.course.findMany({
-    where: { userId: user!.userId },
     orderBy: { createdAt: 'desc' },
+    skip: index * size,
+    take: size,
+    where: { userId: user!.userId },
   });
+
+  const count = await db.course.count();
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-medium mb-12">Courses</h1>
-      <DataTable columns={columns} data={courses} isTeacherCoursesPage noLabel="No courses" />
+      <DataTable
+        columns={columns}
+        data={courses}
+        isTeacherCoursesPage
+        noLabel="No courses"
+        pageCount={Math.ceil(count / size)}
+      />
     </div>
   );
 };
