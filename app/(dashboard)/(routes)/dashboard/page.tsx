@@ -10,7 +10,7 @@ import { InfoCard } from './_components/info-card';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
 };
 
 type DashboardPageProps = {

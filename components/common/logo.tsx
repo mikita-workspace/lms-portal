@@ -26,9 +26,7 @@ export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
             <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">
               Nova LMS
             </p>
-            <p className="text-xs text-muted-foreground">
-              Portal&nbsp;for&nbsp;educational purposes
-            </p>
+            <p className="text-xs text-muted-foreground">Educational&nbsp;portal</p>
           </div>
         )}
       </div>

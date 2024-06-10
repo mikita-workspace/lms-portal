@@ -11,7 +11,7 @@ import { PublicProfileForm } from './_components/public-profile-form';
 
 export const metadata: Metadata = {
   title: 'Settings',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
 };
 
 const SettingsPage = async () => {

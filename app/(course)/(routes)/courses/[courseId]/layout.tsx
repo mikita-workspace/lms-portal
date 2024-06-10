@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
 
   return {
     title: course?.title || 'Nova LMS',
-    description: course?.description || 'LMS Portal for educational purposes',
+    description: course?.description || 'Educational portal',
   };
 }
 

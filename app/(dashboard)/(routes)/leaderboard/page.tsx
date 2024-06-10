@@ -9,7 +9,7 @@ import { LeadersTable } from './_components/leaders-table';
 
 export const metadata: Metadata = {
   title: 'Leaderboard',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
 };
 
 const LeaderBoard = async () => {

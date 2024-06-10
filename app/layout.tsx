@@ -20,7 +20,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Nova LMS',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_DOMAIN },
 };
 

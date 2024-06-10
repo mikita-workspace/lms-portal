@@ -6,7 +6,7 @@ import { isOwner } from '@/lib/owner';
 
 export const metadata: Metadata = {
   title: 'Owner',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
 };
 
 type OwnerLayoutProps = Readonly<{

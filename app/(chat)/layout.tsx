@@ -9,7 +9,7 @@ import { UserRole } from '@/constants/auth';
 
 export const metadata: Metadata = {
   title: 'Chat AI',
-  description: 'LMS Portal for educational purposes',
+  description: 'Chat AI',
 };
 
 type ChatLayoutProps = Readonly<{
