@@ -41,7 +41,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
     <>
       {isSearchPage && (
         <Suspense>
-          <div className="hidden md:block -center">
+          <div className="hidden md:block -center ml-[100px]">
             <SearchInput />
           </div>
         </Suspense>
