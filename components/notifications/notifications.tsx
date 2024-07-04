@@ -101,7 +101,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="w-[340px] ml-[-1em] pt-2">
-              <ScrollArea className="pl-4 pr-2.5 w-full pb-2 max-h-[200px] overflow-auto">
+              <ScrollArea className="pl-4 pr-2.5 w-full max-h-[200px] overflow-auto">
                 <NotificationCards notifications={userNotifications} isFetching={isFetching} />
                 {!amountOfNotifications && (
                   <div className="my-16 text-center flex flex-col gap-2">
