@@ -10,6 +10,8 @@ import YandexProvider from 'next-auth/providers/yandex';
 import { LoginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
 
+import { isString } from './guard';
+
 export const authOptions = {
   pages: {
     signIn: '/sign-in',
@@ -82,10 +84,7 @@ export const authOptions = {
     async signIn({ user, account }) {
       const email = user?.email ?? account?.email;
 
-      if (
-        Object.values(Provider).includes(account?.provider as Provider) &&
-        typeof email === 'string'
-      ) {
+      if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
         const dbUser = await LoginUser(email, user.name, user.image);
 
         user.id = dbUser.id;

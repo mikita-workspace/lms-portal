@@ -18,7 +18,9 @@ import {
 } from '@/components/ui/form';
 import { fetcher } from '@/lib/fetcher';
 
-type PublicProfileFormProps = {
+import { TwoFaForm } from './two-fa-form';
+
+type AdvancedOptionsFormProps = {
   initialData: User;
 };
 
@@ -26,7 +28,7 @@ const formSchema = z.object({
   isPublic: z.boolean().default(false),
 });
 
-export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
+export const AdvancedOptionsForm = ({ initialData }: AdvancedOptionsFormProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,9 +42,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
-
       toast.success('Visibility updated');
-
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong!');
@@ -51,7 +51,8 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
 
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <p className="font-medium text-xl">Public Profile</p>
+      <p className="font-medium text-xl">Advanced Options</p>
+      <TwoFaForm initialData={initialData} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
