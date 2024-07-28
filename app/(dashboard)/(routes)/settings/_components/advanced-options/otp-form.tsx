@@ -2,10 +2,12 @@
 
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { TextBadge } from '@/components/common/text-badge';
+import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { CreateOtpModal } from '@/components/modals/create-otp-modal';
 import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
@@ -17,6 +19,8 @@ type OtpFormProps = {
 };
 
 export const OtpForm = ({ initialData }: OtpFormProps) => {
+  const router = useRouter();
+
   const isOtpEnabled = initialData?.otpSecret;
   const otpCreatedAt = initialData?.otpCreatedAt;
 
@@ -35,6 +39,24 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
 
       setQrCode(otp.qr);
       setSecret(otp.secret);
+    } catch (error) {
+      toast.error('Something went wrong!');
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const handleDisable = async () => {
+    try {
+      setIsFetching(true);
+
+      await fetcher.patch('/api/otp/delete', {
+        responseType: 'json',
+        body: { email: initialData.email },
+      });
+
+      toast.success('2FA authentication is disabled');
+      router.refresh();
     } catch (error) {
       toast.error('Something went wrong!');
     } finally {
@@ -63,6 +85,13 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
           )}
         </div>
       </div>
+      {isOtpEnabled && (
+        <ConfirmModal onConfirm={handleDisable}>
+          <Button variant="secondary" disabled={isFetching}>
+            Disable
+          </Button>
+        </ConfirmModal>
+      )}
       {!isOtpEnabled && (
         <CreateOtpModal qrCode={qrCode} secret={secret}>
           <Button variant="outline" onClick={handleGenerate} disabled={isFetching}>
