@@ -1,7 +1,7 @@
 import { PrettyLoader } from '@/components/loaders/pretty-loader';
 
-const TwoFaLoading = () => {
+const OtpVerificationLoading = () => {
   return <PrettyLoader />;
 };
 
-export default TwoFaLoading;
+export default OtpVerificationLoading;

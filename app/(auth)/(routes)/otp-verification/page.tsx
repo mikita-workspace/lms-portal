@@ -8,11 +8,11 @@ import withCompanyLabel from '@/hoc/with-company-label';
 
 import { OtpCode } from './_components/otp-code';
 
-type TwoMfaPageProps = {
+type OtpVerificationPageProps = {
   searchParams: { code: string; otp: string };
 };
 
-const TwoMfaPage = ({ searchParams: { code, otp } }: TwoMfaPageProps) => {
+const OtpVerificationPage = ({ searchParams: { code, otp } }: OtpVerificationPageProps) => {
   const isDisabled = !otp?.length || otp?.length !== OTP_LENGTH;
 
   return (
@@ -55,4 +55,4 @@ const TwoMfaPage = ({ searchParams: { code, otp } }: TwoMfaPageProps) => {
   );
 };
 
-export default withCompanyLabel(TwoMfaPage);
+export default withCompanyLabel(OtpVerificationPage);

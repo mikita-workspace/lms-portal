@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     const secret = authenticator.generateSecret();
-    const otpauth = authenticator.keyuri(email, 'nova-otp', secret);
+    const otpauth = authenticator.keyuri(email, 'Nova LMS', secret);
     const qr = await qrcode.toDataURL(otpauth);
 
     return NextResponse.json({ qr, secret });

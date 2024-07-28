@@ -12,10 +12,10 @@ model User {
   course        Course[]
   createdAt     DateTime       @default(now())
   email         String         @unique
-  is2mfa        Boolean?       @default(false)
   isPublic      Boolean?       @default(false)
   name          String?
   notifications Notification[]
+  otpCreatedAt  DateTime?
   otpSecret     String?
   pictureUrl    String?
   role          String         @default("student")

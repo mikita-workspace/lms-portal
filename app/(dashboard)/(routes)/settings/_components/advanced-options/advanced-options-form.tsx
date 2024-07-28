@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { fetcher } from '@/lib/fetcher';
 
-import { TwoFaForm } from './two-fa-form';
+import { OtpForm } from './otp-form';
 
 type AdvancedOptionsFormProps = {
   initialData: User;
@@ -52,7 +52,7 @@ export const AdvancedOptionsForm = ({ initialData }: AdvancedOptionsFormProps) =
   return (
     <div className="flex flex-col gap-4 mt-8">
       <p className="font-medium text-xl">Advanced Options</p>
-      <TwoFaForm initialData={initialData} />
+      <OtpForm initialData={initialData} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
@@ -63,7 +63,7 @@ export const AdvancedOptionsForm = ({ initialData }: AdvancedOptionsFormProps) =
                 <div className="space-y-0.5">
                   <FormLabel>Enable Public Profile</FormLabel>
                   <FormDescription className="text-xs">
-                    Change the visibility of your profile.
+                    Change the visibility of your profile
                   </FormDescription>
                 </div>
                 <FormControl>
