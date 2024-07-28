@@ -5,7 +5,7 @@ import { generatePromotionCode } from '@/lib/promo';
 import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
-export const LoginUser = async (
+export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
