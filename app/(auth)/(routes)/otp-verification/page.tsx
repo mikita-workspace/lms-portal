@@ -10,6 +10,7 @@ type OtpVerificationPageProps = {
   searchParams: { code: string };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const OtpVerificationPage = ({ searchParams: { code } }: OtpVerificationPageProps) => {
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">
