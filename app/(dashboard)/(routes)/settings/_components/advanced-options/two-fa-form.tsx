@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 import { TextBadge } from '@/components/common/text-badge';
 import { Button } from '@/components/ui';
+import { encrypt } from '@/lib/utils';
 
 type TwoFaFormProps = {
   initialData: User;
@@ -22,7 +23,7 @@ export const TwoFaForm = ({ initialData }: TwoFaFormProps) => {
         toast.success('Visibility updated');
         router.refresh();
       } else {
-        router.push(`/2FA?id=${initialData.id}`);
+        router.push(`/2FA?code=${encrypt({ email: initialData.email }, 'test')}`);
       }
     } catch (error) {
       toast.error('Something went wrong!');

@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
+  id            String         @id @default(uuid())
   course        Course[]
   createdAt     DateTime       @default(now())
   email         String         @unique
-  id            String         @id @default(uuid())
   is2mfa        Boolean?       @default(false)
   isPublic      Boolean?       @default(false)
   name          String?
   notifications Notification[]
+  otpSecret     String?
   pictureUrl    String?
   role          String         @default("student")
   updatedAt     DateTime       @updatedAt

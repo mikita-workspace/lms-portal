@@ -1,19 +1,35 @@
 'use client';
 
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui';
+import { OTP_LENGTH } from '@/constants/otp';
+import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchLineParams } from '@/hooks/use-search-params';
 
 export const OtpCode = () => {
+  const [value, setValue] = useState('');
+
+  const debouncedValue = useDebounce(value);
+  const searchParams = useSearchParams();
+
+  const code = searchParams.get('code');
+
+  useSearchLineParams({ otp: debouncedValue, code });
+
   return (
-    <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+    <InputOTP
+      maxLength={OTP_LENGTH}
+      onChange={(value) => setValue(value)}
+      pattern={REGEXP_ONLY_DIGITS}
+      value={value}
+    >
       <InputOTPGroup>
-        <InputOTPSlot index={0} />
-        <InputOTPSlot index={1} />
-        <InputOTPSlot index={2} />
-        <InputOTPSlot index={3} />
-        <InputOTPSlot index={4} />
-        <InputOTPSlot index={5} />
+        {[...Array(OTP_LENGTH).keys()].map((_, index) => (
+          <InputOTPSlot key={index} index={index} />
+        ))}
       </InputOTPGroup>
     </InputOTP>
   );
