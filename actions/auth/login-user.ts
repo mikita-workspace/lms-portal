@@ -18,6 +18,7 @@ export const loginUser = async (
       image: existingUser.pictureUrl,
       isPublic: existingUser.isPublic,
       name: existingUser.name,
+      otpSecret: existingUser.otpSecret,
       role: existingUser.role,
     };
   }
@@ -83,6 +84,7 @@ export const loginUser = async (
     image: user.pictureUrl,
     isPublic: user.isPublic,
     name: user.name,
+    otpSecret: user.otpSecret,
     role: user.role,
   };
 };

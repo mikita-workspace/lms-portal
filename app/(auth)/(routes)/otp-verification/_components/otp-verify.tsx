@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import { OtpInput } from '@/components/common/otp-input';
@@ -10,12 +10,12 @@ import { fetcher } from '@/lib/fetcher';
 
 type OtpVerify = {
   callbackUrl: string;
+  provider: string;
   secret: string;
+  userId: string;
 };
 
-export const OtpVerify = ({ callbackUrl, secret }: OtpVerify) => {
-  const router = useRouter();
-
+export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) => {
   const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isFetching, setIsFetching] = useState(false);
@@ -29,11 +29,11 @@ export const OtpVerify = ({ callbackUrl, secret }: OtpVerify) => {
 
         const response = await fetcher.post('/api/otp/verify', {
           responseType: 'json',
-          body: { token, secret },
+          body: { token, secret, userId, isOtpVerify: true },
         });
 
         if (response.verified) {
-          router.push(callbackUrl);
+          await signIn(provider, { callbackUrl });
         } else {
           setErrorMessage('Invalid OTP code');
         }

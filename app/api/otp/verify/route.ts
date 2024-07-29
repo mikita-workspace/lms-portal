@@ -1,18 +1,21 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { authenticator } from 'otplib';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { ONE_DAY_MS } from '@/constants/common';
+import { OTP_SECRET_COOKIES } from '@/constants/otp';
 import { db } from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
-    const { token, secret } = await req.json();
+    const { token, secret, userId, isOtpVerify } = await req.json();
 
     const userData = await db.user.findUnique({
-      where: { id: user?.userId },
+      where: { id: user?.userId ?? userId },
       select: { otpSecret: true },
     });
 
@@ -20,6 +23,13 @@ export const POST = async (req: NextRequest) => {
 
     if (userData?.otpSecret) {
       isValid = authenticator.verify({ token, secret: userData.otpSecret });
+
+      if (isValid && isOtpVerify) {
+        cookies().set(OTP_SECRET_COOKIES, userData.otpSecret, {
+          expires: Date.now() + ONE_DAY_MS,
+          httpOnly: true,
+        });
+      }
     } else {
       isValid = authenticator.verify({ token, secret });
 
