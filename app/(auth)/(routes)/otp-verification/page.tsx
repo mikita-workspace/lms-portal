@@ -14,7 +14,7 @@ type OtpVerificationPageProps = {
 
 const OtpVerificationPage = ({ searchParams: { code } }: OtpVerificationPageProps) => {
   const otpInfo = JSON.parse(decrypt(decodeURIComponent(code), process.env.OTP_SECRET as string));
-  const callbackUrl = cookies().get('next-auth.callback-url')?.value ?? '/';
+  const callbackUrl = cookies().get('__Secure-next-auth.callback-url')?.value ?? '/';
 
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">
