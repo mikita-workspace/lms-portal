@@ -9,10 +9,16 @@ import { cn } from '@/lib/utils';
 type OtpInputProps = {
   disabled?: boolean;
   errorMessage?: string;
+  isSuccess?: boolean;
   setToken: (value: string) => void;
 };
 
-export const OtpInput = ({ disabled = false, errorMessage = '', setToken }: OtpInputProps) => {
+export const OtpInput = ({
+  disabled = false,
+  errorMessage = '',
+  isSuccess = false,
+  setToken,
+}: OtpInputProps) => {
   return (
     <div>
       <InputOTP
@@ -26,7 +32,7 @@ export const OtpInput = ({ disabled = false, errorMessage = '', setToken }: OtpI
             <InputOTPSlot
               key={index}
               index={index}
-              className={cn(errorMessage && 'border-red-500')}
+              className={cn(errorMessage && 'border-red-500', isSuccess && 'border-green-500')}
             />
           ))}
         </InputOTPGroup>

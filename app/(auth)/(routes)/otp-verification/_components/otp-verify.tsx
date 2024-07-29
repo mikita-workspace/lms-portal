@@ -19,6 +19,7 @@ export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) 
   const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isFetching, setIsFetching] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const debouncedValue = useDebounce(token);
 
@@ -33,6 +34,7 @@ export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) 
         });
 
         if (response.verified) {
+          setIsSuccess(true);
           await signIn(provider, { callbackUrl });
         } else {
           setErrorMessage('Invalid OTP code');
@@ -57,5 +59,12 @@ export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  return <OtpInput disabled={isFetching} errorMessage={errorMessage} setToken={setToken} />;
+  return (
+    <OtpInput
+      disabled={isFetching || isSuccess}
+      errorMessage={errorMessage}
+      isSuccess={isSuccess}
+      setToken={setToken}
+    />
+  );
 };

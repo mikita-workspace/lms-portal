@@ -1,6 +1,8 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { OTP_SECRET_COOKIES } from '@/constants/otp';
 import { db } from '@/lib/db';
 
 export const PATCH = async (req: NextRequest) => {
@@ -8,6 +10,7 @@ export const PATCH = async (req: NextRequest) => {
     const { email } = await req.json();
 
     await db.user.update({ where: { email }, data: { otpCreatedAt: null, otpSecret: null } });
+    cookies().delete(OTP_SECRET_COOKIES);
 
     return NextResponse.json({ success: true });
   } catch (error) {
