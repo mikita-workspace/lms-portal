@@ -5,7 +5,7 @@ import { generatePromotionCode } from '@/lib/promo';
 import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
-export const LoginUser = async (
+export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
@@ -18,6 +18,7 @@ export const LoginUser = async (
       image: existingUser.pictureUrl,
       isPublic: existingUser.isPublic,
       name: existingUser.name,
+      otpSecret: existingUser.otpSecret,
       role: existingUser.role,
     };
   }
@@ -83,6 +84,7 @@ export const LoginUser = async (
     image: user.pictureUrl,
     isPublic: user.isPublic,
     name: user.name,
+    otpSecret: user.otpSecret,
     role: user.role,
   };
 };

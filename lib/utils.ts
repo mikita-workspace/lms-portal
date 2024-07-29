@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import { AES, enc } from 'crypto-js';
 import { twMerge } from 'tailwind-merge';
 
 export const cn = (...inputs: ClassValue[]) => {
@@ -38,3 +39,15 @@ export function getRandomInt(min: number, max: number) {
 
   return min + (byteArray[0] % range);
 }
+
+export const encrypt = <T>(value: T, secret: string) => {
+  const cipher = AES.encrypt(JSON.stringify(value), secret).toString();
+
+  return cipher;
+};
+
+export const decrypt = (cipher: string, secret: string) => {
+  const bytes = AES.decrypt(cipher, secret);
+
+  return bytes.toString(enc.Utf8);
+};

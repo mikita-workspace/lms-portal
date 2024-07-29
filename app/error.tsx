@@ -1,7 +1,7 @@
 'use client';
 
-import { Logo } from '@/components/common/logo';
 import { Button } from '@/components/ui';
+import withCompanyLabel from '@/hoc/with-company-label';
 
 type ErrorProps = { error: Error & { digest?: string }; reset: () => void };
 
@@ -20,17 +20,8 @@ const Error = ({ error }: ErrorProps) => {
           Try again
         </Button>
       </div>
-      <div className="absolute flex justify-center items-center mb-8 bottom-0 gap-x-1 w-full text-sm text-muted-foreground">
-        Powered by
-        <div className="font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-x-1">
-          <div className="h-4 w-4">
-            <Logo onlyLogoIcon isChat />
-          </div>
-          <span>Nova LMS</span>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default Error;
+export default withCompanyLabel(Error);

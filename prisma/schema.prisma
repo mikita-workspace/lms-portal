@@ -15,6 +15,8 @@ model User {
   isPublic      Boolean?       @default(false)
   name          String?
   notifications Notification[]
+  otpCreatedAt  DateTime?
+  otpSecret     String?
   pictureUrl    String?
   role          String         @default("student")
   updatedAt     DateTime       @updatedAt

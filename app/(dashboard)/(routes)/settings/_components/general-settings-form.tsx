@@ -118,7 +118,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             </div>
             <div className="flex items-center gap-x-2 mt-6">
               <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                Update info
+                Update
               </Button>
             </div>
           </form>

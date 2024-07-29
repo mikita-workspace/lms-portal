@@ -40,9 +40,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
-
       toast.success('Visibility updated');
-
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong!');
@@ -50,35 +48,32 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-8">
-      <p className="font-medium text-xl">Public Profile</p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <FormField
-            control={form.control}
-            name="isPublic"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel>Enable Public Profile</FormLabel>
-                  <FormDescription className="text-xs">
-                    Change the visibility of your profile.
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    aria-readonly
-                    checked={field.value}
-                    disabled={!isValid || isSubmitting}
-                    onCheckedChange={field.onChange}
-                    type="submit"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
+              <div className="space-y-0.5">
+                <FormLabel>Enable Public Profile</FormLabel>
+                <FormDescription className="text-xs">
+                  Change the visibility of your profile
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  aria-readonly
+                  checked={field.value}
+                  disabled={!isValid || isSubmitting}
+                  onCheckedChange={field.onChange}
+                  type="submit"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
   );
 };

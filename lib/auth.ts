@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import type { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -7,8 +8,12 @@ import SlackProvider from 'next-auth/providers/slack';
 import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
 
-import { LoginUser } from '@/actions/auth/login-user';
+import { loginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
+import { OTP_SECRET_COOKIES } from '@/constants/otp';
+
+import { isString } from './guard';
+import { encrypt } from './utils';
 
 export const authOptions = {
   pages: {
@@ -81,12 +86,14 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       const email = user?.email ?? account?.email;
+      const hasOtpSecret = cookies().has(OTP_SECRET_COOKIES);
 
-      if (
-        Object.values(Provider).includes(account?.provider as Provider) &&
-        typeof email === 'string'
-      ) {
-        const dbUser = await LoginUser(email, user.name, user.image);
+      if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
+        const dbUser = await loginUser(email, user.name, user.image);
+
+        if (!hasOtpSecret && dbUser.otpSecret) {
+          return `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`;
+        }
 
         user.id = dbUser.id;
         user.email = email;
