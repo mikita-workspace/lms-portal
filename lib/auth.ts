@@ -10,7 +10,7 @@ import YandexProvider from 'next-auth/providers/yandex';
 
 import { loginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
-import { OTP_SECRET_COOKIES } from '@/constants/otp';
+import { OTP_SECRET_SECURE } from '@/constants/otp';
 
 import { isString } from './guard';
 import { encrypt } from './utils';
@@ -86,7 +86,7 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       const email = user?.email ?? account?.email;
-      const hasOtpSecret = cookies().has(OTP_SECRET_COOKIES);
+      const hasOtpSecret = cookies().has(OTP_SECRET_SECURE);
 
       if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
         const dbUser = await loginUser(email, user.name, user.image);
