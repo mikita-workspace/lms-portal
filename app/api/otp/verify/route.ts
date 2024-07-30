@@ -28,6 +28,7 @@ export const POST = async (req: NextRequest) => {
         cookies().set(OTP_SECRET_SECURE, userData.otpSecret, {
           expires: Date.now() + ONE_DAY_MS,
           httpOnly: true,
+          sameSite: 'lax',
           secure: true,
         });
       }
