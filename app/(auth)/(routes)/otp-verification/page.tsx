@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { OTP_CALLBACK_URL_SECURE } from '@/constants/otp';
 import withCompanyLabel from '@/hoc/with-company-label';
 import { decrypt } from '@/lib/utils';
 
@@ -14,7 +15,7 @@ type OtpVerificationPageProps = {
 
 const OtpVerificationPage = ({ searchParams: { code } }: OtpVerificationPageProps) => {
   const otpInfo = JSON.parse(decrypt(decodeURIComponent(code), process.env.OTP_SECRET as string));
-  const callbackUrl = cookies().get('__Secure-next-auth.callback-url')?.value ?? '/';
+  const callbackUrl = cookies().get(OTP_CALLBACK_URL_SECURE)?.value ?? '/';
 
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">
