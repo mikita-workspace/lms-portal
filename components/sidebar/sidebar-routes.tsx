@@ -17,6 +17,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
+import { PremiumBanner } from '../common/premium-banner';
 import { SideBarItem } from './sidebar-item';
 
 const studentRoutes = [
@@ -148,6 +149,7 @@ export const SideBarRoutes = () => {
           />
         ))}
       </div>
+      <PremiumBanner />
     </div>
   );
 };

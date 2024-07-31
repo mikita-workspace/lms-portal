@@ -1,11 +1,17 @@
 import { format } from 'date-fns';
 import { ArrowLeft, Download } from 'lucide-react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { getGithubReleases } from '@/actions/github/get-releases';
 import { MarkdownText } from '@/components/common/markdown-text';
 import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
+
+export const metadata: Metadata = {
+  title: 'Releases notes',
+  description: 'Educational portal',
+};
 
 type ReleasesPagePageProps = {
   searchParams: { pageIndex: string; pageSize: string };
