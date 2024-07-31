@@ -107,11 +107,21 @@ export const authOptions = {
 
       return false;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.email = user.email;
         token.isPublic = user.isPublic;
         token.role = user.role;
+      }
+
+      if (trigger === 'update') {
+        if (session?.name) {
+          token.name = session.name;
+        }
+
+        if (session?.pictureUrl) {
+          token.picture = session.pictureUrl;
+        }
       }
 
       return token;
