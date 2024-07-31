@@ -93,13 +93,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/schema@npm:^0.66.12":
-  version: 0.66.16
-  resolution: "@effect/schema@npm:0.66.16"
+"@effect/schema@npm:0.68.12":
+  version: 0.68.12
+  resolution: "@effect/schema@npm:0.68.12"
+  dependencies:
+    fast-check: "npm:^3.19.0"
   peerDependencies:
-    effect: ^3.1.3
-    fast-check: ^3.13.2
-  checksum: 10c0/525c0e0750b28c03bf127ab54f2008580b08b6a731580b5bff74072431919684bcafb99028d083a5db0c69c8bc858f747d47918e34392e1ea4dcb8b9476561fa
+    effect: ^3.4.5
+  checksum: 10c0/0eb85c3544e2cda7c0c16dd6a63baa569de91cdf7a5e670f4dc7d60ff40e507e8766d4764a5c0f31351ac63a87ba4b1f87a0fede5f19cd5a798b77c1cd94b479
   languageName: node
   linkType: hard
 
@@ -2379,6 +2380,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uploadthing/shared@npm:6.7.8":
+  version: 6.7.8
+  resolution: "@uploadthing/shared@npm:6.7.8"
+  dependencies:
+    "@uploadthing/mime-types": "npm:0.2.10"
+    effect: "npm:3.4.5"
+    std-env: "npm:^3.7.0"
+  checksum: 10c0/762fd98ce2214f453538ffb0dca7130a00252bbcb2a909be4a1a021c2d356a1f86e475623d77c0ef4e23eb18f0b17d155887870eb2cc535a999cba0d68383baf
+  languageName: node
+  linkType: hard
+
 "@upstash/redis@npm:1.25.1":
   version: 1.25.1
   resolution: "@upstash/redis@npm:1.25.1"
@@ -3813,6 +3825,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"effect@npm:3.4.5":
+  version: 3.4.5
+  resolution: "effect@npm:3.4.5"
+  checksum: 10c0/a848b3f4be8f7c49d9bf259be1dda53d9883ed062ca18f6f20af5111c4901f964542a44c43910d13b764fe4808dbd6305ad37b18832c811d9783a9cd3296366e
+  languageName: node
+  linkType: hard
+
 "effect@npm:^3.1.0":
   version: 3.2.5
   resolution: "effect@npm:3.2.5"
@@ -4431,12 +4450,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-check@npm:^3.18.0":
-  version: 3.19.0
-  resolution: "fast-check@npm:3.19.0"
+"fast-check@npm:^3.19.0":
+  version: 3.20.0
+  resolution: "fast-check@npm:3.20.0"
   dependencies:
     pure-rand: "npm:^6.1.0"
-  checksum: 10c0/5a15484d380fb5a3e94ec951c97e59b940ac4f2e1f3f7a05578d67851e5cb5283121bcf08c57e3238bc85899ce691b47ab477a6dd481a6f520e2e7ab4952d1ee
+  checksum: 10c0/860daef1337c96077ba7f2d0238391eb7de24aced5b0f43c699ad4ba683a1a61044dd8d17b86f914be728b97cbb5bbaf2625c2be4e1c0bf685f09432c29624c9
   languageName: node
   linkType: hard
 
@@ -5964,7 +5983,7 @@ __metadata:
     tailwindcss: "npm:^3.3.0"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:^5"
-    uploadthing: "npm:^6.10.4"
+    uploadthing: "npm:^6.13.2"
     zod: "npm:^3.22.4"
     zustand: "npm:^4.5.0"
   languageName: unknown
@@ -9546,24 +9565,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uploadthing@npm:^6.10.4":
-  version: 6.10.4
-  resolution: "uploadthing@npm:6.10.4"
+"uploadthing@npm:^6.13.2":
+  version: 6.13.2
+  resolution: "uploadthing@npm:6.13.2"
   dependencies:
-    "@effect/schema": "npm:^0.66.12"
+    "@effect/schema": "npm:0.68.12"
     "@uploadthing/mime-types": "npm:0.2.10"
-    "@uploadthing/shared": "npm:6.7.4"
+    "@uploadthing/shared": "npm:6.7.8"
     consola: "npm:^3.2.3"
-    effect: "npm:^3.1.0"
-    fast-check: "npm:^3.18.0"
+    effect: "npm:3.4.5"
     std-env: "npm:^3.7.0"
   peerDependencies:
+    "@effect/platform": "*"
     express: "*"
     fastify: "*"
     h3: "*"
     next: "*"
     tailwindcss: "*"
   peerDependenciesMeta:
+    "@effect/platform":
+      optional: true
     express:
       optional: true
     fastify:
@@ -9574,7 +9595,7 @@ __metadata:
       optional: true
     tailwindcss:
       optional: true
-  checksum: 10c0/a3ccb2eabf6de05d604fe645ab7d50c5467d00339eb2907a2b577f83cee9859ec522defac43ae82c0714b548718e2a3c93671357c3f73ccdb7e6942052873681
+  checksum: 10c0/2a9c47ccd40389d4bee6ee0f96a3e0f165cffe867dd7ba9252a0769cfc792f956fb5b3f1cbc20ce299a6dda4a91003a0363f8c66b1c27f2f4a572c44c640ef94
   languageName: node
   linkType: hard
 
