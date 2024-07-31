@@ -62,9 +62,6 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Account Information</p>
-        <span className="text-xs text-muted-foreground">
-          The changes will be applied after a new login
-        </span>
       </div>
       <div>
         <Form {...form}>
