@@ -1,0 +1,58 @@
+import { format } from 'date-fns';
+import { ArrowLeft, Download } from 'lucide-react';
+import Link from 'next/link';
+
+import { getGithubReleases } from '@/actions/github/get-releases';
+import { MarkdownText } from '@/components/common/markdown-text';
+import { Button } from '@/components/ui';
+import { TIMESTAMP_TEMPLATE } from '@/constants/common';
+
+type ReleasesPagePageProps = {
+  searchParams: { pageIndex: string; pageSize: string };
+};
+
+const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
+  const releases = await getGithubReleases(searchParams);
+
+  return (
+    <div className="p-6 flex flex-col mb-6">
+      <div className="w-full">
+        <Link
+          className="flex items-center text-sm hover:opacity-75 transition duration-300 mb-6"
+          href={'/'}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to courses
+        </Link>
+      </div>
+      <h1 className="text-2xl font-medium mb-12">Releases notes</h1>
+      {releases.map((release) => (
+        <div className="mb-8" key={release.name}>
+          <div className="flex flex-col mb-4">
+            {release.html_url && (
+              <Link href={release.html_url} target="_blank">
+                <h2 className="font-bold text-xl">{release.name}</h2>
+              </Link>
+            )}
+            {release.publishedAt && (
+              <p className="text-sm text-muted-foreground mb-4">
+                {format(release.publishedAt, TIMESTAMP_TEMPLATE)}
+              </p>
+            )}
+            {release.zipUrl && (
+              <Link href={release.zipUrl}>
+                <Button variant="outline">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download .zip
+                </Button>
+              </Link>
+            )}
+          </div>
+          <MarkdownText text={release.body} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default ReleasesPage;
