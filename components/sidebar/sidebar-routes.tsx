@@ -69,18 +69,18 @@ const settingsRoutes = [
     label: 'General',
   },
   {
+    href: '/settings/billing',
+    icon: Wallet2,
+    isNew: false,
+    isProtected: true,
+    label: 'Billing & Subscription',
+  },
+  {
     href: '/settings/notifications',
     icon: Rss,
     isNew: false,
     isProtected: true,
     label: 'Notifications',
-  },
-  {
-    href: '/settings/billing',
-    icon: Wallet2,
-    isNew: false,
-    isProtected: true,
-    label: 'Billing',
   },
 ];
 
