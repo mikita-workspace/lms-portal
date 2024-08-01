@@ -10,8 +10,11 @@ import YandexProvider from 'next-auth/providers/yandex';
 
 import { loginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
+import { TEN_MINUTE_SEC } from '@/constants/common';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
+import { fetchCachedData } from './cache';
+import { db } from './db';
 import { isString } from './guard';
 import { encrypt } from './utils';
 
@@ -112,6 +115,23 @@ export const authOptions = {
         token.email = user.email;
         token.isPublic = user.isPublic;
         token.role = user.role;
+
+        const updatedToken = await fetchCachedData(
+          `token-change-${token.email}`,
+          async () => {
+            const updatedUser = await db.user.findUnique({
+              where: { id: user?.id },
+              select: { role: true },
+            });
+
+            return { role: updatedUser?.role };
+          },
+          TEN_MINUTE_SEC,
+        );
+
+        if (updatedToken?.role && updatedToken.role !== user.role) {
+          token.role = updatedToken.role;
+        }
       }
 
       if (trigger === 'update') {
