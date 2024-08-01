@@ -115,23 +115,6 @@ export const authOptions = {
         token.email = user.email;
         token.isPublic = user.isPublic;
         token.role = user.role;
-
-        const updatedToken = await fetchCachedData(
-          `token-change-${token.email}`,
-          async () => {
-            const updatedUser = await db.user.findUnique({
-              where: { id: user?.id },
-              select: { role: true },
-            });
-
-            return { role: updatedUser?.role };
-          },
-          TEN_MINUTE_SEC,
-        );
-
-        if (updatedToken?.role && updatedToken.role !== user.role) {
-          token.role = updatedToken.role;
-        }
       }
 
       if (trigger === 'update') {
@@ -156,6 +139,23 @@ export const authOptions = {
 
         if (token.role) {
           session.user.role = (token.role as string) || UserRole.STUDENT;
+        }
+
+        const updatedToken = await fetchCachedData(
+          `token-change-${token.email}`,
+          async () => {
+            const updatedUser = await db.user.findUnique({
+              where: { id: session?.user?.userId },
+              select: { role: true },
+            });
+
+            return { role: updatedUser?.role };
+          },
+          TEN_MINUTE_SEC,
+        );
+
+        if (updatedToken?.role && updatedToken.role !== session?.user?.role) {
+          session.user.role = updatedToken.role;
         }
       }
 
