@@ -2,7 +2,7 @@
 
 import { Button } from '../ui';
 
-export const PremiumBanner = () => {
+export const SubscriptionBanner = () => {
   return (
     <div className="border rounded-sm flex flex-col p-4 gap-y-2">
       <h2 className="font-semibold tracking-tight text-base">Upgrade to Nova Plus</h2>

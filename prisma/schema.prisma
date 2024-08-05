@@ -7,19 +7,25 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
 }
 
+enum StripeSubscriptionPeriod {
+  monthly
+  yearly
+}
+
 model User {
-  id            String         @id @default(uuid())
-  course        Course[]
-  createdAt     DateTime       @default(now())
-  email         String         @unique
-  isPublic      Boolean?       @default(false)
-  name          String?
-  notifications Notification[]
-  otpCreatedAt  DateTime?
-  otpSecret     String?
-  pictureUrl    String?
-  role          String         @default("student")
-  updatedAt     DateTime       @updatedAt
+  id                 String              @id @default(uuid())
+  stripeSubscription StripeSubscription?
+  course             Course[]
+  createdAt          DateTime            @default(now())
+  email              String              @unique
+  isPublic           Boolean?            @default(false)
+  name               String?
+  notifications      Notification[]
+  otpCreatedAt       DateTime?
+  otpSecret          String?
+  pictureUrl         String?
+  role               String              @default("student")
+  updatedAt          DateTime            @updatedAt
 }
 
 model Course {
@@ -157,6 +163,28 @@ model StripePromo {
   stripeCouponId String
   stripePromoId  String   @unique
   updatedAt      DateTime @updatedAt
+}
+
+model StripeSubscription {
+  id        String                   @id @default(uuid())
+  User      User                     @relation(fields: [userId], references: [id])
+  createdAt DateTime                 @default(now())
+  endDate   DateTime
+  period    StripeSubscriptionPeriod
+  startDate DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
+  userId    String                   @unique
+
+  @@index([userId])
+}
+
+model StripeSubscriptionDescription {
+  id        String                   @id @default(uuid())
+  createdAt DateTime                 @default(now())
+  period    StripeSubscriptionPeriod
+  points    String[]
+  price     Int?                     @default(0)
+  updatedAt DateTime                 @updatedAt
 }
 
 model Fee {
