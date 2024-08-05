@@ -98,8 +98,9 @@ export const authOptions = {
           return `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`;
         }
 
-        user.id = dbUser.id;
         user.email = email;
+        user.hasSubscription = dbUser.hasSubscription;
+        user.id = dbUser.id;
         user.image = dbUser.image;
         user.isPublic = Boolean(dbUser.isPublic);
         user.name = dbUser.name;
@@ -113,6 +114,7 @@ export const authOptions = {
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.email = user.email;
+        token.hasSubscription = user.hasSubscription;
         token.isPublic = user.isPublic;
         token.role = user.role;
       }
@@ -133,6 +135,7 @@ export const authOptions = {
       if (session.user) {
         if (token.sub) {
           session.user.email = token.email;
+          session.user.hasSubscription = Boolean(token.subscription);
           session.user.isPublic = Boolean(token.isPublic);
           session.user.userId = token.sub;
         }
