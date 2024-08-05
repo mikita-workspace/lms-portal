@@ -8,13 +8,11 @@ import SlackProvider from 'next-auth/providers/slack';
 import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
 
+import { getUpdatedUser } from '@/actions/auth/get-updated-user';
 import { loginUser } from '@/actions/auth/login-user';
 import { Provider, UserRole } from '@/constants/auth';
-import { TEN_MINUTE_SEC } from '@/constants/common';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
-import { fetchCachedData } from './cache';
-import { db } from './db';
 import { isString } from './guard';
 import { encrypt } from './utils';
 
@@ -144,18 +142,7 @@ export const authOptions = {
           session.user.role = (token.role as string) || UserRole.STUDENT;
         }
 
-        const updatedToken = await fetchCachedData(
-          `token-change-${token.email}`,
-          async () => {
-            const updatedUser = await db.user.findUnique({
-              where: { id: session?.user?.userId },
-              select: { role: true },
-            });
-
-            return { role: updatedUser?.role };
-          },
-          TEN_MINUTE_SEC,
-        );
+        const updatedToken = await getUpdatedUser(session?.user?.userId);
 
         if (updatedToken?.role && updatedToken.role !== session?.user?.role) {
           session.user.role = updatedToken.role;

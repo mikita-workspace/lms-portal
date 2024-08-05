@@ -1,5 +1,6 @@
 'use client';
 
+import { SubscriptionModal } from '../modals/subscription-modal';
 import { Button } from '../ui';
 
 export const SubscriptionBanner = () => {
@@ -9,7 +10,9 @@ export const SubscriptionBanner = () => {
       <p className="text-muted-foreground text-sm mb-2">
         Unlock premium courses, get access to Nova AI, and more.
       </p>
-      <Button size="sm">Upgrade</Button>
+      <SubscriptionModal>
+        <Button size="sm">Upgrade</Button>
+      </SubscriptionModal>
     </div>
   );
 };

@@ -17,6 +17,8 @@ import {
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
+import { useCurrentUser } from '@/hooks/use-current-user';
+
 import { SubscriptionBanner } from '../common/subscription-banner';
 import { SideBarItem } from './sidebar-item';
 
@@ -117,6 +119,7 @@ const paymentsRoutes = [
 ];
 
 export const SideBarRoutes = () => {
+  const { user } = useCurrentUser();
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
@@ -149,7 +152,7 @@ export const SideBarRoutes = () => {
           />
         ))}
       </div>
-      <SubscriptionBanner />
+      {!user?.hasSubscription && <SubscriptionBanner />}
     </div>
   );
 };
