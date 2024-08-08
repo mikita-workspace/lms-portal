@@ -1,4 +1,4 @@
-export enum FilterStatus {
+export const enum FilterStatus {
   COMPLETED = 'completed',
   PROGRESS = 'progress',
 }
