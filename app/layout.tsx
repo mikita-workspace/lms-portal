@@ -1,5 +1,6 @@
 import './globals.css';
 
+import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
@@ -40,8 +41,9 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
         <Providers appConfig={appConfig} exchangeRates={exchangeRates}>
           {children}
         </Providers>
-        <CookieConsent />
         <SpeedInsights />
+        <Analytics />
+        <CookieConsent />
       </body>
     </html>
   );
