@@ -8,16 +8,16 @@ export enum Provider {
   GITHUB = 'github',
 }
 
-export enum AuthStatus {
-  AUTHENTICATED = 'authenticated',
-  LOADING = 'loading',
-  UNAUTHENTICATED = 'unauthenticated',
-}
-
 export enum UserRole {
   ADMIN = 'admin',
   STUDENT = 'student',
   TEACHER = 'teacher',
+}
+
+export const enum AuthStatus {
+  AUTHENTICATED = 'authenticated',
+  LOADING = 'loading',
+  UNAUTHENTICATED = 'unauthenticated',
 }
 
 export const OAUTH_LABELS = {

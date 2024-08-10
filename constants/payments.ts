@@ -1,16 +1,16 @@
-export enum PayoutRequestStatus {
+export const enum PayoutRequestStatus {
   AVAILABLE = 'available',
   DECLINED = 'declined',
   PAID = 'paid',
   PENDING = 'pending',
 }
 
-export enum PromoStatus {
+export const enum PromoStatus {
   DECLINED = 'declined',
   NEW = 'new',
 }
 
-export enum Report {
+export const enum Report {
   CONNECT = 'connect',
   OWNER = 'owner',
 }
