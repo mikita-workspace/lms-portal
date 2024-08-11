@@ -53,7 +53,7 @@ export const Price = ({
       {!isLoading && (amount ?? 0) > 0 && (
         <div className="flex flex-col gap-1">
           <span>{formattedPrice}</span>
-          {formattedNet && formattedTotalFees && (
+          {Boolean(fees.length) && formattedNet && formattedTotalFees && (
             <>
               {showFeesAccordion && (
                 <Accordion type="single" collapsible>

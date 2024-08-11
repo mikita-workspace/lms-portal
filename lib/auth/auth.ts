@@ -10,11 +10,12 @@ import YandexProvider from 'next-auth/providers/yandex';
 
 import { getUpdatedUser } from '@/actions/auth/get-updated-user';
 import { loginUser } from '@/actions/auth/login-user';
+import { checkSubscription } from '@/actions/stripe/check-subscription';
 import { Provider, UserRole } from '@/constants/auth';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
-import { isString } from './guard';
-import { encrypt } from './utils';
+import { isString } from '../guard';
+import { encrypt } from '../utils';
 
 export const authOptions = {
   pages: {
@@ -142,10 +143,17 @@ export const authOptions = {
           session.user.role = (token.role as string) || UserRole.STUDENT;
         }
 
-        const updatedToken = await getUpdatedUser(session?.user?.userId);
+        const userId = session?.user?.userId;
+
+        const updatedToken = await getUpdatedUser(userId);
+        const hasSubscription = await checkSubscription(userId);
 
         if (updatedToken?.role && updatedToken.role !== session?.user?.role) {
           session.user.role = updatedToken.role;
+        }
+
+        if (hasSubscription !== session?.user?.hasSubscription) {
+          session.user.hasSubscription = hasSubscription;
         }
       }
 

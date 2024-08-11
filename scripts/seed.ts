@@ -42,6 +42,21 @@ async function main() {
       ],
     });
 
+    await database.stripeSubscriptionDescription.createMany({
+      data: [
+        {
+          period: 'monthly',
+          points: ['Unlock premium courses', 'Get access to Nova AI', 'Cancel anytime'],
+          price: 4900,
+        },
+        {
+          period: 'yearly',
+          points: ['Unlock premium courses', 'Get access to Nova AI', 'Cancel anytime'],
+          price: 2400,
+        },
+      ],
+    });
+
     console.info('Success');
   } catch (error) {
     console.error('Error seeding the database categories', error);
