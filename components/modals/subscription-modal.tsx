@@ -2,7 +2,9 @@
 
 import { StripeSubscriptionDescription, StripeSubscriptionPeriod } from '@prisma/client';
 import { CheckCircle2 as CheckCircle } from 'lucide-react';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { SyntheticEvent, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import {
   Dialog,
@@ -11,6 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { useLocaleStore } from '@/hooks/use-locale-store';
+import { fetcher } from '@/lib/fetcher';
 import { capitalize } from '@/lib/utils';
 
 import { Price } from '../common/price';
@@ -24,6 +29,10 @@ type SubscriptionModalProps = {
 };
 
 export const SubscriptionModal = ({ description = [], open, setOpen }: SubscriptionModalProps) => {
+  const pathname = usePathname();
+
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
+
   const [isFetching, setIsFetching] = useState(false);
   const [currentTab, setCurrentTab] = useState<StripeSubscriptionPeriod>(
     StripeSubscriptionPeriod.yearly,
@@ -31,19 +40,69 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
 
   const yearly = description.find(({ period }) => period === StripeSubscriptionPeriod.yearly);
   const monthly = description.find(({ period }) => period === StripeSubscriptionPeriod.monthly);
-  const price = currentTab === StripeSubscriptionPeriod.yearly ? yearly?.price : monthly?.price;
+
+  const { price, unitPrice, recurringInterval, subscriptionName } = (() => {
+    const currentPeriod = currentTab === StripeSubscriptionPeriod.yearly ? yearly : monthly;
+
+    return {
+      price: currentPeriod?.price,
+      unitPrice:
+        currentPeriod?.period === StripeSubscriptionPeriod?.yearly
+          ? Math.round((currentPeriod?.price ?? 0) / 12)
+          : currentPeriod?.price,
+      recurringInterval:
+        currentPeriod?.period === StripeSubscriptionPeriod.yearly ? 'year' : 'month',
+      subscriptionName: currentPeriod?.name,
+    };
+  })();
+
+  const handleUpgrade = async (event: SyntheticEvent) => {
+    event.preventDefault();
+
+    setIsFetching(true);
+
+    await toast.promise(
+      fetcher.post('/api/payments/subscription', {
+        body: {
+          details: localeInfo?.details,
+          locale: localeInfo?.locale,
+          price,
+          rate: localeInfo?.rate,
+          recurringInterval,
+          returnUrl: pathname,
+          subscriptionName,
+        },
+        responseType: 'json',
+      }),
+      {
+        loading: 'Subscription processing...',
+        success: (data) => {
+          setIsFetching(false);
+
+          window.location.assign(data.url);
+
+          return 'Checkout';
+        },
+        error: () => {
+          setIsFetching(false);
+
+          return 'Something went wrong';
+        },
+      },
+    );
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleUpgrade}>
           <DialogHeader>
             <DialogTitle className="text-center text-lg font-semibold">
               {capitalize(currentTab)}
             </DialogTitle>
             <div className="flex items-baseline justify-center pt-4">
               <p className="text-center text-3xl lg:text-4xl font-semibold tracking-tight">
-                <Price price={price ?? 0} />
+                <Price price={unitPrice ?? 0} />
               </p>
               <span className="text-sm leading-7 text-muted-foreground ml-1">/mo</span>
             </div>
@@ -70,7 +129,7 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
             <TabsContent value={StripeSubscriptionPeriod.yearly} className="pt-4">
               <ul className="pt-2 space-y-3 text-sm leading-6">
                 {yearly?.points.map((point) => (
-                  <li key={point} className="flex gap-x-3 text-sm">
+                  <li key={point} className="flex gap-x-3 text-sm items-center">
                     <CheckCircle className="h-4 w-4" />
                     {point}
                   </li>
@@ -80,7 +139,7 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
             <TabsContent value={StripeSubscriptionPeriod.monthly} className="pt-4">
               <ul className="pt-2 space-y-3 text-sm leading-6">
                 {monthly?.points.map((point) => (
-                  <li key={point} className="flex gap-x-3 text-sm">
+                  <li key={point} className="flex gap-x-3 text-sm items-center">
                     <CheckCircle className="h-4 w-4" />
                     {point}
                   </li>

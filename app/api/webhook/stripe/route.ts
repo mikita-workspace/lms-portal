@@ -1,11 +1,12 @@
+import { fromUnixTime } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import stripe from 'stripe';
 
 import { db } from '@/lib/db';
 import { isObject, isString } from '@/lib/guard';
+import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest) => {
   const body = await req.text();
@@ -28,18 +29,35 @@ export const POST = async (req: NextRequest) => {
   const session = event.data.object as Stripe.Checkout.Session;
   const userId = session?.metadata?.userId;
   const courseId = session?.metadata?.courseId;
+  const isSubscription = session.metadata?.isSubscription;
 
-  switch (event.type) {
-    case 'checkout.session.completed':
-      if (!userId || !courseId) {
-        return new NextResponse('Webhook Error: Missing metadata', {
-          status: StatusCodes.BAD_REQUEST,
-        });
-      }
+  if (event.type === 'checkout.session.completed') {
+    if (!userId || (!isSubscription && !courseId)) {
+      return new NextResponse('Webhook Error: Missing metadata', {
+        status: StatusCodes.BAD_REQUEST,
+      });
+    }
 
+    const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+
+    if (isSubscription) {
+      await db.stripeSubscription.create({
+        data: {
+          endDate: new Date(subscription.current_period_end * 1000),
+          name: session?.metadata?.subscriptionName ?? '',
+          startDate: new Date(subscription.current_period_start * 1000),
+          stripeCustomerId: subscription.customer as string,
+          stripePriceId: subscription.items.data[0].price.id,
+          stripeSubscriptionId: subscription.id,
+          userId,
+        },
+      });
+
+      return new NextResponse(null);
+    } else {
       const purchase = await db.purchase.create({
         data: {
-          courseId,
+          courseId: courseId!,
           userId,
         },
       });
@@ -55,7 +73,7 @@ export const POST = async (req: NextRequest) => {
         return null;
       })();
 
-      return await db.purchaseDetails.create({
+      await db.purchaseDetails.create({
         data: {
           city: session?.metadata?.city,
           country: session?.metadata?.country,
@@ -69,9 +87,31 @@ export const POST = async (req: NextRequest) => {
           purchaseId: purchase.id,
         },
       });
-    case 'customer.subscription.deleted':
-      return null;
-    default:
-      return new NextResponse(`Webhook Error: Unhandled event type ${event.type}`);
+
+      return new NextResponse(null);
+    }
   }
+
+  if (event.type === 'customer.subscription.updated') {
+    const subscription: Stripe.Subscription = event.data.object;
+
+    await db.stripeSubscription.update({
+      where: { stripeSubscriptionId: subscription.id },
+      data: {
+        cancelAt: subscription.cancel_at ? fromUnixTime(subscription.cancel_at) : null,
+      },
+    });
+
+    return new NextResponse(null);
+  }
+
+  if (event.type === 'customer.subscription.deleted') {
+    const subscription = event.data.object;
+
+    await db.stripeSubscription.delete({ where: { stripeSubscriptionId: subscription.id } });
+
+    return new NextResponse(null);
+  }
+
+  return new NextResponse(`Webhook Error: Unhandled event type ${event.type}`);
 };

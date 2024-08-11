@@ -51,3 +51,5 @@ export const decrypt = (cipher: string, secret: string) => {
 
   return bytes.toString(enc.Utf8);
 };
+
+export const absoluteUrl = (path: string) => `${process.env.NEXT_PUBLIC_APP_URL}${path}`;

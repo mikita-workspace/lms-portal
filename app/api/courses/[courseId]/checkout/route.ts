@@ -5,6 +5,7 @@ import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
+import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
@@ -64,7 +65,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
 
     const session = await stripe.checkout.sessions.create({
       allow_promotion_codes: true,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/landing-course/${course.id}?canceled=true`,
+      cancel_url: absoluteUrl(`/landing-course/${course.id}?canceled=true`),
       customer: stripeCustomer.stripeCustomerId,
       expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
       payment_method_types: ['card'],
@@ -73,7 +74,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       },
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true`,
+      success_url: absoluteUrl(`/courses/${course.id}?success=true`),
       metadata: {
         ...details,
         courseId: course.id,
