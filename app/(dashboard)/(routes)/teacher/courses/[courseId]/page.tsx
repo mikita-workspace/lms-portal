@@ -8,6 +8,7 @@ import { IconBadge } from '@/components/common/icon-badge';
 import { db } from '@/lib/db';
 
 import { Actions } from './_components/actions';
+import { AdvancedOptionsForm } from './_components/form/advanced-options-form';
 import { AttachmentForm } from './_components/form/attachment-form';
 import { CategoryForm } from './_components/form/category-form';
 import { ChaptersForm } from './_components/form/chapters-form';
@@ -107,6 +108,7 @@ const CourseIdPage = async ({ params }: CourseIdPageProps) => {
               {...commonFormProps}
               options={categories.map((category) => ({ label: category.name, value: category.id }))}
             />
+            <AdvancedOptionsForm {...commonFormProps} />
           </div>
           <div className="space-y-6">
             <div>

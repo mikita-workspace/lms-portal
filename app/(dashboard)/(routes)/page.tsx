@@ -18,7 +18,11 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });
   const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
-  const courses = await getCourses({ ...searchParams, userId: user?.userId });
+  const courses = await getCourses({
+    ...searchParams,
+    hasSubscription: user?.hasSubscription,
+    userId: user?.userId,
+  });
 
   return (
     <>

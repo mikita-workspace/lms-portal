@@ -40,12 +40,13 @@ type BackgroundVariantsProps = VariantProps<typeof backgroundVariants>;
 type TextVariantsProps = VariantProps<typeof textVariants>;
 
 interface IconBadgeProps extends BackgroundVariantsProps, TextVariantsProps {
+  className?: string;
   label: string;
 }
 
-const TextBadge = ({ variant, label }: IconBadgeProps) => {
+const TextBadge = ({ variant, label, className }: IconBadgeProps) => {
   return (
-    <Badge className={cn(backgroundVariants({ variant }))} variant="outline">
+    <Badge className={cn(backgroundVariants({ variant }), className)} variant="outline">
       <span className={cn(textVariants({ variant }))}> {label}</span>
     </Badge>
   );
