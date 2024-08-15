@@ -39,9 +39,9 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
-
     if (isSubscription) {
+      const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+
       await db.stripeSubscription.create({
         data: {
           endDate: new Date(subscription.current_period_end * 1000),
