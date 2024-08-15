@@ -6004,7 +6004,7 @@ __metadata:
     recharts: "npm:^2.12.0"
     remark-gfm: "npm:^4.0.0"
     sharp: "npm:^0.32.6"
-    stripe: "npm:^14.16.0"
+    stripe: "npm:^16.7.0"
     tailwind-merge: "npm:^2.2.1"
     tailwindcss: "npm:^3.3.0"
     tailwindcss-animate: "npm:^1.0.7"
@@ -9208,13 +9208,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:^14.16.0":
-  version: 14.16.0
-  resolution: "stripe@npm:14.16.0"
+"stripe@npm:^16.7.0":
+  version: 16.7.0
+  resolution: "stripe@npm:16.7.0"
   dependencies:
     "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10c0/bada06609592bae71094ba86fdf745d86945d6bb5b44482da0355235c01ca6f2c76f261fad31d9d367cee5cf6b8b5532fb66733d664d4bb497125809b61699bf
+  checksum: 10c0/2604c58cffd939315385e34ed4b69f19f6e1dc14960c95e8294b235d2dcb2b60653e09efa16385246921abf3c55bcacb0067a10ab2148ad884bfb2dcd5a8e20a
   languageName: node
   linkType: hard
 
