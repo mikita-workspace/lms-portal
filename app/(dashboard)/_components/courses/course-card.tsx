@@ -9,7 +9,6 @@ import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { ProgressBar } from '@/components/common/progress-bar';
 import { TextBadge } from '@/components/common/text-badge';
-import { Badge } from '@/components/ui';
 import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
