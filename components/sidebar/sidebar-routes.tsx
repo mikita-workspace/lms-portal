@@ -17,6 +17,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
+import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { SubscriptionBanner } from '../common/subscription-banner';
@@ -119,12 +120,14 @@ const paymentsRoutes = [
 ];
 
 export const SideBarRoutes = () => {
-  const { user } = useCurrentUser();
+  const { user, status } = useCurrentUser();
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
   const isTeacherPage = pathname?.includes('/teacher');
   const isPaymentsPage = pathname?.includes('/owner');
+
+  const isLoading = status === AuthStatus.LOADING;
 
   const routes = useMemo(() => {
     if (isSettingsPage) {
@@ -152,7 +155,7 @@ export const SideBarRoutes = () => {
           />
         ))}
       </div>
-      {!user?.hasSubscription && <SubscriptionBanner />}
+      {!isLoading && !user?.hasSubscription && <SubscriptionBanner />}
     </div>
   );
 };

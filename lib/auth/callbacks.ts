@@ -3,10 +3,11 @@ import { NextAuthOptions } from 'next-auth';
 
 import { getUpdatedUser } from '@/actions/auth/get-updated-user';
 import { loginUser } from '@/actions/auth/login-user';
+import { getUserSubscription } from '@/actions/stripe/get-user-subscription';
 import { Provider, UserRole } from '@/constants/auth';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
-import { isString } from '../guard';
+import { isObject, isString } from '../guard';
 import { encrypt } from '../utils';
 
 export const callbacks: NextAuthOptions['callbacks'] = {
@@ -70,10 +71,13 @@ export const callbacks: NextAuthOptions['callbacks'] = {
       const userId = session?.user?.userId;
 
       const updatedToken = await getUpdatedUser(userId);
+      const userSubscription = await getUserSubscription(userId);
 
       if (updatedToken?.role && updatedToken.role !== session?.user?.role) {
         session.user.role = updatedToken.role;
       }
+
+      session.user.hasSubscription = isObject(userSubscription);
     }
 
     return session;
