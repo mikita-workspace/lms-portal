@@ -19,6 +19,7 @@ type CourseCardProps = {
   id: string;
   imagePlaceholder: string;
   imageUrl: string | null;
+  isPremium?: boolean | null;
   isPublished?: boolean;
   isPurchased?: boolean;
   price: number | null;
@@ -34,6 +35,7 @@ export const CourseCard = async ({
   id,
   imagePlaceholder,
   imageUrl,
+  isPremium,
   isPublished,
   isPurchased,
   price,
@@ -50,7 +52,9 @@ export const CourseCard = async ({
           !isPublished && 'select-none blur-sm',
         )}
       >
-        <TextBadge className="absolute z-10 mt-2 ml-2" label="Premium" variant="indigo" />
+        {isPremium && (
+          <TextBadge className="absolute z-10 mt-2 ml-2" label="Premium" variant="indigo" />
+        )}
         <div className="w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
           <Image
             alt={title}
