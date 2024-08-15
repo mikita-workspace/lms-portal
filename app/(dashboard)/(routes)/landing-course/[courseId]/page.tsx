@@ -51,7 +51,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
 
   const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
-  if (!course || (user?.hasSubscription && course?.isPremium)) {
+  if (!course || !(user?.hasSubscription && course?.isPremium)) {
     redirect('/');
   }
 

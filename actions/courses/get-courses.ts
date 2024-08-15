@@ -16,11 +16,21 @@ type CourseWithProgressWithCategory = Course & {
   purchases?: Purchase[];
 };
 
-type GetCourses = { userId?: string; title?: string; categoryId?: string };
+type GetCourses = {
+  categoryId?: string;
+  hasSubscription?: boolean;
+  title?: string;
+  userId?: string;
+};
 
-export const getCourses = async ({ userId, title, categoryId }: GetCourses) => {
+export const getCourses = async ({ categoryId, hasSubscription, title, userId }: GetCourses) => {
   const courses = await db.course.findMany({
-    where: { isPublished: true, title: { contains: title, mode: 'insensitive' }, categoryId },
+    where: {
+      ...(!hasSubscription && { isPremium: false }),
+      categoryId,
+      isPublished: true,
+      title: { contains: title, mode: 'insensitive' },
+    },
     include: {
       ...(userId && { purchases: { where: { userId } } }),
       category: true,
