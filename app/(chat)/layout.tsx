@@ -5,7 +5,6 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { NavBar } from '@/components/navbar/navbar';
-import { UserRole } from '@/constants/auth';
 
 export const metadata: Metadata = {
   title: 'Chat AI',
@@ -24,7 +23,7 @@ const ChatLayout = async ({ children }: ChatLayoutProps) => {
     take: 5,
   });
 
-  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (!user?.hasSubscription) {
     return redirect('/');
   }
 

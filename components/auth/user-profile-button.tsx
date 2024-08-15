@@ -71,6 +71,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
   const isAdmin = user?.role === UserRole.ADMIN;
   const isStudent = user?.role === UserRole.STUDENT;
   const isTeacher = user?.role === UserRole.TEACHER;
+  const hasSubscription = user?.hasSubscription;
 
   return user ? (
     <DropdownMenu>
@@ -122,7 +123,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             Owner
           </DropdownMenuItem>
         )}
-        {(isAdmin || isTeacher) && (
+        {(isAdmin || isTeacher || hasSubscription) && (
           <>
             <DropdownMenuItem
               className="hover:cursor-pointer"

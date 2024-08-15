@@ -10,10 +10,14 @@ export const loginUser = async (
   name?: string | null,
   pictureUrl?: string | null,
 ) => {
-  const existingUser = await db.user.findUnique({ where: { email } });
+  const existingUser = await db.user.findUnique({
+    where: { email },
+    include: { stripeSubscription: true },
+  });
 
   if (existingUser) {
     return {
+      hasSubscription: Boolean(existingUser.stripeSubscription),
       id: existingUser.id,
       image: existingUser.pictureUrl,
       isPublic: existingUser.isPublic,
@@ -80,6 +84,7 @@ export const loginUser = async (
   });
 
   return {
+    hasSubscription: false,
     id: user.id,
     image: user.pictureUrl,
     isPublic: user.isPublic,

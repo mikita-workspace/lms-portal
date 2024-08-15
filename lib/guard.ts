@@ -2,3 +2,5 @@ export const isString = (value: unknown): value is string => typeof value === 's
 
 export const isNumber = (value: unknown): value is number =>
   typeof value === 'number' && isFinite(value);
+
+export const isObject = (value: unknown): value is object => typeof value === 'object';

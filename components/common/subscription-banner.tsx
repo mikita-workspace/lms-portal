@@ -1,0 +1,59 @@
+'use client';
+
+import { StripeSubscriptionDescription } from '@prisma/client';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+
+import { fetcher } from '@/lib/fetcher';
+
+import { SubscriptionModal } from '../modals/subscription-modal';
+import { Button } from '../ui';
+
+export const SubscriptionBanner = () => {
+  const [subscriptionDescription, setSubscriptionDescription] = useState<
+    StripeSubscriptionDescription[]
+  >([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleFetchSubscriptionDescription = async () => {
+    setIsFetching(true);
+
+    try {
+      const response = await fetcher.get('/api/payments/subscription', {
+        responseType: 'json',
+      });
+
+      if (!response) {
+        setSubscriptionDescription([]);
+      }
+
+      setSubscriptionDescription(response);
+      setOpen(true);
+    } catch (error) {
+      toast.error('Something went wrong!');
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  return (
+    <>
+      <SubscriptionModal description={subscriptionDescription} open={open} setOpen={setOpen} />
+      <div className="border rounded-sm flex flex-col p-4 gap-y-2">
+        <h2 className="font-semibold tracking-tight text-base">Upgrade to Nova Plus</h2>
+        <p className="text-muted-foreground text-sm mb-2">
+          Unlock premium courses, get access to Nova AI, and more.
+        </p>
+        <Button
+          disabled={isFetching}
+          isLoading={isFetching}
+          onClick={handleFetchSubscriptionDescription}
+          size="sm"
+        >
+          Upgrade
+        </Button>
+      </div>
+    </>
+  );
+};

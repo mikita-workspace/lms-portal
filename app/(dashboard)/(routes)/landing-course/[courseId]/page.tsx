@@ -118,8 +118,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
               )}
             </div>
           </div>
-          {/* TODO: External recourses. [https://trello.com/c/R4RkoqmC/13-add-external-resources-for-landing-course-page] */}
-          {/* <div className="w-full flex space-x-4"></div> */}
         </div>
       </div>
     </div>
