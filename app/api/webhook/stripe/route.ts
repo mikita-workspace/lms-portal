@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+import { removeValueFromMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { isObject, isString } from '@/lib/guard';
 import { stripe } from '@/server/stripe';
@@ -52,6 +53,8 @@ export const POST = async (req: NextRequest) => {
           userId,
         },
       });
+
+      await removeValueFromMemoryCache(`user-subscription-[${userId}]`);
 
       return new NextResponse(null);
     } else {

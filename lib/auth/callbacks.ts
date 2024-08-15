@@ -7,7 +7,7 @@ import { getUserSubscription } from '@/actions/stripe/get-user-subscription';
 import { Provider, UserRole } from '@/constants/auth';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
-import { isObject, isString } from '../guard';
+import { isString } from '../guard';
 import { encrypt } from '../utils';
 
 export const callbacks: NextAuthOptions['callbacks'] = {
@@ -77,7 +77,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
         session.user.role = updatedToken.role;
       }
 
-      session.user.hasSubscription = isObject(userSubscription);
+      session.user.hasSubscription = Boolean(userSubscription);
     }
 
     return session;

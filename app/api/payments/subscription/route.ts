@@ -91,7 +91,7 @@ export const POST = async (req: NextRequest) => {
         subscriptionName,
         userId: user?.userId,
       },
-      success_url: absoluteUrl(returnUrl),
+      success_url: absoluteUrl(`${returnUrl}?success=true`),
       cancel_url: absoluteUrl(returnUrl),
     });
 

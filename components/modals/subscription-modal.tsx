@@ -1,7 +1,7 @@
 'use client';
 
 import { StripeSubscriptionDescription, StripeSubscriptionPeriod } from '@prisma/client';
-import { CheckCircle2 as CheckCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2 as CheckCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { capitalize } from '@/lib/utils';
@@ -20,6 +21,7 @@ import { capitalize } from '@/lib/utils';
 import { Price } from '../common/price';
 import { TextBadge } from '../common/text-badge';
 import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from '../ui';
+import { AuthModal } from './auth-modal';
 
 type SubscriptionModalProps = {
   description: StripeSubscriptionDescription[];
@@ -29,6 +31,7 @@ type SubscriptionModalProps = {
 
 export const SubscriptionModal = ({ description = [], open, setOpen }: SubscriptionModalProps) => {
   const pathname = usePathname();
+  const { user } = useCurrentUser();
 
   const localeInfo = useLocaleStore((state) => state.localeInfo);
 
@@ -147,14 +150,24 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
             </TabsContent>
           </Tabs>
           <DialogFooter className="mt-6">
-            <Button
-              className="mt-2 w-full"
-              disabled={isFetching}
-              isLoading={isFetching}
-              type="submit"
-            >
-              Upgrade
-            </Button>
+            {user?.userId && (
+              <Button
+                className="mt-2 w-full"
+                disabled={isFetching}
+                isLoading={isFetching}
+                type="submit"
+              >
+                Upgrade
+              </Button>
+            )}
+            {!user?.userId && (
+              <AuthModal>
+                <Button className="w-full">
+                  Login to continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </AuthModal>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>
