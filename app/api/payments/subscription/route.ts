@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
       where: { userId: user?.userId },
     });
 
-    if (userSubscription && userSubscription.stripeCustomerId) {
+    if (userSubscription?.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: absoluteUrl(returnUrl),
