@@ -39,6 +39,7 @@ model Course {
   customTags  String[]
   description String?      @db.Text
   imageUrl    String?      @db.Text
+  isPremium   Boolean?     @default(false)
   isPublished Boolean      @default(false)
   price       Int?         @default(0)
   purchases   Purchase[]
