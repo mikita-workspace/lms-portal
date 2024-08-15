@@ -123,21 +123,21 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             Owner
           </DropdownMenuItem>
         )}
-        {(isAdmin || isTeacher || hasSubscription) && (
-          <>
-            <DropdownMenuItem
-              className="hover:cursor-pointer"
-              onClick={() => router.push('/teacher/courses')}
-            >
-              <BookMarked className="h-4 w-4 mr-2" />
-              Teacher
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Chat&nbsp;&nbsp;
-              <TextBadge label="AI" variant="yellow" />
-            </DropdownMenuItem>
-          </>
+        {(isAdmin || isTeacher) && (
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => router.push('/teacher/courses')}
+          >
+            <BookMarked className="h-4 w-4 mr-2" />
+            Teacher
+          </DropdownMenuItem>
+        )}
+        {(isAdmin || hasSubscription) && (
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Chat&nbsp;&nbsp;
+            <TextBadge label="AI" variant="yellow" />
+          </DropdownMenuItem>
         )}
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer">
