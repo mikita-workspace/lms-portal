@@ -7,7 +7,6 @@ export const authOptions = {
   pages: {
     signIn: '/sign-in',
   },
-
   providers,
   callbacks,
 } satisfies NextAuthOptions;
