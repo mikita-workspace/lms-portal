@@ -32,6 +32,7 @@ export const Footer = () => {
               </div>
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
+              <Link href="/releases">Releases notes</Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
                 Terms and Conditions
               </Link>

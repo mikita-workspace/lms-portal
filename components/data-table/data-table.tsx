@@ -26,6 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { PAGE_SIZES } from '@/constants/paginations';
+import { useSearchLineParams } from '@/hooks/use-search-params';
 import { getNotificationActionName } from '@/lib/notifications';
 
 import { PromoModal } from '../modals/promo-modal';
@@ -40,11 +42,12 @@ interface DataTableProps<TData, TValue> {
   coupons?: Coupon[];
   customers?: Customer[];
   data: TData[];
-  initialPageSize?: number;
   isNotificationPage?: boolean;
   isPromoPage?: boolean;
+  isServerSidePagination?: boolean;
   isTeacherCoursesPage?: boolean;
   noLabel?: string;
+  pageCount?: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -52,33 +55,40 @@ export function DataTable<TData, TValue>({
   coupons = [],
   customers = [],
   data,
-  initialPageSize = 10,
   isNotificationPage = false,
   isPromoPage = false,
+  isServerSidePagination = true,
   isTeacherCoursesPage = false,
   noLabel,
+  pageCount = 0,
 }: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: PAGE_SIZES[0],
+  });
+
+  useSearchLineParams(pagination, !isServerSidePagination);
 
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: isServerSidePagination ? undefined : getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
+    onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    initialState: {
-      pagination: {
-        pageSize: initialPageSize,
-      },
-    },
+    manualPagination: isServerSidePagination,
     state: {
       columnFilters,
       sorting,
+      pagination,
     },
+    pageCount: isServerSidePagination ? pageCount : undefined,
   });
 
   const filterPlaceholder = (() => {
@@ -100,7 +110,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {(isTeacherCoursesPage || isPromoPage || isNotificationPage) && (
-        <div className="flex items-center py-4 justify-between space-x-2">
+        <div className="flex items-center pb-4 justify-between space-x-2">
           <div className="flex gap-x-2 w-full">
             <Input
               placeholder={filterPlaceholder}

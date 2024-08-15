@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Hucky >> Starting pre-push hook"
+echo "Hucky >> Running type check"
+yarn type:check
+
+echo "Hucky >> Running ESlint"
+yarn lint

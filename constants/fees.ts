@@ -1,9 +1,9 @@
-export enum CalculationMethod {
+export const enum CalculationMethod {
   FIXED = 'fixed',
   PERCENTAGE = 'percentage',
 }
 
-export enum FeeType {
+export const enum FeeType {
   SERVICE = 'service',
   STRIPE = 'stripe',
 }

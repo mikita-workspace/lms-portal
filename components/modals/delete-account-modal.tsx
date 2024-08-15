@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { fetcher } from '@/lib/fetcher';
 
+import { Captcha } from '../common/captcha';
 import { Button, Input } from '../ui';
 
 type DeleteAccountModalProps = {
@@ -29,6 +30,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
 
   const [isFetching, setIsFetching] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
 
   useEffect(() => {
     setIsValid(input === email);
@@ -74,13 +76,25 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
                 onChange={(event) => setInput(event.target.value)}
               />
             </div>
+            <div className="mt-6">
+              <Captcha
+                callback={(token) => {
+                  if (token) {
+                    setCaptchaToken(token);
+                  }
+                }}
+              />
+            </div>
           </div>
-          <DialogFooter className="mt-6">
+          <DialogFooter className="mt-4">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="mt-2">
+                Cancel
+              </Button>
             </DialogClose>
             <Button
-              disabled={isFetching || !isValid}
+              className="mt-2"
+              disabled={isFetching || !isValid || !captchaToken}
               isLoading={isFetching}
               type="submit"
               variant="destructive"

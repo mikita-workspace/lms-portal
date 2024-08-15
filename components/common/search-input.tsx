@@ -1,45 +1,23 @@
 'use client';
 
 import { Search, XIcon } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import qs from 'query-string';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchLineParams } from '@/hooks/use-search-params';
 
 import { Input } from '../ui';
 
 export const SearchInput = () => {
-  const [isMounted, setIsMounted] = useState(false);
   const [value, setValue] = useState('');
 
   const debouncedValue = useDebounce(value);
-
-  const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentCategoryId = searchParams.get('categoryId');
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: { categoryId: currentCategoryId, title: debouncedValue },
-      },
-      { skipNull: true, skipEmptyString: true },
-    );
-
-    router.push(url);
-  }, [debouncedValue, currentCategoryId, router, pathname]);
-
-  if (!isMounted) {
-    return null;
-  }
+  useSearchLineParams({ categoryId: currentCategoryId, title: debouncedValue });
 
   return (
     <div className="relative">

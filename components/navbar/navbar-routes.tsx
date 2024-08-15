@@ -35,16 +35,18 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isTeacherPage = pathname?.startsWith('/teacher');
 
+  const isLoading = status === AuthStatus.LOADING;
+
   return (
     <>
       {isSearchPage && (
         <Suspense>
-          <div className="hidden md:block -center">
+          <div className="hidden md:block -center ml-[100px]">
             <SearchInput />
           </div>
         </Suspense>
       )}
-      {status === AuthStatus.LOADING ? (
+      {isLoading && (
         <div className="flex items-center space-x-4 ml-auto">
           <div className="space-y-2">
             <Skeleton className="h-3 w-[100px]" />
@@ -52,7 +54,8 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
           </div>
           <Skeleton className="h-10 w-10 rounded-full" />
         </div>
-      ) : (
+      )}
+      {!isLoading && (
         <div className="flex gap-x-2 ml-auto items-center">
           {user?.userId && (
             <>
@@ -65,14 +68,13 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
-                    {isTeacherPage || isOwnerPage ? 'Exit' : 'Back to courses'}
+                    {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
                   </Button>
                 </Link>
               )}
               <Notifications userNotifications={userNotifications} />
             </>
           )}
-
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}

@@ -6,7 +6,7 @@ import { UserRole } from '@/constants/auth';
 
 export const metadata: Metadata = {
   title: 'Teacher',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
 };
 
 type TeacherLayoutProps = Readonly<{

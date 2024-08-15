@@ -5,11 +5,10 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { NavBar } from '@/components/navbar/navbar';
-import { UserRole } from '@/constants/auth';
 
 export const metadata: Metadata = {
   title: 'Chat AI',
-  description: 'LMS Portal for educational purposes',
+  description: 'Chat AI',
 };
 
 type ChatLayoutProps = Readonly<{
@@ -19,9 +18,12 @@ type ChatLayoutProps = Readonly<{
 const ChatLayout = async ({ children }: ChatLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
-  const userNotifications = await getUserNotifications(user?.userId, 5);
+  const { notifications: userNotifications } = await getUserNotifications({
+    userId: user?.userId,
+    take: 5,
+  });
 
-  if (![UserRole.ADMIN, UserRole.TEACHER].includes(user?.role as UserRole)) {
+  if (!user?.hasSubscription) {
     return redirect('/');
   }
 

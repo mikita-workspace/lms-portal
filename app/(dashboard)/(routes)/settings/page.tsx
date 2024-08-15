@@ -1,18 +1,12 @@
 import { Flame } from 'lucide-react';
-import { Metadata } from 'next';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { DeleteAccountModal } from '@/components/modals/delete-account-modal';
 import { Button } from '@/components/ui';
 import { db } from '@/lib/db';
 
+import { AdvancedOptions } from './_components/advanced-options/advanced-options';
 import { GeneralSettingsForm } from './_components/general-settings-form';
-import { PublicProfileForm } from './_components/public-profile-form';
-
-export const metadata: Metadata = {
-  title: 'Settings',
-  description: 'LMS Portal for educational purposes',
-};
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();
@@ -23,7 +17,7 @@ const SettingsPage = async () => {
       <h1 className="text-2xl font-medium">General Settings</h1>
       <div className="mt-12">
         <GeneralSettingsForm initialData={userInfo!} />
-        <PublicProfileForm initialData={userInfo!} />
+        <AdvancedOptions initialData={userInfo!} />
       </div>
       <DeleteAccountModal userId={user?.userId} email={user?.email}>
         <div className="flex items-center gap-x-2 mt-8">

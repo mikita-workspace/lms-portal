@@ -5,22 +5,23 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsStars } from 'react-icons/bs';
 
+import { SYSTEM_COURSE_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 
-type GenerateDescriptionAiProps = {
+type GenerateTextResponseAiProps = {
   callback: Dispatch<SetStateAction<string>>;
   isSubmitting?: boolean;
   isValid?: boolean;
   messages: { role: string; content: string }[];
 };
 
-export const GenerateDescriptionAi = ({
+export const GenerateTextResponseAi = ({
   callback,
   isSubmitting,
   isValid,
   messages,
-}: GenerateDescriptionAiProps) => {
+}: GenerateTextResponseAiProps) => {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [isImproving, setIsImproving] = useState(false);
@@ -37,7 +38,7 @@ export const GenerateDescriptionAi = ({
           messages,
           system: {
             role: ChatCompletionRole.SYSTEM,
-            content: 'You are the creator of various courses on a special learning platform.',
+            content: SYSTEM_COURSE_PROMPT,
           },
           model: DEFAULT_MODEL,
         },

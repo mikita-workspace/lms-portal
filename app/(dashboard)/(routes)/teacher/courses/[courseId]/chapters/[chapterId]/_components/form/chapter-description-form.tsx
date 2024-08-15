@@ -11,12 +11,13 @@ import Markdown from 'react-markdown';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import * as z from 'zod';
 
-import { GenerateDescriptionAi } from '@/components/ai/generate-description-ai';
+import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { Editor } from '@/components/common/editor';
 import { Preview } from '@/components/common/preview';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { USER_CHAPTER_DESCRIPTION_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -73,14 +74,16 @@ export const ChapterDescriptionForm = ({
         Description
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <GenerateDescriptionAi
+            <GenerateTextResponseAi
               callback={setNewDescription}
               isSubmitting={isSubmitting}
               isValid={isValid}
               messages={[
                 {
                   role: ChatCompletionRole.USER,
-                  content: `Chapter description: "${form.getValues().description.replace(/\n$/, '')}".\nUsing the chapter description provided above, generate a new one. Provide only answer without HTML tags.`,
+                  content: USER_CHAPTER_DESCRIPTION_PROMPT(
+                    form.getValues().description.replace(/\n$/, ''),
+                  ),
                 },
               ]}
             />

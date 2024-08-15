@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 
 import { ColumnActions } from './column-actions';
 
-type UserNotification = Awaited<ReturnType<typeof getUserNotifications>>[number];
+type UserNotification = Awaited<ReturnType<typeof getUserNotifications>>['notifications'][number];
 
 const handleSortingHeader = <T extends Column<UserNotification, unknown>>(
   column: T,

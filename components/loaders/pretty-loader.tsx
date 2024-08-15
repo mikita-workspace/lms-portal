@@ -18,7 +18,7 @@ export const PrettyLoader = () => {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground">Portal&nbsp;for&nbsp;educational purposes</p>
+        <p className="text-xs text-muted-foreground">Educational&nbsp;portal</p>
       </div>
     </div>
   );

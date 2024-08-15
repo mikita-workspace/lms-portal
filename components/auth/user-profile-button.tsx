@@ -71,6 +71,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
   const isAdmin = user?.role === UserRole.ADMIN;
   const isStudent = user?.role === UserRole.STUDENT;
   const isTeacher = user?.role === UserRole.TEACHER;
+  const hasSubscription = user?.hasSubscription;
 
   return user ? (
     <DropdownMenu>
@@ -104,7 +105,6 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
                   {globalProgress.value}/{globalProgress.total} Points
                 </p>
               </div>
-
               <ProgressBar
                 showText={false}
                 variant="success"
@@ -124,20 +124,20 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           </DropdownMenuItem>
         )}
         {(isAdmin || isTeacher) && (
-          <>
-            <DropdownMenuItem
-              className="hover:cursor-pointer"
-              onClick={() => router.push('/teacher/courses')}
-            >
-              <BookMarked className="h-4 w-4 mr-2" />
-              Teacher
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Chat&nbsp;&nbsp;
-              <TextBadge label="AI" variant="yellow" />
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={() => router.push('/teacher/courses')}
+          >
+            <BookMarked className="h-4 w-4 mr-2" />
+            Teacher
+          </DropdownMenuItem>
+        )}
+        {(isAdmin || hasSubscription) && (
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Chat&nbsp;&nbsp;
+            <TextBadge label="AI" variant="yellow" />
+          </DropdownMenuItem>
         )}
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <DropdownMenuItem className="hover:cursor-pointer">

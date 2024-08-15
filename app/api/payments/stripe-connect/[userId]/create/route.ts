@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { DEFAULT_COUNTRY_CODE } from '@/constants/locale';
 import { db } from '@/lib/db';
+import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (_: NextRequest, { params }: { params: { userId: string } }) => {
@@ -53,8 +54,8 @@ export const POST = async (_: NextRequest, { params }: { params: { userId: strin
 
     const connectAccountLink = await stripe.accountLinks.create({
       account: connectAccountId,
-      refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/teacher/analytics`,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/teacher/analytics`,
+      refresh_url: absoluteUrl('/teacher/analytics'),
+      return_url: absoluteUrl('/teacher/analytics'),
       type: 'account_onboarding',
     });
 

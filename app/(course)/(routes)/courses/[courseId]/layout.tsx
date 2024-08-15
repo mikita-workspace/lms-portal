@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
 
   return {
     title: course?.title || 'Nova LMS',
-    description: course?.description || 'LMS Portal for educational purposes',
+    description: course?.description || 'Educational portal',
   };
 }
 
@@ -51,7 +51,10 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   }
 
   const progressCount = await getProgress({ userId: user.userId, courseId: course.id });
-  const userNotifications = await getUserNotifications(user?.userId, 5);
+  const { notifications: userNotifications } = await getUserNotifications({
+    userId: user?.userId,
+    take: 5,
+  });
 
   const commonCourseProps = { course, progressCount };
 

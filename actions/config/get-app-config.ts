@@ -1,36 +1,33 @@
 'use server';
 
+import { AuthFlow } from '@prisma/client';
+
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 
 export type GetAppConfig = {
-  id: string | null;
-  authFlow: Record<string, boolean>;
+  authFlow: AuthFlow[];
 };
 
 export const getAppConfig = async (noCache = false): Promise<GetAppConfig> => {
   try {
     const callback = async () => {
-      const configuration = await db.configuration.findMany();
+      const authFlow = await db.authFlow.findMany();
 
-      return configuration;
+      return { authFlow };
     };
 
     const config = noCache
       ? await callback()
       : await fetchCachedData('app-config', callback, TEN_MINUTE_SEC);
 
-    return {
-      id: config[0].id,
-      authFlow: JSON.parse(config[0].authFlowJson),
-    };
+    return config;
   } catch (error) {
     console.error('[GET_APP_CONFIG_ACTION]', error);
 
     return {
-      id: null,
-      authFlow: {},
+      authFlow: [],
     };
   }
 };

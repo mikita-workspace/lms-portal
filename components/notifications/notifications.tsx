@@ -101,7 +101,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="w-[340px] ml-[-1em] pt-2">
-              <ScrollArea className="pl-4 pr-2.5 w-full pb-2 max-h-[200px] overflow-auto">
+              <ScrollArea className="pl-4 pr-2.5 w-full max-h-[200px] overflow-auto">
                 <NotificationCards notifications={userNotifications} isFetching={isFetching} />
                 {!amountOfNotifications && (
                   <div className="my-16 text-center flex flex-col gap-2">
@@ -125,9 +125,9 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
               </ScrollArea>
             </TabsContent>
           </Tabs>
-          <div className="flex justify-center items-center border-t py-2">
+          <div className="flex justify-center items-center border-t py-2 font-semibold">
             <Link href="/settings/notifications">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
                 View all
               </Button>
             </Link>

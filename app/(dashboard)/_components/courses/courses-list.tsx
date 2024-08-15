@@ -22,6 +22,7 @@ export const CoursesList = ({ fees, items }: CoursesListProps) => {
             customRates={item.customRates}
             fees={fees}
             id={item.id}
+            imagePlaceholder={item.imagePlaceholder}
             imageUrl={item.imageUrl}
             isPublished={item.isPublished}
             isPurchased={Boolean(item?.purchases?.length)}

@@ -1,5 +1,7 @@
 import './globals.css';
 
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
 
@@ -19,7 +21,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Nova LMS',
-  description: 'LMS Portal for educational purposes',
+  description: 'Educational portal',
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_DOMAIN },
 };
 
@@ -39,6 +41,8 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
         <Providers appConfig={appConfig} exchangeRates={exchangeRates}>
           {children}
         </Providers>
+        <SpeedInsights />
+        <Analytics />
         <CookieConsent />
       </body>
     </html>

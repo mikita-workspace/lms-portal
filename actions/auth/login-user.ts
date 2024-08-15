@@ -5,19 +5,24 @@ import { generatePromotionCode } from '@/lib/promo';
 import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
-export const LoginUser = async (
+export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
 ) => {
-  const existingUser = await db.user.findUnique({ where: { email } });
+  const existingUser = await db.user.findUnique({
+    where: { email },
+    include: { stripeSubscription: true },
+  });
 
   if (existingUser) {
     return {
+      hasSubscription: Boolean(existingUser.stripeSubscription),
       id: existingUser.id,
       image: existingUser.pictureUrl,
       isPublic: existingUser.isPublic,
       name: existingUser.name,
+      otpSecret: existingUser.otpSecret,
       role: existingUser.role,
     };
   }
@@ -52,7 +57,7 @@ export const LoginUser = async (
 
   const stripePromotion = await stripe.promotionCodes.create({
     code: generatePromotionCode(),
-    coupon: process.env.WELCOME_COUPON_ID as string,
+    coupon: process.env.STRIPE_COUPON_ID as string,
     customer: stripeCustomer.stripeCustomerId,
     max_redemptions: 1,
     restrictions: { first_time_transaction: true },
@@ -79,10 +84,12 @@ export const LoginUser = async (
   });
 
   return {
+    hasSubscription: false,
     id: user.id,
     image: user.pictureUrl,
     isPublic: user.isPublic,
     name: user.name,
+    otpSecret: user.otpSecret,
     role: user.role,
   };
 };

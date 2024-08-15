@@ -1,6 +1,6 @@
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
 
-type UserNotification = Awaited<ReturnType<typeof getUserNotifications>>[number];
+type UserNotification = Awaited<ReturnType<typeof getUserNotifications>>['notifications'][number];
 
 export const getNotificationActionName = (
   notifications: UserNotification[],

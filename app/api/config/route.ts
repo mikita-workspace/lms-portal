@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 import { isOwner } from '@/lib/owner';
 
-export const PATCH = async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
@@ -15,10 +15,20 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
 
     const { authFlow } = await req.json();
 
-    const updatedConfig = await db.configuration.update({
-      where: { id: params.id },
-      data: { authFlowJson: JSON.stringify(authFlow) },
-    });
+    const updatedConfig = Promise.all(
+      authFlow.map(async (af: { id: string; isActive: boolean }) => {
+        const config = await db.authFlow.update({
+          where: { id: af.id },
+          data: { isActive: af.isActive },
+          select: {
+            isActive: true,
+            provider: true,
+          },
+        });
+
+        return config;
+      }),
+    );
 
     return NextResponse.json(updatedConfig);
   } catch (error) {

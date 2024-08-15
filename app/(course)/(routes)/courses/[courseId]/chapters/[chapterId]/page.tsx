@@ -1,10 +1,9 @@
-import { File } from 'lucide-react';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getChapter } from '@/actions/courses/get-chapter';
 import { Banner } from '@/components/common/banner';
+import { FileDownload } from '@/components/common/file-download';
 import { Preview } from '@/components/common/preview';
 import { Separator } from '@/components/ui/separator';
 
@@ -84,16 +83,8 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
           <>
             <Separator />
             <div className="p-4">
-              {attachments.map((attachment) => (
-                <Link
-                  className="flex items-center p-3 w-full rounded-md bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400 mb-2"
-                  key={attachment.id}
-                  target="_blank"
-                  href={attachment.url}
-                >
-                  <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <p className="text-sm line-clamp-1 basis-4/5">{attachment.name}</p>
-                </Link>
+              {attachments.map(({ id, url, name: fileName }) => (
+                <FileDownload key={id} fileName={fileName} url={url} />
               ))}
             </div>
           </>

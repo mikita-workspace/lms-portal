@@ -13,7 +13,10 @@ type DashboardLayoutProps = Readonly<{
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
-  const userNotifications = await getUserNotifications(user?.userId, 5);
+  const { notifications: userNotifications } = await getUserNotifications({
+    userId: user?.userId,
+    take: 5,
+  });
 
   return (
     <div className="h-full flex flex-col">

@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
@@ -30,6 +31,7 @@ const formSchema = z.object({
 });
 
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
+  const { update } = useSession();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,6 +49,8 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
 
+      await update(values);
+
       toast.success('Account information updated');
       router.refresh();
     } catch (error) {
@@ -58,9 +62,6 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">Account Information</p>
-        <span className="text-xs text-muted-foreground">
-          The changes will be applied after a new login
-        </span>
       </div>
       <div>
         <Form {...form}>
@@ -118,7 +119,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             </div>
             <div className="flex items-center gap-x-2 mt-6">
               <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                Update info
+                Update
               </Button>
             </div>
           </form>

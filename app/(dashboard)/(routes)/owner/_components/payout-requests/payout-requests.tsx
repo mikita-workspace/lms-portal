@@ -8,10 +8,11 @@ import { columns } from './columns';
 type StripeDetails = Awaited<ReturnType<typeof getStripeDetails>>;
 
 type PayoutRequestsProps = {
+  pageCount: number;
   payoutRequests: StripeDetails['payoutRequests'];
 };
 
-export const PayoutRequests = ({ payoutRequests }: PayoutRequestsProps) => {
+export const PayoutRequests = ({ pageCount, payoutRequests }: PayoutRequestsProps) => {
   return (
     <div className="flex flex-col gap-4 mt-8">
       <div className="flex flex-col gap-1">
@@ -21,8 +22,8 @@ export const PayoutRequests = ({ payoutRequests }: PayoutRequestsProps) => {
       <DataTable
         columns={columns}
         data={payoutRequests}
-        initialPageSize={3}
         noLabel="No payout requests"
+        pageCount={pageCount}
       />
     </div>
   );

@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
 
-import { GenerateDescriptionAi } from '@/components/ai/generate-description-ai';
+import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { USER_COURSE_SHORT_DESCRIPTION_PROMPT } from '@/constants/ai';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
@@ -78,14 +79,14 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
         Description
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <GenerateDescriptionAi
+            <GenerateTextResponseAi
               callback={setNewDescription}
               isSubmitting={isSubmitting}
               isValid={isValid}
               messages={[
                 {
                   role: ChatCompletionRole.USER,
-                  content: `Course short description: "${form.getValues().description}".\nUsing the course description provided above, generate a new one. Maximum output symbols - ${Math.round(TEXTAREA_MAX_LENGTH / 1.4)}`,
+                  content: USER_COURSE_SHORT_DESCRIPTION_PROMPT(form.getValues().description),
                 },
               ]}
             />

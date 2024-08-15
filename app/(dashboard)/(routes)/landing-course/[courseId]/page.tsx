@@ -24,7 +24,7 @@ export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Pr
 
   return {
     title: course?.title || 'Nova LMS',
-    description: course?.description || 'LMS Portal for educational purposes',
+    description: course?.description || 'Educational portal',
   };
 };
 
@@ -118,8 +118,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
               )}
             </div>
           </div>
-          {/* TODO: External recourses. [https://trello.com/c/R4RkoqmC/13-add-external-resources-for-landing-course-page] */}
-          {/* <div className="w-full flex space-x-4"></div> */}
         </div>
       </div>
     </div>

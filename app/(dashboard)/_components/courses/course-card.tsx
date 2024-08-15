@@ -18,6 +18,7 @@ type CourseCardProps = {
   customRates: string | null;
   fees?: Fee[];
   id: string;
+  imagePlaceholder: string;
   imageUrl: string | null;
   isPublished?: boolean;
   isPurchased?: boolean;
@@ -26,12 +27,13 @@ type CourseCardProps = {
   title: string;
 };
 
-export const CourseCard = ({
+export const CourseCard = async ({
   category,
   chaptersLength,
   customRates,
   fees = [],
   id,
+  imagePlaceholder,
   imageUrl,
   isPublished,
   isPurchased,
@@ -51,7 +53,14 @@ export const CourseCard = ({
       >
         <TextBadge className="absolute z-10 mt-2 ml-2" label="Premium" variant="indigo" />
         <div className="w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
-          <Image className="object-cover" fill alt={title} src={imageUrl!} />
+          <Image
+            alt={title}
+            blurDataURL={imagePlaceholder}
+            className="object-cover"
+            fill
+            placeholder="blur"
+            src={imageUrl!}
+          />
         </div>
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-blue-700 dark:group-hover:text-blue-400 transition duration-300 line-clamp-1">

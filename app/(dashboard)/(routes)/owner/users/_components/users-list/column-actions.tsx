@@ -40,7 +40,7 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
         body: {
           notification: {
             title: 'Profile changes',
-            body: `Your user role has been updated with "${capitalize(role)}" on "${capitalize(newRole)}". Please log in again.`,
+            body: `Your user role has been updated with "${capitalize(role)}" on "${capitalize(newRole)}". The changes will take effect in 10 minutes.`,
           },
           role: newRole,
         },

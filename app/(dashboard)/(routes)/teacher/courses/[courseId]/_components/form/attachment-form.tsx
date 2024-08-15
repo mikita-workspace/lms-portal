@@ -1,16 +1,14 @@
 'use client';
 
 import { Attachment, Course } from '@prisma/client';
-import { File, Paperclip, X } from 'lucide-react';
-import Link from 'next/link';
+import { Paperclip } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { BiLoaderAlt } from 'react-icons/bi';
 import * as z from 'zod';
 
+import { FileDownload } from '@/components/common/file-download';
 import { FileUpload } from '@/components/common/file-upload';
-import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { Button } from '@/components/ui/button';
 import { fetcher } from '@/lib/fetcher';
 
@@ -78,34 +76,15 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
           {initialData.attachments.length > 0 ? (
             <div className="space-y-2 mt-4">
               {initialData.attachments.map((attachment) => (
-                <div
+                <FileDownload
                   key={attachment.id}
-                  className="flex items-center p-3 w-full rounded-md bg-blue-500/15 border border-blue-500/20 text-blue-700 dark:text-blue-400"
-                >
-                  <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <Link
-                    className="text-sm line-clamp-1 basis-4/5 hover:underline"
-                    href={attachment.url}
-                    target="_blank"
-                  >
-                    {attachment.name}
-                  </Link>
-                  <div className="ml-auto flex items-center">
-                    {deletingId === attachment.id ? (
-                      <BiLoaderAlt className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <button
-                        className="hover:opacity-75 transition-all duration-300"
-                        onClick={() =>
-                          handleDelete(attachment.id, attachment?.url?.split('/')?.pop() ?? '')
-                        }
-                        disabled={Boolean(deletingId)}
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
-                </div>
+                  fileName={attachment.name}
+                  isRemoveButtonDisabled={deletingId === attachment.id}
+                  onFileRemove={() =>
+                    handleDelete(attachment.id, attachment?.url?.split('/')?.pop() ?? '')
+                  }
+                  url={attachment.url}
+                />
               ))}
             </div>
           ) : (
@@ -124,10 +103,9 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
             }}
           />
           <div className="flex text-xs items-start justify-between">
-            <div className="text-muted-foreground mt-4 basis-3/5">
+            <div className="text-muted-foreground mt-4">
               Add anything your students might need to complete the course
             </div>
-            <UploadThingIcon />
           </div>
         </div>
       )}

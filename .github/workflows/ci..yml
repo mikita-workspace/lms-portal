@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: CodeBuild
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Checking node_modules cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: ESLint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint:ci
+
+      - name: Type Check
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: type:check

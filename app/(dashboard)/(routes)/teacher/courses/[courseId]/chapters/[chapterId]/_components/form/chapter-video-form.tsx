@@ -11,7 +11,6 @@ import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
-import { UploadThingIcon } from '@/components/common/uploadthing-icon';
 import { VideoPlayer } from '@/components/common/video-player';
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
@@ -150,7 +149,6 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
             <div className="text-muted-foreground mt-4">
               Upload or add a link to the video from this chapter
             </div>
-            <UploadThingIcon />
           </div>
         </div>
       )}

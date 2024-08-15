@@ -17,6 +17,10 @@ import {
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
+import { AuthStatus } from '@/constants/auth';
+import { useCurrentUser } from '@/hooks/use-current-user';
+
+import { SubscriptionBanner } from '../common/subscription-banner';
 import { SideBarItem } from './sidebar-item';
 
 const studentRoutes = [
@@ -37,7 +41,7 @@ const studentRoutes = [
   {
     href: '/leaderboard',
     icon: Crown,
-    isNew: true,
+    isNew: false,
     isProtected: true,
     label: 'Leaderboard',
   },
@@ -69,18 +73,18 @@ const settingsRoutes = [
     label: 'General',
   },
   {
+    href: '/settings/billing',
+    icon: Wallet2,
+    isNew: false,
+    isProtected: true,
+    label: 'Billing & Subscription',
+  },
+  {
     href: '/settings/notifications',
     icon: Rss,
     isNew: false,
     isProtected: true,
     label: 'Notifications',
-  },
-  {
-    href: '/settings/billing',
-    icon: Wallet2,
-    isNew: false,
-    isProtected: true,
-    label: 'Billing',
   },
 ];
 
@@ -116,11 +120,14 @@ const paymentsRoutes = [
 ];
 
 export const SideBarRoutes = () => {
+  const { user, status } = useCurrentUser();
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
   const isTeacherPage = pathname?.includes('/teacher');
   const isPaymentsPage = pathname?.includes('/owner');
+
+  const isLoading = status === AuthStatus.LOADING;
 
   const routes = useMemo(() => {
     if (isSettingsPage) {
@@ -148,6 +155,7 @@ export const SideBarRoutes = () => {
           />
         ))}
       </div>
+      {!isLoading && !user?.hasSubscription && <SubscriptionBanner />}
     </div>
   );
 };

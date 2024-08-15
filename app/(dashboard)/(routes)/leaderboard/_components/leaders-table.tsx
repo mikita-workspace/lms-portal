@@ -22,10 +22,11 @@ type LeadersTableProps = {
     userId: string;
     xp: number;
   }[];
+  hasSubscription?: boolean;
   userId?: string;
 };
 
-export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
+export const LeadersTable = ({ leaders, hasSubscription = false, userId }: LeadersTableProps) => {
   const filteredLeaders = leaders.filter((leader) => leader.userId !== userId);
   const currentLeader = leaders.find((leader) => leader.userId === userId);
 
@@ -54,11 +55,12 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
                 <div className="flex space-x-2 items-center">
                   <p className="text-small font-semibold">{leader.name}</p>
                   {leader.userId === userId && <TextBadge label="You" variant="indigo" />}
+                  {hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
                 </div>
               </div>
             </TableCell>
             <TableCell className="text-right">
-              <TextBadge label={String(leader.xp)} variant="lime" />
+              <TextBadge label={String(leader.xp)} variant="yellow" />
             </TableCell>
           </TableRow>
         ))}

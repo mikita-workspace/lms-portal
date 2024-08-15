@@ -64,10 +64,10 @@ const getMap = (sales: Sales) => {
   return Object.keys(groupedByPosition).map((key) => {
     const [lt, lg] = key.split('*');
     return {
-      city: groupedByPosition[key][0].city,
-      country: groupedByPosition[key][0].country,
+      city: groupedByPosition[key][0].city || 'Unknown',
+      country: groupedByPosition[key][0].country || 'Unknown',
       currency: groupedByPosition[key][0].currency,
-      position: [Number(lt), Number(lg)],
+      position: [Number(lt) || 0, Number(lg) || 0],
       totalAmount: groupedByPosition[key].reduce(
         (total, current) => total + (current.price ?? 0),
         0,
@@ -265,7 +265,9 @@ export const getAnalytics = async (userId: string) => {
 
     const userIds = [...new Set(purchases.map((ps) => ps.userId))];
     const users = await db.user.findMany({ where: { id: { in: userIds } } });
-    const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))];
+    const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))].filter(
+      (pi) => pi,
+    );
 
     const stripeAccountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
     const stripeAccount = stripeAccountId?.stripeAccountId

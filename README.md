@@ -1,4 +1,4 @@
-# [Nova LMS | Portal for educational purposes](https://nova-lms-portal.vercel.app)
+# [Nova LMS | Educational portal](https://nova-lms-portal.vercel.app)
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/mikita-workspace/lms-portal?style=for-the-badge)](https://github.com/mikita-workspace/lms-portal/commits/main)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/mikita-workspace/lms-portal?style=for-the-badge)](https://github.com/mikita-workspace/lms-portal/releases)
