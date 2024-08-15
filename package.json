@@ -1,6 +1,6 @@
 {
   "name": "lms-portal",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "git@github.com:mikita-workspace/lms-portal.git",
   "description": "Nova LMS",
   "author": "Mikita Kandratsyeu <nickondr.production@gmail.com>",
