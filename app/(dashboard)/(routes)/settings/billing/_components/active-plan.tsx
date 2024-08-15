@@ -52,7 +52,7 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
       <p className="font-medium text-xl">Active Plan</p>
       {userSubscription?.cancelAt && (
         <Banner
-          label={`Your subscription will be canceled and all resources will be stopped on ${format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE)}. Renew your subscription now to continue using Nova Plus.`}
+          label={`Your subscription will be canceled and all resources will be stopped on ${format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE)}. Renew your subscription now to continue using ${userSubscription.planName}.`}
           variant="warning"
         />
       )}
