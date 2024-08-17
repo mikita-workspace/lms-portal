@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@prisma/client';
+import { StripeSubscription, User } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 
@@ -11,7 +11,12 @@ import { getFallbackName } from '@/lib/utils';
 
 import { ColumnActions } from './column-actions';
 
-const handleSortingHeader = <T extends Column<User, unknown>>(column: T, label: string) => {
+type UserWithSubscription = User & { stripeSubscription: StripeSubscription | null };
+
+const handleSortingHeader = <T extends Column<UserWithSubscription, unknown>>(
+  column: T,
+  label: string,
+) => {
   return (
     <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
       {label}
@@ -20,7 +25,7 @@ const handleSortingHeader = <T extends Column<User, unknown>>(column: T, label: 
   );
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserWithSubscription>[] = [
   {
     id: 'user',
     header: () => <span>User</span>,
@@ -38,6 +43,19 @@ export const columns: ColumnDef<User>[] = [
             <p>{email}</p>
           </div>
         </div>
+      );
+    },
+  },
+  {
+    id: 'userSubscription',
+    header: () => <span>Type</span>,
+    cell: ({ row }) => {
+      const { stripeSubscription } = row.original;
+
+      const isPremium = stripeSubscription?.stripeSubscriptionId;
+
+      return (
+        <TextBadge label={isPremium ? 'Premium' : 'Free'} variant={isPremium ? 'indigo' : 'lime'} />
       );
     },
   },

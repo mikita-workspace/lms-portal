@@ -1,6 +1,6 @@
 'use server';
 
-import { User } from '@prisma/client';
+import { StripeSubscription, User } from '@prisma/client';
 
 import { PAGE_SIZES } from '@/constants/paginations';
 import { db } from '@/lib/db';
@@ -10,15 +10,18 @@ type GetUsers = {
   pageSize?: string | number;
 };
 
+type UserWithSubscription = User & { stripeSubscription: StripeSubscription | null };
+
 export const getUsers = async ({
   pageIndex = 0,
   pageSize = PAGE_SIZES[0],
-}: GetUsers): Promise<{ pageCount: number; users: User[] }> => {
+}: GetUsers): Promise<{ pageCount: number; users: UserWithSubscription[] }> => {
   const index = Number(pageIndex);
   const size = Number(pageSize);
 
   try {
     const users = await db.user.findMany({
+      include: { stripeSubscription: true },
       orderBy: { createdAt: 'desc' },
       skip: index * size,
       take: size,
