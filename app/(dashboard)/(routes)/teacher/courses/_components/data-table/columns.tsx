@@ -55,6 +55,20 @@ export const columns: ColumnDef<Course>[] = [
     },
   },
   {
+    accessorKey: 'isPremium',
+    header: ({ column }) => handleSortingHeader(column, 'Type'),
+    cell: ({ row }) => {
+      const isPremium = row.getValue('isPremium') || false;
+
+      return (
+        <TextBadge
+          variant={isPremium ? 'indigo' : 'default'}
+          label={isPremium ? 'Premium' : 'Public'}
+        />
+      );
+    },
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       const { id } = row.original;

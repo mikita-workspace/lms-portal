@@ -3,12 +3,12 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getChapter } from '@/actions/courses/get-chapter';
 import { Banner } from '@/components/common/banner';
+import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { FileDownload } from '@/components/common/file-download';
 import { Preview } from '@/components/common/preview';
 import { Separator } from '@/components/ui/separator';
 
 import { ChapterVideoPlayer } from './_components/chapter-video-player';
-import { CourseEnrollButton } from './_components/course-enroll-button';
 import { CourseProgressButton } from './_components/course-progress-button';
 
 type ChapterIdPageProps = {

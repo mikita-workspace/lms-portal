@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { CourseEnrollButton } from '@/app/(course)/(routes)/courses/[courseId]/chapters/[chapterId]/_components/course-enroll-button';
+import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { AuthModal } from '@/components/modals/auth-modal';
 import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';

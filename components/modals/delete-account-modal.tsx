@@ -76,7 +76,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
                 onChange={(event) => setInput(event.target.value)}
               />
             </div>
-            <div className="mt-6">
+            <div className="mt-6 z-10">
               <Captcha
                 callback={(token) => {
                   if (token) {
