@@ -4,7 +4,7 @@ import { PayoutRequest } from '@prisma/client';
 import { getUnixTime } from 'date-fns';
 import Stripe from 'stripe';
 
-export const getStripeConnect = (
+export const getStripeConnect = async (
   account: Stripe.Response<Stripe.Account> | null,
   balance: Stripe.Response<Stripe.Balance> | null,
 ) => {
@@ -30,7 +30,7 @@ export const getStripeConnect = (
   };
 };
 
-export const getStripeConnectPayouts = (
+export const getStripeConnectPayouts = async (
   payouts: Stripe.Response<Stripe.ApiList<Stripe.BalanceTransaction>> | null,
   declinedPayouts: PayoutRequest[],
 ) => {

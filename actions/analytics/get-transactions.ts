@@ -27,7 +27,7 @@ export type PurchaseWithCourse = Purchase & { course: Course } & {
   details: PurchaseDetails | null;
 };
 
-export const getTransactions = (
+export const getTransactions = async (
   charges: Stripe.Response<Stripe.ApiList<Stripe.Charge>>['data'],
   purchases: PurchaseWithCourse[],
   users: User[],

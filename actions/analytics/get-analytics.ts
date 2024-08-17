@@ -14,7 +14,7 @@ import { getTotalProfit } from './get-total-profit';
 import { getTransactions, PurchaseWithCourse, Transaction } from './get-transactions';
 
 type Sales = (ReturnType<typeof groupByCourse>[number][number]['details'] & { title: string })[];
-type StripeConnectPayouts = ReturnType<typeof getStripeConnectPayouts>;
+type StripeConnectPayouts = Awaited<ReturnType<typeof getStripeConnectPayouts>>;
 
 const groupByCourse = (purchases: PurchaseWithCourse[], users: User[]) => {
   const grouped: { [courseTitle: string]: { user?: User; details: PurchaseDetails }[] } = {};
@@ -168,15 +168,16 @@ export const getAnalytics = async (userId: string) => {
       (revenue, current) => revenue + current.amount,
       0,
     );
-    const totalProfit = getTotalProfit(
+
+    const totalProfit = await getTotalProfit(
       stripeBalanceTransactions,
       totalRevenue,
       fees,
       successfulPayouts,
     );
-    const transactions = getTransactions(stripeCharges, purchases, users);
-    const stripeConnect = getStripeConnect(stripeAccount, stripeAccountBalance);
-    const stripeConnectPayouts = getStripeConnectPayouts(
+    const transactions = await getTransactions(stripeCharges, purchases, users);
+    const stripeConnect = await getStripeConnect(stripeAccount, stripeAccountBalance);
+    const stripeConnectPayouts = await getStripeConnectPayouts(
       stripeAccountBalanceTransactions,
       declinedPayouts as PayoutRequest[],
     );

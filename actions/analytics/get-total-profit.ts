@@ -6,7 +6,7 @@ import groupBy from 'lodash.groupby';
 import { CalculationMethod, FeeType } from '@/constants/fees';
 import { getCalculatedFee } from '@/lib/fees';
 
-export const getTotalProfit = (
+export const getTotalProfit = async (
   stripeBalanceTransactions: Record<string, any>[],
   totalRevenue: number,
   fees: Fee[],
