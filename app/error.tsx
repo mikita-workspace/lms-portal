@@ -1,7 +1,14 @@
 'use client';
 
+import { Metadata } from 'next';
+
 import { Button } from '@/components/ui';
 import withCompanyLabel from '@/hoc/with-company-label';
+
+export const metadata: Metadata = {
+  title: '500',
+  description: 'Educational portal',
+};
 
 type ErrorProps = { error: Error & { digest?: string }; reset: () => void };
 

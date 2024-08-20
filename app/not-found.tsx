@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Logo } from '@/components/common/logo';
 import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+  title: '404',
+  description: 'Educational portal',
+};
 
 const NotFoundPage = () => {
   return (
