@@ -8,7 +8,7 @@ import { Provider, UserRole } from '@/constants/auth';
 import { OTP_SECRET_SECURE } from '@/constants/otp';
 
 import { isString } from '../guard';
-import { encrypt } from '../utils';
+import { absoluteUrl, encrypt } from '../utils';
 
 export const callbacks: NextAuthOptions['callbacks'] = {
   async signIn({ user, account }) {
@@ -20,8 +20,10 @@ export const callbacks: NextAuthOptions['callbacks'] = {
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
       const dbUser = await loginUser(email, user.name, user?.image, user?.password);
 
-      if (!hasOtpSecret && dbUser.otpSecret) {
-        return `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`;
+      if (!hasOtpSecret && dbUser.otpSecret && account?.provider !== Provider.CREDENTIALS) {
+        return absoluteUrl(
+          `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`,
+        );
       }
 
       user.email = email;
