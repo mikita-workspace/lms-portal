@@ -13,6 +13,7 @@ declare module 'next-auth' {
   interface User extends AuthUser {
     hasSubscription?: boolean;
     isPublic?: boolean;
+    password?: string;
     role: string;
   }
 }

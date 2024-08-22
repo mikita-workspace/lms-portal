@@ -16,7 +16,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
     const hasOtpSecret = cookies().has(OTP_SECRET_SECURE);
 
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
-      const dbUser = await loginUser(email, user.name, user.image);
+      const dbUser = await loginUser(email, user.name, user?.image, user?.password);
 
       if (!hasOtpSecret && dbUser.otpSecret) {
         return `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`;

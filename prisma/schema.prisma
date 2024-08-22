@@ -14,7 +14,6 @@ enum StripeSubscriptionPeriod {
 
 model User {
   id                 String              @id @default(uuid())
-  stripeSubscription StripeSubscription?
   course             Course[]
   createdAt          DateTime            @default(now())
   email              String              @unique
@@ -23,8 +22,10 @@ model User {
   notifications      Notification[]
   otpCreatedAt       DateTime?
   otpSecret          String?
+  password           String?
   pictureUrl         String?
   role               String              @default("student")
+  stripeSubscription StripeSubscription?
   updatedAt          DateTime            @updatedAt
 }
 

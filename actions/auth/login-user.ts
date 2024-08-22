@@ -9,6 +9,7 @@ export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
+  password?: string | null,
 ) => {
   const existingUser = await db.user.findUnique({
     where: { email },
@@ -35,6 +36,7 @@ export const loginUser = async (
     create: {
       email,
       name,
+      password,
       pictureUrl,
     },
   });

@@ -1,3 +1,5 @@
+import { compare, hash } from 'bcrypt';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import LinkedInProvider from 'next-auth/providers/linkedin';
@@ -8,7 +10,41 @@ import YandexProvider from 'next-auth/providers/yandex';
 
 import { UserRole } from '@/constants/auth';
 
+import { db } from '../db';
+
 export const providers = [
+  CredentialsProvider({
+    id: 'credentials',
+    credentials: {
+      email: { label: 'Email', type: 'email' },
+      isSignUpFlow: { label: 'isSignUpFlow', type: 'text' },
+      name: { label: 'Username', type: 'text' },
+      password: { label: 'Password', type: 'password' },
+    },
+    async authorize(credentials): Promise<any> {
+      const user = await db.user.findFirst({ where: { email: credentials?.email } });
+
+      const isSignUpFlow = credentials?.isSignUpFlow === 'true';
+
+      if (isSignUpFlow) {
+        if (user) {
+          throw new Error('Email already exist');
+        }
+
+        const hashedPassword = await hash(credentials?.password, 10);
+
+        return { ...credentials, password: hashedPassword };
+      }
+
+      const isPasswordCorrect = await compare(credentials?.password ?? '', user?.password ?? '');
+
+      if (isPasswordCorrect) {
+        return { ...credentials, password: user?.password };
+      }
+
+      throw new Error('Invalid password or email address');
+    },
+  }),
   GitHubProvider({
     clientId: process.env.GITHUB_ID as string,
     clientSecret: process.env.GITHUB_SECRET as string,

@@ -5,17 +5,23 @@ import { signIn } from 'next-auth/react';
 import { useMemo } from 'react';
 
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
-import { capitalize } from '@/lib/utils';
+import { capitalize, cn } from '@/lib/utils';
 
 import { Button, ButtonProps } from '../ui';
 import { authIcons } from './auth-icons';
 
 type OAuthButton = {
+  isCredentialsProvider?: boolean;
   provider: Provider;
   setIsDisabled?: (value: boolean) => void;
 } & ButtonProps;
 
-export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) => {
+export const OAuthButton = ({
+  isCredentialsProvider = false,
+  provider,
+  setIsDisabled,
+  ...props
+}: OAuthButton) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
@@ -41,12 +47,21 @@ export const OAuthButton = ({ provider, setIsDisabled, ...props }: OAuthButton) 
   return (
     <Button
       {...props}
-      className="w-full flex justify-start font-[400] space-x-2"
+      className={cn(
+        'flex justify-start font-[400] space-x-2',
+        isCredentialsProvider ? 'justify-center items-center flex-1' : 'w-full',
+      )}
       variant="outline"
       onClick={handleSignIn}
     >
-      <Icon className="mr-4" size={20} />
-      {`Continue with ${oAuthLabel}`}
+      <Icon
+        className={cn(
+          !isCredentialsProvider && 'mr-4',
+          provider === Provider.SLACK && !isCredentialsProvider && 'ml-0.5 mr-[1.125rem]',
+        )}
+        size={20}
+      />
+      {!isCredentialsProvider && `Continue with ${oAuthLabel}`}
     </Button>
   );
 };

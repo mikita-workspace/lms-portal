@@ -39,6 +39,8 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
 
   const { isSubmitting, isValid } = form.formState;
 
+  console.log({ authFlow });
+
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch('/api/config', {

@@ -1,18 +1,29 @@
 'use client';
 
+import { Mail } from 'lucide-react';
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 import { Provider } from '@/constants/auth';
 
-const YandexIcon = () => (
-  <Image className="mr-4" src="/assets/yandex.svg" alt="yandex" height={20} width={20} priority />
+type IconProps = { className?: string };
+
+const YandexIcon = ({ className }: IconProps) => (
+  <Image
+    className={className}
+    src="/assets/yandex.svg"
+    alt="yandex"
+    height={20}
+    width={20}
+    priority
+  />
 );
 
-const SlackIcon = () => (
+const SlackIcon = ({ className }: IconProps) => (
   <Image
-    className="ml-0.5 mr-[1.125rem]"
+    // className="ml-0.5 mr-[1.125rem]"
+    className={className}
     src="/assets/slack.svg"
     alt="slack"
     height={16}
@@ -21,9 +32,9 @@ const SlackIcon = () => (
   />
 );
 
-const LinkedinIcon = () => (
+const LinkedinIcon = ({ className }: IconProps) => (
   <Image
-    className="mr-4"
+    className={className}
     src="/assets/linkedin.svg"
     alt="linkedin"
     height={20}
@@ -32,20 +43,28 @@ const LinkedinIcon = () => (
   />
 );
 
-const MailRuIcon = () => (
-  <Image className="mr-4" src="/assets/mailru.svg" alt="mailru" height={20} width={20} priority />
+const MailRuIcon = ({ className }: IconProps) => (
+  <Image
+    className={className}
+    src="/assets/mailru.svg"
+    alt="mailru"
+    height={20}
+    width={20}
+    priority
+  />
 );
 
-const VKIcon = () => (
-  <Image className="mr-4" src="/assets/vk.svg" alt="vk" height={20} width={20} priority />
+const VKIcon = ({ className }: IconProps) => (
+  <Image className={className} src="/assets/vk.svg" alt="vk" height={20} width={20} priority />
 );
 
 export const authIcons = {
+  [Provider.CREDENTIALS]: Mail,
   [Provider.GITHUB]: FaGithub,
   [Provider.GOOGLE]: FcGoogle,
   [Provider.LINKEDIN]: LinkedinIcon,
-  [Provider.SLACK]: SlackIcon,
-  [Provider.YANDEX]: YandexIcon,
   [Provider.MAILRU]: MailRuIcon,
+  [Provider.SLACK]: SlackIcon,
   [Provider.VK]: VKIcon,
+  [Provider.YANDEX]: YandexIcon,
 };

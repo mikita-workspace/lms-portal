@@ -6,6 +6,7 @@ export enum Provider {
   LINKEDIN = 'linkedin',
   SLACK = 'slack',
   GITHUB = 'github',
+  CREDENTIALS = 'credentials',
 }
 
 export enum UserRole {
@@ -27,3 +28,5 @@ export const OAUTH_LABELS = {
   [Provider.VK]: 'VK ID',
   [Provider.MAILRU]: 'Mail.ru',
 };
+
+export const PASSWORD_VALIDATION = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$/);
