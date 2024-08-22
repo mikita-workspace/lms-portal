@@ -23,7 +23,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
 import { useAppConfigStore } from '@/hooks/use-app-config-store';
-import { cn } from '@/lib/utils';
+import { cn, isURL } from '@/lib/utils';
 
 import { OAuthButton } from '../auth/ouath-button';
 import { TermsAndPrivacy } from '../auth/terms-and-privacy';
@@ -81,6 +81,8 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
       if (!response?.error) {
         router.push('/');
         router.refresh();
+      } else if (isURL(response.error)) {
+        router.push(response.error);
       } else {
         setIsDisabledButtons(false);
         toast.error(response.error);

@@ -20,10 +20,16 @@ export const callbacks: NextAuthOptions['callbacks'] = {
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
       const dbUser = await loginUser(email, user.name, user?.image, user?.password);
 
-      if (!hasOtpSecret && dbUser.otpSecret && account?.provider !== Provider.CREDENTIALS) {
-        return absoluteUrl(
+      if (!hasOtpSecret && dbUser.otpSecret) {
+        const redirectUrl = absoluteUrl(
           `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`,
         );
+
+        if (account?.provider === Provider.CREDENTIALS) {
+          throw new Error(redirectUrl);
+        }
+
+        return redirectUrl;
       }
 
       user.email = email;
