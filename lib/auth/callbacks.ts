@@ -13,7 +13,9 @@ import { encrypt } from '../utils';
 export const callbacks: NextAuthOptions['callbacks'] = {
   async signIn({ user, account }) {
     const email = user?.email ?? account?.email;
-    const hasOtpSecret = cookies().has(OTP_SECRET_SECURE);
+
+    const otpSecret = cookies().get(OTP_SECRET_SECURE)?.value;
+    const hasOtpSecret = otpSecret ? otpSecret.split(':')[0] === user?.email : false;
 
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
       const dbUser = await loginUser(email, user.name, user?.image, user?.password);
