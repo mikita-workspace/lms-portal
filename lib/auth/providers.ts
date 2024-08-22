@@ -17,10 +17,10 @@ export const providers = [
     id: 'credentials',
     credentials: {
       email: { label: 'Email', type: 'email' },
+      isAfterOtpPage: { label: 'isAfterOtpPage', type: 'text' },
       isSignUpFlow: { label: 'isSignUpFlow', type: 'text' },
       name: { label: 'Username', type: 'text' },
       password: { label: 'Password', type: 'password' },
-      isAfterOtpPage: { label: 'isAfterOtpPage', type: 'text' },
     },
     async authorize(credentials): Promise<any> {
       const user = await db.user.findFirst({ where: { email: credentials?.email } });

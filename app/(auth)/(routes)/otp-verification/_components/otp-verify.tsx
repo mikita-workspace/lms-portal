@@ -10,12 +10,13 @@ import { fetcher } from '@/lib/fetcher';
 
 type OtpVerify = {
   callbackUrl: string;
+  email: string;
   provider: string;
   secret: string;
   userId: string;
 };
 
-export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) => {
+export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpVerify) => {
   const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isFetching, setIsFetching] = useState(false);
@@ -35,7 +36,7 @@ export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) 
 
         if (response.verified) {
           setIsSuccess(true);
-          await signIn(provider, { callbackUrl, isAfterOtpPage: true });
+          await signIn(provider, { callbackUrl, isAfterOtpPage: true, email });
         } else {
           setErrorMessage('Invalid OTP code');
         }

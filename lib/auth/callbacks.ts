@@ -22,7 +22,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
 
       if (!hasOtpSecret && dbUser.otpSecret) {
         const redirectUrl = absoluteUrl(
-          `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider }, process.env.OTP_SECRET as string))}`,
+          `/otp-verification?code=${encodeURIComponent(encrypt({ secret: dbUser.otpSecret, userId: dbUser.id, provider: account?.provider, email }, process.env.OTP_SECRET as string))}`,
         );
 
         if (account?.provider === Provider.CREDENTIALS) {

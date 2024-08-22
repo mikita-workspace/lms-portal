@@ -26,6 +26,7 @@ const OtpVerificationPage = ({ searchParams: { code } }: OtpVerificationPageProp
         <div className="flex flex-col gap-y-4 items-center">
           <OtpVerify
             callbackUrl={callbackUrl}
+            email={otpInfo.email}
             provider={otpInfo.provider}
             secret={otpInfo.secret}
             userId={otpInfo.userId}
