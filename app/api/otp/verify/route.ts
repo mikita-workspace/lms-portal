@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
       isValid = authenticator.verify({ token, secret: userData.otpSecret });
 
       if (isValid && isOtpVerify) {
-        cookies().set(OTP_SECRET_SECURE, `${userData.email}:${userData.otpSecret}`, {
+        cookies().set(`${OTP_SECRET_SECURE}:${userData.email}`, userData.otpSecret, {
           expires: Date.now() + ONE_DAY_MS,
           httpOnly: true,
           sameSite: 'lax',
