@@ -35,7 +35,7 @@ export const OtpVerify = ({ callbackUrl, provider, secret, userId }: OtpVerify) 
 
         if (response.verified) {
           setIsSuccess(true);
-          await signIn(provider, { callbackUrl });
+          await signIn(provider, { callbackUrl, isAfterOtpPage: true });
         } else {
           setErrorMessage('Invalid OTP code');
         }

@@ -29,7 +29,7 @@ export const providers = [
       const isAfterOtpPage = credentials?.isAfterOtpPage === 'true';
 
       if (isAfterOtpPage && user) {
-        return user;
+        return { ...user, ...credentials };
       }
 
       if (isSignUpFlow) {
