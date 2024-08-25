@@ -1,5 +1,11 @@
 {
   "app": {
+    "name": "Nova\u00a0LMS",
     "description": "Образовательный\u00a0портал"
+  },
+  "auth": {},
+  "footer": {
+    "testModeDeclaimer": "Портал работает в тестовом режиме. Все платежи и данные являются фиктивными.",
+    "copyright": "Nova Technologies. Все права защищены."
   }
 }

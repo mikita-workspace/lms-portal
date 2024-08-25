@@ -1,5 +1,17 @@
 {
   "app": {
+    "name": "Nova\u00a0LMS",
     "description": "Educational\u00a0portal"
+  },
+  "auth": {
+    "login": "Login",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "toContinue": "to continue to { appName }"
+  },
+  "footer": {
+    "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious.",
+    "copyright": "Nova Technologies. All rights reserved."
   }
 }

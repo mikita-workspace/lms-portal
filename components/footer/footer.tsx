@@ -3,16 +3,17 @@
 import { Copyright } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import {
   GITHUB_ISSUE_URL,
-  OWNER_COPYRIGHT,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
   TERMS_AND_CONDITIONS_URL,
 } from '@/constants/common';
 
 export const Footer = () => {
+  const t = useTranslations();
   const pathname = usePathname();
 
   return (
@@ -24,12 +25,10 @@ export const Footer = () => {
               <div className="flex items-center">
                 <Copyright className="h-3 w-3" />
                 <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
-                <span>{OWNER_COPYRIGHT}</span>
+                <span>{t('footer.copyright')}</span>
               </div>
               {/* Test Mode Declaimer */}
-              <div className="items-end">
-                The portal is currently in TEST mode. All payments and data are fictitious.
-              </div>
+              <div className="items-end">{t('footer.testModeDeclaimer')}</div>
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
               <Link href="/releases">Releases notes</Link>

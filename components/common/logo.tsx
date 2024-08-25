@@ -23,10 +23,12 @@ export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
         !onlyLogoIcon && 'hover:opacity-75 transition-opacity',
       )}
     >
-      <Image src="/assets/logo.svg" alt="Nova LMS Logo" height={40} width={40} />
+      <Image src="/assets/logo.svg" alt={`${t('app.name')} Logo`} height={40} width={40} />
       {!onlyLogoIcon && (
         <div className={cn(baloo2.className, isChat && 'hidden md:block')}>
-          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
+          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">
+            {t('app.name')}
+          </p>
           <p className="text-xs text-muted-foreground">{t('app.description')}</p>
         </div>
       )}
