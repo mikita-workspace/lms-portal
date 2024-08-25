@@ -61,11 +61,7 @@ export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps
         setErrorMessage('Invalid OTP code');
       }
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

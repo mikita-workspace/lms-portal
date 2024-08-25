@@ -56,11 +56,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsUploading(false);
     }

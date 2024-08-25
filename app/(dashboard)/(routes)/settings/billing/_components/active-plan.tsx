@@ -32,15 +32,10 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
         responseType: 'json',
       });
 
-      toast({ title: 'Checkout' });
-
+      toast({ title: 'You will be redirected to the checkout page.' });
       window.location.assign(response.url);
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

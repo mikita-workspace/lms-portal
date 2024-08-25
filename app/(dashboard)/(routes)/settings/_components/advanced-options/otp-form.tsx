@@ -41,11 +41,7 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
       setQrCode(otp.qr);
       setSecret(otp.secret);
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }
@@ -63,11 +59,7 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
       toast({ title: '2FA authentication is disabled' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

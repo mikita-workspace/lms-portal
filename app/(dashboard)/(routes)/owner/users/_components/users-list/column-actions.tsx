@@ -50,11 +50,7 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
       toast({ title: 'User updated' });
       startTransition(() => router.refresh());
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

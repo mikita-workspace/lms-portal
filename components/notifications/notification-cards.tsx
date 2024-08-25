@@ -41,11 +41,7 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
 
       startTransition(() => router.refresh());
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsLoading(false);
     }

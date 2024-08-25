@@ -45,11 +45,7 @@ export const Actions = ({
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsLoading(false);
     }
@@ -66,11 +62,7 @@ export const Actions = ({
       router.push(`/teacher/courses`);
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsLoading(false);
     }

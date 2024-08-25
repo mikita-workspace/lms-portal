@@ -47,11 +47,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 

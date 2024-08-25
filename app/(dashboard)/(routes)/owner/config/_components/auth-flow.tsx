@@ -55,11 +55,7 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
       toast({ title: 'Auth providers updated' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 

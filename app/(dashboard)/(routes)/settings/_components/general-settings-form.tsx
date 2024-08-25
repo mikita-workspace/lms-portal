@@ -55,11 +55,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
       toast({ title: 'Account information updated' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 

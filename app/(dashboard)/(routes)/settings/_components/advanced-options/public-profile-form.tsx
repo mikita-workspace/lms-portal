@@ -45,11 +45,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
       toast({ title: 'Visibility updated' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 

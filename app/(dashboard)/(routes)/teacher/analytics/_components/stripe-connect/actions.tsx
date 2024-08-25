@@ -36,15 +36,10 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
         responseType: 'json',
       });
 
-      toast({ title: 'Stripe Onboarding' });
-
+      toast({ title: 'You will be redirected to the Stripe Onboarding page.' });
       window.location.assign(response.url);
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }
@@ -58,15 +53,10 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
         responseType: 'json',
       });
 
-      toast({ title: 'Stripe Express' });
-
+      toast({ title: 'You will be redirected to the Stripe Express page.' });
       window.location.assign(response.url);
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

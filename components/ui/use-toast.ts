@@ -134,22 +134,29 @@ function dispatch(action: Action) {
   });
 }
 
-type Toast = Omit<ToasterToast, 'id'>;
+type Toast = Omit<ToasterToast, 'id'> & { isError?: boolean };
 
-function toast({ ...props }: Toast) {
+function toast({ isError = false, ...props }: Toast) {
   const id = genId();
+
+  const errorProps: Omit<ToasterToast, 'id'> = {
+    description: 'Something went wrong. Try again!',
+    title: 'Oops!',
+    variant: 'destructive',
+    ...props,
+  };
 
   const update = (props: ToasterToast) =>
     dispatch({
       type: 'UPDATE_TOAST',
-      toast: { ...props, id },
+      toast: { ...(isError ? errorProps : props), id },
     });
   const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id });
 
   dispatch({
     type: 'ADD_TOAST',
     toast: {
-      ...props,
+      ...(isError ? errorProps : props),
       id,
       open: true,
       onOpenChange: (open) => {

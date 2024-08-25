@@ -39,11 +39,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
       toast({ title: 'Course updated' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 
@@ -56,11 +52,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
       toast({ title: 'Attachment deleted' });
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setDeletingId(null);
     }

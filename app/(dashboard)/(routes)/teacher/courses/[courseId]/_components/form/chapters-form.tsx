@@ -55,11 +55,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     }
   };
 
@@ -75,11 +71,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsUpdating(false);
     }

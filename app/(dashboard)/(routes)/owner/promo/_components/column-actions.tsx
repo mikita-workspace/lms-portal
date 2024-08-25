@@ -39,11 +39,7 @@ export const ColumnActions = ({ promoId }: ColumnActionsProps) => {
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsFetching(false);
     }

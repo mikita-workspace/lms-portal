@@ -65,11 +65,7 @@ export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) =
 
       router.refresh();
     } catch (error) {
-      toast({
-        description: 'Something went wrong. Try again!',
-        title: 'Oops!',
-        variant: 'destructive',
-      });
+      toast({ isError: true });
     } finally {
       setIsSubmitting(false);
     }
