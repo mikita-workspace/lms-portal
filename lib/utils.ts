@@ -53,3 +53,13 @@ export const decrypt = (cipher: string, secret: string) => {
 };
 
 export const absoluteUrl = (path: string) => `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+
+export const isValidUrl = (value: string) => {
+  try {
+    new URL(value);
+
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
