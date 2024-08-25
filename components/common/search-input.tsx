@@ -28,7 +28,7 @@ export const SearchInput = () => {
         </span>
       )}
       <Input
-        className="w-full md:w-[350px] pl-9 pr-9 rounded-lg bg-neutral-100 dark:bg-neutral-900 focus-visible:ring-neutral-200 dark:focus-visible:ring-neutral-900/40"
+        className="w-full md:w-[400px] pl-9 pr-9 rounded-lg bg-neutral-100 dark:bg-neutral-900 focus-visible:ring-neutral-200 dark:focus-visible:ring-neutral-900/40"
         placeholder="Search for a course..."
         value={value}
         onChange={(event) => setValue(event.target.value)}

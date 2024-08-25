@@ -16,7 +16,7 @@ type NavBarProps = {
 
 export const NavBar = ({ isChat = false, globalProgress, userNotifications }: NavBarProps) => {
   return (
-    <div className="p-4 gap-x-4 h-full flex items-center bg-white dark:bg-neutral-800 border-b">
+    <div className="p-4 gap-x-4 h-full flex items-center justify-between bg-white dark:bg-neutral-800 border-b">
       {!isChat && <SideBarMobile />}
       <Logo />
       <NavBarRoutes globalProgress={globalProgress} userNotifications={userNotifications} />

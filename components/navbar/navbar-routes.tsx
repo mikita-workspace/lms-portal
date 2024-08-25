@@ -41,13 +41,13 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
     <>
       {isSearchPage && (
         <Suspense>
-          <div className="hidden md:block -center ml-[100px]">
+          <div className="hidden md:block">
             <SearchInput />
           </div>
         </Suspense>
       )}
       {isLoading && (
-        <div className="flex items-center space-x-4 ml-auto">
+        <div className="flex items-center space-x-4">
           <div className="space-y-2">
             <Skeleton className="h-3 w-[100px]" />
             <Skeleton className="h-3 w-[75px]" />
@@ -56,7 +56,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
         </div>
       )}
       {!isLoading && (
-        <div className="flex gap-x-2 ml-auto items-center">
+        <div className="flex gap-x-2 items-center">
           {user?.userId && (
             <>
               {(isCoursePage ||
