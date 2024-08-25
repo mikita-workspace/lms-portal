@@ -1,6 +1,5 @@
 'use client';
 
-import { setCookie } from 'cookies-next';
 import {
   BookMarked,
   Gitlab,
