@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
 import { useAppConfigStore } from '@/hooks/use-app-config-store';
-import { cn, isURL } from '@/lib/utils';
+import { cn, isValidUrl } from '@/lib/utils';
 
 import { OAuthButton } from '../auth/ouath-button';
 import { TermsAndPrivacy } from '../auth/terms-and-privacy';
@@ -84,7 +84,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
           router.push('/');
           router.refresh();
           break;
-        case isURL(response?.error ?? ''):
+        case isValidUrl(response?.error ?? ''):
           router.push(response.error);
           break;
         default:

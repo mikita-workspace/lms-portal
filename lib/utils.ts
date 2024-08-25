@@ -54,16 +54,12 @@ export const decrypt = (cipher: string, secret: string) => {
 
 export const absoluteUrl = (path: string) => `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 
-export const isURL = (url: string) => {
-  const pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i',
-  ); // fragment locator
+export const isValidUrl = (value: string) => {
+  try {
+    new URL(value);
 
-  return pattern.test(url);
+    return true;
+  } catch (_) {
+    return false;
+  }
 };
