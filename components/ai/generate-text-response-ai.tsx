@@ -75,7 +75,7 @@ export const GenerateTextResponseAi = ({
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        toast({ variant: 'destructive', title: String(error?.message) });
+        toast({ description: String(error?.message), isError: true });
       }
     } finally {
       setIsImproving(false);

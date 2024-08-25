@@ -52,9 +52,7 @@ export const ChapterVideoPlayer = ({
         router.refresh();
       } catch (error) {
         toast({
-          description: 'Something went wrong. Try again!',
-          title: 'Oops!',
-          variant: 'destructive',
+          isError: true,
         });
       }
     }

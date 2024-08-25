@@ -121,8 +121,8 @@ export const Chat = ({ initialData }: ChatProps) => {
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         toast({
-          title: String(error?.message),
-          variant: 'destructive',
+          description: String(error?.message),
+          isError: true,
         });
       }
     } finally {

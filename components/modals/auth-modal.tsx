@@ -90,8 +90,8 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         default:
           setIsDisabledButtons(false);
           toast({
-            title: response.error,
-            variant: 'destructive',
+            description: response.error,
+            isError: true,
           });
       }
     } catch (error) {
