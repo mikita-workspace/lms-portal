@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import isURL from 'isurl';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -23,7 +24,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
 import { useAppConfigStore } from '@/hooks/use-app-config-store';
-import { cn, isURL } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 import { OAuthButton } from '../auth/ouath-button';
 import { TermsAndPrivacy } from '../auth/terms-and-privacy';
