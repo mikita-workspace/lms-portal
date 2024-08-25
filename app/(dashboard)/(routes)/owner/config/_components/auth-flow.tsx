@@ -4,12 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthFlow as AuthFlowType } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { authIcons } from '@/components/auth/auth-icons';
 import { Switch } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
 import { fetcher } from '@/lib/fetcher';
 import { capitalize } from '@/lib/utils';
@@ -27,7 +27,9 @@ const formSchema = z.object(
 );
 
 export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
+  const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: authFlow.reduce((acc, af) => {
@@ -38,8 +40,6 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
   });
 
   const { isSubmitting, isValid } = form.formState;
-
-  console.log({ authFlow });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -52,11 +52,14 @@ export const AuthFlow = ({ authFlow }: AuthFlowProps) => {
         },
       });
 
-      toast.success('Auth providers updated');
-
+      toast({ title: 'Auth providers updated' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

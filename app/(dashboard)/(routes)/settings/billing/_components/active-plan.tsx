@@ -3,11 +3,11 @@
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { getUserSubscription } from '@/actions/stripe/get-user-subscription';
 import { Banner } from '@/components/common/banner';
 import { Button, Card, CardContent } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_SUBSCRIPTION_TEMPLATE } from '@/constants/common';
 import { fetcher } from '@/lib/fetcher';
 
@@ -16,6 +16,7 @@ type ActivePlanProps = {
 };
 
 export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
+  const { toast } = useToast();
   const pathname = usePathname();
 
   const [isFetching, setIsFetching] = useState(false);
@@ -23,30 +24,28 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
   const handleManageSubscription = async () => {
     setIsFetching(true);
 
-    await toast.promise(
-      fetcher.post('/api/payments/subscription', {
+    try {
+      const response = await fetcher.post('/api/payments/subscription', {
         body: {
           returnUrl: pathname,
         },
         responseType: 'json',
-      }),
-      {
-        loading: 'Subscription processing...',
-        success: (data) => {
-          setIsFetching(false);
+      });
 
-          window.location.assign(data.url);
+      toast({ title: 'Checkout' });
 
-          return 'Checkout';
-        },
-        error: () => {
-          setIsFetching(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      window.location.assign(response.url);
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsFetching(false);
+    }
   };
+
   return (
     <div className="flex flex-col gap-4">
       <p className="font-medium text-xl">Active Plan</p>

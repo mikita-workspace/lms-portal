@@ -5,7 +5,6 @@ import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
@@ -38,6 +37,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { PromoStatus } from '@/constants/payments';
 import { useLocaleStore } from '@/hooks/use-locale-store';
@@ -72,6 +72,8 @@ const formSchema = z.object({
 });
 
 export const PromoModal = ({ children, coupons, customers }: PromoModalProps) => {
+  const { toast } = useToast();
+
   const { exchangeRates } = useLocaleStore((state) => ({
     exchangeRates: state.exchangeRates,
   }));
@@ -113,11 +115,15 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
         responseType: 'json',
       });
 
-      toast.success('Promotion code has been created');
+      toast({ title: 'Promotion code has been created' });
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setOpen(false);
     }

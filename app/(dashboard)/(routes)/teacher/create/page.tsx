@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 const formSchema = z.object({
@@ -25,6 +25,7 @@ const formSchema = z.object({
 });
 
 const CreatePage = () => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,11 +43,15 @@ const CreatePage = () => {
         responseType: 'json',
       });
 
-      router.push(`/teacher/courses/${data.id}`);
+      toast({ title: 'Course has been created' });
 
-      toast.success('Course has been created');
+      router.push(`/teacher/courses/${data.id}`);
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

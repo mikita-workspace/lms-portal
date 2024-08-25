@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { CurrencyInput } from '@/components/common/currency-input';
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { MIN_PAYOUT_AMOUNT } from '@/constants/payments';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -35,8 +35,9 @@ export const RequestPayoutModal = ({
   stripeConnect,
   totalProfit,
 }: RequestPayoutModalProps) => {
-  const { user } = useCurrentUser();
+  const { toast } = useToast();
   const router = useRouter();
+  const { user } = useCurrentUser();
 
   const [price, setPrice] = useState<string | number>(getConvertedPrice(MIN_PAYOUT_AMOUNT));
   const [errorMessage, setErrorMessage] = useState('');
@@ -85,10 +86,10 @@ export const RequestPayoutModal = ({
         body: { amount: getScaledPrice(Number(price)), currency: locale.currency },
       });
 
-      toast.success('Payout request created');
+      toast({ title: 'Payout request created' });
       router.refresh();
     } catch (error) {
-      toast.error('Insufficient funds on the balance sheet');
+      toast({ variant: 'destructive', title: 'Insufficient funds on the balance sheet' });
     } finally {
       setIsFetching(false);
       setOpen(false);

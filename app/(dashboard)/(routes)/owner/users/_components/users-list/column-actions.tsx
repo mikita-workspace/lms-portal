@@ -3,7 +3,6 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import toast from 'react-hot-toast';
 
 import {
   Button,
@@ -14,6 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { UserRole } from '@/constants/auth';
 import { fetcher } from '@/lib/fetcher';
 import { capitalize, cn } from '@/lib/utils';
@@ -24,6 +24,7 @@ type ColumnActionsProps = {
 };
 
 export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
+  const { toast } = useToast();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -46,10 +47,14 @@ export const ColumnActions = ({ userId, role }: ColumnActionsProps) => {
         },
       });
 
-      toast.success('User updated');
+      toast({ title: 'User updated' });
       startTransition(() => router.refresh());
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

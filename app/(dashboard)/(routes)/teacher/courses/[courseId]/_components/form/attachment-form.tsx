@@ -4,12 +4,12 @@ import { Attachment, Course } from '@prisma/client';
 import { Paperclip } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { FileDownload } from '@/components/common/file-download';
 import { FileUpload } from '@/components/common/file-upload';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type AttachmentProps = {
@@ -22,10 +22,11 @@ const formSchema = z.object({
 });
 
 export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-
-  const router = useRouter();
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
@@ -35,10 +36,14 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
 
       handleToggleEdit();
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -48,10 +53,14 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
 
       await fetcher.delete(`/api/courses/${courseId}/attachments/${id}?name=${name}`);
 
-      toast.success('Attachment deleted');
+      toast({ title: 'Attachment deleted' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setDeletingId(null);
     }

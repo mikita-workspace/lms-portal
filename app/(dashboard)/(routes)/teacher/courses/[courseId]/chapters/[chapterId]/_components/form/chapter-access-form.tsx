@@ -6,12 +6,12 @@ import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Checkbox } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -26,7 +26,9 @@ const formSchema = z.object({
 });
 
 export const ChapterAccessForm = ({ chapterId, courseId, initialData }: ChapterAccessFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,12 +46,16 @@ export const ChapterAccessForm = ({ chapterId, courseId, initialData }: ChapterA
     try {
       await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, { body: values });
 
-      toast.success('Chapter updated');
+      toast({ title: 'Chapter updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

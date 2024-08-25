@@ -2,9 +2,9 @@
 
 import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { Button, ButtonProps } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -22,6 +22,8 @@ export const CourseEnrollButton = ({
   price,
   variant = 'success',
 }: CourseEnrollButtonProps) => {
+  const { toast } = useToast();
+
   const localeInfo = useLocaleStore((state) => state.localeInfo);
   const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
 
@@ -35,31 +37,28 @@ export const CourseEnrollButton = ({
   const handleClick = async () => {
     setIsFetching(true);
 
-    await toast.promise(
-      fetcher.post(`/api/courses/${courseId}/checkout`, {
+    try {
+      const response = await fetcher.post(`/api/courses/${courseId}/checkout`, {
         body: {
           locale: localeInfo?.locale,
           details: localeInfo?.details,
           rate: localeInfo?.rate,
         },
         responseType: 'json',
-      }),
-      {
-        loading: 'Payment processing...',
-        success: (data) => {
-          setIsFetching(false);
+      });
 
-          window.location.assign(data.url);
+      toast({ title: 'Checkout' });
 
-          return 'Checkout';
-        },
-        error: () => {
-          setIsFetching(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      window.location.assign(response.url);
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   if (!isMounted) {

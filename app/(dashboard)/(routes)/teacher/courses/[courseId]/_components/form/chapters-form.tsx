@@ -6,13 +6,13 @@ import { PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -29,7 +29,9 @@ const formSchema = z.object({
 });
 
 export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,12 +50,16 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     try {
       await fetcher.post(`/api/courses/${courseId}/chapters`, { body: values });
 
-      toast.success('Chapter created');
+      toast({ title: 'Chapter created' });
       handleToggleCreating();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -65,11 +71,15 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         body: { list: updatedData },
       });
 
-      toast.success('Chapters reordered');
+      toast({ title: 'Chapters reordered' });
 
       router.refresh();
-    } catch {
-      toast.error('Something went wrong!');
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsUpdating(false);
     }

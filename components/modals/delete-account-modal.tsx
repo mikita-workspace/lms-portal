@@ -2,7 +2,6 @@
 
 import { signOut } from 'next-auth/react';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import {
   Dialog,
@@ -14,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 import { Captcha } from '../common/captcha';
@@ -26,8 +26,9 @@ type DeleteAccountModalProps = {
 };
 
 export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountModalProps) => {
-  const [input, setInput] = useState('');
+  const { toast } = useToast();
 
+  const [input, setInput] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [captchaToken, setCaptchaToken] = useState('');
@@ -46,7 +47,11 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
 
       signOut({ callbackUrl: '/' });
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

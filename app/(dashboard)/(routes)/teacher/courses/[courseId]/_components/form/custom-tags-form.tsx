@@ -4,10 +4,10 @@ import { Course } from '@prisma/client';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
 import { ReactTags, Tag } from 'react-tag-autocomplete';
 
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -22,14 +22,15 @@ export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) =
     value: tag,
   }));
 
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [selectedTags, setSelectedTags] = useState<Tag[]>(initialCustomTags);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
-
-  const router = useRouter();
 
   const handleAdd = useCallback(
     (tag: Tag) => {
@@ -59,12 +60,16 @@ export const CustomTagsForm = ({ courseId, initialData }: CustomTagsFormProps) =
         },
       });
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }

@@ -2,12 +2,12 @@
 
 import { Download, ExternalLink, HandCoins } from 'lucide-react';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { ReportModal } from '@/components/modals/report-modal';
 import { RequestPayoutModal } from '@/components/modals/request-payout-modal';
 import { Button } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { Report } from '@/constants/payments';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
@@ -23,6 +23,7 @@ type ActionsProps = {
 };
 
 export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: ActionsProps) => {
+  const { toast } = useToast();
   const { user } = useCurrentUser();
 
   const [isFetching, setIsFetching] = useState(false);
@@ -30,51 +31,45 @@ export const Actions = ({ disableRequest = false, stripeConnect, totalProfit }: 
   const handleCreateAccount = async () => {
     setIsFetching(true);
 
-    await toast.promise(
-      fetcher.post(`/api/payments/stripe-connect/${user?.userId}/create`, {
+    try {
+      const response = await fetcher.post(`/api/payments/stripe-connect/${user?.userId}/create`, {
         responseType: 'json',
-      }),
-      {
-        loading: 'Creating an account...',
-        success: (data) => {
-          setIsFetching(false);
+      });
 
-          window.location.assign(data.url);
+      toast({ title: 'Stripe Onboarding' });
 
-          return 'Stripe Onboarding';
-        },
-        error: () => {
-          setIsFetching(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      window.location.assign(response.url);
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   const handleLoginAccount = async () => {
     setIsFetching(true);
 
-    await toast.promise(
-      fetcher.post(`/api/payments/stripe-connect/${user?.userId}/login`, {
+    try {
+      const response = await fetcher.post(`/api/payments/stripe-connect/${user?.userId}/login`, {
         responseType: 'json',
-      }),
-      {
-        loading: 'Logging to your account...',
-        success: (data) => {
-          setIsFetching(false);
+      });
 
-          window.location.assign(data.url);
+      toast({ title: 'Stripe Express' });
 
-          return 'Stripe Express';
-        },
-        error: () => {
-          setIsFetching(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      window.location.assign(response.url);
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   return (

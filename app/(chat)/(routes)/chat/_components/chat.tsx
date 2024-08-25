@@ -2,9 +2,9 @@
 
 import { getTime } from 'date-fns';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
+import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { fetcher } from '@/lib/fetcher';
@@ -20,6 +20,8 @@ type ChatProps = {
 };
 
 export const Chat = ({ initialData }: ChatProps) => {
+  const { toast } = useToast();
+
   const { currentModel, messages, removeMessages, setMessages } = useChatStore();
 
   const [isMounted, setIsMounted] = useState(false);
@@ -118,7 +120,10 @@ export const Chat = ({ initialData }: ChatProps) => {
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        toast.error(String(error?.message));
+        toast({
+          title: String(error?.message),
+          variant: 'destructive',
+        });
       }
     } finally {
       setIsSubmitting(false);

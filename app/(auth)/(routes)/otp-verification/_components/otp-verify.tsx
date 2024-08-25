@@ -41,7 +41,7 @@ export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpV
           setErrorMessage('Invalid OTP code');
         }
       } catch (error) {
-        setErrorMessage('Something went wrong!');
+        setErrorMessage('Something went wrong. Try again!');
       } finally {
         setIsFetching(false);
       }

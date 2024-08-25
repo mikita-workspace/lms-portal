@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Switch } from '@/components/ui';
@@ -16,6 +15,7 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type PublicProfileFormProps = {
@@ -27,7 +27,9 @@ const formSchema = z.object({
 });
 
 export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,10 +42,14 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
-      toast.success('Visibility updated');
+      toast({ title: 'Visibility updated' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

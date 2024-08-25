@@ -5,11 +5,11 @@ import { ImageIcon, Pencil, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { FileUpload } from '@/components/common/file-upload';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type ImageFormProps = {
@@ -22,9 +22,10 @@ const formSchema = z.object({
 });
 
 export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-
+  const { toast } = useToast();
   const router = useRouter();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
@@ -32,12 +33,16 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
     try {
       await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

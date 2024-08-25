@@ -6,7 +6,6 @@ import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import {
@@ -22,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -36,9 +36,10 @@ const formSchema = z.object({
 });
 
 export const CategoryForm = ({ courseId, initialData, options }: CategoryFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-
+  const { toast } = useToast();
   const router = useRouter();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,12 +58,16 @@ export const CategoryForm = ({ courseId, initialData, options }: CategoryFormPro
     try {
       await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

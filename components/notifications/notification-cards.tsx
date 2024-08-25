@@ -4,9 +4,9 @@ import { Notification } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import toast from 'react-hot-toast';
 import { BiLoaderAlt } from 'react-icons/bi';
 
+import { useToast } from '@/components/ui/use-toast';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -22,6 +22,7 @@ type NotificationCardProps = Omit<NotificationCardsProps, 'notifications'> & {
 };
 
 const NotificationCard = ({ isFetching = false, notification, userId }: NotificationCardProps) => {
+  const { toast } = useToast();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -40,7 +41,11 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
 
       startTransition(() => router.refresh());
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }

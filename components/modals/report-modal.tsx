@@ -6,7 +6,6 @@ import { CalendarIcon, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { SyntheticEvent, useState } from 'react';
 import { DateRange } from 'react-day-picker';
-import toast from 'react-hot-toast';
 
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
@@ -19,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { DATE_RANGE_TEMPLATE, ONE_DAY_SEC, ONE_YEAR_SEC } from '@/constants/common';
 import { Report } from '@/constants/payments';
 import { roundDate } from '@/lib/date';
@@ -34,6 +34,7 @@ type ReportModalProps = {
 };
 
 export const ReportModal = ({ children, reportType, stripeConnect }: ReportModalProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [date, setDate] = useState<DateRange | undefined>({
@@ -76,14 +77,18 @@ export const ReportModal = ({ children, reportType, stripeConnect }: ReportModal
 
       if (!isRequested) {
         setCookie([cookieKey, 'requested'].join('-'), 'true', { maxAge: ONE_DAY_SEC });
-        toast.success('Report was requested');
+        toast({ title: 'Report was requested' });
       } else {
-        toast.success(response?.url ? 'Report is ready' : 'Report in progress...');
+        toast({ title: response?.url ? 'Report is ready' : 'Report in progress...' });
       }
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
       setOpen(false);

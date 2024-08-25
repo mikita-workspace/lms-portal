@@ -6,7 +6,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
 import { useAppConfigStore } from '@/hooks/use-app-config-store';
 import { cn, isURL } from '@/lib/utils';
@@ -51,6 +51,7 @@ const signUpSchema = z.intersection(
 );
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
+  const { toast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -78,17 +79,27 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         redirect: false,
       });
 
-      if (!response?.error) {
-        router.push('/');
-        router.refresh();
-      } else if (isURL(response.error)) {
-        router.push(response.error);
-      } else {
-        setIsDisabledButtons(false);
-        toast.error(response.error);
+      switch (true) {
+        case !response?.error:
+          router.push('/');
+          router.refresh();
+          break;
+        case isURL(response?.error ?? ''):
+          router.push(response.error);
+          break;
+        default:
+          setIsDisabledButtons(false);
+          toast({
+            title: response.error,
+            variant: 'destructive',
+          });
       }
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

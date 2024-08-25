@@ -5,7 +5,6 @@ import { format, fromUnixTime } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { CurrencyInput } from '@/components/common/currency-input';
 import { Price } from '@/components/common/price';
@@ -19,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { MAX_PRICE_INT } from '@/constants/payments';
@@ -34,12 +34,13 @@ type PriceFormProps = {
 };
 
 export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const { exchangeRates, localeInfo } = useLocaleStore((state) => ({
     exchangeRates: state.exchangeRates,
     localeInfo: state.localeInfo,
   }));
-
-  const router = useRouter();
 
   const [price, setPrice] = useState<string | number>(
     getConvertedPrice(initialData?.price ?? 0) || '',
@@ -92,12 +93,16 @@ export const PriceForm = ({ courseId, fees, initialData }: PriceFormProps) => {
         },
       });
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }

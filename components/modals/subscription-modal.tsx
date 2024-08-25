@@ -4,7 +4,6 @@ import { StripeSubscriptionDescription, StripeSubscriptionPeriod } from '@prisma
 import { ArrowRight, CheckCircle2 as CheckCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import {
   Dialog,
@@ -13,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -30,6 +30,7 @@ type SubscriptionModalProps = {
 };
 
 export const SubscriptionModal = ({ description = [], open, setOpen }: SubscriptionModalProps) => {
+  const { toast } = useToast();
   const pathname = usePathname();
   const { user } = useCurrentUser();
 
@@ -63,8 +64,8 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
 
     setIsFetching(true);
 
-    await toast.promise(
-      fetcher.post('/api/payments/subscription', {
+    try {
+      const response = await fetcher.post('/api/payments/subscription', {
         body: {
           details: localeInfo?.details,
           locale: localeInfo?.locale,
@@ -75,23 +76,20 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
           subscriptionName,
         },
         responseType: 'json',
-      }),
-      {
-        loading: 'Subscription processing...',
-        success: (data) => {
-          setIsFetching(false);
+      });
 
-          window.location.assign(data.url);
+      toast({ title: 'Checkout' });
 
-          return 'Checkout';
-        },
-        error: () => {
-          setIsFetching(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      window.location.assign(response.url);
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   return (

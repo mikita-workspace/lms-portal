@@ -5,7 +5,6 @@ import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@/components/ui';
@@ -17,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
 
@@ -31,6 +31,7 @@ const formSchema = z.object({
 });
 
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
+  const { toast } = useToast();
   const { update } = useSession();
   const router = useRouter();
 
@@ -51,10 +52,14 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
 
       await update(values);
 
-      toast.success('Account information updated');
+      toast({ title: 'Account information updated' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

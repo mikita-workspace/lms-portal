@@ -4,12 +4,12 @@ import { User } from '@prisma/client';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { TextBadge } from '@/components/common/text-badge';
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { CreateOtpModal } from '@/components/modals/create-otp-modal';
 import { Button } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,7 @@ type OtpFormProps = {
 };
 
 export const OtpForm = ({ initialData }: OtpFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const isOtpEnabled = initialData?.otpSecret;
@@ -40,7 +41,11 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
       setQrCode(otp.qr);
       setSecret(otp.secret);
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }
@@ -55,10 +60,14 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
         body: { email: initialData.email },
       });
 
-      toast.success('2FA authentication is disabled');
+      toast({ title: '2FA authentication is disabled' });
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

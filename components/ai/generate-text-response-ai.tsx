@@ -2,9 +2,9 @@
 
 import { StopCircle } from 'lucide-react';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { BsStars } from 'react-icons/bs';
 
+import { useToast } from '@/components/ui/use-toast';
 import { SYSTEM_COURSE_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
@@ -22,6 +22,8 @@ export const GenerateTextResponseAi = ({
   isValid,
   messages,
 }: GenerateTextResponseAiProps) => {
+  const { toast } = useToast();
+
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [isImproving, setIsImproving] = useState(false);
@@ -73,7 +75,7 @@ export const GenerateTextResponseAi = ({
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        toast.error(String(error?.message));
+        toast({ variant: 'destructive', title: String(error?.message) });
       }
     } finally {
       setIsImproving(false);

@@ -6,7 +6,6 @@ import { Pencil, PlusCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { BiLoader } from 'react-icons/bi';
 import * as z from 'zod';
 
@@ -15,6 +14,7 @@ import { VideoPlayer } from '@/components/common/video-player';
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type ChapterVideoFormProps = {
@@ -28,11 +28,12 @@ const formSchema = z.object({
 });
 
 export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVideoFormProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
-
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,12 +51,16 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
     try {
       await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, { body: values });
 
-      toast.success('Chapter updated');
+      toast({ title: 'Chapter updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsUploading(false);
     }

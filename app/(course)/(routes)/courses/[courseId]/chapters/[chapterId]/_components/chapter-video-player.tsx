@@ -3,10 +3,10 @@
 import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 import { VideoPlayer } from '@/components/common/video-player';
+import { useToast } from '@/components/ui/use-toast';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -28,6 +28,7 @@ export const ChapterVideoPlayer = ({
   nextChapterId,
   videoUrl,
 }: ChapterVideoPlayerProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [isReady, setIsReady] = useState(false);
@@ -36,25 +37,26 @@ export const ChapterVideoPlayer = ({
 
   const handleEnd = async () => {
     if (completeOnEnd) {
-      await toast.promise(
-        fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+      try {
+        await fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
           body: { isCompleted: true },
-        }),
-        {
-          loading: 'Updating progress...',
-          success: () => {
-            if (!nextChapterId) {
-              handleOpenConfetti();
-            } else {
-              router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
-            }
+        });
 
-            router.refresh();
-            return 'Progress updated';
-          },
-          error: () => 'Something went wrong',
-        },
-      );
+        if (!nextChapterId) {
+          handleOpenConfetti();
+        } else {
+          router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+        }
+
+        toast({ title: 'Progress updated' });
+        router.refresh();
+      } catch (error) {
+        toast({
+          description: 'Something went wrong. Try again!',
+          title: 'Oops!',
+          variant: 'destructive',
+        });
+      }
     }
   };
 

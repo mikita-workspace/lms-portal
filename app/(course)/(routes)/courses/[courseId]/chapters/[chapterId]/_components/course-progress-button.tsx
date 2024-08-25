@@ -3,9 +3,9 @@
 import { ArrowRight, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { fetcher } from '@/lib/fetcher';
 
@@ -22,6 +22,7 @@ export const CourseProgressButton = ({
   isCompleted,
   nextChapterId,
 }: CourseProgressButton) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,31 +32,28 @@ export const CourseProgressButton = ({
   const handleClick = async () => {
     setIsLoading(true);
 
-    await toast.promise(
-      fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+    try {
+      await fetcher.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
         body: { isCompleted: !isCompleted },
-      }),
-      {
-        loading: 'Updating progress...',
-        success: () => {
-          setIsLoading(false);
+      });
 
-          if (!isCompleted && !nextChapterId) {
-            handleOpenConfetti();
-          } else if (!isCompleted && nextChapterId) {
-            router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
-          }
+      if (!isCompleted && !nextChapterId) {
+        handleOpenConfetti();
+      } else if (!isCompleted && nextChapterId) {
+        router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+      }
 
-          router.refresh();
-          return 'Progress updated';
-        },
-        error: () => {
-          setIsLoading(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      toast({ title: 'Progress updated' });
+      router.refresh();
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const Icon = isCompleted ? XCircle : ArrowRight;

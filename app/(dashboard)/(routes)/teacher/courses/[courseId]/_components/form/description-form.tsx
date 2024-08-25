@@ -6,7 +6,6 @@ import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
@@ -20,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
 import { USER_COURSE_SHORT_DESCRIPTION_PROMPT } from '@/constants/ai';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
@@ -36,7 +36,9 @@ const formSchema = z.object({
 });
 
 export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,12 +66,16 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
     try {
       await fetcher.patch(`/api/courses/${courseId}`, { body: values });
 
-      toast.success('Course updated');
+      toast({ title: 'Course updated' });
       handleToggleEdit();
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     }
   };
 

@@ -4,9 +4,9 @@ import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
-import { Toaster } from 'react-hot-toast';
 
 import { GetAppConfig } from '@/actions/config/get-app-config';
+import { Toaster as ToastProvider } from '@/components/ui/toaster';
 import {
   ALLOWED_CURRENCY,
   DEFAULT_CURRENCY,
@@ -20,10 +20,6 @@ import { fetcher } from '@/lib/fetcher';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return <SessionProvider>{children}</SessionProvider>;
-};
-
-const ToastProvider = () => {
-  return <Toaster toastOptions={{ className: 'dark:bg-neutral-900 dark:text-primary' }} />;
 };
 
 const ConfettiProvider = () => {

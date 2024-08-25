@@ -3,7 +3,6 @@
 import { MoreHorizontal, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 import {
@@ -13,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { PromoStatus } from '@/constants/payments';
 import { fetcher } from '@/lib/fetcher';
 
@@ -21,6 +21,7 @@ type ColumnActionsProps = {
 };
 
 export const ColumnActions = ({ promoId }: ColumnActionsProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [isFetching, setIsFetching] = useState(false);
@@ -38,7 +39,11 @@ export const ColumnActions = ({ promoId }: ColumnActionsProps) => {
 
       router.refresh();
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

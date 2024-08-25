@@ -2,14 +2,16 @@
 
 import { StripeSubscriptionDescription } from '@prisma/client';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 import { SubscriptionModal } from '../modals/subscription-modal';
 import { Button } from '../ui';
 
 export const SubscriptionBanner = () => {
+  const { toast } = useToast();
+
   const [subscriptionDescription, setSubscriptionDescription] = useState<
     StripeSubscriptionDescription[]
   >([]);
@@ -31,7 +33,11 @@ export const SubscriptionBanner = () => {
       setSubscriptionDescription(response);
       setOpen(true);
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

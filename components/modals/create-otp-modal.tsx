@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { OtpInput } from '@/components/common/otp-input';
 import { Button, Skeleton } from '@/components/ui';
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { OTP_LENGTH } from '@/constants/otp';
 import { fetcher } from '@/lib/fetcher';
 
@@ -26,6 +26,7 @@ type CreateOtpModalProps = {
 };
 
 export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [token, setToken] = useState('');
@@ -54,13 +55,17 @@ export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps
       if (response.verified) {
         setOpen(false);
 
-        toast.success('2FA authentication is enabled');
+        toast({ title: '2FA authentication is enabled' });
         router.refresh();
       } else {
         setErrorMessage('Invalid OTP code');
       }
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
     } finally {
       setIsFetching(false);
     }

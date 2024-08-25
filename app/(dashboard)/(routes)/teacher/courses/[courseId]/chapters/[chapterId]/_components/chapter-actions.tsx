@@ -3,10 +3,10 @@
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type ChapterActionsProps = {
@@ -22,6 +22,7 @@ export const ChapterActions = ({
   disabled = false,
   isPublished = false,
 }: ChapterActionsProps) => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,49 +30,48 @@ export const ChapterActions = ({
   const handleTogglePublication = async () => {
     setIsLoading(true);
 
-    toast.promise(
-      fetcher.patch(
+    try {
+      await fetcher.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/${isPublished ? 'unpublish' : 'publish'}`,
-      ),
-      {
-        loading: isPublished
-          ? 'This chapter is removing from publications'
-          : 'Publication of the chapter...',
-        success: () => {
-          setIsLoading(false);
+      );
 
-          router.refresh();
+      toast({
+        title: isPublished ? 'Chapter unpublished' : 'Chapter has been published',
+      });
 
-          return isPublished ? 'Chapter unpublished' : 'Chapter has been published';
-        },
-        error: () => {
-          setIsLoading(false);
-
-          return 'Something went wrong';
-        },
-      },
-    );
+      router.refresh();
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDelete = async () => {
     setIsLoading(true);
 
-    await toast.promise(fetcher.delete(`/api/courses/${courseId}/chapters/${chapterId}`), {
-      loading: 'Deleting a chapter...',
-      success: () => {
-        setIsLoading(false);
+    try {
+      await fetcher.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
 
-        router.push(`/teacher/courses/${courseId}`);
-        router.refresh();
+      toast({
+        title: 'Chapter deleted',
+      });
 
-        return 'Chapter deleted';
-      },
-      error: () => {
-        setIsLoading(false);
-
-        return 'Something went wrong';
-      },
-    });
+      router.push(`/teacher/courses/${courseId}`);
+      router.refresh();
+    } catch (error) {
+      toast({
+        description: 'Something went wrong. Try again!',
+        title: 'Oops!',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
