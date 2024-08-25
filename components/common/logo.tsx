@@ -1,6 +1,7 @@
 import { Baloo_2 } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 
@@ -12,6 +13,8 @@ type LogoProps = {
 };
 
 export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
+  const t = useTranslations();
+
   const Logo = () => (
     <div
       className={cn(
@@ -24,7 +27,7 @@ export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
       {!onlyLogoIcon && (
         <div className={cn(baloo2.className, isChat && 'hidden md:block')}>
           <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">Nova LMS</p>
-          <p className="text-xs text-muted-foreground">Educational&nbsp;portal</p>
+          <p className="text-xs text-muted-foreground">{t('app.description')}</p>
         </div>
       )}
     </div>
