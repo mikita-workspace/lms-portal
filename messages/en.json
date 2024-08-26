@@ -11,7 +11,6 @@
     "email": "Email",
     "emailExistError": "Email already exist",
     "invalidPasswordOrEmailError": "Invalid password or email address",
-    "login": "Login",
     "password": "Password",
     "signIn": "Sign in",
     "signUp": "Sign up",
@@ -42,5 +41,34 @@
     "payments": "Payments",
     "promo": "Promo",
     "users": "Users"
+  },
+  "errorPage": {
+    "body": "An unexpected application error has occurred.",
+    "title": "500",
+    "tryAgain": "Try again"
+  },
+  "notFoundPage": {
+    "body": "We could not find the page you were looking for.",
+    "goBackHome": "Go back home",
+    "title": "401"
+  },
+  "profileButton": {
+    "admin": "Admin",
+    "chat": "Chat",
+    "logOut": "Log out",
+    "login": "Login",
+    "owner": "Owner",
+    "points": "Points",
+    "progress": "Progress",
+    "settings": "Settings",
+    "student": "Student",
+    "teacher": "Teacher"
+  },
+  "switcher": {
+    "dark": "Dark",
+    "language": "language",
+    "light": "Light",
+    "system": "System",
+    "theme": "Theme"
   }
 }

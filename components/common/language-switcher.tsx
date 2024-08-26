@@ -1,7 +1,7 @@
 'use client';
 
 import { Languages } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { changeLocale } from '@/actions/locale/change-locale';
 import { SUPPORTED_LOCALES } from '@/constants/locale';
@@ -21,6 +21,8 @@ type LanguageSwitcherProps = {
   onChange?: () => void;
 };
 export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
+  const t = useTranslations('switcher');
+
   const locale = useLocale();
 
   const handleLanguage = async (lang: string) => {
@@ -49,7 +51,7 @@ export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
           <Languages className="mr-2 h-4 w-4" />
-          <span>Language</span>
+          <span>{t('language')}</span>
         </div>
         <DropDown />
       </div>

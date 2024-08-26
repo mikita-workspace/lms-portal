@@ -1,6 +1,7 @@
 'use client';
 
 import { Laptop2, MoonStar, Sun } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 
@@ -19,6 +20,8 @@ type ThemeSwitcherProps = {
 };
 
 export const ThemeSwitcher = ({ isMenu = false }: ThemeSwitcherProps) => {
+  const t = useTranslations('switcher');
+
   const { theme, setTheme } = useTheme();
 
   const ThemeIcon = useMemo(() => {
@@ -38,9 +41,9 @@ export const ThemeSwitcher = ({ isMenu = false }: ThemeSwitcherProps) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup className="z-10">
-          <SelectItem value="system">System</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="light">Light</SelectItem>
+          <SelectItem value="system">{t('system')}</SelectItem>
+          <SelectItem value="dark">{t('dark')}</SelectItem>
+          <SelectItem value="light">{t('light')}</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
@@ -51,7 +54,7 @@ export const ThemeSwitcher = ({ isMenu = false }: ThemeSwitcherProps) => {
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
           <ThemeIcon className="mr-2 h-4 w-4" />
-          <span>Theme</span>
+          <span>{t('theme')}</span>
         </div>
         <DropDown />
       </div>

@@ -2,6 +2,7 @@
 
 import { BookMarked, Gitlab, LogIn, LogOut, MessageSquare, Settings2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -36,6 +37,8 @@ type UserProfileButtonProps = {
 };
 
 export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) => {
+  const t = useTranslations('profileButton');
+
   const router = useRouter();
 
   const { user } = useCurrentUser();
@@ -61,9 +64,11 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <div className="flex gap-1 items-center">
               <p className="text-sm font-semibold">{user.name}</p>
               <div className="ml-1">
-                {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
-                {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
-                {isStudent && <TextBadge label="Student" variant="default" />}
+                {(isOwner(user.userId) || isAdmin) && (
+                  <TextBadge label={t('admin')} variant="green" />
+                )}
+                {isTeacher && <TextBadge label={t('teacher')} variant="indigo" />}
+                {isStudent && <TextBadge label={t('student')} variant="default" />}
               </div>
             </div>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
@@ -74,9 +79,9 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <div className="p-2 flex flex-col space-y-1">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <p>Progress</p>
+                <p>{t('progress')}</p>
                 <p>
-                  {globalProgress.value}/{globalProgress.total} Points
+                  {globalProgress.value}/{globalProgress.total} {t('points')}
                 </p>
               </div>
               <ProgressBar
@@ -94,7 +99,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         {isOwner(user.userId) && (
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/owner')}>
             <Gitlab className="h-4 w-4 mr-2" />
-            Owner
+            {t('owner')}
           </DropdownMenuItem>
         )}
         {(isAdmin || isTeacher) && (
@@ -103,19 +108,19 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             onClick={() => router.push('/teacher/courses')}
           >
             <BookMarked className="h-4 w-4 mr-2" />
-            Teacher
+            {t('teacher')}
           </DropdownMenuItem>
         )}
         {(isAdmin || hasSubscription) && (
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
             <MessageSquare className="mr-2 h-4 w-4" />
-            Chat&nbsp;&nbsp;
+            {t('chat')}&nbsp;&nbsp;
             <TextBadge label="AI" variant="yellow" />
           </DropdownMenuItem>
         )}
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
           <Settings2 className="mr-2 h-4 w-4" />
-          Settings
+          {t('settings')}
         </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <LanguageSwitcher isMenu />
@@ -124,7 +129,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         <LogoutButton>
           <DropdownMenuItem className="hover:cursor-pointer text-red-500">
             <LogOut className="mr-2 h-4 w-4" />
-            Log out
+            {t('logOut')}
           </DropdownMenuItem>
         </LogoutButton>
       </DropdownMenuContent>
@@ -133,7 +138,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
     <AuthModal>
       <Button variant="outline">
         <LogIn className="h-4 w-4 mr-2" />
-        Login
+        {t('login')}
       </Button>
     </AuthModal>
   );
