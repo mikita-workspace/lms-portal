@@ -1,31 +1,17 @@
 'use client';
 
-import {
-  BookMarked,
-  Gitlab,
-  Languages,
-  Laptop2,
-  LogIn,
-  LogOut,
-  MessageSquare,
-  MoonStar,
-  Settings2,
-  Sun,
-} from 'lucide-react';
+import { BookMarked, Gitlab, LogIn, LogOut, MessageSquare, Settings2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
-import { useTheme } from 'next-themes';
-import { useMemo } from 'react';
 
-import { changeLocale } from '@/actions/locale/change-locale';
 import { UserRole } from '@/constants/auth';
-import { SUPPORTED_LOCALES } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { isOwner } from '@/lib/owner';
 import { getFallbackName } from '@/lib/utils';
 
+import { LanguageSwitcher } from '../common/language-switcher';
 import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
+import { ThemeSwitcher } from '../common/theme-switcher';
 import { AuthModal } from '../modals/auth-modal';
 import {
   Avatar,
@@ -38,12 +24,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from '../ui';
 import { LogoutButton } from './logout-button';
 
@@ -56,24 +36,9 @@ type UserProfileButtonProps = {
 };
 
 export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) => {
-  const { user } = useCurrentUser();
-  const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const locale = useLocale();
 
-  const ThemeIcon = useMemo(() => {
-    if (theme === 'system') {
-      return Laptop2;
-    }
-
-    return theme === 'light' ? Sun : MoonStar;
-  }, [theme]);
-
-  const handleTheme = (theme: string) => setTheme(theme);
-
-  const handleLanguage = async (lang: string) => {
-    await changeLocale(lang);
-  };
+  const { user } = useCurrentUser();
 
   const handleSettings = () => router.push('/settings');
 
@@ -153,48 +118,8 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className="hover:cursor-pointer">
-          <div className="flex justify-between items-center w-full">
-            <div className="flex items-center">
-              <Languages className="mr-2 h-4 w-4" />
-              <span>Language</span>
-            </div>
-            <Select onValueChange={handleLanguage} defaultValue={locale}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Select a theme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="z-10">
-                  {SUPPORTED_LOCALES.map(({ key, title }) => (
-                    <SelectItem key={key} value={key}>
-                      {title}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="hover:cursor-pointer">
-          <div className="flex justify-between items-center w-full">
-            <div className="flex items-center">
-              <ThemeIcon className="mr-2 h-4 w-4" />
-              <span>Theme</span>
-            </div>
-            <Select onValueChange={handleTheme} defaultValue={theme}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Select a theme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="z-10">
-                  <SelectItem value="system">System</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="light">Light</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </DropdownMenuItem>
+        <LanguageSwitcher isMenu />
+        <ThemeSwitcher isMenu />
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <LogoutButton>
           <DropdownMenuItem className="hover:cursor-pointer text-red-500">

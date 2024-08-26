@@ -5,22 +5,37 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import { AuthStatus } from '@/constants/auth';
 import {
   GITHUB_ISSUE_URL,
   OWNER_EMAIL,
   PRIVACY_POLICY_URL,
   TERMS_AND_CONDITIONS_URL,
 } from '@/constants/common';
+import { useCurrentUser } from '@/hooks/use-current-user';
+
+import { LanguageSwitcher } from '../common/language-switcher';
+import { ThemeSwitcher } from '../common/theme-switcher';
 
 export const Footer = () => {
   const t = useTranslations();
   const pathname = usePathname();
+
+  const { user, status } = useCurrentUser();
+
+  const showLanguageSwitcher = !user?.userId && status !== AuthStatus.LOADING;
 
   return (
     <>
       {!pathname?.includes('/chat') && (
         <footer className="md:p-4 p-2 w-full border-t bg-white dark:bg-neutral-950">
           <div className="text-xs text-muted-foreground py-2 px-2 flex flex-col md:items-end md:ml-[255px]">
+            {showLanguageSwitcher && (
+              <div className="mb-4 flex gap-x-2">
+                <LanguageSwitcher />
+                <ThemeSwitcher />
+              </div>
+            )}
             <div className="flex flex-col mb-4 md:items-end">
               <div className="flex items-center">
                 <Copyright className="h-3 w-3" />
