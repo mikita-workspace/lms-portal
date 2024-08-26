@@ -77,5 +77,42 @@
     "light": "Light",
     "system": "System",
     "theme": "Theme"
+  },
+  "payments": {
+    "payout": {
+      "decline":{
+        "body": "Your payout request has been declined.",
+        "title": "Payout Request { payoutRequestId }"
+      },
+      "paid": {
+        "body": "The payout request has been successfully completed. { amount } was transferred to your Stripe account.",
+        "title": "Payout Request { payoutRequestId }"
+      }
+    },
+    "promo": {
+      "new": {
+        "body": "Congratulations on receiving the promo code - { code }. Please take advantage of it as soon as possible!",
+        "title": "New promotion code"
+      }
+    },
+    "stripe-connect": {
+      "emptyBalance": "Insufficient funds on the balance sheet.",
+      "request": {
+        "body": "{ username } has requested a withdrawal of funds.",
+        "title": "Payout Request { payoutRequestId }"
+      }
+    }
+  },
+  "courses": {
+    "publish": {
+      "errors": {
+        "missingRequiredFields": "Missing required fields"
+      }
+    },
+    "checkout": {
+      "errors": {
+        "alreadyPurchased": "Already purchased"
+      }
+    }
   }
 }

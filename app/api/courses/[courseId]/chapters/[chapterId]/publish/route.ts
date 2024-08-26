@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
@@ -23,6 +24,8 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
+    const t = await getTranslations('courses.publish');
+
     const chapter = await db.chapter.findUnique({
       where: { id: params.chapterId, courseId: params.courseId },
     });
@@ -30,7 +33,7 @@ export const PATCH = async (
     const muxData = await db.muxData.findUnique({ where: { chapterId: params.chapterId } });
 
     if (!chapter || !muxData || !chapter.title || !chapter.description || !chapter.videoUrl) {
-      return new NextResponse('Missing required fields', {
+      return new NextResponse(t('errors.missingRequiredFields'), {
         status: StatusCodes.BAD_REQUEST,
       });
     }

@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
@@ -21,6 +22,8 @@ export const PATCH = async (_: NextRequest, { params }: { params: { courseId: st
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
+    const t = await getTranslations('courses.publish');
+
     const hasPublishedChapter = course.chapters.some((chapter) => chapter.isPublished);
 
     if (
@@ -30,7 +33,7 @@ export const PATCH = async (_: NextRequest, { params }: { params: { courseId: st
       !course.title ||
       !hasPublishedChapter
     ) {
-      return new NextResponse('Missing required fields', {
+      return new NextResponse(t('errors.missingRequiredFields'), {
         status: StatusCodes.BAD_REQUEST,
       });
     }
