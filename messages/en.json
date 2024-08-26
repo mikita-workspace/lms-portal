@@ -114,5 +114,10 @@
         "alreadyPurchased": "Already purchased"
       }
     }
+  },
+  "releasesPage": {
+    "backNav": "Back to courses",
+    "download": "Download .zip",
+    "releasesNotes": "Releases notes"
   }
 }

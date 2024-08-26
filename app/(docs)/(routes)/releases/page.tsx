@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { ArrowLeft, Download } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { getGithubReleases } from '@/actions/github/get-releases';
 import { MarkdownText } from '@/components/common/markdown-text';
@@ -18,6 +19,8 @@ type ReleasesPagePageProps = {
 };
 
 const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
+  const t = await getTranslations('releasesPage');
+
   const releases = await getGithubReleases(searchParams);
 
   return (
@@ -28,10 +31,10 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
           href={'/'}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to courses
+          {t('backNav')}
         </Link>
       </div>
-      <h1 className="text-2xl font-medium mb-12">Releases notes</h1>
+      <h1 className="text-2xl font-medium mb-12">{t('releasesNotes')}</h1>
       {releases.map((release) => (
         <div className="mb-8" key={release.name}>
           <div className="flex flex-col mb-4">
@@ -49,7 +52,7 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
               <Link href={release.zipUrl}>
                 <Button variant="outline">
                   <Download className="h-4 w-4 mr-2" />
-                  Download .zip
+                  {t('download')}
                 </Button>
               </Link>
             )}
