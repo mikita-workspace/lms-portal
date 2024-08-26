@@ -18,6 +18,7 @@ import {
 
 type LanguageSwitcherProps = {
   isMenu?: boolean;
+  onChange?: () => void;
 };
 export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
   const locale = useLocale();
@@ -29,7 +30,7 @@ export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
   const DropDown = () => (
     <Select onValueChange={handleLanguage} defaultValue={locale}>
       <SelectTrigger className="w-[120px]">
-        <SelectValue placeholder="Select a theme" />
+        <SelectValue placeholder="Select a language" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup className="z-10">

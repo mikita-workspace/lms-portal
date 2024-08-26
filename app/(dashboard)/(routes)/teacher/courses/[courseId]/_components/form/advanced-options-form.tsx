@@ -8,11 +8,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Checkbox } from '@/components/ui';
+import {
+  Checkbox,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
-import { DEFAULT_LANGUAGE } from '@/constants/locale';
+import { DEFAULT_LANGUAGE, SUPPORTED_LOCALES } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -106,13 +113,21 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
               control={form.control}
               name="language"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
-                  {/* <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl> */}
-                  <div className="space-y-1 leading-none">
-                    <FormDescription>Make this course Premium</FormDescription>
-                  </div>
+                <FormItem className="shadow-none">
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {SUPPORTED_LOCALES.map(({ key, title }) => (
+                        <SelectItem key={key} value={key}>
+                          {title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
