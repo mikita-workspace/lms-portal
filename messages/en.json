@@ -8,6 +8,8 @@
     "continueWith": "Continue with { provider }",
     "doNotHaveAnAccount": "Do not have an account?",
     "email": "Email",
+    "emailExistError": "Email already exist",
+    "invalidPasswordOrEmailError": "Invalid password or email address",
     "login": "Login",
     "password": "Password",
     "signIn": "Sign in",

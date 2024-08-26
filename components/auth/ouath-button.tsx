@@ -23,7 +23,7 @@ export const OAuthButton = ({
   setIsDisabled,
   ...props
 }: OAuthButton) => {
-  const t = useTranslations();
+  const t = useTranslations('auth');
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
@@ -64,7 +64,7 @@ export const OAuthButton = ({
         )}
         size={20}
       />
-      {!isCredentialsProvider && t('auth.continueWith', { provider: oAuthLabel })}
+      {!isCredentialsProvider && t('continueWith', { provider: oAuthLabel })}
     </Button>
   );
 };

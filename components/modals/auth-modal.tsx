@@ -52,7 +52,9 @@ const signUpSchema = z.intersection(
 );
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
-  const t = useTranslations();
+  const t = useTranslations('auth');
+  const appName = useTranslations('app')('name');
+
   const { toast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
@@ -113,10 +115,10 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
       <DialogContent className="sm:max-w-[445px] p-9">
         <DialogHeader>
           <DialogTitle className="text-lg font-[600]">
-            {t(`auth.${isSignUpFlow ? 'signUp' : 'signIn'}`)}
+            {t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}
           </DialogTitle>
           <DialogDescription className="text-base">
-            {t('auth.toContinue', { appName: t('app.name') })}
+            {t('toContinue', { appName })}
           </DialogDescription>
         </DialogHeader>
         {isCredentialsProvider && (
@@ -133,7 +135,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                           <Input
                             {...field}
                             disabled={isSubmitting || isDisabledButtons}
-                            placeholder={t('auth.username')}
+                            placeholder={t('username')}
                           />
                         </FormControl>
                         <FormMessage className="text-xs text-red-500" />
@@ -150,7 +152,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         <Input
                           {...field}
                           disabled={isSubmitting || isDisabledButtons}
-                          placeholder={t('auth.email')}
+                          placeholder={t('email')}
                           type="email"
                         />
                       </FormControl>
@@ -167,7 +169,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         <Input
                           {...field}
                           disabled={isSubmitting || isDisabledButtons}
-                          placeholder={t('auth.password')}
+                          placeholder={t('password')}
                           type="password"
                         />
                       </FormControl>
@@ -182,7 +184,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                     isLoading={isSubmitting}
                     type="submit"
                   >
-                    {t(`auth.${isSignUpFlow ? 'signUp' : 'signIn'}`)}
+                    {t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}
                   </Button>
                 </div>
               </form>
@@ -220,13 +222,13 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         </Suspense>
         {isCredentialsProvider && (
           <p className="text-sm text-muted-foreground text-center mt-4">
-            {t(`auth.${isSignUpFlow ? 'alreadyHaveAnAccount' : 'doNotHaveAnAccount'}`)}{' '}
+            {t(`${isSignUpFlow ? 'alreadyHaveAnAccount' : 'doNotHaveAnAccount'}`)}{' '}
             <Link
               className="text-primary hover:underline"
               href={pathname}
               onClick={() => setIsSignUpFlow((prev) => !prev)}
             >
-              {t(`auth.${isSignUpFlow ? 'signIn' : 'signUp'}`)}
+              {t(`${isSignUpFlow ? 'signIn' : 'signUp'}`)}
             </Link>
           </p>
         )}

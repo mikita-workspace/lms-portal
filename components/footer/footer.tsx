@@ -18,7 +18,7 @@ import { LanguageSwitcher } from '../common/language-switcher';
 import { ThemeSwitcher } from '../common/theme-switcher';
 
 export const Footer = () => {
-  const t = useTranslations();
+  const t = useTranslations('footer');
   const pathname = usePathname();
 
   const { user, status } = useCurrentUser();
@@ -40,24 +40,24 @@ export const Footer = () => {
               <div className="flex items-center">
                 <Copyright className="h-3 w-3" />
                 <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
-                <span>{t('footer.copyright')}</span>
+                <span>{t('copyright')}</span>
               </div>
               {/* Test Mode Declaimer */}
-              <div className="items-end">{t('footer.testModeDeclaimer')}</div>
+              <div className="items-end">{t('testModeDeclaimer')}</div>
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
-              <Link href="/releases">{t('footer.releaseNotes')}</Link>
+              <Link href="/releases">{t('releaseNotes')}</Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
-                {t('footer.termsAndConditions')}
+                {t('termsAndConditions')}
               </Link>
               <Link href={PRIVACY_POLICY_URL} target="_blank">
-                {t('footer.privacyPolicy')}
+                {t('privacyPolicy')}
               </Link>
               <Link href={GITHUB_ISSUE_URL} target="_blank">
-                {t('footer.reportIssue')}
+                {t('reportIssue')}
               </Link>
               <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
-                {t('footer.contact')}
+                {t('contact')}
               </Link>
             </div>
           </div>
