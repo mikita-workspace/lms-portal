@@ -2,6 +2,7 @@
 
 import { LucideIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
@@ -9,7 +10,6 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 import { AuthModal } from '../modals/auth-modal';
-import { useTranslations } from 'next-intl';
 
 type SideBarItemProps = {
   href: string;
