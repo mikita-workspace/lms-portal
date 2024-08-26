@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { DEFAULT_LANGUAGE } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +23,7 @@ type AdvancedOptionsFormProps = {
 
 const formSchema = z.object({
   isPremium: z.boolean().default(false),
+  language: z.string().default(DEFAULT_LANGUAGE),
 });
 
 export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFormProps) => {
@@ -32,6 +34,7 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
     resolver: zodResolver(formSchema),
     defaultValues: {
       isPremium: Boolean(initialData.isPremium),
+      language: initialData.language ?? DEFAULT_LANGUAGE,
     },
   });
 
@@ -93,6 +96,20 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormDescription>Make this course Premium</FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
+                  {/* <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl> */}
                   <div className="space-y-1 leading-none">
                     <FormDescription>Make this course Premium</FormDescription>
                   </div>
