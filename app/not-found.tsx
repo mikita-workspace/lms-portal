@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import { Logo } from '@/components/common/logo';
 import { Button } from '@/components/ui/button';
+import withCompanyLabel from '@/hoc/with-company-label';
 
 export const metadata: Metadata = {
   title: '404',
@@ -19,17 +19,8 @@ const NotFoundPage = () => {
           <Button variant="secondary">Go back home</Button>
         </Link>
       </div>
-      <div className="absolute flex justify-center items-center mb-8 bottom-0 gap-x-1 w-full text-sm text-muted-foreground">
-        Powered by
-        <div className="font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-x-1">
-          <div className="h-4 w-4">
-            <Logo onlyLogoIcon isChat />
-          </div>
-          <span>Nova LMS</span>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default NotFoundPage;
+export default withCompanyLabel(NotFoundPage);

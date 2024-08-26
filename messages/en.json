@@ -1,7 +1,8 @@
 {
   "app": {
     "description": "Educational\u00a0portal",
-    "name": "Nova\u00a0LMS"
+    "name": "Nova\u00a0LMS",
+    "poweredBy": "Powered by"
   },
   "auth": {
     "alreadyHaveAnAccount": "Already have an account?",

@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import { authenticator } from 'otplib';
 import qrcode from 'qrcode';
 
@@ -17,8 +18,10 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
+    const t = await getTranslations('app');
+
     const secret = authenticator.generateSecret();
-    const otpauth = authenticator.keyuri(email, 'Nova LMS', secret);
+    const otpauth = authenticator.keyuri(email, t('name'), secret);
     const qr = await qrcode.toDataURL(otpauth);
 
     return NextResponse.json({ qr, secret });
