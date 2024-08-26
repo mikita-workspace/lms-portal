@@ -1,11 +1,16 @@
 {
   "app": {
-    "name": "Nova\u00a0LMS",
-    "description": "Адукацыйны\u00a0партал"
+    "description": "Адукацыйны\u00a0партал",
+    "name": "Nova\u00a0LMS"
   },
   "auth": {},
   "footer": {
-    "testModeDeclaimer": "Партал працуе ў тэставым рэжыме. Усе плацяжы і дадзеныя з'яўляюцца фіктыўнымі.",
-    "copyright": "Nova Technologies. Усе правы абаронены."
+    "contact": "Contact",
+    "copyright": "Nova Technologies. Усе правы абаронены.",
+    "privacyPolicy": "Privacy Policy",
+    "releaseNotes": "Releases notes",
+    "reportIssue": " Report Issue",
+    "termsAndConditions": "Terms and Conditions",
+    "testModeDeclaimer": "Партал працуе ў тэставым рэжыме. Усе плацяжы і дадзеныя з'яўляюцца фіктыўнымі."
   }
 }
