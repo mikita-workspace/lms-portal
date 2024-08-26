@@ -27,5 +27,19 @@
     "reportIssue": " Report Issue",
     "termsAndConditions": "Terms and Conditions",
     "testModeDeclaimer": "Партал працуе ў тэставым рэжыме. Усе плацяжы і дадзеныя з'яўляюцца фіктыўнымі."
+  },
+  "sidebar": {
+    "analytics": "Analytics",
+    "billingAndSubscription": "Billing & Subscription",
+    "browse": "Browse",
+    "config": "Config",
+    "courses": "Courses",
+    "dashboard": "Dashboard",
+    "general": "General",
+    "leaderboard": "Leaderboard",
+    "notifications": "Notifications",
+    "payments": "Payments",
+    "promo": "Promo",
+    "users": "Users"
   }
 }
