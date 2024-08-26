@@ -9,6 +9,7 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
 import { AuthModal } from '../modals/auth-modal';
+import { useTranslations } from 'next-intl';
 
 type SideBarItemProps = {
   href: string;
@@ -19,6 +20,8 @@ type SideBarItemProps = {
 };
 
 export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: SideBarItemProps) => {
+  const t = useTranslations('sidebar');
+
   const { user } = useCurrentUser();
 
   const pathname = usePathname();
@@ -60,7 +63,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
                 isActive && 'text-primary font-medium animate-spin-once',
               )}
             />
-            {label}
+            {t(label)}
           </div>
           {isNew && <TextBadge label="new" variant="green" />}
         </div>

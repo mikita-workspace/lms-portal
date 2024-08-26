@@ -27,5 +27,19 @@
     "reportIssue": " Report Issue",
     "termsAndConditions": "Terms and Conditions",
     "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious."
+  },
+  "sidebar": {
+    "analytics": "Analytics",
+    "billingAndSubscription": "Billing & Subscription",
+    "browse": "Browse",
+    "config": "Config",
+    "courses": "Courses",
+    "dashboard": "Dashboard",
+    "general": "General",
+    "leaderboard": "Leaderboard",
+    "notifications": "Notifications",
+    "payments": "Payments",
+    "promo": "Promo",
+    "users": "Users"
   }
 }
