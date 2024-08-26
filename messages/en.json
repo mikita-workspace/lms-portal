@@ -2,9 +2,9 @@
   "app": {
     "description": "Educational\u00a0portal",
     "name": "Nova\u00a0LMS",
-    "poweredBy": "Powered by"
+    "poweredBy": "Powered\u00a0by"
   },
-  "auth": {
+  "auth-modal": {
     "alreadyHaveAnAccount": "Already have an account?",
     "continueWith": "Continue with { provider }",
     "doNotHaveAnAccount": "Do not have an account?",

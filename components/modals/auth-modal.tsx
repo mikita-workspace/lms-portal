@@ -48,7 +48,7 @@ const signUpSchema = z.intersection(
 );
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
-  const t = useTranslations('auth');
+  const t = useTranslations('auth-modal');
   const appName = useTranslations('app')('name');
 
   const { toast } = useToast();

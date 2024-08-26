@@ -24,7 +24,7 @@ export const providers = [
       password: { label: 'Password', type: 'password' },
     },
     async authorize(credentials): Promise<any> {
-      const t = await getTranslations('auth');
+      const t = await getTranslations('auth-modal');
       const user = await db.user.findFirst({ where: { email: credentials?.email } });
 
       const isSignUpFlow = credentials?.isSignUpFlow === 'true';
