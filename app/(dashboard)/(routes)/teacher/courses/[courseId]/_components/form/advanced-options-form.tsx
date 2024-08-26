@@ -83,6 +83,13 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
         <div
           className={cn('text-sm mt-4', !initialData.isPremium && 'text-neutral-500 italic mt-2')}
         >
+          <div>
+            Current language of course is{' '}
+            <strong>
+              {SUPPORTED_LOCALES.find(({ key }) => key === initialData.language)?.title}
+            </strong>
+            .
+          </div>
           {initialData.isPremium ? (
             <>
               This course is <strong>Premium</strong> and available only for paid subscribers.
@@ -95,20 +102,6 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
       {isEditing && (
         <Form {...form}>
           <form className="space-y-4 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
-            <FormField
-              control={form.control}
-              name="isPremium"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormDescription>Make this course Premium</FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="language"
@@ -128,6 +121,20 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
                       ))}
                     </SelectContent>
                   </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isPremium"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormDescription>Make this course Premium</FormDescription>
+                  </div>
                 </FormItem>
               )}
             />
