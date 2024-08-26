@@ -3,10 +3,23 @@
     "description": "Адукацыйны\u00a0партал",
     "name": "Nova\u00a0LMS"
   },
-  "auth": {},
+  "auth": {
+    "alreadyHaveAnAccount": "Already have an account?",
+    "continueWith": "Continue with { provider }",
+    "doNotHaveAnAccount": "Do not have an account?",
+    "email": "Email",
+    "login": "Login",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "toContinue": "to continue to { appName }",
+    "username": "Username"
+  },
   "footer": {
+    "and": "and",
     "contact": "Contact",
     "copyright": "Nova Technologies. Усе правы абаронены.",
+    "creatingAccount": "By creating an account, you agree to our",
     "privacyPolicy": "Privacy Policy",
     "releaseNotes": "Releases notes",
     "reportIssue": " Report Issue",

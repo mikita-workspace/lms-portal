@@ -2,6 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import { OAUTH_LABELS, Provider } from '@/constants/auth';
@@ -22,6 +23,7 @@ export const OAuthButton = ({
   setIsDisabled,
   ...props
 }: OAuthButton) => {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
@@ -51,8 +53,9 @@ export const OAuthButton = ({
         'flex justify-start font-[400] space-x-2',
         isCredentialsProvider ? 'justify-center items-center flex-1' : 'w-full',
       )}
-      variant="outline"
       onClick={handleSignIn}
+      title={oAuthLabel}
+      variant="outline"
     >
       <Icon
         className={cn(
@@ -61,7 +64,7 @@ export const OAuthButton = ({
         )}
         size={20}
       />
-      {!isCredentialsProvider && `Continue with ${oAuthLabel}`}
+      {!isCredentialsProvider && t('auth.continueWith', { provider: oAuthLabel })}
     </Button>
   );
 };
