@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
@@ -36,19 +36,15 @@ type AuthModalProps = {
 };
 
 const signInSchema = z.object({
-  email: z.string().min(8, { message: 'Must have at least 8 character' }).email(),
-  password: z
-    .string()
-    .min(4, { message: 'Must have at least 4 character' })
-    .regex(PASSWORD_VALIDATION, {
-      message:
-        'The password must contain at least one lowercase letter one uppercase letter and one digit',
-    }),
+  email: z.string().min(8, { message: 'errors.email' }).email({ message: 'errors.invalidEmail' }),
+  password: z.string().min(4, { message: 'errors.password' }).regex(PASSWORD_VALIDATION, {
+    message: 'errors.passwordRules',
+  }),
 });
 
 const signUpSchema = z.intersection(
   signInSchema,
-  z.object({ name: z.string().min(4, { message: 'Must have at least 4 character' }).trim() }),
+  z.object({ name: z.string().min(4, { message: 'errors.username' }).trim() }),
 );
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
@@ -73,7 +69,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, errors } = form.formState;
 
   const handleSubmit = async (values: z.infer<typeof signUpSchema>) => {
     try {
@@ -138,7 +134,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                             placeholder={t('username')}
                           />
                         </FormControl>
-                        <FormMessage className="text-xs text-red-500" />
+                        {errors?.name?.message && (
+                          <p className="text-xs text-red-500">{t(errors.name.message)}</p>
+                        )}
                       </FormItem>
                     )}
                   />
@@ -156,7 +154,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                           type="email"
                         />
                       </FormControl>
-                      <FormMessage className="text-xs text-red-500" />
+                      {errors?.email?.message && (
+                        <p className="text-xs text-red-500">{t(errors.email.message)}</p>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -173,7 +173,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                           type="password"
                         />
                       </FormControl>
-                      <FormMessage className="text-xs text-red-500" />
+                      {errors?.password?.message && (
+                        <p className="text-xs text-red-500">{t(errors.password.message)}</p>
+                      )}
                     </FormItem>
                   )}
                 />

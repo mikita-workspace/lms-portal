@@ -9,13 +9,20 @@
     "continueWith": "Continue with { provider }",
     "doNotHaveAnAccount": "Do not have an account?",
     "email": "Email",
-    "emailExistError": "Email already exist",
-    "invalidPasswordOrEmailError": "Invalid password or email address",
     "password": "Password",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "toContinue": "to continue to { appName }",
-    "username": "Username"
+    "username": "Username",
+    "errors": {
+      "email": "Must have at least 8 character.",
+      "emailExist": "Email already exist",
+      "invalidEmail": "Invalid Email.",
+      "invalidPasswordOrEmail": "Invalid password or email address",
+      "password": "Must have at least 4 character.",
+      "passwordRules": "The password must contain at least one lowercase letter one uppercase letter and one digit.",
+      "username": "Must have at least 4 character."
+    }
   },
   "footer": {
     "and": "and",

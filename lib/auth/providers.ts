@@ -36,7 +36,7 @@ export const providers = [
 
       if (isSignUpFlow) {
         if (user) {
-          throw new Error(t('emailExistError'));
+          throw new Error(t('errors.emailExist'));
         }
 
         const hashedPassword = await hash(credentials?.password, 10);
@@ -50,7 +50,7 @@ export const providers = [
         return { ...credentials, password: user?.password };
       }
 
-      throw new Error(t('invalidPasswordOrEmailError'));
+      throw new Error(t('errors.invalidPasswordOrEmail'));
     },
   }),
   GitHubProvider({
