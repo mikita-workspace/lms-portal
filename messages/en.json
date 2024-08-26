@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Nova\u00a0LMS",
-    "description": "Educational\u00a0portal"
+    "description": "Educational\u00a0portal",
+    "name": "Nova\u00a0LMS"
   },
   "auth": {
     "login": "Login",
@@ -11,7 +11,12 @@
     "toContinue": "to continue to { appName }"
   },
   "footer": {
-    "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious.",
-    "copyright": "Nova Technologies. All rights reserved."
+    "contact": "Contact",
+    "copyright": "Nova Technologies. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "releaseNotes": "Releases notes",
+    "reportIssue": " Report Issue",
+    "termsAndConditions": "Terms and Conditions",
+    "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious."
   }
 }
