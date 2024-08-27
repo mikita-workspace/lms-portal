@@ -1,6 +1,7 @@
 'use client';
 
 import { Fee } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
@@ -23,6 +24,8 @@ export const Price = ({
   showFeesAccordion = false,
   useDefaultLocale = false,
 }: PriceProps) => {
+  const t = useTranslations('price');
+
   const {
     amount,
     formattedPrice,
@@ -62,15 +65,13 @@ export const Price = ({
                       <div className="flex gap-1 text-xs font-normal text-muted-foreground">
                         <span>{formattedNet}</span>
                         <span>+&nbsp;{formattedTotalFees}</span>
-                        <span className="">Fees</span>
+                        <span className="">{t('fees')}</span>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
                       {formattedCalculatedFees.map((fee) => (
                         <div key={fee.id} className="flex gap-2 items-center justify-between">
-                          <div>
-                            {fee.name}&nbsp;(x{fee.quantity})
-                          </div>
+                          <div>{fee.name}&nbsp;</div>
                           <div>{fee.amount}</div>
                         </div>
                       ))}
@@ -82,7 +83,7 @@ export const Price = ({
                 <div className="flex gap-1 text-xs font-normal text-muted-foreground">
                   <span>{formattedNet}</span>
                   <span>+&nbsp;{formattedTotalFees}</span>
-                  <span className="">Fees</span>
+                  <span className="">{t('fees')}</span>
                 </div>
               )}
             </>

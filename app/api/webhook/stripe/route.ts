@@ -42,7 +42,7 @@ export const POST = async (req: NextRequest) => {
     if (isSubscription) {
       const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
 
-      await db.stripeSubscription.create({
+      const response = await db.stripeSubscription.create({
         data: {
           endDate: new Date(subscription.current_period_end * 1000),
           name: session?.metadata?.subscriptionName ?? '',
@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest) => {
 
       await removeValueFromMemoryCache(`user-subscription-[${userId}]`);
 
-      return new NextResponse(null);
+      return new NextResponse(JSON.stringify(response));
     } else {
       const purchase = await db.purchase.create({
         data: {
@@ -76,7 +76,7 @@ export const POST = async (req: NextRequest) => {
         return null;
       })();
 
-      await db.purchaseDetails.create({
+      const response = await db.purchaseDetails.create({
         data: {
           city: session?.metadata?.city,
           country: session?.metadata?.country,
@@ -91,29 +91,31 @@ export const POST = async (req: NextRequest) => {
         },
       });
 
-      return new NextResponse(null);
+      return new NextResponse(JSON.stringify(response));
     }
   }
 
   if (event.type === 'customer.subscription.updated') {
     const subscription: Stripe.Subscription = event.data.object;
 
-    await db.stripeSubscription.update({
+    const response = await db.stripeSubscription.update({
       where: { stripeSubscriptionId: subscription.id },
       data: {
         cancelAt: subscription.cancel_at ? fromUnixTime(subscription.cancel_at) : null,
       },
     });
 
-    return new NextResponse(null);
+    return new NextResponse(JSON.stringify(response));
   }
 
   if (event.type === 'customer.subscription.deleted') {
     const subscription = event.data.object;
 
-    await db.stripeSubscription.delete({ where: { stripeSubscriptionId: subscription.id } });
+    const response = await db.stripeSubscription.delete({
+      where: { stripeSubscriptionId: subscription.id },
+    });
 
-    return new NextResponse(null);
+    return new NextResponse(JSON.stringify(response));
   }
 
   return new NextResponse(`Webhook Error: Unhandled event type ${event.type}`);

@@ -42,6 +42,7 @@ model Course {
   imageUrl    String?      @db.Text
   isPremium   Boolean?     @default(false)
   isPublished Boolean      @default(false)
+  language    String?
   price       Int?         @default(0)
   purchases   Purchase[]
   title       String       @db.Text

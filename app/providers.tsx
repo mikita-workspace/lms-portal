@@ -1,6 +1,7 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
+import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
 import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
@@ -46,10 +47,14 @@ export const Providers = ({
   appConfig,
   children,
   exchangeRates,
+  locale,
+  messages,
 }: Readonly<{
   appConfig: GetAppConfig;
   children: React.ReactNode;
   exchangeRates: ExchangeRates;
+  locale: string;
+  messages: AbstractIntlMessages;
 }>) => {
   const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
     handleExchangeRates: state.setExchangeRates,
@@ -103,11 +108,13 @@ export const Providers = ({
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <AuthProvider>
-        <ConfettiProvider />
-        <ToastProvider />
-        {children}
-      </AuthProvider>
+      <NextIntlClientProvider messages={messages} locale={locale}>
+        <AuthProvider>
+          <ConfettiProvider />
+          <ToastProvider />
+          {children}
+        </AuthProvider>
+      </NextIntlClientProvider>
     </ThemeProvider>
   );
 };

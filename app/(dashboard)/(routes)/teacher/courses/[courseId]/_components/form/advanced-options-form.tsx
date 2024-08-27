@@ -8,10 +8,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Checkbox } from '@/components/ui';
+import {
+  Checkbox,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { DEFAULT_LANGUAGE, SUPPORTED_LOCALES } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +30,7 @@ type AdvancedOptionsFormProps = {
 
 const formSchema = z.object({
   isPremium: z.boolean().default(false),
+  language: z.string().default(DEFAULT_LANGUAGE),
 });
 
 export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFormProps) => {
@@ -32,6 +41,7 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
     resolver: zodResolver(formSchema),
     defaultValues: {
       isPremium: Boolean(initialData.isPremium),
+      language: initialData.language ?? DEFAULT_LANGUAGE,
     },
   });
 
@@ -73,6 +83,13 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
         <div
           className={cn('text-sm mt-4', !initialData.isPremium && 'text-neutral-500 italic mt-2')}
         >
+          <div>
+            Current language of course is{' '}
+            <strong>
+              {SUPPORTED_LOCALES.find(({ key }) => key === initialData.language)?.title}
+            </strong>
+            .
+          </div>
           {initialData.isPremium ? (
             <>
               This course is <strong>Premium</strong> and available only for paid subscribers.
@@ -85,6 +102,28 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
       {isEditing && (
         <Form {...form}>
           <form className="space-y-4 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
+            <FormField
+              control={form.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem className="shadow-none">
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {SUPPORTED_LOCALES.map(({ key, title }) => (
+                        <SelectItem key={key} value={key}>
+                          {title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="isPremium"

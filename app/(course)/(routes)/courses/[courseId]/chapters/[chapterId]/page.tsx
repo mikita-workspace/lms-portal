@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getChapter } from '@/actions/courses/get-chapter';
@@ -16,6 +17,8 @@ type ChapterIdPageProps = {
 };
 
 const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
+  const t = await getTranslations('courses');
+
   const user = await getCurrentUser();
 
   const { chapter, course, muxData, attachments, nextChapter, userProgress, purchase } =
@@ -34,15 +37,8 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
 
   return (
     <div>
-      {userProgress?.isCompleted && (
-        <Banner label="You have already completed this chapter." variant="success" />
-      )}
-      {isLocked && (
-        <Banner
-          label="You will need to purchase this course to proceed to this chapter."
-          variant="warning"
-        />
-      )}
+      {userProgress?.isCompleted && <Banner label={t('banner.completed')} variant="success" />}
+      {isLocked && <Banner label={t('banner.lock')} variant="warning" />}
       <div className="flex flex-col max-w4xl mx-auto pb-20">
         <div className="p-4">
           <ChapterVideoPlayer

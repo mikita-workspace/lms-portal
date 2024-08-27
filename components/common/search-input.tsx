@@ -2,6 +2,7 @@
 
 import { Search, XIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useDebounce } from '@/hooks/use-debounce';
@@ -10,6 +11,8 @@ import { useSearchLineParams } from '@/hooks/use-search-params';
 import { Input } from '../ui';
 
 export const SearchInput = () => {
+  const t = useTranslations('search-input');
+
   const [value, setValue] = useState('');
 
   const debouncedValue = useDebounce(value);
@@ -28,8 +31,8 @@ export const SearchInput = () => {
         </span>
       )}
       <Input
-        className="w-full md:w-[350px] pl-9 pr-9 rounded-lg bg-neutral-100 dark:bg-neutral-900 focus-visible:ring-neutral-200 dark:focus-visible:ring-neutral-900/40"
-        placeholder="Search for a course..."
+        className="w-full md:w-[400px] pl-9 pr-9 rounded-lg bg-neutral-100 dark:bg-neutral-900 focus-visible:ring-neutral-200 dark:focus-visible:ring-neutral-900/40"
+        placeholder={t('searchFor')}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />

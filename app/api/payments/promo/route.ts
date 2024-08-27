@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -20,6 +21,8 @@ export const POST = async (req: NextRequest) => {
     const { promoId, ...other } = await req.json();
 
     const action = req.nextUrl.searchParams.get('action');
+
+    const t = await getTranslations('payments.promo');
 
     if (action === PromoStatus.DECLINED && promoId) {
       const stripePromotion = await stripe.promotionCodes.update(promoId, { active: false });
@@ -67,9 +70,9 @@ export const POST = async (req: NextRequest) => {
         if (stripeCustomer) {
           await db.notification.create({
             data: {
+              body: t('new.body', { code: promotionCode.code }),
+              title: t('new.title'),
               userId: stripeCustomer.userId,
-              title: `New promotion code`,
-              body: `Congratulations on receiving the promo code - ${promotionCode.code}. Please take advantage of it as soon as possible!`,
             },
           });
 

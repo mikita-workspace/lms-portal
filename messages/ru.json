@@ -1,0 +1,179 @@
+{
+  "app": {
+    "description": "Образовательный\u00a0портал",
+    "name": "Nova\u00a0LMS",
+    "poweredBy": "Работает\u00a0на"
+  },
+  "auth-modal": {
+    "alreadyHaveAnAccount": "Уже есть аккаунт?",
+    "continueWith": "Продолжить с { provider }",
+    "doNotHaveAnAccount": "Нет аккаунта?",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "toContinue": "для продолжения в { appName }",
+    "username": "Имя пользователя",
+    "errors": {
+      "email": "Должно быть не менее 8 символов.",
+      "emailExist": "Электронная почта уже существует",
+      "invalidEmail": "Недействительная электронная почта.",
+      "invalidPasswordOrEmail": "Недействительный пароль или адрес электронной почты",
+      "password": "Должно быть не менее 4 символов.",
+      "passwordRules": "Пароль должен содержать хотя бы одну строчную букву, одну заглавную букву и одну цифру.",
+      "username": "Должно быть не менее 4 символов."
+    }
+  },
+  "footer": {
+    "and": "и",
+    "contact": "Связаться",
+    "copyright": "Nova Technologies. Все права защищены.",
+    "creatingAccount": "Создавая аккаунт, вы соглашаетесь с нашей",
+    "privacyPolicy": "Политикой конфиденциальности",
+    "releaseNotes": "Примечания к выпускам",
+    "reportIssue": "Сообщить о проблеме",
+    "termsAndConditions": "Условиями и положениями",
+    "testModeDeclaimer": "Портал находится в тестовом режиме. Все платежи и данные являются фиктивными."
+  },
+  "sidebar": {
+    "analytics": "Аналитика",
+    "billingAndSubscription": "Выставление счетов и подписка",
+    "browse": "Просмотр",
+    "config": "Конфигурация",
+    "courses": "Курсы",
+    "dashboard": "Панель управления",
+    "general": "Общее",
+    "leaderboard": "Таблица лидеров",
+    "notifications": "Уведомления",
+    "payments": "Платежи",
+    "promo": "Промо",
+    "users": "Пользователи"
+  },
+  "errorPage": {
+    "body": "Произошла неожиданная ошибка приложения.",
+    "title": "500",
+    "tryAgain": "Попробовать снова"
+  },
+  "notFoundPage": {
+    "body": "Мы не смогли найти страницу, которую вы искали.",
+    "goBackHome": "Вернуться домой",
+    "title": "401"
+  },
+  "profileButton": {
+    "admin": "Админ",
+    "chat": "Чат",
+    "logOut": "Выйти",
+    "login": "Войти",
+    "owner": "Владелец",
+    "points": "Очки",
+    "progress": "Прогресс",
+    "settings": "Настройки",
+    "student": "Студент",
+    "teacher": "Учитель"
+  },
+  "switcher": {
+    "dark": "Темная",
+    "language": "Язык",
+    "light": "Светлая",
+    "system": "Системная",
+    "theme": "Тема"
+  },
+  "payments": {
+    "payout": {
+      "decline":{
+        "body": "Ваш запрос на выплату был отклонен.",
+        "title": "Запрос на выплату { payoutRequestId }"
+      },
+      "paid": {
+        "body": "Запрос на выплату успешно выполнен. { amount } был зачислен на ваш счет в Stripe.",
+        "title": "Запрос на выплату { payoutRequestId }"
+      }
+    },
+    "promo": {
+      "new": {
+        "body": "Поздравляем с получением промо-кода - { code }. Пожалуйста, используйте его как можно скорее!",
+        "title": "Новый промо-код"
+      }
+    },
+    "stripe-connect": {
+      "emptyBalance": "Недостаточно средств на балансе.",
+      "request": {
+        "body": "{ username } запросил вывод средств.",
+        "title": "Запрос на выплату { payoutRequestId }"
+      }
+    }
+  },
+  "courses": {
+    "publish": {
+      "errors": {
+        "missingRequiredFields": "Отсутствуют обязательные поля"
+      }
+    },
+    "checkout": {
+      "errors": {
+        "alreadyPurchased": "Уже куплено"
+      }
+    },
+    "video-player": {
+      "completed": "Завершить и продолжить",
+      "loading": "Загрузка видео...",
+      "lock": "Этот раздел заблокирован",
+      "notCompleted": "Не завершено",
+      "progress": "Прогресс обновлен"
+    },
+    "banner": {
+      "completed": "Вы уже завершили этот раздел.",
+      "lock": "Вам нужно приобрести этот курс, чтобы перейти к этому разделу."
+    }
+  },
+  "releasesPage": {
+    "backNav": "Назад к курсам",
+    "download": "Скачать .zip",
+    "releasesNotes": "Примечания к выпускам"
+  },
+  "signInPage": {
+    "body": "Чтобы просмотреть, пожалуйста, войдите.",
+    "login": "Войти",
+    "title": "Этот контент защищен."
+  },
+  "otpVerificationPage": {
+    "body": "Пожалуйста, введите OTP-код ниже.",
+    "goBack": "Вернуться назад",
+    "title": "2FA Верификация",
+    "errors": {
+      "invalidOtp": "Неверный OTP-код",
+      "somethingWentWrong": "Что-то пошло не так. Попробуйте еще раз!"
+    }
+  },
+  "chatPage": {
+    "body": {
+      "title": "Как я могу помочь вам сегодня?"
+    },
+    "input": {
+      "footer": "AI Chat может совершать ошибки. Рекомендуется проверять важную информацию."
+    }
+  },
+  "ai-generate": {
+    "improve": "Улучшить",
+    "stop": "Остановить"
+  },
+  "cookie-consent": {
+    "accept": "Принять",
+    "body": "Мы используем файлы cookie для улучшения пользовательского опыта. Используя наш сайт, вы соглашаетесь на все файлы cookie в соответствии с нашей",
+    "policy": "Политикой использования файлов cookie"
+  },
+  "course-enroll": {
+    "enrollFor": "Записаться\u00a0за\u00a0",
+    "free": "Бесплатно",
+    "redirect": "Вы будете перенаправлены на страницу оформления заказа."
+  },
+  "file-download": {
+    "download": "Скачать"
+  },
+  "price": {
+    "fees": "Сборы"
+  },
+  "search-input": {
+    "searchFor": "Искать курс..."
+  }
+}

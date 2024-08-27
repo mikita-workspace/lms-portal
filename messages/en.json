@@ -1,0 +1,179 @@
+{
+  "app": {
+    "description": "Educational\u00a0portal",
+    "name": "Nova\u00a0LMS",
+    "poweredBy": "Powered\u00a0by"
+  },
+  "auth-modal": {
+    "alreadyHaveAnAccount": "Already have an account?",
+    "continueWith": "Continue with { provider }",
+    "doNotHaveAnAccount": "Do not have an account?",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "toContinue": "to continue to { appName }",
+    "username": "Username",
+    "errors": {
+      "email": "Must have at least 8 character.",
+      "emailExist": "Email already exist",
+      "invalidEmail": "Invalid Email.",
+      "invalidPasswordOrEmail": "Invalid password or email address",
+      "password": "Must have at least 4 character.",
+      "passwordRules": "The password must contain at least one lowercase letter one uppercase letter and one digit.",
+      "username": "Must have at least 4 character."
+    }
+  },
+  "footer": {
+    "and": "and",
+    "contact": "Contact",
+    "copyright": "Nova Technologies. All rights reserved.",
+    "creatingAccount": "By creating an account, you agree to our",
+    "privacyPolicy": "Privacy Policy",
+    "releaseNotes": "Releases notes",
+    "reportIssue": " Report Issue",
+    "termsAndConditions": "Terms and Conditions",
+    "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious."
+  },
+  "sidebar": {
+    "analytics": "Analytics",
+    "billingAndSubscription": "Billing & Subscription",
+    "browse": "Browse",
+    "config": "Config",
+    "courses": "Courses",
+    "dashboard": "Dashboard",
+    "general": "General",
+    "leaderboard": "Leaderboard",
+    "notifications": "Notifications",
+    "payments": "Payments",
+    "promo": "Promo",
+    "users": "Users"
+  },
+  "errorPage": {
+    "body": "An unexpected application error has occurred.",
+    "title": "500",
+    "tryAgain": "Try again"
+  },
+  "notFoundPage": {
+    "body": "We could not find the page you were looking for.",
+    "goBackHome": "Go back home",
+    "title": "401"
+  },
+  "profileButton": {
+    "admin": "Admin",
+    "chat": "Chat",
+    "logOut": "Log out",
+    "login": "Login",
+    "owner": "Owner",
+    "points": "Points",
+    "progress": "Progress",
+    "settings": "Settings",
+    "student": "Student",
+    "teacher": "Teacher"
+  },
+  "switcher": {
+    "dark": "Dark",
+    "language": "Language",
+    "light": "Light",
+    "system": "System",
+    "theme": "Theme"
+  },
+  "payments": {
+    "payout": {
+      "decline":{
+        "body": "Your payout request has been declined.",
+        "title": "Payout Request { payoutRequestId }"
+      },
+      "paid": {
+        "body": "The payout request has been successfully completed. { amount } was transferred to your Stripe account.",
+        "title": "Payout Request { payoutRequestId }"
+      }
+    },
+    "promo": {
+      "new": {
+        "body": "Congratulations on receiving the promo code - { code }. Please take advantage of it as soon as possible!",
+        "title": "New promotion code"
+      }
+    },
+    "stripe-connect": {
+      "emptyBalance": "Insufficient funds on the balance sheet.",
+      "request": {
+        "body": "{ username } has requested a withdrawal of funds.",
+        "title": "Payout Request { payoutRequestId }"
+      }
+    }
+  },
+  "courses": {
+    "publish": {
+      "errors": {
+        "missingRequiredFields": "Missing required fields"
+      }
+    },
+    "checkout": {
+      "errors": {
+        "alreadyPurchased": "Already purchased"
+      }
+    },
+    "video-player": {
+      "completed": "Complete and Continue",
+      "loading": "Loading a video...",
+      "lock": "This chapter is locked",
+      "notCompleted": "Not completed",
+      "progress": "Progress updated"
+    },
+    "banner": {
+      "completed": "You have already completed this chapter.",
+      "lock": "You will need to purchase this course to proceed to this chapter."
+    }
+  },
+  "releasesPage": {
+    "backNav": "Back to courses",
+    "download": "Download .zip",
+    "releasesNotes": "Releases notes"
+  },
+  "signInPage": {
+    "body": "To view, please login.",
+    "login": "Login",
+    "title": "This content is protected."
+  },
+  "otpVerificationPage": {
+    "body": "Please enter the OTP code below.",
+    "goBack": "Go back",
+    "title": "2FA Verification",
+    "errors": {
+      "invalidOtp": "Invalid OTP code",
+      "somethingWentWrong": "Something went wrong. Try again!"
+    }
+  },
+  "chatPage": {
+    "body": {
+      "title": "How can I help you today?"
+    },
+    "input": {
+      "footer": "AI Chat can make mistakes. Consider checking important information."
+    }
+  },
+  "ai-generate": {
+    "improve": "Improve",
+    "stop": "Stop"
+  },
+  "cookie-consent": {
+    "accept": "Accept",
+    "body": "We use cookies to enhance the user experience. By using our website, you consent to all cookies in accordance with our",
+    "policy": "Cookie Policy"
+  },
+  "course-enroll": {
+    "enrollFor": "Enroll\u00a0for\u00a0",
+    "free": "Free",
+    "redirect": "You will be redirected to the checkout page."
+  },
+  "file-download": {
+    "download": "Download"
+  },
+  "price": {
+    "fees": "Fees"
+  },
+  "search-input": {
+    "searchFor": "Search for a course.."
+  }
+}

@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { DEFAULT_LOCALE } from '@/constants/locale';
@@ -23,6 +24,8 @@ export const POST = async (
 
     const action = searchParams.get('action');
 
+    const t = await getTranslations('payments.payout');
+
     if (action === PayoutRequestStatus.DECLINED) {
       const payoutRequest = await db.payoutRequest.update({
         where: { id: params.requestId },
@@ -34,9 +37,9 @@ export const POST = async (
 
       await db.notification.create({
         data: {
+          body: t('decline.body'),
+          title: t('decline.title', { payoutRequestId: payoutRequest.id }),
           userId: payoutRequest.connectAccount.userId,
-          title: `Payout Request ${payoutRequest.id}`,
-          body: 'Your payout request has been declined.',
         },
       });
 
@@ -78,9 +81,14 @@ export const POST = async (
 
       await db.notification.create({
         data: {
+          body: t('paid.body', {
+            amount: formatPrice(getConvertedPrice(updatedPayoutRequest.amount), {
+              currency: updatedPayoutRequest.currency,
+              locale: DEFAULT_LOCALE,
+            }),
+          }),
           userId: payoutRequest.connectAccount.userId,
-          title: `Payout Request ${payoutRequest.id}`,
-          body: `The payout request has been successfully completed. ${formatPrice(getConvertedPrice(updatedPayoutRequest.amount), { locale: DEFAULT_LOCALE, currency: updatedPayoutRequest.currency })} was transferred to your Stripe account.`,
+          title: t('paid.title', { payoutRequestId: payoutRequest.id }),
         },
       });
 

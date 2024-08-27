@@ -2,6 +2,7 @@
 
 import { hasCookie, setCookie } from 'cookies-next';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { COOKIE_POLICY_URL, ONE_YEAR_SEC } from '@/constants/common';
@@ -10,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { Button } from '../ui';
 
 export const CookieConsent = () => {
+  const t = useTranslations('cookie-consent');
+
   const [shownConsent, setShownConsent] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -46,15 +49,14 @@ export const CookieConsent = () => {
     >
       <div className="fixed bottom-0 left-0 right-0 flex items-center justify-between p-6 bg-background border-t shadow-lg animate-cookie-consent-up">
         <span className="text-dark text-sm font-medium mr-16">
-          We use cookies to enhance the user experience. By using our website, you consent to all
-          cookies in accordance with our{' '}
+          {t('body')}{' '}
           <Link href={COOKIE_POLICY_URL} target="_blank" className="hover:underline font-bold">
-            Cookie Policy
+            {t('policy')}
           </Link>
           .
         </span>
         <Button size="lg" className="w-[150px]" variant="success" onClick={handleAcceptCookie}>
-          Accept
+          {t('accept')}
         </Button>
       </div>
     </div>

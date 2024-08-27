@@ -2,6 +2,7 @@
 
 import { LucideIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
@@ -19,6 +20,8 @@ type SideBarItemProps = {
 };
 
 export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: SideBarItemProps) => {
+  const t = useTranslations('sidebar');
+
   const { user } = useCurrentUser();
 
   const pathname = usePathname();
@@ -60,7 +63,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
                 isActive && 'text-primary font-medium animate-spin-once',
               )}
             />
-            {label}
+            {t(label)}
           </div>
           {isNew && <TextBadge label="new" variant="green" />}
         </div>

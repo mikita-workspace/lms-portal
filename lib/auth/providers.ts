@@ -7,6 +7,7 @@ import MailRuProvider from 'next-auth/providers/mailru';
 import SlackProvider from 'next-auth/providers/slack';
 import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
+import { getTranslations } from 'next-intl/server';
 
 import { UserRole } from '@/constants/auth';
 
@@ -23,6 +24,7 @@ export const providers = [
       password: { label: 'Password', type: 'password' },
     },
     async authorize(credentials): Promise<any> {
+      const t = await getTranslations('auth-modal');
       const user = await db.user.findFirst({ where: { email: credentials?.email } });
 
       const isSignUpFlow = credentials?.isSignUpFlow === 'true';
@@ -34,7 +36,7 @@ export const providers = [
 
       if (isSignUpFlow) {
         if (user) {
-          throw new Error('Email already exist');
+          throw new Error(t('errors.emailExist'));
         }
 
         const hashedPassword = await hash(credentials?.password, 10);
@@ -48,7 +50,7 @@ export const providers = [
         return { ...credentials, password: user?.password };
       }
 
-      throw new Error('Invalid password or email address');
+      throw new Error(t('errors.invalidPasswordOrEmail'));
     },
   }),
   GitHubProvider({

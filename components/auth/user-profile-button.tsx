@@ -1,27 +1,18 @@
 'use client';
 
-import {
-  BookMarked,
-  Gitlab,
-  Laptop2,
-  LogIn,
-  LogOut,
-  MessageSquare,
-  MoonStar,
-  Settings2,
-  Sun,
-} from 'lucide-react';
+import { BookMarked, Gitlab, LogIn, LogOut, MessageSquare, Settings2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
-import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { UserRole } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { isOwner } from '@/lib/owner';
 import { getFallbackName } from '@/lib/utils';
 
+import { LanguageSwitcher } from '../common/language-switcher';
 import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
+import { ThemeSwitcher } from '../common/theme-switcher';
 import { AuthModal } from '../modals/auth-modal';
 import {
   Avatar,
@@ -34,12 +25,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from '../ui';
 import { LogoutButton } from './logout-button';
 
@@ -52,19 +37,11 @@ type UserProfileButtonProps = {
 };
 
 export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) => {
-  const { user } = useCurrentUser();
-  const { theme, setTheme } = useTheme();
+  const t = useTranslations('profileButton');
+
   const router = useRouter();
 
-  const ThemeIcon = useMemo(() => {
-    if (theme === 'system') {
-      return Laptop2;
-    }
-
-    return theme === 'light' ? Sun : MoonStar;
-  }, [theme]);
-
-  const handleTheme = (theme: string) => setTheme(theme);
+  const { user } = useCurrentUser();
 
   const handleSettings = () => router.push('/settings');
 
@@ -87,9 +64,11 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <div className="flex gap-1 items-center">
               <p className="text-sm font-semibold">{user.name}</p>
               <div className="ml-1">
-                {(isOwner(user.userId) || isAdmin) && <TextBadge label="Admin" variant="green" />}
-                {isTeacher && <TextBadge label="Teacher" variant="indigo" />}
-                {isStudent && <TextBadge label="Student" variant="default" />}
+                {(isOwner(user.userId) || isAdmin) && (
+                  <TextBadge label={t('admin')} variant="green" />
+                )}
+                {isTeacher && <TextBadge label={t('teacher')} variant="indigo" />}
+                {isStudent && <TextBadge label={t('student')} variant="default" />}
               </div>
             </div>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
@@ -100,9 +79,9 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <div className="p-2 flex flex-col space-y-1">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <p>Progress</p>
+                <p>{t('progress')}</p>
                 <p>
-                  {globalProgress.value}/{globalProgress.total} Points
+                  {globalProgress.value}/{globalProgress.total} {t('points')}
                 </p>
               </div>
               <ProgressBar
@@ -120,7 +99,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         {isOwner(user.userId) && (
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/owner')}>
             <Gitlab className="h-4 w-4 mr-2" />
-            Owner
+            {t('owner')}
           </DropdownMenuItem>
         )}
         {(isAdmin || isTeacher) && (
@@ -129,46 +108,28 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             onClick={() => router.push('/teacher/courses')}
           >
             <BookMarked className="h-4 w-4 mr-2" />
-            Teacher
+            {t('teacher')}
           </DropdownMenuItem>
         )}
         {(isAdmin || hasSubscription) && (
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/chat')}>
             <MessageSquare className="mr-2 h-4 w-4" />
-            Chat&nbsp;&nbsp;
+            {t('chat')}&nbsp;&nbsp;
             <TextBadge label="AI" variant="yellow" />
           </DropdownMenuItem>
         )}
-        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
-        <DropdownMenuItem className="hover:cursor-pointer">
-          <div className="flex justify-between items-center w-full">
-            <div className="flex items-center">
-              <ThemeIcon className="mr-2 h-4 w-4" />
-              <span>Theme</span>
-            </div>
-            <Select onValueChange={handleTheme} defaultValue={theme}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Select a theme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="z-10">
-                  <SelectItem value="system">System</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="light">Light</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </DropdownMenuItem>
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleSettings}>
           <Settings2 className="mr-2 h-4 w-4" />
-          Settings
+          {t('settings')}
         </DropdownMenuItem>
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
+        <LanguageSwitcher isMenu />
+        <ThemeSwitcher isMenu />
         <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         <LogoutButton>
           <DropdownMenuItem className="hover:cursor-pointer text-red-500">
             <LogOut className="mr-2 h-4 w-4" />
-            Log out
+            {t('logOut')}
           </DropdownMenuItem>
         </LogoutButton>
       </DropdownMenuContent>
@@ -177,7 +138,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
     <AuthModal>
       <Button variant="outline">
         <LogIn className="h-4 w-4 mr-2" />
-        Login
+        {t('login')}
       </Button>
     </AuthModal>
   );

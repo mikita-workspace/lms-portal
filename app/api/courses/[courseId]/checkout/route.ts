@@ -1,6 +1,7 @@
 import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
@@ -26,12 +27,14 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
+    const t = await getTranslations('courses.checkout');
+
     const purchase = await db.purchase.findUnique({
       where: { userId_courseId: { userId: user.userId, courseId: params.courseId } },
     });
 
     if (purchase) {
-      return new NextResponse('Already purchased', { status: StatusCodes.BAD_REQUEST });
+      return new NextResponse(t('errors.alreadyPurchased'), { status: StatusCodes.BAD_REQUEST });
     }
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [

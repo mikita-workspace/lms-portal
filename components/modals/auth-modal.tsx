@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
@@ -35,22 +36,21 @@ type AuthModalProps = {
 };
 
 const signInSchema = z.object({
-  email: z.string().min(8, { message: 'Must have at least 8 character' }).email(),
-  password: z
-    .string()
-    .min(4, { message: 'Must have at least 4 character' })
-    .regex(PASSWORD_VALIDATION, {
-      message:
-        'The password must contain at least one lowercase letter one uppercase letter and one digit',
-    }),
+  email: z.string().min(8, { message: 'errors.email' }).email({ message: 'errors.invalidEmail' }),
+  password: z.string().min(4, { message: 'errors.password' }).regex(PASSWORD_VALIDATION, {
+    message: 'errors.passwordRules',
+  }),
 });
 
 const signUpSchema = z.intersection(
   signInSchema,
-  z.object({ name: z.string().min(4, { message: 'Must have at least 4 character' }).trim() }),
+  z.object({ name: z.string().min(4, { message: 'errors.username' }).trim() }),
 );
 
 export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
+  const t = useTranslations('auth-modal');
+  const appName = useTranslations('app')('name');
+
   const { toast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
@@ -69,7 +69,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, errors } = form.formState;
 
   const handleSubmit = async (values: z.infer<typeof signUpSchema>) => {
     try {
@@ -111,9 +111,11 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
       <DialogContent className="sm:max-w-[445px] p-9">
         <DialogHeader>
           <DialogTitle className="text-lg font-[600]">
-            {isSignUpFlow ? 'Sign up' : 'Sign in'}
+            {t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}
           </DialogTitle>
-          <DialogDescription className="text-base">to continue to Nova LMS</DialogDescription>
+          <DialogDescription className="text-base">
+            {t('toContinue', { appName })}
+          </DialogDescription>
         </DialogHeader>
         {isCredentialsProvider && (
           <>
@@ -129,10 +131,12 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                           <Input
                             {...field}
                             disabled={isSubmitting || isDisabledButtons}
-                            placeholder="Username"
+                            placeholder={t('username')}
                           />
                         </FormControl>
-                        <FormMessage className="text-xs text-red-500" />
+                        {errors?.name?.message && (
+                          <p className="text-xs text-red-500">{t(errors.name.message)}</p>
+                        )}
                       </FormItem>
                     )}
                   />
@@ -146,11 +150,13 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         <Input
                           {...field}
                           disabled={isSubmitting || isDisabledButtons}
-                          placeholder="Email"
+                          placeholder={t('email')}
                           type="email"
                         />
                       </FormControl>
-                      <FormMessage className="text-xs text-red-500" />
+                      {errors?.email?.message && (
+                        <p className="text-xs text-red-500">{t(errors.email.message)}</p>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -163,11 +169,13 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         <Input
                           {...field}
                           disabled={isSubmitting || isDisabledButtons}
-                          placeholder="Password"
+                          placeholder={t('password')}
                           type="password"
                         />
                       </FormControl>
-                      <FormMessage className="text-xs text-red-500" />
+                      {errors?.password?.message && (
+                        <p className="text-xs text-red-500">{t(errors.password.message)}</p>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -178,7 +186,7 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                     isLoading={isSubmitting}
                     type="submit"
                   >
-                    {isSignUpFlow ? 'Sign up' : 'Sign in'}
+                    {t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}
                   </Button>
                 </div>
               </form>
@@ -216,13 +224,13 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
         </Suspense>
         {isCredentialsProvider && (
           <p className="text-sm text-muted-foreground text-center mt-4">
-            {isSignUpFlow ? 'Already have an account?' : 'Do not have an account?'}{' '}
+            {t(`${isSignUpFlow ? 'alreadyHaveAnAccount' : 'doNotHaveAnAccount'}`)}{' '}
             <Link
               className="text-primary hover:underline"
               href={pathname}
               onClick={() => setIsSignUpFlow((prev) => !prev)}
             >
-              {isSignUpFlow ? 'Sign in' : 'Sign up'}
+              {t(`${isSignUpFlow ? 'signIn' : 'signUp'}`)}
             </Link>
           </p>
         )}

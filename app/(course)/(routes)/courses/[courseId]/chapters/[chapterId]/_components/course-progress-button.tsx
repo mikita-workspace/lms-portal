@@ -2,6 +2,7 @@
 
 import { ArrowRight, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui';
@@ -22,6 +23,8 @@ export const CourseProgressButton = ({
   isCompleted,
   nextChapterId,
 }: CourseProgressButton) => {
+  const t = useTranslations('courses.video-player');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -43,7 +46,7 @@ export const CourseProgressButton = ({
         router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
       }
 
-      toast({ title: 'Progress updated' });
+      toast({ title: t('progress') });
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -63,7 +66,7 @@ export const CourseProgressButton = ({
       type="button"
       variant={isCompleted ? 'outline' : 'success'}
     >
-      {isCompleted ? 'Not completed' : 'Complete and Continue'}
+      {t(isCompleted ? 'notCompleted' : 'completed')}
       <Icon className="h-4 w-4 ml-2" />
     </Button>
   );

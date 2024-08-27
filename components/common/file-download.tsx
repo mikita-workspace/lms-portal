@@ -2,6 +2,7 @@
 
 import { Download, FileText, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '../ui';
 
@@ -18,6 +19,8 @@ export const FileDownload = ({
   onFileRemove,
   url,
 }: FileDownloadProps) => {
+  const t = useTranslations('file-download');
+
   const [name, extension] = fileName.split('.');
 
   return (
@@ -31,7 +34,7 @@ export const FileDownload = ({
       </div>
       <div className="flex items-center gap-x-2">
         <Link href={url} target="_blank">
-          <Button variant="outline" title="Download">
+          <Button variant="outline" title={t('download')}>
             <Download className="h-4 w-4" />
           </Button>
         </Link>

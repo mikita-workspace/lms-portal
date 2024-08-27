@@ -26,7 +26,7 @@ export const OAUTH_LABELS = {
   [Provider.LINKEDIN]: 'LinkedIn',
   [Provider.YANDEX]: 'Yandex ID',
   [Provider.VK]: 'VK ID',
-  [Provider.MAILRU]: 'Mail.ru',
+  [Provider.MAILRU]: 'Mail',
 };
 
 export const PASSWORD_VALIDATION = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$/);

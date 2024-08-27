@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
@@ -55,6 +56,8 @@ type ChatBodyProps = {
 };
 
 export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBodyProps) => {
+  const t = useTranslations('chatPage.body');
+
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
 
@@ -71,7 +74,7 @@ export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBody
             <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
-          <p className="mb-5 text-2xl font-medium">How can I help you today?</p>
+          <p className="mb-5 text-2xl font-medium">{t('title')}</p>
         </div>
       )}
       <div className="h-[calc(100%-12rem)] relative">
