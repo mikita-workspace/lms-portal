@@ -133,5 +133,13 @@
       "invalidOtp": "Invalid OTP code",
       "somethingWentWrong": "Something went wrong. Try again!"
     }
+  },
+  "chatPage": {
+    "body": {
+      "title": "How can I help you today?"
+    },
+    "input": {
+      "footer": "AI Chat can make mistakes. Consider checking important information."
+    }
   }
 }
