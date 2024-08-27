@@ -135,7 +135,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                           />
                         </FormControl>
                         {errors?.name?.message && (
-                          <p className="text-xs text-red-500">{t(errors.name.message)}</p>
+                          <p className="text-xs text-red-500">
+                            {t(errors.name.message.toLowerCase())}
+                          </p>
                         )}
                       </FormItem>
                     )}
@@ -155,7 +157,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         />
                       </FormControl>
                       {errors?.email?.message && (
-                        <p className="text-xs text-red-500">{t(errors.email.message)}</p>
+                        <p className="text-xs text-red-500">
+                          {t(errors.email.message.toLowerCase())}
+                        </p>
                       )}
                     </FormItem>
                   )}
@@ -174,7 +178,9 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
                         />
                       </FormControl>
                       {errors?.password?.message && (
-                        <p className="text-xs text-red-500">{t(errors.password.message)}</p>
+                        <p className="text-xs text-red-500">
+                          {t(errors.password.message.toLowerCase())}
+                        </p>
                       )}
                     </FormItem>
                   )}

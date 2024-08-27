@@ -14,6 +14,7 @@
     "signUp": "Sign up",
     "toContinue": "to continue to { appName }",
     "username": "Username",
+    "required": "This field is required.",
     "errors": {
       "email": "Must have at least 8 character.",
       "emailExist": "Email already exist",
@@ -65,7 +66,6 @@
     "logOut": "Log out",
     "login": "Login",
     "owner": "Owner",
-    "points": "Points",
     "progress": "Progress",
     "settings": "Settings",
     "student": "Student",

@@ -74,14 +74,14 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         {globalProgress && globalProgress.total > 0 && (
           <>
-            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
             <div className="p-2 flex flex-col space-y-1">
               <div className="flex justify-between text-xs text-muted-foreground">
                 <p>{t('progress')}</p>
                 <p>
-                  {globalProgress.value}/{globalProgress.total} {t('points')}
+                  {globalProgress.value}/{globalProgress.total}
                 </p>
               </div>
               <ProgressBar
@@ -91,10 +91,8 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
                 value={globalProgress.progressPercentage}
               />
             </div>
+            <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
           </>
-        )}
-        {(isOwner(user.userId) || isAdmin || isTeacher) && (
-          <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-muted" />
         )}
         {isOwner(user.userId) && (
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.push('/owner')}>
