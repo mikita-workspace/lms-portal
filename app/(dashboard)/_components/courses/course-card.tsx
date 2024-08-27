@@ -4,6 +4,7 @@ import { Fee } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
@@ -42,6 +43,8 @@ export const CourseCard = async ({
   progress,
   title,
 }: CourseCardProps) => {
+  const t = useTranslations('courses.card');
+
   const href = `/${isPurchased ? 'courses' : 'landing-course'}/${id}`;
 
   return (
@@ -53,7 +56,7 @@ export const CourseCard = async ({
         )}
       >
         {isPremium && (
-          <TextBadge className="absolute z-10 mt-2 ml-2" label="Premium" variant="indigo" />
+          <TextBadge className="absolute z-10 mt-2 ml-2" label={t('premium')} variant="indigo" />
         )}
         <div className="w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
           <Image
@@ -73,9 +76,7 @@ export const CourseCard = async ({
           <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1 text-neutral-500">
               <IconBadge size="sm" icon={BookOpen} />
-              <span className="text-xs">
-                {chaptersLength} {chaptersLength > 1 ? 'Chapters' : 'Chapter'}
-              </span>
+              <span className="text-xs">{t('chapter', { amount: chaptersLength })}</span>
             </div>
           </div>
           {progress !== null ? (

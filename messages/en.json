@@ -124,6 +124,16 @@
     "banner": {
       "completed": "You have already completed this chapter.",
       "lock": "You will need to purchase this course to proceed to this chapter."
+    },
+    "card": {
+      "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+      "premium": "Premium"
+    },
+    "list": {
+      "notFound": "No courses found."
+    },
+    "category": {
+      "all": "All"
     }
   },
   "releases": {
