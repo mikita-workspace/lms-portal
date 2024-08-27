@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 type ErrorProps = { error: Error & { digest?: string }; reset: () => void };
 
 const Error = ({ error }: ErrorProps) => {
-  const t = useTranslations('errorPage');
+  const t = useTranslations('error');
 
   return (
     <div className=" relative h-full flex gap-y-4 items-center w-full">

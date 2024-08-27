@@ -19,7 +19,7 @@ type ReleasesPagePageProps = {
 };
 
 const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
-  const t = await getTranslations('releasesPage');
+  const t = await getTranslations('releases');
 
   const releases = await getGithubReleases(searchParams);
 

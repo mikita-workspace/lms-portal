@@ -50,7 +50,7 @@
     "promo": "Promo",
     "users": "Users"
   },
-  "errorPage": {
+  "error": {
     "body": "An unexpected application error has occurred.",
     "title": "500",
     "tryAgain": "Try again"
@@ -126,17 +126,17 @@
       "lock": "You will need to purchase this course to proceed to this chapter."
     }
   },
-  "releasesPage": {
+  "releases": {
     "backNav": "Back to courses",
     "download": "Download .zip",
     "releasesNotes": "Releases notes"
   },
-  "signInPage": {
+  "signIn": {
     "body": "To view, please login.",
     "login": "Login",
     "title": "This content is protected."
   },
-  "otpVerificationPage": {
+  "otpVerification": {
     "body": "Please enter the OTP code below.",
     "goBack": "Go back",
     "title": "2FA Verification",
@@ -145,7 +145,7 @@
       "somethingWentWrong": "Something went wrong. Try again!"
     }
   },
-  "chatPage": {
+  "chat": {
     "body": {
       "title": "How can I help you today?"
     },
@@ -184,5 +184,11 @@
     "mo": "/mo",
     "redirect": "You will be redirected to the checkout page.",
     "upgrade": "Upgrade"
+  },
+  "toast": {
+    "error": {
+      "body": "Something went wrong. Try again!",
+      "title": "Oops!"
+    }
   }
 }

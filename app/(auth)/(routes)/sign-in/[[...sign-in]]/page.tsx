@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import withCompanyLabel from '@/hoc/with-company-label';
 
 const SignInPage = async () => {
-  const t = await getTranslations('signInPage');
+  const t = await getTranslations('signIn');
 
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">

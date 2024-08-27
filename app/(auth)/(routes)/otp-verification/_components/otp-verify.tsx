@@ -18,7 +18,7 @@ type OtpVerify = {
 };
 
 export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpVerify) => {
-  const t = useTranslations('otpVerificationPage');
+  const t = useTranslations('otpVerification');
 
   const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

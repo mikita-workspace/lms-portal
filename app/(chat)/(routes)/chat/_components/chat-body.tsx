@@ -56,7 +56,7 @@ type ChatBodyProps = {
 };
 
 export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBodyProps) => {
-  const t = useTranslations('chatPage.body');
+  const t = useTranslations('chat.body');
 
   const { user } = useCurrentUser();
   const messages = useChatStore((state) => state.messages);
