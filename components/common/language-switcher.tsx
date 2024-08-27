@@ -18,8 +18,8 @@ import {
 
 type LanguageSwitcherProps = {
   isMenu?: boolean;
-  onChange?: () => void;
 };
+
 export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
   const t = useTranslations('switcher');
 
