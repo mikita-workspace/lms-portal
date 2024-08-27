@@ -36,7 +36,7 @@ const ConfettiProvider = () => {
   );
 };
 
-type ProviderProps = Readonly<{
+type ProvidersProps = Readonly<{
   appConfig: GetAppConfig;
   children: React.ReactNode;
   exchangeRates: ExchangeRates;
@@ -52,7 +52,7 @@ export const Providers = ({
   locale,
   messages,
   timeZone,
-}: ProviderProps) => {
+}: ProvidersProps) => {
   useUserLocation(exchangeRates);
   useAppConfig(appConfig);
 
