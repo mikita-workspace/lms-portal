@@ -49,12 +49,14 @@ export const Providers = ({
   exchangeRates,
   locale,
   messages,
+  timeZone,
 }: Readonly<{
   appConfig: GetAppConfig;
   children: React.ReactNode;
   exchangeRates: ExchangeRates;
   locale: string;
   messages: AbstractIntlMessages;
+  timeZone: string;
 }>) => {
   const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
     handleExchangeRates: state.setExchangeRates,
@@ -108,7 +110,7 @@ export const Providers = ({
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <NextIntlClientProvider messages={messages} locale={locale}>
+      <NextIntlClientProvider messages={messages} locale={locale} timeZone={timeZone}>
         <AuthProvider>
           <ConfettiProvider />
           <ToastProvider />

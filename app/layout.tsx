@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 
 import { getAppConfig } from '@/actions/config/get-app-config';
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
@@ -36,6 +36,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { exchangeRates } = await getExchangeRates();
   const appConfig = await getAppConfig();
   const locale = await getLocale();
+  const timeZone = await getTimeZone();
   const messages = await getMessages();
 
   return (
@@ -46,10 +47,12 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           exchangeRates={exchangeRates}
           locale={locale}
           messages={messages}
+          timeZone={timeZone}
         >
           {children}
           <CookieConsent />
         </Providers>
+        {/* Vercel Cloud Tools */}
         <SpeedInsights />
         <Analytics />
       </body>
