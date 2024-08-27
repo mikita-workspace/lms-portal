@@ -119,5 +119,19 @@
     "backNav": "Back to courses",
     "download": "Download .zip",
     "releasesNotes": "Releases notes"
+  },
+  "signInPage": {
+    "body": "To view, please login.",
+    "login": "Login",
+    "title": "This content is protected."
+  },
+  "otpVerificationPage": {
+    "body": "Please enter the OTP code below.",
+    "goBack": "Go back",
+    "title": "2FA Verification",
+    "errors": {
+      "invalidOtp": "Invalid OTP code",
+      "somethingWentWrong": "Something went wrong. Try again!"
+    }
   }
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { OtpInput } from '@/components/common/otp-input';
@@ -17,6 +18,8 @@ type OtpVerify = {
 };
 
 export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpVerify) => {
+  const t = useTranslations('otpVerificationPage');
+
   const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isFetching, setIsFetching] = useState(false);
@@ -38,10 +41,10 @@ export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpV
           setIsSuccess(true);
           await signIn(provider, { callbackUrl, email, isAfterOtpPage: true });
         } else {
-          setErrorMessage('Invalid OTP code');
+          setErrorMessage(t('errors.invalidOtp'));
         }
       } catch (error) {
-        setErrorMessage('Something went wrong. Try again!');
+        setErrorMessage(t('errors.somethingWentWrong'));
       } finally {
         setIsFetching(false);
       }
