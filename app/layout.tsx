@@ -48,10 +48,10 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           messages={messages}
         >
           {children}
+          <CookieConsent />
         </Providers>
         <SpeedInsights />
         <Analytics />
-        <CookieConsent />
       </body>
     </html>
   );
