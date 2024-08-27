@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { CourseEnrollButton } from '@/components/common/course-enroll-button';
@@ -29,6 +30,8 @@ export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Pr
 };
 
 const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
+  const t = await getTranslations('courses.landing');
+
   const user = await getCurrentUser();
 
   const purchase = await db.purchase.findUnique({
@@ -64,7 +67,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             href={'/'}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to courses
+            {t('backTo')}
           </Link>
         </div>
       </div>
@@ -95,10 +98,8 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             )}
           >
             <div className="mb-8 space-y-2 text-white">
-              <h4 className="font-semibold text-xl">Ready to start learning?</h4>
-              <p className="text-sm">
-                Keep track of your progress, learn new things and much more.
-              </p>
+              <h4 className="font-semibold text-xl">{t('readyToLearn')}</h4>
+              <p className="text-sm">{t('keepProgress')}</p>
             </div>
             <div className="w-full">
               {user?.userId ? (
@@ -111,7 +112,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
               ) : (
                 <AuthModal>
                   <Button className="w-full" variant="outline">
-                    Login to continue
+                    {t('loginToContinue')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </AuthModal>

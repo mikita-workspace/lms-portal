@@ -1,6 +1,7 @@
 {
   "app": {
     "description": "Educational\u00a0portal",
+    "loading": "Loading...",
     "name": "Nova\u00a0LMS",
     "poweredBy": "Powered\u00a0by"
   },
@@ -129,11 +130,27 @@
       "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
       "premium": "Premium"
     },
+    "info-card": {
+      "completed": "Completed",
+      "course": "{ amount, plural, =1 {course} other {courses}}",
+      "inProgress": "In Progress"
+    },
     "list": {
       "notFound": "No courses found."
     },
     "category": {
       "all": "All"
+    },
+    "landing": {
+      "backTo": "Back to courses",
+      "keepProgress": "Keep track of your progress, learn new things and much more.",
+      "loginToContinue": "Login to continue",
+      "readyToLearn": "Ready to start learning?",
+      "preview": {
+        "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+        "loading": "Loading a video...",
+        "lock": "This preview is locked"
+      }
     }
   },
   "releases": {

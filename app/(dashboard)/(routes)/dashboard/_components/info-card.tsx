@@ -2,6 +2,7 @@
 
 import { CheckCircle, Clock } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import qs from 'query-string';
 
 import { IconBadge } from '@/components/common/icon-badge';
@@ -17,18 +18,20 @@ const filterMap = {
   [FilterStatus.PROGRESS]: {
     filter: FilterStatus.PROGRESS,
     icon: Clock,
-    label: 'In Progress',
+    key: 'inProgress',
     variant: 'default',
   },
   [FilterStatus.COMPLETED]: {
     filter: FilterStatus.COMPLETED,
     icon: CheckCircle,
-    label: 'Completed',
+    key: 'completed',
     variant: 'success',
   },
 };
 
 export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
+  const t = useTranslations('courses.card');
+
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -61,9 +64,9 @@ export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
       >
         <IconBadge icon={filterInfo.icon} variant={filterInfo.variant as 'default' | 'success'} />
         <div>
-          <p className="font-medium">{filterInfo.label}</p>
+          <p className="font-medium">{t(filterInfo.key)}</p>
           <p className="text-secondary-foreground text-sm text-left">
-            {numberOfItems} {numberOfItems > 1 ? 'Courses' : 'Course'}
+            {t('course', { amount: numberOfItems })}
           </p>
         </div>
       </div>

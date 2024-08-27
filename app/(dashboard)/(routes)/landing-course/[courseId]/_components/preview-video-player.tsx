@@ -1,6 +1,7 @@
 'use client';
 
 import { Lock } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 
@@ -10,6 +11,8 @@ import { cn } from '@/lib/utils';
 type PreviewVideoPlayerProps = { videoUrl?: string | null; isLocked?: boolean };
 
 export const PreviewVideoPlayer = ({ videoUrl, isLocked = false }: PreviewVideoPlayerProps) => {
+  const t = useTranslations('courses.landing.preview');
+
   const [isReady, setIsReady] = useState(false);
 
   return (
@@ -17,13 +20,13 @@ export const PreviewVideoPlayer = ({ videoUrl, isLocked = false }: PreviewVideoP
       {!isReady && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 border">
           <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
-          <p className="text-sm">Loading a video...</p>
+          <p className="text-sm">{t('loading')}</p>
         </div>
       )}
       {isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 text-secondary-foreground">
           <Lock className="h-8 w-8" />
-          <p className="text-sm">This preview is locked</p>
+          <p className="text-sm">{t('lock')}</p>
         </div>
       )}
       {!isLocked && videoUrl && (
