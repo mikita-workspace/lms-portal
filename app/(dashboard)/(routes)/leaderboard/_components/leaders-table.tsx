@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { TextBadge } from '@/components/common/text-badge';
 import {
   Avatar,
@@ -27,17 +29,19 @@ type LeadersTableProps = {
 };
 
 export const LeadersTable = ({ leaders, hasSubscription = false, userId }: LeadersTableProps) => {
+  const t = useTranslations('leaderboard');
+
   const filteredLeaders = leaders.filter((leader) => leader.userId !== userId);
   const currentLeader = leaders.find((leader) => leader.userId === userId);
 
   return (
     <Table className="w-full md:w-4/5 mx-auto">
-      {!leaders.length && <TableCaption>There are no leaders here yet</TableCaption>}
+      {!leaders.length && <TableCaption>{t('notFound')}</TableCaption>}
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Rank</TableHead>
-          <TableHead>User</TableHead>
-          <TableHead className="text-right">Points</TableHead>
+          <TableHead className="w-[100px]">{t('ranks')}</TableHead>
+          <TableHead>{t('user')}</TableHead>
+          <TableHead className="text-right">{t('points')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -54,7 +58,7 @@ export const LeadersTable = ({ leaders, hasSubscription = false, userId }: Leade
                 </div>
                 <div className="flex space-x-2 items-center">
                   <p className="text-small font-semibold">{leader.name}</p>
-                  {leader.userId === userId && <TextBadge label="You" variant="indigo" />}
+                  {leader.userId === userId && <TextBadge label={t('you')} variant="indigo" />}
                   {hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
                 </div>
               </div>

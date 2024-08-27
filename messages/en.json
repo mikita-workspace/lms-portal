@@ -217,5 +217,12 @@
       "body": "Something went wrong. Try again!",
       "title": "Oops!"
     }
+  },
+  "leaderboard": {
+    "notFound": "There are no leaders here yet.",
+    "points": "Points",
+    "rank": "Rank",
+    "user": "User",
+    "you": "You"
   }
 }
