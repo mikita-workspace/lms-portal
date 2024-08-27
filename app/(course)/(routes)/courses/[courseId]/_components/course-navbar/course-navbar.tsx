@@ -22,7 +22,7 @@ export const CourseNavBar = ({
   userNotifications,
 }: CourseNavBarProps) => {
   return (
-    <div className="p-4 border-b h-full flex items-center bg-white dark:bg-neutral-800 shadow-sm">
+    <div className="p-4 border-b h-full flex items-center justify-between md:justify-end bg-white dark:bg-neutral-800 shadow-sm">
       <CourseMobileSideBar course={course} progressCount={progressCount} />
       <NavBarRoutes globalProgress={globalProgress} userNotifications={userNotifications} />
     </div>
