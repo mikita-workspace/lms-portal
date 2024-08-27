@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui';
@@ -22,6 +23,8 @@ export const CourseEnrollButton = ({
   price,
   variant = 'success',
 }: CourseEnrollButtonProps) => {
+  const t = useTranslations('course-enroll');
+
   const { toast } = useToast();
 
   const localeInfo = useLocaleStore((state) => state.localeInfo);
@@ -47,7 +50,7 @@ export const CourseEnrollButton = ({
         responseType: 'json',
       });
 
-      toast({ title: 'You will be redirected to the checkout page.' });
+      toast({ title: t('redirect') });
       window.location.assign(response.url);
     } catch (error) {
       toast({ isError: true });
@@ -74,11 +77,11 @@ export const CourseEnrollButton = ({
     >
       {isLoading && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
       {!isLoading && (amount ?? 0) > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
-      {!isLoading && <span>Enroll for&nbsp;</span>}
+      {!isLoading && <span>{t('enrollFor')}</span>}
       {!isLoading && (amount ?? 0) > 0 && formattedPrice}
       {!isLoading && amount === 0 && (
         <>
-          Free
+          {t('free')}
           <ArrowRight className="w-4 h-4 ml-2" />
         </>
       )}

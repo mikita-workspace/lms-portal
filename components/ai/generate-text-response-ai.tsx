@@ -1,6 +1,7 @@
 'use client';
 
 import { StopCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 
@@ -22,6 +23,8 @@ export const GenerateTextResponseAi = ({
   isValid,
   messages,
 }: GenerateTextResponseAiProps) => {
+  const t = useTranslations('ai-generate');
+
   const { toast } = useToast();
 
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -98,7 +101,7 @@ export const GenerateTextResponseAi = ({
         <div className="relative px-3 py-2 h-8 bg-white text-black rounded-md flex items-center text-sm">
           {!isImproving && <BsStars className="mr-1" />}
           {isImproving && <StopCircle className="w-4 h-4 mr-1" />}
-          {isImproving ? 'Stop' : 'Improve'}
+          {t(isImproving ? 'stop' : 'improve')}
         </div>
       </div>
     </button>

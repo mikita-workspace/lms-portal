@@ -24,6 +24,7 @@ export const OAuthButton = ({
   ...props
 }: OAuthButton) => {
   const t = useTranslations('auth-modal');
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
 

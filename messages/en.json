@@ -152,5 +152,28 @@
     "input": {
       "footer": "AI Chat can make mistakes. Consider checking important information."
     }
+  },
+  "ai-generate": {
+    "improve": "Improve",
+    "stop": "Stop"
+  },
+  "cookie-consent": {
+    "accept": "Accept",
+    "body": "We use cookies to enhance the user experience. By using our website, you consent to all cookies in accordance with our",
+    "policy": "Cookie Policy"
+  },
+  "course-enroll": {
+    "enrollFor": "Enroll\u00a0for\u00a0",
+    "free": "Free",
+    "redirect": "You will be redirected to the checkout page."
+  },
+  "file-download": {
+    "download": "Download"
+  },
+  "price": {
+    "fees": "Fees"
+  },
+  "search-input": {
+    "searchFor": "Search for a course.."
   }
 }
