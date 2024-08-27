@@ -36,8 +36,8 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { exchangeRates } = await getExchangeRates();
   const appConfig = await getAppConfig();
   const locale = await getLocale();
-  const timeZone = await getTimeZone();
   const messages = await getMessages();
+  const timeZone = await getTimeZone();
 
   return (
     <html lang={locale} suppressHydrationWarning>

@@ -3,21 +3,14 @@
 import { SessionProvider } from 'next-auth/react';
 import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
-import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 
 import { GetAppConfig } from '@/actions/config/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
-import {
-  ALLOWED_CURRENCY,
-  DEFAULT_CURRENCY,
-  DEFAULT_EXCHANGE_RATE,
-  DEFAULT_LOCALE,
-} from '@/constants/locale';
-import { useAppConfigStore } from '@/hooks/use-app-config-store';
+import { useAppConfig } from '@/hooks/use-app-config';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
-import { ExchangeRates, useLocaleStore } from '@/hooks/use-locale-store';
-import { fetcher } from '@/lib/fetcher';
+import { ExchangeRates } from '@/hooks/use-locale-store';
+import { useUserLocation } from '@/hooks/use-user-location';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return <SessionProvider>{children}</SessionProvider>;
@@ -58,55 +51,8 @@ export const Providers = ({
   messages: AbstractIntlMessages;
   timeZone: string;
 }>) => {
-  const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
-    handleExchangeRates: state.setExchangeRates,
-    handleLocaleInfo: state.setLocaleInfo,
-  }));
-
-  const { handleAuthFlow } = useAppConfigStore((state) => ({ handleAuthFlow: state.setAuthFlow }));
-
-  useEffect(() => {
-    const getUserLocation = async () => {
-      const userIp = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
-
-      const currency = ALLOWED_CURRENCY.includes(userIp?.currency)
-        ? userIp.currency
-        : DEFAULT_CURRENCY;
-
-      if (exchangeRates) {
-        handleExchangeRates({
-          ...exchangeRates,
-          rates: Object.keys(exchangeRates.rates)
-            .filter((key) => ALLOWED_CURRENCY.includes(key))
-            .reduce((rates, key) => {
-              rates[key as keyof typeof rates] = exchangeRates.rates[key] as never;
-              return rates;
-            }, {}),
-        });
-      }
-
-      handleLocaleInfo({
-        locale: { currency, locale: DEFAULT_LOCALE },
-        details: {
-          city: userIp.city,
-          country: userIp.country_name,
-          countryCode: userIp.country_code,
-          latitude: userIp.latitude,
-          longitude: userIp.longitude,
-          timezone: userIp.timezone,
-        },
-        rate: exchangeRates?.rates?.[currency] ?? DEFAULT_EXCHANGE_RATE,
-      });
-    };
-
-    const getAppConfig = () => {
-      handleAuthFlow(appConfig.authFlow);
-    };
-
-    getUserLocation();
-    getAppConfig();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useUserLocation(exchangeRates);
+  useAppConfig(appConfig);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
