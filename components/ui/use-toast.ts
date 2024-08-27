@@ -138,7 +138,7 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, 'id'> & { isError?: boolean };
 
 const toast =
-  (t: ReturnType<typeof useTranslations>) =>
+  (t: (key: string) => string) =>
   ({ isError = false, ...props }: Toast) => {
     const id = genId();
 
