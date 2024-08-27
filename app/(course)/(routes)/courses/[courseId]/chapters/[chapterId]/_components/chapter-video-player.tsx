@@ -2,6 +2,7 @@
 
 import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 
@@ -28,6 +29,8 @@ export const ChapterVideoPlayer = ({
   nextChapterId,
   videoUrl,
 }: ChapterVideoPlayerProps) => {
+  const t = useTranslations('courses.video-player');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -48,7 +51,7 @@ export const ChapterVideoPlayer = ({
           router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
         }
 
-        toast({ title: 'Progress updated' });
+        toast({ title: t('progress') });
         router.refresh();
       } catch (error) {
         toast({
@@ -63,13 +66,13 @@ export const ChapterVideoPlayer = ({
       {!isReady && !isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 ">
           <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
-          <p className="text-sm">Loading a video...</p>
+          <p className="text-sm">{t('loading')}</p>
         </div>
       )}
       {isLocked && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted gap-y-2 text-secondary-foreground">
           <Lock className="h-8 w-8" />
-          <p className="text-sm">This chapter is locked</p>
+          <p className="text-sm">{t('lock')}</p>
         </div>
       )}
       {!isLocked && videoUrl && (

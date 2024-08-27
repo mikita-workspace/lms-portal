@@ -113,6 +113,17 @@
       "errors": {
         "alreadyPurchased": "Already purchased"
       }
+    },
+    "video-player": {
+      "completed": "Complete and Continue",
+      "loading": "Loading a video...",
+      "lock": "This chapter is locked",
+      "notCompleted": "Not completed",
+      "progress": "Progress updated"
+    },
+    "banner": {
+      "completed": "You have already completed this chapter.",
+      "lock": "You will need to purchase this course to proceed to this chapter."
     }
   },
   "releasesPage": {
