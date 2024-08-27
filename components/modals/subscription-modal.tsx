@@ -3,6 +3,7 @@
 import { StripeSubscriptionDescription, StripeSubscriptionPeriod } from '@prisma/client';
 import { ArrowRight, CheckCircle2 as CheckCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useState } from 'react';
 
 import {
@@ -30,7 +31,10 @@ type SubscriptionModalProps = {
 };
 
 export const SubscriptionModal = ({ description = [], open, setOpen }: SubscriptionModalProps) => {
+  const t = useTranslations('subscription');
+
   const { toast } = useToast();
+
   const pathname = usePathname();
   const { user } = useCurrentUser();
 
@@ -78,7 +82,7 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
         responseType: 'json',
       });
 
-      toast({ title: 'You will be redirected to the checkout page.' });
+      toast({ title: t('redirect') });
       window.location.assign(response.url);
     } catch (error) {
       toast({ isError: true });
@@ -99,7 +103,7 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
               <p className="text-center text-3xl lg:text-4xl font-semibold tracking-tight">
                 <Price price={unitPrice ?? 0} />
               </p>
-              <span className="text-sm leading-7 text-muted-foreground ml-1">/mo</span>
+              <span className="text-sm leading-7 text-muted-foreground ml-1">{t('mo')}</span>
             </div>
           </DialogHeader>
           <Tabs
@@ -118,7 +122,7 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
             </TabsList>
             {currentTab === StripeSubscriptionPeriod.yearly && (
               <div className="mt-6 w-full text-center">
-                <TextBadge variant="lime" label="The best choice!" />
+                <TextBadge variant="lime" label={t('bestChoice')} />
               </div>
             )}
             <TabsContent value={StripeSubscriptionPeriod.yearly} className="pt-4">
@@ -150,13 +154,13 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
                 isLoading={isFetching}
                 type="submit"
               >
-                Upgrade
+                {t('upgrade')}
               </Button>
             )}
             {!user?.userId && (
               <AuthModal>
                 <Button className="w-full">
-                  Login to continue
+                  {t('loginToContinue')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </AuthModal>

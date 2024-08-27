@@ -1,6 +1,7 @@
 'use client';
 
 import { StripeSubscriptionDescription } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useToast } from '@/components/ui/use-toast';
@@ -10,6 +11,8 @@ import { SubscriptionModal } from '../modals/subscription-modal';
 import { Button } from '../ui';
 
 export const SubscriptionBanner = () => {
+  const t = useTranslations('subscription');
+
   const { toast } = useToast();
 
   const [subscriptionDescription, setSubscriptionDescription] = useState<
@@ -43,17 +46,15 @@ export const SubscriptionBanner = () => {
     <>
       <SubscriptionModal description={subscriptionDescription} open={open} setOpen={setOpen} />
       <div className="border rounded-sm flex flex-col p-4 gap-y-2">
-        <h2 className="font-semibold tracking-tight text-base">Upgrade to Nova Plus</h2>
-        <p className="text-muted-foreground text-sm mb-2">
-          Unlock premium courses, get access to Nova AI, and more.
-        </p>
+        <h2 className="font-semibold tracking-tight text-base">{t('bannerTitle')}</h2>
+        <p className="text-muted-foreground text-sm mb-2">{t('bannerBody')}</p>
         <Button
           disabled={isFetching}
           isLoading={isFetching}
           onClick={handleFetchSubscriptionDescription}
           size="sm"
         >
-          Upgrade
+          {t('upgrade')}
         </Button>
       </div>
     </>
