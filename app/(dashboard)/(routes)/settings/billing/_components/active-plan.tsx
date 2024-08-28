@@ -2,6 +2,7 @@
 
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { getUserSubscription } from '@/actions/stripe/get-user-subscription';
@@ -16,6 +17,8 @@ type ActivePlanProps = {
 };
 
 export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
+  const t = useTranslations('settings.billing');
+
   const { toast } = useToast();
   const pathname = usePathname();
 
@@ -32,7 +35,7 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
         responseType: 'json',
       });
 
-      toast({ title: 'You will be redirected to the checkout page.' });
+      toast({ title: t('redirect') });
       window.location.assign(response.url);
     } catch (error) {
       toast({ isError: true });
@@ -43,10 +46,13 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-medium text-xl">Active Plan</p>
+      <p className="font-medium text-xl">{t('activePlan')}</p>
       {userSubscription?.cancelAt && (
         <Banner
-          label={`Your subscription will be canceled on ${format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE)}. Renew your subscription now to continue using ${userSubscription.planName}.`}
+          label={t('cancelBanner', {
+            date: format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE),
+            planName: userSubscription.planName,
+          })}
           variant="warning"
         />
       )}
@@ -56,19 +62,21 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
             <div className="pt-6 flex flex-col justify-center space-y-2 mb-4">
               <p className="text-lg font-semibold">{userSubscription.planName}</p>
               <p className="text-sm">
-                Your subscription will be {userSubscription?.cancelAt ? 'cancelled' : 'renewed'} on{' '}
-                {format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE)}
+                {t('cancel', {
+                  action: t(userSubscription?.cancelAt ? 'cancelled' : 'renewed'),
+                  date: format(userSubscription.endPeriod, TIMESTAMP_SUBSCRIPTION_TEMPLATE),
+                })}
               </p>
             </div>
             <Button disabled={isFetching} isLoading={isFetching} onClick={handleManageSubscription}>
-              Manage Subscription
+              {t('manageSubscription')}
             </Button>
           </CardContent>
         </Card>
       )}
       {!userSubscription && (
         <div className="">
-          <p className="text-sm">You do not have any active subscriptions.</p>
+          <p className="text-sm">{t('noSubscription')}</p>
         </div>
       )}
     </div>
