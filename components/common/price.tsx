@@ -90,7 +90,7 @@ export const Price = ({
           )}
         </div>
       )}
-      {!isLoading && amount === 0 && <TextBadge variant="lime" label="Free" />}
+      {!isLoading && amount === 0 && <TextBadge variant="lime" label={t('free')} />}
     </p>
   );
 };

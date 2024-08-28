@@ -237,7 +237,8 @@
     "download": "Download"
   },
   "price": {
-    "fees": "Fees"
+    "fees": "Fees",
+    "free": "Free"
   },
   "search-input": {
     "searchFor": "Search for a course..."
