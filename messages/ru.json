@@ -171,7 +171,7 @@
     },
     "info-card": {
       "completed": "Завершено",
-      "course": "{ amount, plural, =1 {# курс} other {# курсы}}",
+      "course": "{ amount, plural, =1 {# курс} other {# курсов}}",
       "inProgress": "В процессе"
     },
     "list": {

@@ -39,7 +39,7 @@ export const LeadersTable = ({ leaders, hasSubscription = false, userId }: Leade
       {!leaders.length && <TableCaption>{t('notFound')}</TableCaption>}
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">{t('ranks')}</TableHead>
+          <TableHead className="w-[100px]">{t('rank')}</TableHead>
           <TableHead>{t('user')}</TableHead>
           <TableHead className="text-right">{t('points')}</TableHead>
         </TableRow>
