@@ -299,11 +299,12 @@
       "visibilityUpdated": "Visibility updated"
     },
     "otpForm": {
-      "otpDisabled": "2FA authentication is disabled",
-      "title": "Enable 2FA",
+      "addedAt": "Added at { date }",
       "body": "Two-factor authentication adds an additional layer of security to your account",
       "disable": "Disable",
-      "enable": "Enable"
+      "enable": "Enable",
+      "otpDisabled": "2FA authentication is disabled",
+      "title": "Enable 2FA"
     }
   }
 }

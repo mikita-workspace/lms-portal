@@ -83,7 +83,7 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
         <div className="text-muted-foreground text-xs">
           <p className={cn(isOtpEnabled && 'mb-2')}>{t('body')}</p>
           {isOtpEnabled && otpCreatedAt && (
-            <p>Added at {format(otpCreatedAt, TIMESTAMP_TEMPLATE)}</p>
+            <p>{t('addedAt', { date: format(otpCreatedAt, TIMESTAMP_TEMPLATE) })}</p>
           )}
         </div>
       </div>
