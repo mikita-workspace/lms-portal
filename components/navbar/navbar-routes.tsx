@@ -4,6 +4,7 @@ import { Notification } from '@prisma/client';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 
 import { UserProfileButton } from '@/components/auth/user-profile-button';
@@ -24,6 +25,8 @@ type NavBarRoutesProps = {
 };
 
 export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutesProps) => {
+  const t = useTranslations('navbar');
+
   const pathname = usePathname();
   const { user, status } = useCurrentUser();
 
@@ -68,7 +71,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
-                    {isTeacherPage || isOwnerPage || isChatPage ? 'Exit' : 'Back to courses'}
+                    {t(isTeacherPage || isOwnerPage || isChatPage ? 'exit' : 'backTo')}
                   </Button>
                 </Link>
               )}

@@ -65,7 +65,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
             />
             {t(label)}
           </div>
-          {isNew && <TextBadge label="new" variant="green" />}
+          {isNew && <TextBadge label={t('new')} variant="green" />}
         </div>
       </button>
     </AuthModal>

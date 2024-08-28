@@ -4,6 +4,7 @@ import { Notification } from '@prisma/client';
 import { Inbox, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Pusher from 'pusher-js';
 import { useEffect, useState, useTransition } from 'react';
 
@@ -32,6 +33,8 @@ type NotificationsProps = {
 };
 
 export const Notifications = ({ userNotifications = [] }: NotificationsProps) => {
+  const t = useTranslations('notifications');
+
   const { user } = useCurrentUser();
 
   const router = useRouter();
@@ -83,7 +86,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[340px] sm:mr-16 mr-4 mt-1">
         <div className="flex justify-between items-center px-2 pt-4">
-          <p className="font-semibold text-sm">Notifications</p>
+          <p className="font-semibold text-sm">{t('title')}</p>
           <div className="flex items-center gap-4">
             <button onClick={handleFetchNotifications} disabled={isFetching}>
               <RefreshCcw className={cn('w-4 h-4', isFetching ? 'animate-spin' : '')} />
@@ -94,10 +97,10 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
           <Tabs defaultValue="unread" className="w-full">
             <TabsList className="w-full">
               <TabsTrigger className="w-full" value="unread">
-                Unread
+                {t('unread')}
               </TabsTrigger>
               <TabsTrigger className="w-full" value="all">
-                All
+                {t('all')}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="w-[340px] ml-[-1em] pt-2">
@@ -105,8 +108,8 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
                 <NotificationCards notifications={userNotifications} isFetching={isFetching} />
                 {!amountOfNotifications && (
                   <div className="my-16 text-center flex flex-col gap-2">
-                    <p className="text-sm font-semibold">You are all up to date</p>
-                    <p className="text-sm text-muted-foreground">There are no notifications</p>
+                    <p className="text-sm font-semibold">{t('upToDate')}</p>
+                    <p className="text-sm text-muted-foreground">{t('notFound')}</p>
                   </div>
                 )}
               </ScrollArea>
@@ -116,10 +119,8 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
                 <NotificationCards notifications={unreadNotifications} isFetching={isFetching} />
                 {!unreadNotifications.length && (
                   <div className="my-16 text-center flex flex-col gap-2">
-                    <p className="text-sm font-semibold">You are all up to date</p>
-                    <p className="text-sm text-muted-foreground">
-                      There are no new notifications at the moment
-                    </p>
+                    <p className="text-sm font-semibold">{t('upToDate')}</p>
+                    <p className="text-sm text-muted-foreground">{t('notFoundAtTheMoment')}</p>
                   </div>
                 )}
               </ScrollArea>
@@ -128,7 +129,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
           <div className="flex justify-center items-center border-t py-2 font-semibold">
             <Link href="/settings/notifications">
               <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
-                View all
+                {t('viewAll')}
               </Button>
             </Link>
           </div>
