@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -31,6 +32,8 @@ const formSchema = z.object({
 });
 
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
+  const t = useTranslations('settings.generalForm');
+
   const { toast } = useToast();
   const { update } = useSession();
   const router = useRouter();
@@ -52,7 +55,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
 
       await update(values);
 
-      toast({ title: 'Account information updated' });
+      toast({ title: t('accInfoUpdated') });
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -62,7 +65,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <p className="font-medium text-xl">Account Information</p>
+        <p className="font-medium text-xl">{t('accInfo')}</p>
       </div>
       <div>
         <Form {...form}>
@@ -73,9 +76,9 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs text-muted-foreground">Name</FormLabel>
+                    <FormLabel className="text-xs text-muted-foreground">{t('name')}</FormLabel>
                     <FormControl>
-                      <Input {...field} disabled={isSubmitting} placeholder="Enter your name" />
+                      <Input {...field} disabled={isSubmitting} placeholder={t('enterName')} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -86,9 +89,9 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs text-muted-foreground">Email</FormLabel>
+                    <FormLabel className="text-xs text-muted-foreground">{t('email')}</FormLabel>
                     <FormControl>
-                      <Input {...field} disabled placeholder="Enter your email" />
+                      <Input {...field} disabled placeholder={t('enterEmail')} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,14 +102,10 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
                 name="pictureUrl"
                 render={({ field }) => (
                   <FormItem className="col-span-2">
-                    <FormLabel className="text-xs text-muted-foreground">Avatar URL</FormLabel>
+                    <FormLabel className="text-xs text-muted-foreground">{t('avatar')}</FormLabel>
                     <FormControl>
                       <div className="flex gap-4">
-                        <Input
-                          {...field}
-                          disabled={isSubmitting}
-                          placeholder="Enter your Avatar URL"
-                        />
+                        <Input {...field} disabled={isSubmitting} placeholder={t('enterAvatar')} />
                         <Avatar>
                           <AvatarImage src={field.value || ''} />
                           <AvatarFallback>{getFallbackName(initialData.name || '')}</AvatarFallback>
@@ -120,7 +119,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             </div>
             <div className="flex items-center gap-x-2 mt-6">
               <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                Update
+                {t('update')}
               </Button>
             </div>
           </form>

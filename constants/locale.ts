@@ -10,7 +10,6 @@ export const ALLOWED_CURRENCY = ['USD', 'EUR', 'BYN', 'RUB', 'GBP'];
 export const USER_LOCALE_COOKIE = 'user-locale';
 export const SUPPORTED_LOCALES = [
   { key: 'en', title: 'English' },
-  // TODO: Will be enabled a bit later
   { key: 'ru', title: 'Русский' },
   { key: 'be', title: 'Беларускі' },
 ];
