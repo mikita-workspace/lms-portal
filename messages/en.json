@@ -302,7 +302,9 @@
       "addedAt": "Added at { date }",
       "body": "Two-factor authentication adds an additional layer of security to your account",
       "disable": "Disable",
+      "disabled": "Disabled",
       "enable": "Enable",
+      "enabled": "Enabled",
       "otpDisabled": "2FA authentication is disabled",
       "title": "Enable 2FA"
     }

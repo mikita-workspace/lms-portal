@@ -76,7 +76,7 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
             {t('title')}
           </div>
           <TextBadge
-            label={isOtpEnabled ? 'Enabled' : 'Disabled'}
+            label={t(isOtpEnabled ? 'enabled' : 'disabled')}
             variant={isOtpEnabled ? 'green' : 'red'}
           />
         </div>
