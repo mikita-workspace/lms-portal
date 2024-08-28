@@ -30,7 +30,7 @@ const filterMap = {
 };
 
 export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
-  const t = useTranslations('courses.card');
+  const t = useTranslations('courses.info-card');
 
   const pathname = usePathname();
   const router = useRouter();

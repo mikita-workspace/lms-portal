@@ -171,7 +171,7 @@
     },
     "info-card": {
       "completed": "Completed",
-      "course": "{ amount, plural, =1 {course} other {courses}}",
+      "course": "{ amount, plural, =1 {# course} other {# courses}}",
       "inProgress": "In Progress"
     },
     "list": {
