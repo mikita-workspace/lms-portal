@@ -315,13 +315,13 @@
       "activePlan": "Active Plan",
       "cancel": "Your subscription will be { action } on { date }.",
       "cancelBanner": "Your subscription will be canceled on { date }. Renew your subscription now to continue using { planName }.",
-      "cancelled": "Cancelled",
+      "cancelled": "cancelled",
       "history": "Billing History",
       "manageSubscription": "Manage Subscription",
       "noInvoices": "No invoices",
       "noSubscription": "You do not have any active subscriptions.",
       "redirect": "You will be redirected to the checkout page.",
-      "renewed": "Renewed",
+      "renewed": "renewed",
       "title": "Billing & Subscription"
     }
   }
