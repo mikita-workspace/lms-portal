@@ -1,7 +1,9 @@
 'use client';
 
 import { signOut } from 'next-auth/react';
+import { useLocale, useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
+import Markdown from 'react-markdown';
 
 import {
   Dialog,
@@ -26,6 +28,9 @@ type DeleteAccountModalProps = {
 };
 
 export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountModalProps) => {
+  const t = useTranslations('delete-acc-modal');
+  const locale = useLocale();
+
   const { toast } = useToast();
 
   const [input, setInput] = useState('');
@@ -59,14 +64,14 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleDelete}>
           <DialogHeader>
-            <DialogTitle>Delete Account</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete your account? Deleting your account is permanent and
-              will delete all your data forever.
-            </DialogDescription>
-            <p className="text-sm text-muted-foreground">
-              Type <span className="font-bold">{email}</span> to confirm
-            </p>
+            <DialogTitle>{t('title')}</DialogTitle>
+            <DialogDescription>{t('body')}</DialogDescription>
+            <div
+              className="text-sm text-muted-foreground"
+              dangerouslySetInnerHTML={{
+                __html: t.markup('confirmEmail', { strong: () => `<strong>${email}</strong>` }),
+              }}
+            />
           </DialogHeader>
           <div className="w-full my-4">
             <div>
@@ -79,6 +84,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
             </div>
             <div className="mt-6 z-10">
               <Captcha
+                locale={locale}
                 callback={(token) => {
                   if (token) {
                     setCaptchaToken(token);
@@ -90,7 +96,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
           <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button variant="outline" className="mt-2">
-                Cancel
+                {t('cancel')}
               </Button>
             </DialogClose>
             <Button
@@ -100,7 +106,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
               type="submit"
               variant="destructive"
             >
-              Yes, Delete Account Forever
+              {t('confirm')}
             </Button>
           </DialogFooter>
         </form>

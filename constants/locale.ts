@@ -11,6 +11,6 @@ export const USER_LOCALE_COOKIE = 'user-locale';
 export const SUPPORTED_LOCALES = [
   { key: 'en', title: 'English' },
   // TODO: Will be enabled a bit later
-  // { key: 'ru', title: 'Русский' },
-  // { key: 'be', title: 'Беларускі' },
+  { key: 'ru', title: 'Русский' },
+  { key: 'be', title: 'Беларускі' },
 ];

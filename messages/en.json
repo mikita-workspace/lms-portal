@@ -26,6 +26,44 @@
       "username": "Must have at least 4 character."
     }
   },
+  "confirm-modal": {
+    "body": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "title": "Are you sure?"
+  },
+  "otp-modal": {
+    "body": "You can use any authenticator app that supports Time-based, One Time Password (TOTP) such as the Google.",
+    "enable": "Enable",
+    "success": "2FA authentication is enabled",
+    "title": "Enable 2FA Authentication",
+    "errors": {
+      "invalidOtp": "Invalid OTP code"
+    }
+  },
+  "delete-acc-modal": {
+    "body": "Are you sure you want to delete your account? Deleting your account is permanent and will delete all your data forever.",
+    "cancel": "Cancel",
+    "confirm": "Yes, Delete Account Forever",
+    "confirmEmail": "Type <strong>email</strong> to confirm",
+    "title": "Delete Account"
+  },
+  "promo-modal": {
+    "body": "Click \"Add promotion code\" when you are done.",
+    "code": "Code",
+    "coupon": "Coupon",
+    "created": "Promotion code has been created",
+    "firstTimePurchaseBody":" Eligible for first-time order only",
+    "limitNumberOfRedeemedBody": "Limit the number of times this code can be redeemed",
+    "limitToSpecificCustomersBody": "Limit to a specific customer",
+    "requireMinimumAmount": "Require minimum order value",
+    "selectCoupon": "Select a coupon",
+    "selectCurrency": "Select a currency",
+    "selectCustomer": "Select a customer",
+    "selectMinAmount": "Set a min amount price",
+    "submit": "Add promotion code",
+    "title": "Add a new promotion code"
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
