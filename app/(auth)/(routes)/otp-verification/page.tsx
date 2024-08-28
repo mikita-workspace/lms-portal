@@ -15,7 +15,7 @@ type OtpVerificationPageProps = {
 };
 
 const OtpVerificationPage = async ({ searchParams: { code } }: OtpVerificationPageProps) => {
-  const t = await getTranslations('otpVerificationPage');
+  const t = await getTranslations('otpVerification');
 
   const otpInfo = JSON.parse(decrypt(decodeURIComponent(code), process.env.OTP_SECRET as string));
   const callbackUrl = cookies().get(OTP_CALLBACK_URL_SECURE)?.value ?? '/';

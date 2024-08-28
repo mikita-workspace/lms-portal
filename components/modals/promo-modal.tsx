@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -72,6 +73,8 @@ const formSchema = z.object({
 });
 
 export const PromoModal = ({ children, coupons, customers }: PromoModalProps) => {
+  const t = useTranslations('promo-modal');
+
   const { toast } = useToast();
 
   const { exchangeRates } = useLocaleStore((state) => ({
@@ -115,7 +118,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
         responseType: 'json',
       });
 
-      toast({ title: 'Promotion code has been created' });
+      toast({ title: t('created') });
 
       router.refresh();
     } catch (error) {
@@ -145,10 +148,8 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add a new promotion code</DialogTitle>
-          <DialogDescription>
-            Click &quot;Add promotion code&quot; when you&apos;re done.
-          </DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('body')}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-4 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
@@ -157,11 +158,11 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
               name="couponId"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Coupon</FormLabel>
+                  <FormLabel>{t('coupon')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className={cn('text-start', field.value ? 'py-7' : '')}>
-                        <SelectValue placeholder="Select a coupon" />
+                        <SelectValue placeholder={t('selectCoupon')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -183,7 +184,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
               name="code"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Code</FormLabel>
+                  <FormLabel>{t('code')}</FormLabel>
                   <FormControl>
                     <div className="flex gap-2">
                       <Input {...field} disabled={isSubmitting} placeholder="e.g. FRIENDS20" />
@@ -209,7 +210,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormDescription>Eligible for first-time order only</FormDescription>
+                    <FormDescription>{t('firstTimePurchaseBody')}</FormDescription>
                   </div>
                 </FormItem>
               )}
@@ -223,7 +224,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormDescription>Limit to a specific customer</FormDescription>
+                    <FormDescription>{t('limitToSpecificCustomersBody')}</FormDescription>
                   </div>
                 </FormItem>
               )}
@@ -237,7 +238,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className={cn('text-start', field.value ? 'py-7' : '')}>
-                          <SelectValue placeholder="Select a customer" />
+                          <SelectValue placeholder={t('selectCustomer')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -265,9 +266,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormDescription>
-                      Limit the number of times this code can be redeemed
-                    </FormDescription>
+                    <FormDescription>{t('limitNumberOfRedeemedBody')}</FormDescription>
                   </div>
                 </FormItem>
               )}
@@ -306,7 +305,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                         <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
                       <div className="space-y-1 leading-none">
-                        <FormDescription>Require minimum order value</FormDescription>
+                        <FormDescription>{t('requireMinimumAmount')}</FormDescription>
                       </div>
                     </FormItem>
                   )}
@@ -323,7 +322,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                             defaultValue={field.value.toLowerCase()}
                           >
                             <SelectTrigger className="w-[80px]">
-                              <SelectValue placeholder="Select a currency" />
+                              <SelectValue placeholder={t('selectCurrency')} />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup className="z-10">
@@ -348,7 +347,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
                               intlConfig={{ locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY }}
                               name={field.name}
                               onValueChange={handleOnPriceChange(field.onChange)}
-                              placeholder="Set a min amount price"
+                              placeholder={t('selectMinAmount')}
                               value={field.value}
                             />
                           </FormControl>
@@ -361,7 +360,7 @@ export const PromoModal = ({ children, coupons, customers }: PromoModalProps) =>
             )}
             <DialogFooter>
               <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                Add promotion code
+                {t('submit')}
               </Button>
             </DialogFooter>
           </form>

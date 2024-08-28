@@ -8,9 +8,13 @@ export const DEFAULT_TIMEZONE = 'Etc/UTC';
 export const ALLOWED_CURRENCY = ['USD', 'EUR', 'BYN', 'RUB', 'GBP'];
 
 export const USER_LOCALE_COOKIE = 'user-locale';
+export const enum LOCALE {
+  BE = 'be',
+  EN = 'en',
+  RU = 'ru',
+}
 export const SUPPORTED_LOCALES = [
-  { key: 'en', title: 'English' },
-  // TODO: Will be enabled a bit later
-  // { key: 'ru', title: 'Русский' },
-  // { key: 'be', title: 'Беларускі' },
+  { key: LOCALE.EN, title: 'English' },
+  { key: LOCALE.RU, title: 'Русский' },
+  // { key: LOCALE.BE, title: 'Беларускі' },
 ];

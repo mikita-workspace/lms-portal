@@ -9,7 +9,5 @@ export const changeLocale = async (lang: string) => {
   cookies().set(USER_LOCALE_COOKIE, lang, {
     httpOnly: true,
     maxAge: ONE_YEAR_SEC,
-    sameSite: 'strict',
-    secure: true,
   });
 };

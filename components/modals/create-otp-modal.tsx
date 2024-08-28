@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
 
 import { OtpInput } from '@/components/common/otp-input';
@@ -26,6 +27,8 @@ type CreateOtpModalProps = {
 };
 
 export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps) => {
+  const t = useTranslations('otp-modal');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -55,10 +58,10 @@ export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps
       if (response.verified) {
         setOpen(false);
 
-        toast({ title: '2FA authentication is enabled' });
+        toast({ title: t('success') });
         router.refresh();
       } else {
-        setErrorMessage('Invalid OTP code');
+        setErrorMessage(t('errors.invalidOtp'));
       }
     } catch (error) {
       toast({ isError: true });
@@ -73,15 +76,12 @@ export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleEnableOtp}>
           <DialogHeader>
-            <DialogTitle>Enable 2FA Authentication</DialogTitle>
-            <DialogDescription>
-              You can use any authenticator app that supports Time-based, One Time Password (TOTP)
-              such as the Google.
-            </DialogDescription>
+            <DialogTitle>{t('title')}</DialogTitle>
+            <DialogDescription>{t('body')}</DialogDescription>
           </DialogHeader>
           <div className="w-full my-4 flex flex-col items-center">
             <div className="w-40 h-40 my-6">
-              {qrCode && <Image src={qrCode} alt="qr-code" width={500} height={500} priority />}
+              {qrCode && <Image src={qrCode} alt="QR" width={500} height={500} priority />}
               {!qrCode && <Skeleton className="w-full h-full rounded" />}
             </div>
             <OtpInput disabled={isFetching} errorMessage={errorMessage} setToken={setToken} />
@@ -92,7 +92,7 @@ export const CreateOtpModal = ({ children, qrCode, secret }: CreateOtpModalProps
               isLoading={isFetching}
               type="submit"
             >
-              Enable
+              {t('enable')}
             </Button>
           </DialogFooter>
         </form>

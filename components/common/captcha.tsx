@@ -1,13 +1,13 @@
 'use client';
 
-import { SmartCaptcha } from '@yandex/smart-captcha';
+import { SmartCaptcha, SmartCaptchaProps } from '@yandex/smart-captcha';
 
-type CaptchaProps = { callback: (token: string | null) => void };
+type CaptchaProps = { callback: (token: string | null) => void; locale: string };
 
-export const Captcha = ({ callback }: CaptchaProps) => {
+export const Captcha = ({ callback, locale }: CaptchaProps) => {
   return (
     <SmartCaptcha
-      language="en"
+      language={locale as SmartCaptchaProps['language']}
       onSuccess={callback}
       sitekey={process.env.NEXT_PUBLIC_YD_CAPTCHA as string}
       webview

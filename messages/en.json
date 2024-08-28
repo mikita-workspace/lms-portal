@@ -1,6 +1,7 @@
 {
   "app": {
     "description": "Educational\u00a0portal",
+    "loading": "Loading...",
     "name": "Nova\u00a0LMS",
     "poweredBy": "Powered\u00a0by"
   },
@@ -25,14 +26,54 @@
       "username": "Must have at least 4 character."
     }
   },
+  "confirm-modal": {
+    "body": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "title": "Are you sure?"
+  },
+  "otp-modal": {
+    "body": "You can use any authenticator app that supports Time-based, One Time Password (TOTP) such as the Google.",
+    "enable": "Enable",
+    "success": "2FA authentication is enabled",
+    "title": "Enable 2FA Authentication",
+    "errors": {
+      "invalidOtp": "Invalid OTP code"
+    }
+  },
+  "delete-acc-modal": {
+    "body": "Are you sure you want to delete your account? Deleting your account is permanent and will delete all your data forever.",
+    "cancel": "Cancel",
+    "confirm": "Yes, Delete Account Forever",
+    "confirmEmail": "Type <strong>email</strong> to confirm",
+    "title": "Delete Account"
+  },
+  "promo-modal": {
+    "body": "Click \"Add promotion code\" when you are done.",
+    "code": "Code",
+    "coupon": "Coupon",
+    "created": "Promotion code has been created",
+    "firstTimePurchaseBody":" Eligible for first-time order only",
+    "limitNumberOfRedeemedBody": "Limit the number of times this code can be redeemed",
+    "limitToSpecificCustomersBody": "Limit to a specific customer",
+    "requireMinimumAmount": "Require minimum order value",
+    "selectCoupon": "Select a coupon",
+    "selectCurrency": "Select a currency",
+    "selectCustomer": "Select a customer",
+    "selectMinAmount": "Set a min amount price",
+    "submit": "Add promotion code",
+    "title": "Add a new promotion code"
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
     "copyright": "Nova Technologies. All rights reserved.",
     "creatingAccount": "By creating an account, you agree to our",
+    "privacyPolices": "Privacy Policy",
     "privacyPolicy": "Privacy Policy",
     "releaseNotes": "Releases notes",
     "reportIssue": " Report Issue",
+    "termsAndCondition": "Terms and Conditions",
     "termsAndConditions": "Terms and Conditions",
     "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious."
   },
@@ -45,12 +86,13 @@
     "dashboard": "Dashboard",
     "general": "General",
     "leaderboard": "Leaderboard",
+    "new": "new",
     "notifications": "Notifications",
     "payments": "Payments",
     "promo": "Promo",
     "users": "Users"
   },
-  "errorPage": {
+  "error": {
     "body": "An unexpected application error has occurred.",
     "title": "500",
     "tryAgain": "Try again"
@@ -124,19 +166,45 @@
     "banner": {
       "completed": "You have already completed this chapter.",
       "lock": "You will need to purchase this course to proceed to this chapter."
+    },
+    "card": {
+      "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+      "premium": "Premium"
+    },
+    "info-card": {
+      "completed": "Completed",
+      "course": "{ amount, plural, =1 {# course} other {# courses}}",
+      "inProgress": "In Progress"
+    },
+    "list": {
+      "notFound": "No courses found."
+    },
+    "category": {
+      "all": "All"
+    },
+    "landing": {
+      "backTo": "Back to courses",
+      "keepProgress": "Keep track of your progress, learn new things and much more.",
+      "loginToContinue": "Login to continue",
+      "readyToLearn": "Ready to start learning?",
+      "preview": {
+        "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+        "loading": "Loading a video...",
+        "lock": "This preview is locked"
+      }
     }
   },
-  "releasesPage": {
+  "releases": {
     "backNav": "Back to courses",
     "download": "Download .zip",
     "releasesNotes": "Releases notes"
   },
-  "signInPage": {
+  "signIn": {
     "body": "To view, please login.",
     "login": "Login",
     "title": "This content is protected."
   },
-  "otpVerificationPage": {
+  "otpVerification": {
     "body": "Please enter the OTP code below.",
     "goBack": "Go back",
     "title": "2FA Verification",
@@ -145,7 +213,7 @@
       "somethingWentWrong": "Something went wrong. Try again!"
     }
   },
-  "chatPage": {
+  "chat": {
     "body": {
       "title": "How can I help you today?"
     },
@@ -171,9 +239,91 @@
     "download": "Download"
   },
   "price": {
-    "fees": "Fees"
+    "fees": "Fees",
+    "free": "Free"
   },
   "search-input": {
-    "searchFor": "Search for a course.."
+    "searchFor": "Search for a course..."
+  },
+  "subscription": {
+    "bannerBody": "Unlock premium courses, get access to Nova AI, and more.",
+    "bannerTitle": "Upgrade to Nova Plus",
+    "bestChoice": "The best choice!",
+    "loginToContinue": "Login to continue",
+    "mo": "/mo",
+    "redirect": "You will be redirected to the checkout page.",
+    "upgrade": "Upgrade"
+  },
+  "toast": {
+    "error": {
+      "body": "Something went wrong. Try again!",
+      "title": "Oops!"
+    }
+  },
+  "leaderboard": {
+    "notFound": "There are no leaders here yet.",
+    "points": "Points",
+    "rank": "Rank",
+    "user": "User",
+    "you": "You"
+  },
+  "notifications": {
+    "all": "All",
+    "markAsRead": "Mark as read",
+    "notFound": "There are no notifications",
+    "notFoundAtTheMoment": "There are no new notifications at the moment",
+    "title": "Notifications",
+    "unread": "Unread",
+    "upToDate": "You are all up to date",
+    "viewAll": "View all"
+  },
+  "navbar": {
+    "backTo": "Back to courses",
+    "exit": "Exit"
+  },
+  "settings": {
+    "advancedOptions": "Advanced Options",
+    "deleteAcc": "Delete Account",
+    "general": "General Settings",
+    "generalForm": {
+      "accInfo": "Account Information",
+      "accInfoUpdated": "Account information updated",
+      "avatar": "Avatar URL",
+      "email": "Email",
+      "enterAvatar": "Enter your Avatar URL",
+      "enterEmail": "Enter your email",
+      "enterName": "Enter your name",
+      "name": "Username",
+      "update": "Update"
+    },
+    "publicProfileForm": {
+      "body": "Change the visibility of your profile",
+      "title": "Enable Public Profile",
+      "visibilityUpdated": "Visibility updated"
+    },
+    "otpForm": {
+      "addedAt": "Added at { date }",
+      "body": "Two-factor authentication adds an additional layer of security to your account",
+      "disable": "Disable",
+      "disabled": "Disabled",
+      "enable": "Enable",
+      "enabled": "Enabled",
+      "otpDisabled": "2FA authentication is disabled",
+      "title": "Enable 2FA"
+    },
+    "billing": {
+      "activePlan": "Active Plan",
+      "cancel": "Your subscription will be { action } on { date }.",
+      "cancelBanner": "Your subscription will be canceled on { date }. Renew your subscription now to continue using { planName }.",
+      "cancelled": "cancelled",
+      "history": "Billing History",
+      "manageSubscription": "Manage Subscription",
+      "noInvoices": "No invoices",
+      "noSubscription": "You do not have any active subscriptions.",
+      "redirect": "You will be redirected to the checkout page.",
+      "renewed": "renewed",
+      "title": "Billing & Subscription"
+    }
   }
 }
+

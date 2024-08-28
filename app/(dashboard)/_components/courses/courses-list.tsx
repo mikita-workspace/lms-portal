@@ -1,6 +1,7 @@
 'use client';
 
 import { Fee } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 
 import { getCourses } from '@/actions/courses/get-courses';
 
@@ -12,6 +13,8 @@ type CoursesListProps = {
 };
 
 export const CoursesList = ({ fees, items }: CoursesListProps) => {
+  const t = useTranslations('courses.list');
+
   return (
     <div>
       <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
@@ -34,8 +37,8 @@ export const CoursesList = ({ fees, items }: CoursesListProps) => {
           />
         ))}
       </div>
-      {items.length === 0 && (
-        <div className="text-center text-sm text-muted-foreground mt-10">No courses found</div>
+      {!items.length && (
+        <div className="text-center text-sm text-muted-foreground mt-10">{t('notFound')}</div>
       )}
     </div>
   );

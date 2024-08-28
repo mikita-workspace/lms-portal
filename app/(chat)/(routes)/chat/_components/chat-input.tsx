@@ -19,7 +19,7 @@ export const ChatInput = ({
   onSubmit,
   setCurrentMessage,
 }: ChatInputProps) => {
-  const t = useTranslations('chatPage.input');
+  const t = useTranslations('chat.input');
 
   return (
     <div className="w-full relative">

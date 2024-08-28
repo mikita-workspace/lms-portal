@@ -3,6 +3,7 @@
 import { Notification } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState, useTransition } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 
@@ -22,6 +23,8 @@ type NotificationCardProps = Omit<NotificationCardsProps, 'notifications'> & {
 };
 
 const NotificationCard = ({ isFetching = false, notification, userId }: NotificationCardProps) => {
+  const t = useTranslations('notifications');
+
   const { toast } = useToast();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -69,7 +72,7 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
                 onClick={() => handleMarkAsRead(notification.id)}
                 disabled={isLoading || isFetching}
               >
-                Mark as read
+                {t('markAsRead')}
               </button>
             )}
           </>
@@ -85,16 +88,12 @@ export const NotificationCards = ({
 }: NotificationCardsProps) => {
   const { user } = useCurrentUser();
 
-  return (
-    <>
-      {notifications.map((notification) => (
-        <NotificationCard
-          key={notification.id}
-          isFetching={isFetching}
-          notification={notification}
-          userId={user?.userId}
-        />
-      ))}
-    </>
-  );
+  return notifications.map((notification) => (
+    <NotificationCard
+      key={notification.id}
+      isFetching={isFetching}
+      notification={notification}
+      userId={user?.userId}
+    />
+  ));
 };

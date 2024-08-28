@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -27,6 +28,8 @@ const formSchema = z.object({
 });
 
 export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
+  const t = useTranslations('settings.publicProfileForm');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -42,7 +45,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
-      toast({ title: 'Visibility updated' });
+      toast({ title: t('visibilityUpdated') });
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -58,10 +61,8 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
               <div className="space-y-0.5">
-                <FormLabel>Enable Public Profile</FormLabel>
-                <FormDescription className="text-xs">
-                  Change the visibility of your profile
-                </FormDescription>
+                <FormLabel>{t('title')}</FormLabel>
+                <FormDescription className="text-xs">{t('body')}</FormDescription>
               </div>
               <FormControl>
                 <Switch
