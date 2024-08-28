@@ -48,7 +48,7 @@ export const Footer = () => {
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
               <Link href="/releases">{t('releaseNotes')}</Link>
               <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
-                {t('termsAndConditions')}
+                {t('termsAndCondition')}
               </Link>
               <Link href={PRIVACY_POLICY_URL} target="_blank">
                 {t('privacyPolicy')}

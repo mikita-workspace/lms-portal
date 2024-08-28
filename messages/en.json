@@ -69,9 +69,11 @@
     "contact": "Contact",
     "copyright": "Nova Technologies. All rights reserved.",
     "creatingAccount": "By creating an account, you agree to our",
+    "privacyPolices": "Privacy Policy",
     "privacyPolicy": "Privacy Policy",
     "releaseNotes": "Releases notes",
     "reportIssue": " Report Issue",
+    "termsAndCondition": "Terms and Conditions",
     "termsAndConditions": "Terms and Conditions",
     "testModeDeclaimer": "The portal is currently in TEST mode. All payments and data are fictitious."
   },

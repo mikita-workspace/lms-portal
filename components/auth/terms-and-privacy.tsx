@@ -16,7 +16,7 @@ export const TermsAndPrivacy = () => {
 
   const privacyUrl = (
     <Link target="_blank" className="text-primary hover:underline" href={PRIVACY_POLICY_URL}>
-      {t('privacyPolicy')}
+      {t('privacyPolices')}
     </Link>
   );
 

@@ -68,10 +68,12 @@
     "and": "и",
     "contact": "Связаться",
     "copyright": "Nova Technologies. Все права защищены.",
-    "creatingAccount": "Создавая аккаунт, вы соглашаетесь с нашей",
-    "privacyPolicy": "Политикой конфиденциальности",
+    "creatingAccount": "Создавая аккаунт, вы соглашаетесь с нашими",
+    "privacyPolices": "Политикой конфиденциальности",
+    "privacyPolicy": "Политика конфиденциальности",
     "releaseNotes": "Выпуски",
     "reportIssue": "Сообщить о проблеме",
+    "termsAndCondition": "Условия",
     "termsAndConditions": "Условиями",
     "testModeDeclaimer": "Портал в данный момент находится в тестовом режиме. Все платежи и данные фиктивны."
   },
@@ -112,10 +114,10 @@
     "teacher": "Учитель"
   },
   "switcher": {
-    "dark": "Темный",
+    "dark": "Темная",
     "language": "Язык",
-    "light": "Светлый",
-    "system": "Системный",
+    "light": "Светлая",
+    "system": "Системная",
     "theme": "Тема"
   },
   "payments": {
