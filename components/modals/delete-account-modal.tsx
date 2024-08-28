@@ -3,7 +3,6 @@
 import { signOut } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import Markdown from 'react-markdown';
 
 import {
   Dialog,
