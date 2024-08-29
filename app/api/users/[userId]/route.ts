@@ -66,6 +66,7 @@ export const DELETE = async (_: NextRequest, { params }: { params: { userId: str
     });
 
     if (stripeCustomer) {
+      await stripe.subscriptions.cancel(stripeCustomer.stripeCustomerId);
       await stripe.customers.del(stripeCustomer.stripeCustomerId);
       await db.stripeCustomer.delete({ where: { userId: params.userId } });
     }
