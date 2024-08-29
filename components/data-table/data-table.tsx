@@ -13,6 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
 import { getStripePromo } from '@/actions/stripe/get-stripe-promo';
@@ -62,6 +63,8 @@ export function DataTable<TData, TValue>({
   noLabel,
   pageCount = 0,
 }: Readonly<DataTableProps<TData, TValue>>) {
+  const notificationsT = useTranslations('notifications.table-data');
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
@@ -101,7 +104,7 @@ export function DataTable<TData, TValue>({
     }
 
     if (isNotificationPage) {
-      return 'Filter notifications...';
+      return notificationsT('filter');
     }
 
     return '';

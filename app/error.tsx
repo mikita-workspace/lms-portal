@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui';
-import withCompanyLabel from '@/hoc/with-company-label';
 
 export const metadata: Metadata = {
   title: '500',
@@ -34,4 +33,4 @@ const Error = ({ error }: ErrorProps) => {
   );
 };
 
-export default withCompanyLabel(Error);
+export default Error;

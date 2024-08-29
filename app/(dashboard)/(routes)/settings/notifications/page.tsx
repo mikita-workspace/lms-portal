@@ -2,9 +2,8 @@ import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
-import { DataTable } from '@/components/data-table/data-table';
 
-import { columns } from './_components/data-table/columns';
+import { Table } from './_components/data-table/table';
 
 type NotificationsPageProps = {
   searchParams: { pageIndex: string; pageSize: string };
@@ -23,13 +22,7 @@ const NotificationsPage = async ({ searchParams }: NotificationsPageProps) => {
     <div className="p-6 flex flex-col">
       <h1 className="text-2xl font-medium">{t('notificationCenter')}</h1>
       <div className="mt-12">
-        <DataTable
-          columns={columns}
-          data={userNotifications}
-          isNotificationPage
-          noLabel="No notifications"
-          pageCount={pageCount}
-        />
+        <Table pageCount={pageCount} userNotifications={userNotifications} />
       </div>
     </div>
   );

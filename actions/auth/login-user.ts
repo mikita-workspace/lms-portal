@@ -1,5 +1,7 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
+
 import { db } from '@/lib/db';
 import { generatePromotionCode } from '@/lib/promo';
 import { pusher } from '@/server/pusher';
@@ -27,6 +29,8 @@ export const loginUser = async (
       role: existingUser.role,
     };
   }
+
+  const t = await getTranslations('auth');
 
   const user = await db.user.upsert({
     where: {
@@ -75,9 +79,9 @@ export const loginUser = async (
 
   await db.notification.create({
     data: {
+      body: t('welcomeBonus.body', { promotionCode: promotionCode.code }),
+      title: t('welcomeBonus.title'),
       userId: user.id,
-      title: `Welcome bonus`,
-      body: `Hi! Thank you for registering on our platform. Catch the promotion code - ${promotionCode.code} for your first purchase 🤩`,
     },
   });
 

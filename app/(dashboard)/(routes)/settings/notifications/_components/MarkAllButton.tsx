@@ -2,6 +2,7 @@
 
 import { CheckCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui';
@@ -17,6 +18,8 @@ type MarkAllButtonProps = {
 };
 
 export const MarkAllButton = ({ action, amount, ids, reset }: MarkAllButtonProps) => {
+  const t = useTranslations('notifications');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -45,7 +48,7 @@ export const MarkAllButton = ({ action, amount, ids, reset }: MarkAllButtonProps
   return (
     <Button disabled={isFetching} isLoading={isFetching} onClick={handleAction}>
       {!isFetching && <CheckCheck className="h-4 w-4 mr-2" />}
-      Mark {amount} selected as {action}
+      {t('markSelected', { amount, action: t(action).toLowerCase() })}
     </Button>
   );
 };

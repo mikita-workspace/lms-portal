@@ -5,6 +5,12 @@
     "name": "Nova\u00a0LMS",
     "poweredBy": "Powered\u00a0by"
   },
+  "auth": {
+    "welcomeBonus": {
+      "body": "Hi! Thank you for registering on our platform. Catch the promotion code - { promotionCode } for your first purchase 🤩",
+      "title": "Welcome bonus"
+    }
+  },
   "auth-modal": {
     "alreadyHaveAnAccount": "Already have an account?",
     "continueWith": "Continue with { provider }",
@@ -273,9 +279,21 @@
   "notifications": {
     "all": "All",
     "markAsRead": "Mark as read",
+    "markAsUnread": "Mark as unread",
+    "markSelected": "Mark { amount } selected as { action }",
     "notFound": "There are no notifications",
     "notFoundAtTheMoment": "There are no new notifications at the moment",
     "notificationCenter": "Notification Center",
+    "openMenu": "Open menu",
+    "read": "read",
+    "remove": "Remove",
+    "table-data": {
+      "date": "Date",
+      "filter": "Search for a notification...",
+      "notFound": "There are no notifications",
+      "notification": "Notification",
+      "title": "Title"
+    },
     "title": "Notifications",
     "unread": "Unread",
     "upToDate": "You are all up to date",

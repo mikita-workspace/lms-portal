@@ -2,6 +2,7 @@
 
 import { CheckCheck, MoreHorizontal, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 
@@ -22,6 +23,8 @@ type ColumnActionsProps = {
 };
 
 export const ColumnActions = ({ id, isRead, userId }: ColumnActionsProps) => {
+  const t = useTranslations('notifications');
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -59,7 +62,7 @@ export const ColumnActions = ({ id, isRead, userId }: ColumnActionsProps) => {
           {isFetching && <BiLoaderAlt className="h-4 w-4 animate-spin" />}
           {!isFetching && (
             <>
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">{t('openMenu')}</span>
               <MoreHorizontal className="h-4 w-4" />
             </>
           )}
@@ -68,14 +71,14 @@ export const ColumnActions = ({ id, isRead, userId }: ColumnActionsProps) => {
       <DropdownMenuContent align="end">
         <DropdownMenuItem className="hover:cursor-pointer" onClick={handleAction('update')}>
           <CheckCheck className="h-4 w-4  mr-2" />
-          {isRead ? 'Mark as unread' : 'Mark as read'}
+          {t(isRead ? 'markAsUnread' : 'markAsRead')}
         </DropdownMenuItem>
         <DropdownMenuItem
           className="hover:cursor-pointer text-red-500"
           onClick={handleAction('remove')}
         >
           <XCircle className="h-4 w-4  mr-2" />
-          Remove
+          {t('remove')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

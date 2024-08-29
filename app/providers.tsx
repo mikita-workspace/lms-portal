@@ -54,9 +54,9 @@ export const Providers = ({
   messages,
   timeZone,
 }: ProvidersProps) => {
-  useUserLocation(exchangeRates);
   useAppConfig(appConfig);
   useSetDateLocale(locale);
+  useUserLocation(exchangeRates);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

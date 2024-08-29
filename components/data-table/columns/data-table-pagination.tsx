@@ -28,7 +28,6 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
       <div className="flex-1 text-sm text-muted-foreground"></div>
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -67,7 +66,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </div>
           <Button
             variant="outline"

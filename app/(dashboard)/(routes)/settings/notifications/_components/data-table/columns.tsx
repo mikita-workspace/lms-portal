@@ -27,7 +27,7 @@ const handleSortingHeader = <T extends Column<UserNotification, unknown>>(
   );
 };
 
-export const columns: ColumnDef<UserNotification>[] = [
+export const getColumns = (t: (key: string) => string): ColumnDef<UserNotification>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -51,7 +51,7 @@ export const columns: ColumnDef<UserNotification>[] = [
   },
   {
     accessorKey: 'title',
-    header: 'Title',
+    header: t('title'),
     cell: ({ row }) => {
       const { title, isRead } = row.original;
 
@@ -65,7 +65,7 @@ export const columns: ColumnDef<UserNotification>[] = [
     },
   },
   {
-    header: 'Notification',
+    header: t('notification'),
     cell: ({ row }) => {
       const { body, isRead } = row.original;
 
@@ -74,7 +74,7 @@ export const columns: ColumnDef<UserNotification>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => handleSortingHeader(column, 'Date'),
+    header: ({ column }) => handleSortingHeader(column, t('date')),
     cell: ({ row }) => {
       const { createdAt } = row.original;
 
