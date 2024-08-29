@@ -192,6 +192,9 @@
         "loading": "Loading a video...",
         "lock": "This preview is locked"
       }
+    },
+    "progress": {
+      "complete": "Complete"
     }
   },
   "releases": {
@@ -272,6 +275,7 @@
     "markAsRead": "Mark as read",
     "notFound": "There are no notifications",
     "notFoundAtTheMoment": "There are no new notifications at the moment",
+    "notificationCenter": "Notification Center",
     "title": "Notifications",
     "unread": "Unread",
     "upToDate": "You are all up to date",
@@ -326,4 +330,3 @@
     }
   }
 }
-

@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { cn } from '@/lib/utils';
 
 import { Progress } from '../ui';
@@ -27,6 +29,8 @@ export const ProgressBar = ({
   value,
   variant = 'default',
 }: ProgressBarProps) => {
+  const t = useTranslations('courses.progress');
+
   return (
     <div>
       <Progress className="h-2" value={value} variant={variant} />
@@ -38,7 +42,7 @@ export const ProgressBar = ({
             sizeByVariant[size || 'default'],
           )}
         >
-          {Math.round(value)}% Complete
+          {Math.round(value)}% {t('complete')}
         </p>
       )}
     </div>
