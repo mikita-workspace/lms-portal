@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Chapter } from '@prisma/client';
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,7 +29,7 @@ type ChapterDescriptionFormProps = {
 };
 
 const formSchema = z.object({
-  description: z.string().min(1),
+  description: z.string(),
 });
 
 export const ChapterDescriptionForm = ({
@@ -54,6 +54,11 @@ export const ChapterDescriptionForm = ({
 
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
+    setNewDescription('');
+  };
+
+  const handleTrash = () => {
+    form.setValue('description', '');
     setNewDescription('');
   };
 
@@ -89,6 +94,11 @@ export const ChapterDescriptionForm = ({
                 },
               ]}
             />
+          )}
+          {isEditing && (
+            <Button variant="outline" size="sm" disabled={isSubmitting} onClick={handleTrash}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
           )}
           <Button onClick={handleToggleEdit} variant="outline" size="sm" disabled={isSubmitting}>
             {isEditing ? (

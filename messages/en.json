@@ -344,6 +344,14 @@
       "noSubscription": "You do not have any active subscriptions.",
       "redirect": "You will be redirected to the checkout page.",
       "renewed": "renewed",
+      "table-data": {
+        "course": "Course",
+        "date": "Purchase date",
+        "history": "Billing History",
+        "noInvoices": "No invoices",
+        "price": "Price",
+        "view": "View"
+      },
       "title": "Billing & Subscription"
     }
   }

@@ -65,7 +65,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             <span className="sr-only">Go to previous page</span>
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[48px] items-center justify-center text-sm font-medium">
             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </div>
           <Button

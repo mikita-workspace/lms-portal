@@ -24,10 +24,10 @@ const handleSortingHeader = <T extends Column<UserBilling, unknown>>(column: T, 
   );
 };
 
-export const columns: ColumnDef<UserBilling>[] = [
+export const getColumns = (t: (key: string) => string): ColumnDef<UserBilling>[] => [
   {
     id: 'course',
-    header: () => <span>Course</span>,
+    header: () => <span>{t('course')}</span>,
     cell: ({ row }) => {
       const { products } = row.original;
       return products.map((product) => (
@@ -44,7 +44,7 @@ export const columns: ColumnDef<UserBilling>[] = [
   },
   {
     accessorKey: 'amount',
-    header: ({ column }) => handleSortingHeader(column, 'Price'),
+    header: ({ column }) => handleSortingHeader(column, t('price')),
     cell: ({ row }) => {
       const { amount, currency } = row.original;
       const locale = {
@@ -57,7 +57,7 @@ export const columns: ColumnDef<UserBilling>[] = [
   },
   {
     accessorKey: 'timestamp',
-    header: ({ column }) => handleSortingHeader(column, 'Purchase date'),
+    header: ({ column }) => handleSortingHeader(column, t('date')),
     cell: ({ row }) => {
       const { timestamp } = row.original;
 
@@ -69,14 +69,18 @@ export const columns: ColumnDef<UserBilling>[] = [
     cell: ({ row }) => {
       const { url } = row.original;
 
-      return url ? (
-        <Link href={url} target="_blank" className="hover:underline">
-          <div className="flex gap-2 items-center">
-            <ReceiptText className="h-4 w-4" />
-            View
-          </div>
-        </Link>
-      ) : null;
+      return (
+        <>
+          {url && (
+            <Link href={url} target="_blank" className="hover:underline">
+              <div className="flex gap-2 items-center">
+                <ReceiptText className="h-4 w-4" />
+                {t('view')}
+              </div>
+            </Link>
+          )}
+        </>
+      );
     },
   },
 ];
