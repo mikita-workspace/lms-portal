@@ -1,11 +1,14 @@
 'use server';
 
+import { getLocale } from 'next-intl/server';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { openai } from '@/server/openai';
 
 export const getChatInitial = async () => {
+  const locale = await getLocale();
+
   try {
     const introMessages = await openai.chat.completions.create({
       messages: [
@@ -14,8 +17,7 @@ export const getChatInitial = async () => {
           content: 'You are a machine that only returns array format.',
         },
         {
-          content:
-            'Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat. Write the result to an array.',
+          content: `Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat in ${locale} language. Write the result to an array.`,
           role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
         },
       ],

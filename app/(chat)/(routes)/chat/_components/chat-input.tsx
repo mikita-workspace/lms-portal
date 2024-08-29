@@ -31,7 +31,7 @@ export const ChatInput = ({
           >
             <Textarea
               className="resize-none flex-1 pr-16 overflow-auto z-10"
-              placeholder="Enter your message..."
+              placeholder={t('enterMessage')}
               value={currenMessage}
               onChange={(event) => {
                 setCurrentMessage(event.target.value);
@@ -50,7 +50,7 @@ export const ChatInput = ({
               variant="outline"
             >
               <BsStars className="mr-1" />
-              Ask
+              {t('ask')}
             </Button>
           </form>
           <div className="p-2 text-center text-xs text-muted-foreground z-10">{t('footer')}</div>

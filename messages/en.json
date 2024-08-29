@@ -227,6 +227,8 @@
       "title": "How can I help you today?"
     },
     "input": {
+      "ask": "Ask",
+      "enterMessage": "Enter your message...",
       "footer": "AI Chat can make mistakes. Consider checking important information."
     }
   },
