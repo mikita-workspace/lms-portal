@@ -56,20 +56,27 @@ export const DELETE = async (_: NextRequest, { params }: { params: { userId: str
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const deletedUser = await db.user.delete({
-      where: { id: params.userId },
-    });
-
     const stripeCustomer = await db.stripeCustomer.findUnique({
       where: { userId: params.userId },
       select: { stripeCustomerId: true },
     });
 
+    const stripeSubscription = await db.stripeSubscription.findUnique({
+      where: { userId: params.userId },
+    });
+
+    if (stripeSubscription?.stripeSubscriptionId) {
+      await stripe.subscriptions.cancel(stripeSubscription.stripeSubscriptionId);
+    }
+
     if (stripeCustomer) {
-      await stripe.subscriptions.cancel(stripeCustomer.stripeCustomerId);
       await stripe.customers.del(stripeCustomer.stripeCustomerId);
       await db.stripeCustomer.delete({ where: { userId: params.userId } });
     }
+
+    const deletedUser = await db.user.delete({
+      where: { id: params.userId },
+    });
 
     return NextResponse.json(deletedUser);
   } catch (error) {
