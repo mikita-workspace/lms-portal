@@ -2,6 +2,8 @@
 
 import { SyntheticEvent } from 'react';
 
+import { splitIntoWords } from '@/lib/utils';
+
 type ChatIntroProps = {
   introMessages: string[];
   onSubmit: (
@@ -15,7 +17,7 @@ type ChatIntroProps = {
 export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
   const mapQuestion = (value: string) => {
     const index = 4;
-    const words = value.replace(/\W/g, '-').split('-');
+    const words = splitIntoWords(value);
 
     return {
       head: words.slice(0, index).join(' '),

@@ -63,3 +63,9 @@ export const isValidUrl = (value: string) => {
     return false;
   }
 };
+
+export const splitIntoWords = (sentence: string) => {
+  const cleanSentence = sentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '').trim();
+
+  return cleanSentence.split(/\s+/);
+};

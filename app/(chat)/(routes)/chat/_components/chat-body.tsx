@@ -74,7 +74,7 @@ export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBody
             <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
-          <p className="mb-5 text-2xl font-medium">{t('title')}</p>
+          <p className="mb-5 text-2xl font-medium text-center">{t('title')}</p>
         </div>
       )}
       <div className="h-[calc(100%-12rem)] relative">
