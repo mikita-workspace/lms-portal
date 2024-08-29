@@ -159,21 +159,21 @@
     "video-player": {
       "completed": "Завершить и продолжить",
       "loading": "Загрузка видео...",
-      "lock": "Эта глава заблокирована",
+      "lock": "Эта часть заблокирована",
       "notCompleted": "Не завершено",
       "progress": "Прогресс обновлен"
     },
     "banner": {
-      "completed": "Вы уже завершили эту главу.",
+      "completed": "Вы уже завершили эту часть.",
       "lock": "Для продолжения необходимо приобрести этот курс."
     },
     "card": {
-      "chapter": "{ amount, plural, =1 {# глава} other {# главы}}",
+      "chapter": "{ amount, plural, one {# часть} few {# части} many {# частей} other {# частей}}",
       "premium": "Премиум"
     },
     "info-card": {
       "completed": "Завершено",
-      "course": "{ amount, plural, =1 {# курс} other {# курсов}}",
+      "course": "{ amount, plural, one {# курс} few {# курса } many {# курсов} other {# курсов}}",
       "inProgress": "В процессе"
     },
     "list": {
@@ -188,7 +188,7 @@
       "loginToContinue": "Войдите, чтобы продолжить",
       "readyToLearn": "Готовы начать обучение?",
       "preview": {
-        "chapter": "{ amount, plural, =1 {# глава} other {# главы}}",
+        "chapter": "{ amount, plural, one {# часть} few {# части} many {# частей} other {# частей}}",
         "loading": "Загрузка видео...",
         "lock": "Этот превью заблокирован"
       }
