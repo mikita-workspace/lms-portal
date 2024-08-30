@@ -21,16 +21,23 @@ export const VideoPlayer = ({
   const ReactPlayer = useMemo(() => dynamic(() => import('react-player/lazy'), { ssr: false }), []);
 
   const isGoogleDrivePlayer = videoUrl.includes('drive.google.com');
+  const isYoutubePlayer = videoUrl.includes('youtube.com');
 
-  if (isGoogleDrivePlayer) {
+  const url = new URL(videoUrl);
+
+  if (isGoogleDrivePlayer || isYoutubePlayer) {
+    if (autoPlay && !isGoogleDrivePlayer) {
+      url.searchParams.append('autoplay', '1');
+    }
+
     return (
       <iframe
-        allow={autoPlay ? 'autoplay' : ''}
+        allow="autoplay"
         allowFullScreen
         height="100%"
         onEnded={onEnded}
         onLoad={onReady}
-        src={videoUrl}
+        src={url.toString()}
         width="100%"
       ></iframe>
     );
@@ -39,12 +46,14 @@ export const VideoPlayer = ({
   return (
     <div className="border aspect-w-16 aspect-h-9">
       <ReactPlayer
+        className="react-player"
+        config={{ file: { attributes: { controlsList: 'nodownload' } } }}
         controls={showControls}
         height="100%"
         onEnded={onEnded}
         onReady={onReady}
         playing={autoPlay}
-        url={videoUrl}
+        url={url.toString()}
         width="100%"
       />
     </div>

@@ -240,3 +240,7 @@ body,
   content: '✓';
   margin-left: 0.5rem;
 }
+
+.react-player > video {
+  outline: none;
+}
