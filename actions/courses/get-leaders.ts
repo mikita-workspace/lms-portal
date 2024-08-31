@@ -2,7 +2,7 @@
 
 import groupBy from 'lodash.groupby';
 
-import { CHAPTER_XP } from '@/constants/common';
+import { CHAPTER_XP } from '@/constants/courses';
 import { db } from '@/lib/db';
 
 type Leaders = {
