@@ -13,7 +13,7 @@ import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
-import { TEXTAREA_MAX_LENGTH } from '@/constants/common';
+import { TEXTAREA_MAX_LENGTH } from '@/constants/courses';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 

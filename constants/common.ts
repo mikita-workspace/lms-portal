@@ -5,13 +5,7 @@ export const PRIVACY_POLICY_URL =
 export const COOKIE_POLICY_URL =
   'https://www.termsfeed.com/live/efaa02dc-0a94-4520-bce1-3890f08258a9';
 
-export const GITHUB_ISSUE_URL = 'https://github.com/mikita-workspace/lms-portal/issues/new';
-export const STRIPE_COUPONS_URL = 'https://dashboard.stripe.com/coupons';
-
 export const OWNER_EMAIL = 'mkandratsyeu@gmail.com';
-
-export const TEXTAREA_MAX_LENGTH = 256;
-export const CHAPTER_XP = 20;
 
 export const ONE_YEAR_SEC = 60 * 60 * 24 * 365;
 export const ONE_DAY_SEC = 60 * 60 * 24;

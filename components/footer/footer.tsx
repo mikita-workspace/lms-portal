@@ -6,12 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { AuthStatus } from '@/constants/auth';
-import {
-  GITHUB_ISSUE_URL,
-  OWNER_EMAIL,
-  PRIVACY_POLICY_URL,
-  TERMS_AND_CONDITIONS_URL,
-} from '@/constants/common';
+import { OWNER_EMAIL, PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { LanguageSwitcher } from '../common/language-switcher';
@@ -53,9 +48,10 @@ export const Footer = () => {
               <Link href={PRIVACY_POLICY_URL} target="_blank">
                 {t('privacyPolicy')}
               </Link>
-              <Link href={GITHUB_ISSUE_URL} target="_blank">
+              {/* TODO: feat/csm */}
+              {/* <Link href={GITHUB_ISSUE_URL} target="_blank">
                 {t('reportIssue')}
-              </Link>
+              </Link> */}
               <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
                 {t('contact')}
               </Link>

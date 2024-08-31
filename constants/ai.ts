@@ -1,4 +1,4 @@
-import { TEXTAREA_MAX_LENGTH } from './common';
+import { TEXTAREA_MAX_LENGTH } from './courses';
 
 export const SYSTEM_COURSE_PROMPT =
   'You are the creator of various courses on a special learning platform.';
