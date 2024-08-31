@@ -51,7 +51,7 @@
     "body": "Are you sure you want to delete your account? Deleting your account is permanent and will delete all your data forever.",
     "cancel": "Cancel",
     "confirm": "Yes, Delete Account Forever",
-    "confirmEmail": "Type <strong>email</strong> to confirm",
+    "confirmEmail": "Type <strong>email</strong> to confirm.",
     "title": "Delete Account"
   },
   "promo-modal": {

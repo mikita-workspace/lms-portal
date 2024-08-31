@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { COOKIE_POLICY_URL, ONE_YEAR_SEC } from '@/constants/common';
+import { ONE_YEAR_SEC } from '@/constants/common';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui';
@@ -50,7 +50,11 @@ export const CookieConsent = () => {
       <div className="fixed bottom-0 left-0 right-0 flex items-center justify-between p-6 bg-background border-t shadow-lg animate-cookie-consent-up">
         <span className="text-dark text-sm font-medium mr-16">
           {t('body')}{' '}
-          <Link href={COOKIE_POLICY_URL} target="_blank" className="hover:underline font-bold">
+          <Link
+            href={process.env.NEXT_PUBLIC_COOKIE_POLICY_URL as string}
+            target="_blank"
+            className="hover:underline font-bold"
+          >
             {t('policy')}
           </Link>
           .

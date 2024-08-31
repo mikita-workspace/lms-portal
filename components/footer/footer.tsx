@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { AuthStatus } from '@/constants/auth';
-import { OWNER_EMAIL, PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/constants/common';
+import { OWNER_EMAIL } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { LanguageSwitcher } from '../common/language-switcher';
@@ -42,10 +42,13 @@ export const Footer = () => {
             </div>
             <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
               <Link href="/releases">{t('releaseNotes')}</Link>
-              <Link href={TERMS_AND_CONDITIONS_URL} target="_blank">
+              <Link
+                href={process.env.NEXT_PUBLIC_TERMS_AND_CONDITIONS_URL as string}
+                target="_blank"
+              >
                 {t('termsAndCondition')}
               </Link>
-              <Link href={PRIVACY_POLICY_URL} target="_blank">
+              <Link href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL as string} target="_blank">
                 {t('privacyPolicy')}
               </Link>
               {/* TODO: feat/csm */}
