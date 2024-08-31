@@ -12,6 +12,14 @@ enum StripeSubscriptionPeriod {
   yearly
 }
 
+enum CsmStatus {
+  done
+  new
+  progress
+  review
+  todo
+}
+
 model User {
   id                 String              @id @default(uuid())
   course             Course[]
@@ -26,7 +34,9 @@ model User {
   pictureUrl         String?
   role               String              @default("student")
   stripeSubscription StripeSubscription?
+  csmIssues          CsmAttachment[]
   updatedAt          DateTime            @updatedAt
+  CsmIssue           CsmIssue[]
 }
 
 model Course {
@@ -240,4 +250,41 @@ model AuthFlow {
   isActive  Boolean
   provider  String
   updatedAt DateTime @updatedAt
+}
+
+model CsmCategory {
+  id       String     @id @default(uuid())
+  csmIssue CsmIssue[]
+  name     String     @unique
+}
+
+model CsmAttachment {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  name       String
+  csmIssue   CsmIssue? @relation(fields: [csmIssueId], references: [id])
+  csmIssueId String?
+  updatedAt  DateTime  @updatedAt
+  url        String    @db.Text
+  User       User?     @relation(fields: [userId], references: [id])
+  userId     String?
+
+  @@index([csmIssueId])
+}
+
+model CsmIssue {
+  id          String          @id @default(uuid())
+  attachments CsmAttachment[]
+  category    CsmCategory?    @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  createdAt   DateTime        @default(now())
+  descritpion String
+  name        String
+  status      CsmStatus
+  title       String
+  updatedAt   DateTime        @updatedAt
+  user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+
+  @@index([categoryId])
 }
