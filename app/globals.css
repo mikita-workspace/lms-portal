@@ -92,6 +92,13 @@ body,
   background-color: #f5f5f5 !important;
 }
 
+.ql-container.ql-snow {
+  border: none;
+  max-height: 240px;
+  min-height: 100px;
+  overflow-y: auto;
+}
+
 /* Pretty loader styles */
 @keyframes ldio-n11zyy0r5u {
   0% { background: #6366f1 }

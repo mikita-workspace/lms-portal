@@ -2,6 +2,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { Footer } from '@/components/footer/footer';
+import { db } from '@/lib/db';
 
 import { NavBar } from '../../components/navbar/navbar';
 import { SideBar } from '../../components/sidebar/sidebar';
@@ -18,6 +19,8 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     take: 5,
   });
 
+  const categories = await db.csmCategory.findMany({ orderBy: { name: 'asc' } });
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1">
@@ -29,7 +32,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
         </div>
         <main className="md:pl-64 pt-[80px] h-full">{children}</main>
       </div>
-      <Footer />
+      <Footer categories={categories} />
     </div>
   );
 };

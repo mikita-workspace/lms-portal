@@ -10,6 +10,7 @@ type FileDownloadProps = {
   fileName: string;
   isRemoveButtonDisabled?: boolean;
   onFileRemove?: () => void;
+  showDownloadButton?: boolean;
   url: string;
 };
 
@@ -17,6 +18,7 @@ export const FileDownload = ({
   fileName,
   isRemoveButtonDisabled = false,
   onFileRemove,
+  showDownloadButton = false,
   url,
 }: FileDownloadProps) => {
   const t = useTranslations('file-download');
@@ -33,11 +35,13 @@ export const FileDownload = ({
         </div>
       </div>
       <div className="flex items-center gap-x-2">
-        <Link href={url} target="_blank">
-          <Button variant="outline" title={t('download')}>
-            <Download className="h-4 w-4" />
-          </Button>
-        </Link>
+        {showDownloadButton && (
+          <Link href={url} target="_blank">
+            <Button variant="outline" title={t('download')}>
+              <Download className="h-4 w-4" />
+            </Button>
+          </Link>
+        )}
         {Boolean(onFileRemove) && (
           <Button
             variant="outline"

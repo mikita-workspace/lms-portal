@@ -70,6 +70,28 @@
     "submit": "Add promotion code",
     "title": "Add a new promotion code"
   },
+  "csm-modal": {
+    "attach": "Attach",
+    "attachments": "Attachments",
+    "body": "Provide a detailed description of the bug including steps to reproduce it, expected behavior, and actual behavior. Include any relevant information or observations.",
+    "cancel": "Cancel",
+    "notFound": "No attachments",
+    "selectReason": "Choose a reason",
+    "submit": "Submit",
+    "title": "Bug Report",
+    "categories": {
+      "auth": "Authorization",
+      "data": "Data / Content issue",
+      "error": "Crash / Error issue",
+      "functionality": "Functionality issue",
+      "localization": "Localization / Internalization issue",
+      "other": "Other",
+      "performance": "Performance issue",
+      "security": "Security issue",
+      "usability": "Usability / UX issue",
+      "visual": "Visual / Aesthetic issue"
+    }
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
