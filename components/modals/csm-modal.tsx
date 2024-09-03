@@ -58,6 +58,7 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<{ id: string; url: string; name: string }[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -172,10 +173,12 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
                   {isEditing && (
                     <FileUpload
                       endpoint="csmAttachments"
+                      onBegin={() => setIsUploading(true)}
                       onChange={(files) => {
                         if (files?.length) {
                           setFiles(files.map((file) => ({ id: uuidv4(), ...file })));
                           setIsEditing(false);
+                          setIsUploading(false);
                         }
                       }}
                     />
@@ -184,7 +187,11 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
               )}
             />
             <DialogFooter>
-              <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
+              <Button
+                disabled={!isValid || isSubmitting || isUploading}
+                isLoading={isSubmitting}
+                type="submit"
+              >
                 {t('submit')}
               </Button>
             </DialogFooter>
