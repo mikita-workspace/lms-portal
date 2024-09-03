@@ -24,6 +24,7 @@ model User {
   id                 String              @id @default(uuid())
   course             Course[]
   createdAt          DateTime            @default(now())
+  csmIssue           CsmIssue[]
   email              String              @unique
   isPublic           Boolean?            @default(false)
   name               String?
@@ -34,9 +35,7 @@ model User {
   pictureUrl         String?
   role               String              @default("student")
   stripeSubscription StripeSubscription?
-  csmIssues          CsmAttachment[]
   updatedAt          DateTime            @updatedAt
-  CsmIssue           CsmIssue[]
 }
 
 model Course {
@@ -266,8 +265,6 @@ model CsmAttachment {
   csmIssueId String?
   updatedAt  DateTime  @updatedAt
   url        String    @db.Text
-  user       User?     @relation(fields: [userId], references: [id])
-  userId     String?
 
   @@index([csmIssueId])
 }
@@ -278,7 +275,7 @@ model CsmIssue {
   category    CsmCategory?    @relation(fields: [categoryId], references: [id])
   categoryId  String?
   createdAt   DateTime        @default(now())
-  descritpion String
+  description String
   name        String
   status      CsmStatus       @default(new)
   updatedAt   DateTime        @updatedAt

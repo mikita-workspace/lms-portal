@@ -78,6 +78,7 @@
     "notFound": "No attachments",
     "selectReason": "Choose a reason",
     "submit": "Submit",
+    "success": "The report has been created.",
     "title": "Bug Report",
     "categories": {
       "auth": "Authorization",
@@ -90,6 +91,11 @@
       "security": "Security issue",
       "usability": "Usability / UX issue",
       "visual": "Visual / Aesthetic issue"
+    },
+    "notifications": {
+      "ownerSuccessWithoutUser": "{ user } has created a task. Please pay attention!",
+      "ownerSuccess": "{ user } has created a task. Please pay attention!",
+      "success": "Thanks for your report. We will notify you as soon as the problem is resolved."
     }
   },
   "footer": {

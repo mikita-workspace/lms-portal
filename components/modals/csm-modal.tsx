@@ -20,6 +20,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { getSortedCategories } from '@/lib/csm';
+import { fetcher } from '@/lib/fetcher';
 
 import { Editor } from '../common/editor';
 import { FileDownload } from '../common/file-download';
@@ -59,18 +61,27 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
 
   const { isSubmitting, isValid } = form.formState;
 
+  const sortedCategories = getSortedCategories(categories);
+
   const handleToggleEdit = () => setIsEditing((prev) => !prev);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // await fetcher.patch(`/api/courses/${courseId}`, { body: values });
+      const issue = await fetcher.post('/api/csm/create', {
+        body: { ...values, files },
+        responseType: 'json',
+      });
 
-      // toast({ title: 'Course updated' });
-      // handleToggleEdit();
-
+      toast({ description: t('success'), title: `${issue.issueNumber}`.toUpperCase() });
       router.refresh();
     } catch (error) {
       toast({ isError: true });
+    } finally {
+      setIsEditing(false);
+      setOpen(false);
+      setFiles([]);
+
+      form.reset({ categoryId: '', description: '', files: [] });
     }
   };
 
@@ -96,7 +107,7 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map((category) => (
+                      {sortedCategories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           <div className="flex flex-col">
                             <span className="font-medium">{t(`categories.${category.name}`)}</span>
@@ -126,7 +137,7 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
                 <>
                   <div className="font-medium flex items-center justify-between">
                     {t('attachments')}
-                    <Button onClick={handleToggleEdit} variant="outline" size="sm">
+                    <Button onClick={handleToggleEdit} variant="outline" size="sm" type="button">
                       {isEditing && <>{t('cancel')}</>}
                       {!isEditing && (
                         <>
@@ -172,12 +183,12 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
                 </>
               )}
             />
+            <DialogFooter>
+              <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
+                {t('submit')}
+              </Button>
+            </DialogFooter>
           </form>
-          <DialogFooter>
-            <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-              {t('submit')}
-            </Button>
-          </DialogFooter>
         </Form>
       </DialogContent>
     </Dialog>
