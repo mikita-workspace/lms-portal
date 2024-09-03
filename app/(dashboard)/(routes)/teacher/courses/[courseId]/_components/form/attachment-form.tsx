@@ -85,6 +85,7 @@ export const AttachmentForm = ({ initialData, courseId }: AttachmentProps) => {
                     handleDelete(attachment.id, attachment?.url?.split('/')?.pop() ?? '')
                   }
                   url={attachment.url}
+                  showDownloadButton
                 />
               ))}
             </div>

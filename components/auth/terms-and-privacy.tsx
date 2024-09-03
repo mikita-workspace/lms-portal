@@ -3,19 +3,25 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-import { PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@/constants/common';
-
 export const TermsAndPrivacy = () => {
   const t = useTranslations('footer');
 
   const termsUrl = (
-    <Link target="_blank" className="text-primary hover:underline" href={TERMS_AND_CONDITIONS_URL}>
+    <Link
+      target="_blank"
+      className="text-primary hover:underline"
+      href={process.env.NEXT_PUBLIC_TERMS_AND_CONDITIONS_URL as string}
+    >
       {t('termsAndConditions')}
     </Link>
   );
 
   const privacyUrl = (
-    <Link target="_blank" className="text-primary hover:underline" href={PRIVACY_POLICY_URL}>
+    <Link
+      target="_blank"
+      className="text-primary hover:underline"
+      href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL as string}
+    >
       {t('privacyPolices')}
     </Link>
   );

@@ -80,7 +80,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             <Separator />
             <div className="p-4">
               {attachments.map(({ id, url, name: fileName }) => (
-                <FileDownload key={id} fileName={fileName} url={url} />
+                <FileDownload key={id} fileName={fileName} url={url} showDownloadButton />
               ))}
             </div>
           </>
