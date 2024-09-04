@@ -7,7 +7,7 @@ export const DEFAULT_TIMEZONE = 'Etc/UTC';
 
 export const ALLOWED_CURRENCY = ['USD', 'EUR', 'BYN', 'RUB', 'GBP'];
 
-export const USER_LOCALE_COOKIE = 'user-locale';
+export const USER_LOCALE_COOKIE = 'NEXT_LOCALE';
 export const enum LOCALE {
   BE = 'be',
   EN = 'en',
