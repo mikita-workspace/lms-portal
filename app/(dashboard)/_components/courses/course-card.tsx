@@ -4,6 +4,7 @@ import { Fee } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { IconBadge } from '@/components/common/icon-badge';
@@ -45,7 +46,9 @@ export const CourseCard = async ({
 }: CourseCardProps) => {
   const t = useTranslations('courses.card');
 
-  const href = `/${isPurchased ? 'courses' : 'landing-course'}/${id}`;
+  const path = usePathname();
+
+  const href = `/${isPurchased || path.includes('dashboard') ? 'courses' : 'landing-course'}/${id}`;
 
   return (
     <Link href={href} title={title} className={cn(!isPublished && 'pointer-events-none')}>
