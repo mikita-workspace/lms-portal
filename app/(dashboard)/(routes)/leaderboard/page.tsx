@@ -19,11 +19,7 @@ const LeaderBoard = async () => {
   return (
     <Suspense fallback={<LeaderBoardSkeleton />}>
       <div className="p-6 space-y-4">
-        <LeadersTable
-          hasSubscription={user?.hasSubscription}
-          leaders={leaders}
-          userId={user?.userId}
-        />
+        <LeadersTable leaders={leaders} userId={user?.userId} />
       </div>
     </Suspense>
   );

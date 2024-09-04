@@ -5,7 +5,10 @@ import groupBy from 'lodash.groupby';
 import { CHAPTER_XP } from '@/constants/courses';
 import { db } from '@/lib/db';
 
+import { getUserSubscription } from '../stripe/get-user-subscription';
+
 type Leaders = {
+  hasSubscription?: boolean;
   name: string;
   picture: string | null;
   userId: string;
@@ -23,7 +26,17 @@ export const getLeaders = async () => {
   const userIds = Object.keys(groupedByUser);
   const publishedChapterIds = publishedChapters.map(({ id }) => id);
 
-  const users = await db.user.findMany({ where: { id: { in: userIds }, isPublic: true } });
+  const users = await db.user.findMany({
+    where: { id: { in: userIds }, isPublic: true },
+  });
+
+  const userSubscriptions = await Promise.all(
+    users.map(async (user) => {
+      const userSubscription = await getUserSubscription(user.id);
+
+      return { userId: user.id, hasSubscription: Boolean(userSubscription) };
+    }),
+  );
 
   return Object.entries(groupedByUser)
     .reduce<Leaders[]>((acc, [userId, items]) => {
@@ -33,8 +46,13 @@ export const getLeaders = async () => {
         const xp =
           items.filter((item) => publishedChapterIds.includes(item.chapterId)).length * CHAPTER_XP;
 
+        const hasSubscription = userSubscriptions.find(
+          (sb) => sb.userId === userId,
+        )?.hasSubscription;
+
         if (xp > 0) {
           acc.push({
+            hasSubscription,
             name: userInfo.name || '',
             picture: userInfo.pictureUrl,
             userId,

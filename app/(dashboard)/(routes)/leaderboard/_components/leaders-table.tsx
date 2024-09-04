@@ -20,15 +20,15 @@ import { getFallbackName } from '@/lib/utils';
 type LeadersTableProps = {
   leaders: {
     name: string;
+    hasSubscription?: boolean;
     picture: string | null;
     userId: string;
     xp: number;
   }[];
-  hasSubscription?: boolean;
   userId?: string;
 };
 
-export const LeadersTable = ({ leaders, hasSubscription = false, userId }: LeadersTableProps) => {
+export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
   const t = useTranslations('leaderboard');
 
   const filteredLeaders = leaders.filter((leader) => leader.userId !== userId);
@@ -59,7 +59,7 @@ export const LeadersTable = ({ leaders, hasSubscription = false, userId }: Leade
                 <div className="flex space-x-2 items-center">
                   <p className="text-small font-semibold">{leader.name}</p>
                   {leader.userId === userId && <TextBadge label={t('you')} variant="indigo" />}
-                  {hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
+                  {leader.hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
                 </div>
               </div>
             </TableCell>
