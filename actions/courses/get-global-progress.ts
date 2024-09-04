@@ -23,9 +23,9 @@ export const getGlobalProgress = async (userId?: string) => {
       },
     });
 
-    const publishedChapterIds = purchasedCourses.flatMap((purchase) =>
-      purchase.course.chapters.map((chapter) => chapter.id),
-    );
+    const publishedChapterIds = purchasedCourses
+      .filter(({ course }) => course.isPublished)
+      .flatMap((purchase) => purchase.course.chapters.map((chapter) => chapter.id));
 
     const validCompletedChapters = await db.userProgress.count({
       where: { userId, chapterId: { in: publishedChapterIds }, isCompleted: true },
