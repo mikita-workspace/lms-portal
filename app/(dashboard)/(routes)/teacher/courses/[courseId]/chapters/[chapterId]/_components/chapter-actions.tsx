@@ -33,6 +33,7 @@ export const ChapterActions = ({
     try {
       await fetcher.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/${isPublished ? 'unpublish' : 'publish'}`,
+        { responseType: 'json' },
       );
 
       toast({
