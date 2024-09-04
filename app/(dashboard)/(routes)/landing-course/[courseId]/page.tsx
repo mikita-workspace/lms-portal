@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
+import { ContinueButton } from './_components/continue-button';
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
 
@@ -37,10 +38,6 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   const purchase = await db.purchase.findUnique({
     where: { userId_courseId: { userId: user?.userId ?? '', courseId: params.courseId } },
   });
-
-  if (purchase) {
-    redirect(`/courses/${params.courseId}`);
-  }
 
   const course = await db.course.findUnique({
     where: { id: params.courseId },
@@ -103,12 +100,17 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             </div>
             <div className="w-full">
               {user?.userId ? (
-                <CourseEnrollButton
-                  courseId={params.courseId}
-                  customRates={course.customRates}
-                  price={course.price}
-                  variant="outline"
-                />
+                <>
+                  {!purchase && (
+                    <CourseEnrollButton
+                      courseId={params.courseId}
+                      customRates={course.customRates}
+                      price={course.price}
+                      variant="outline"
+                    />
+                  )}
+                  {purchase && <ContinueButton redirectUrl={`/courses/${params.courseId}`} />}
+                </>
               ) : (
                 <AuthModal>
                   <Button className="w-full" variant="outline">
