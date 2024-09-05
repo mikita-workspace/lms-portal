@@ -52,6 +52,7 @@ export const ourFileRouter = {
       maxFileSize: '4MB',
       maxFileCount: 4,
     },
+    video: { maxFileSize: '512MB', maxFileCount: 1 },
   }).onUploadComplete(() => {}),
 } satisfies FileRouter;
 
