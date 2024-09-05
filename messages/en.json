@@ -286,13 +286,20 @@
     "searchFor": "Search for a course..."
   },
   "subscription": {
-    "bannerBody": "Unlock premium courses, get access to Nova AI, and more.",
-    "bannerTitle": "Upgrade to Nova Plus",
+    "bannerBody": "Unlock premium courses, get access to Nova\u00a0AI, and more.",
+    "bannerTitle": "Upgrade to Nova\u00a0Plus",
+    "benefits": {
+      "cancel-anytime": "Cancel anytime",
+      "get-access-nova-ai": "Get access to Nova AI",
+      "unlock-premium-courses": "Unlock premium courses"
+    },
     "bestChoice": "The best choice!",
     "loginToContinue": "Login to continue",
     "mo": "/mo",
+    "monthly": "Monthly",
     "redirect": "You will be redirected to the checkout page.",
-    "upgrade": "Upgrade"
+    "upgrade": "Upgrade",
+    "yearly": "Yearly"
   },
   "toast": {
     "error": {
@@ -385,5 +392,10 @@
       },
       "title": "Billing & Subscription"
     }
+  },
+  "file-upload": {
+    "dragAndDrop": "Choose files or drag and drop",
+    "upload": "Upload",
+    "uploading": "Uploading..."
   }
 }

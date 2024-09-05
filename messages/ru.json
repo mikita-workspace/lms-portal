@@ -287,11 +287,18 @@
   "subscription": {
     "bannerBody": "Разблокируйте премиум-курсы, получите доступ к Nova\u00a0AI и многое другое.",
     "bannerTitle": "Обновитесь до Nova\u00a0Plus",
+    "benefits": {
+      "cancel-anytime": "Отмените в любое время",
+      "get-access-nova-ai": "Получите доступ к Nova AI",
+      "unlock-premium-courses": "Разблокируйте премиум курсы"
+    },
     "bestChoice": "Лучший выбор!",
     "loginToContinue": "Войдите, чтобы продолжить",
     "mo": "/мес",
+    "monthly": "Ежемесячно",
     "redirect": "Вы будете перенаправлены на страницу оформления заказа.",
-    "upgrade": "Обновить"
+    "upgrade": "Обновить",
+    "yearly": "Ежегодно"
   },
   "toast": {
     "error": {
@@ -384,5 +391,10 @@
       },
       "title": "Оплата и подписка"
     }
+  },
+  "file-upload": {
+    "dragAndDrop": "Выберите файлы или перетащите их",
+    "upload": "Загрузить",
+    "uploading": "Загрузка..."
   }
 }

@@ -17,7 +17,6 @@ import { useToast } from '@/components/ui/use-toast';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
-import { capitalize } from '@/lib/utils';
 
 import { Price } from '../common/price';
 import { TextBadge } from '../common/text-badge';
@@ -91,14 +90,23 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
     }
   };
 
+  const renderBenefits = (benefits: string[] = []) => (
+    <ul className="pt-2 space-y-3 text-sm leading-6">
+      {benefits.map((benefit) => (
+        <li key={benefit} className="flex gap-x-3 text-sm items-center">
+          <CheckCircle className="h-4 w-4" />
+          {t(`benefits.${benefit}`)}
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleUpgrade}>
           <DialogHeader>
-            <DialogTitle className="text-center text-lg font-semibold">
-              {capitalize(currentTab)}
-            </DialogTitle>
+            <DialogTitle className="text-center text-lg font-semibold">{t(currentTab)}</DialogTitle>
             <div className="flex items-baseline justify-center pt-4">
               <p className="text-center text-3xl lg:text-4xl font-semibold tracking-tight">
                 <Price price={unitPrice ?? 0} />
@@ -114,10 +122,10 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
           >
             <TabsList className="w-full">
               <TabsTrigger className="w-full" value={StripeSubscriptionPeriod.yearly}>
-                {capitalize(yearly?.period ?? '')}
+                {t(yearly?.period)}
               </TabsTrigger>
               <TabsTrigger className="w-full" value={StripeSubscriptionPeriod.monthly}>
-                {capitalize(monthly?.period ?? '')}
+                {t(monthly?.period)}
               </TabsTrigger>
             </TabsList>
             {currentTab === StripeSubscriptionPeriod.yearly && (
@@ -126,24 +134,10 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
               </div>
             )}
             <TabsContent value={StripeSubscriptionPeriod.yearly} className="pt-4">
-              <ul className="pt-2 space-y-3 text-sm leading-6">
-                {yearly?.points.map((point) => (
-                  <li key={point} className="flex gap-x-3 text-sm items-center">
-                    <CheckCircle className="h-4 w-4" />
-                    {point}
-                  </li>
-                ))}
-              </ul>
+              {renderBenefits(yearly?.points)}
             </TabsContent>
             <TabsContent value={StripeSubscriptionPeriod.monthly} className="pt-4">
-              <ul className="pt-2 space-y-3 text-sm leading-6">
-                {monthly?.points.map((point) => (
-                  <li key={point} className="flex gap-x-3 text-sm items-center">
-                    <CheckCircle className="h-4 w-4" />
-                    {point}
-                  </li>
-                ))}
-              </ul>
+              {renderBenefits(monthly?.points)}
             </TabsContent>
           </Tabs>
           <DialogFooter className="mt-6">
