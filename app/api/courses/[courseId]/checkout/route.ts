@@ -77,7 +77,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       },
       line_items: lineItems,
       mode: 'payment',
-      success_url: absoluteUrl(`/courses/${course.id}?success=true`),
+      success_url: absoluteUrl(`/landing-course/${course.id}?success=true`),
       metadata: {
         ...details,
         courseId: course.id,
