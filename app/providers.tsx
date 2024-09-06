@@ -10,7 +10,6 @@ import { Toaster as ToastProvider } from '@/components/ui/toaster';
 import { useAppConfig } from '@/hooks/use-app-config';
 import { useConfettiStore } from '@/hooks/use-confetti-store';
 import { ExchangeRates } from '@/hooks/use-locale-store';
-import { useSetDateLocale } from '@/hooks/use-set-date-locale';
 import { useUserLocation } from '@/hooks/use-user-location';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -55,7 +54,6 @@ export const Providers = ({
   timeZone,
 }: ProvidersProps) => {
   useAppConfig(appConfig);
-  useSetDateLocale(locale);
   useUserLocation(exchangeRates);
 
   return (

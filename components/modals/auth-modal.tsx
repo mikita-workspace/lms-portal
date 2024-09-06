@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -13,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -109,13 +109,11 @@ export const AuthModal = ({ children, ignore = false }: AuthModalProps) => {
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[445px] p-9">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-[600]">
-            {t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}
+        <DialogHeader className="mb-2">
+          <DialogTitle className="text-lg font-[600] flex gap-x-2 items-center justify-center sm:justify-start">
+            <Image src="/assets/logo.svg" alt={`${t('novaId')} Logo`} height={25} width={25} />
+            <p>{t('novaId')}</p>
           </DialogTitle>
-          <DialogDescription className="text-base">
-            {t('toContinue', { appName })}
-          </DialogDescription>
         </DialogHeader>
         {isCredentialsProvider && (
           <>

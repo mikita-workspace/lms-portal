@@ -1,10 +1,13 @@
 'use client';
 
+import { setDefaultOptions } from 'date-fns';
+import { be, enUS, ru } from 'date-fns/locale';
 import { Languages } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { changeLocale } from '@/actions/locale/change-locale';
-import { SUPPORTED_LOCALES } from '@/constants/locale';
+import { LOCALE, SUPPORTED_LOCALES } from '@/constants/locale';
 
 import {
   DropdownMenuItem,
@@ -24,9 +27,24 @@ export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
   const t = useTranslations('switcher');
 
   const locale = useLocale();
+  const router = useRouter();
 
   const handleLanguage = async (lang: string) => {
     await changeLocale(lang);
+
+    switch (lang) {
+      case LOCALE.RU:
+        setDefaultOptions({ locale: ru });
+        break;
+      case LOCALE.BE:
+        setDefaultOptions({ locale: be });
+        break;
+      default:
+        setDefaultOptions({ locale: enUS });
+        break;
+    }
+
+    router.refresh();
   };
 
   const DropDown = () => (
