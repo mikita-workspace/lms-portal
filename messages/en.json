@@ -134,7 +134,7 @@
   "notFoundPage": {
     "body": "We could not find the page you were looking for.",
     "goBackHome": "Go back home",
-    "title": "401"
+    "title": "404"
   },
   "profileButton": {
     "admin": "Admin",
