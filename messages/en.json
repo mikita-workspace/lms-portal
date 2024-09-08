@@ -16,12 +16,12 @@
     "continueWith": "Continue with { provider }",
     "doNotHaveAnAccount": "Do not have an account?",
     "email": "Email",
-    "novaId": "Nova\u00a0ID",
     "password": "Password",
-    "required": "This field is required.",
     "signIn": "Sign in",
     "signUp": "Sign up",
+    "toContinue": "to continue to { appName }",
     "username": "Username",
+    "required": "This field is required.",
     "errors": {
       "email": "Must have at least 8 character.",
       "emailExist": "Email already exist",
@@ -134,7 +134,7 @@
   "notFoundPage": {
     "body": "We could not find the page you were looking for.",
     "goBackHome": "Go back home",
-    "title": "404"
+    "title": "401"
   },
   "profileButton": {
     "admin": "Admin",

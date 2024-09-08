@@ -16,12 +16,12 @@
     "continueWith": "Продолжить с { provider }",
     "doNotHaveAnAccount": "Нет аккаунта?",
     "email": "Email",
-    "novaId": "Nova\u00a0ID",
     "password": "Пароль",
-    "required": "Это поле обязательно для заполнения.",
     "signIn": "Войти",
     "signUp": "Зарегистрироваться",
+    "toContinue": "чтобы продолжить в { appName }",
     "username": "Имя пользователя",
+    "required": "Это поле обязательно для заполнения.",
     "errors": {
       "email": "Должен содержать не менее 8-х символов.",
       "emailExist": "Email уже существует",
@@ -133,7 +133,7 @@
   "notFoundPage": {
     "body": "Мы не смогли найти страницу, которую вы искали.",
     "goBackHome": "Вернуться на главную",
-    "title": "404"
+    "title": "401"
   },
   "profileButton": {
     "admin": "Админ",
