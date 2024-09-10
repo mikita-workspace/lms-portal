@@ -45,7 +45,7 @@ export const SubscriptionBanner = () => {
   return (
     <>
       <SubscriptionModal description={subscriptionDescription} open={open} setOpen={setOpen} />
-      <div className="border rounded-sm flex flex-col p-4 gap-y-2">
+      <div className="border rounded-lg flex flex-col p-4 gap-y-2">
         <h2 className="font-semibold tracking-tight text-base">{t('bannerTitle')}</h2>
         <p className="text-muted-foreground text-sm mb-2">{t('bannerBody')}</p>
         <Button
