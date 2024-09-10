@@ -15,9 +15,9 @@ export const getGlobalProgress = async (userId?: string) => {
       },
       select: {
         course: {
-          include: {
-            category: true,
+          select: {
             chapters: { where: { isPublished: true }, select: { id: true } },
+            isPublished: true,
           },
         },
       },

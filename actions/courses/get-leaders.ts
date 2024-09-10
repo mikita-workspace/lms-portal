@@ -19,12 +19,19 @@ export const getLeaders = async () => {
   const userProgress = await db.userProgress.findMany();
   const publishedChapters = await db.chapter.findMany({
     where: { isPublished: true },
-    select: { id: true },
+    select: {
+      id: true,
+      course: {
+        select: { isPublished: true },
+      },
+    },
   });
 
   const groupedByUser = groupBy(userProgress, 'userId');
   const userIds = Object.keys(groupedByUser);
-  const publishedChapterIds = publishedChapters.map(({ id }) => id);
+  const publishedChapterIds = publishedChapters
+    .filter(({ course }) => course.isPublished)
+    .map(({ id }) => id);
 
   const users = await db.user.findMany({
     where: { id: { in: userIds }, isPublic: true },
