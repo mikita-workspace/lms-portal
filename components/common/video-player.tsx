@@ -22,10 +22,11 @@ export const VideoPlayer = ({
 
   const isGoogleDrivePlayer = videoUrl.includes('drive.google.com');
   const isYoutubePlayer = videoUrl.includes('youtube.com');
+  const isVKPlayer = videoUrl.includes('vk.com');
 
   const url = new URL(videoUrl);
 
-  if (isGoogleDrivePlayer || isYoutubePlayer) {
+  if (isGoogleDrivePlayer || isYoutubePlayer || isVKPlayer) {
     if (autoPlay && !isGoogleDrivePlayer) {
       url.searchParams.append('autoplay', '1');
     }
