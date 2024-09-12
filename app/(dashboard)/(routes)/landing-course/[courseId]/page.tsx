@@ -37,6 +37,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
 
   const purchase = await db.purchase.findUnique({
     where: { userId_courseId: { userId: user?.userId ?? '', courseId: params.courseId } },
+    select: { id: true },
   });
 
   const course = await db.course.findUnique({
@@ -54,6 +55,8 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   if (!course || (course?.isPremium && !user?.hasSubscription)) {
     redirect('/');
   }
+
+  const hasPurchase = Boolean(purchase?.id);
 
   return (
     <div className="p-6">
@@ -81,6 +84,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             customTags={course.customTags}
             description={course.description!}
             fees={fees}
+            hasPurchase={hasPurchase}
             price={course.price}
             title={course.title}
           />
@@ -101,7 +105,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             <div className="w-full">
               {user?.userId ? (
                 <>
-                  {!purchase && (
+                  {!hasPurchase && (
                     <CourseEnrollButton
                       courseId={params.courseId}
                       customRates={course.customRates}
@@ -109,7 +113,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
                       variant="outline"
                     />
                   )}
-                  {purchase && <ContinueButton redirectUrl={`/courses/${params.courseId}`} />}
+                  {hasPurchase && <ContinueButton redirectUrl={`/courses/${params.courseId}`} />}
                 </>
               ) : (
                 <AuthModal>

@@ -15,6 +15,7 @@ type PreviewDescriptionProps = {
   customTags?: string[];
   description: string;
   fees?: Fee[];
+  hasPurchase?: boolean;
   price: number | null;
   title: string;
 };
@@ -26,6 +27,7 @@ export const PreviewDescription = ({
   customTags,
   description,
   fees,
+  hasPurchase,
   price,
   title,
 }: PreviewDescriptionProps) => {
@@ -51,9 +53,11 @@ export const PreviewDescription = ({
           ))}
         </div>
       )}
-      <div className="mt-4">
-        <Price customRates={customRates} price={price} fees={fees} showFeesAccordion />
-      </div>
+      {!hasPurchase && (
+        <div className="mt-4">
+          <Price customRates={customRates} price={price} fees={fees} showFeesAccordion />
+        </div>
+      )}
     </div>
   );
 };
