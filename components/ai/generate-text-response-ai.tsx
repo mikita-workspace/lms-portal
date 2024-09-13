@@ -1,18 +1,21 @@
 'use client';
 
-import { StopCircle } from 'lucide-react';
+import { Languages, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 
 import { useToast } from '@/components/ui/use-toast';
-import { SYSTEM_COURSE_PROMPT } from '@/constants/ai';
+import { SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetcher } from '@/lib/fetcher';
+
+import { Button } from '../ui';
 
 type GenerateTextResponseAiProps = {
   callback: Dispatch<SetStateAction<string>>;
   isSubmitting?: boolean;
+  isTranslateButton?: boolean;
   isValid?: boolean;
   messages: { role: string; content: string }[];
 };
@@ -20,6 +23,7 @@ type GenerateTextResponseAiProps = {
 export const GenerateTextResponseAi = ({
   callback,
   isSubmitting,
+  isTranslateButton,
   isValid,
   messages,
 }: GenerateTextResponseAiProps) => {
@@ -30,6 +34,7 @@ export const GenerateTextResponseAi = ({
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [isImproving, setIsImproving] = useState(false);
+  const [alreadyTranslated, setAlreadyTranslated] = useState(false);
 
   const handleGenerate = async () => {
     try {
@@ -43,7 +48,7 @@ export const GenerateTextResponseAi = ({
           messages,
           system: {
             role: ChatCompletionRole.SYSTEM,
-            content: SYSTEM_COURSE_PROMPT,
+            content: isTranslateButton ? SYSTEM_TRANSLATE_PROMPT : SYSTEM_COURSE_PROMPT,
           },
           model: DEFAULT_MODEL,
         },
@@ -82,6 +87,7 @@ export const GenerateTextResponseAi = ({
       }
     } finally {
       setIsImproving(false);
+      setAlreadyTranslated(true);
     }
   };
 
@@ -90,6 +96,25 @@ export const GenerateTextResponseAi = ({
       abortControllerRef.current.abort();
     }
   };
+
+  const handleReturnOriginalText = () => {
+    callback('');
+    setAlreadyTranslated(false);
+  };
+
+  if (isTranslateButton) {
+    return (
+      <Button
+        size="sm"
+        variant="secondary"
+        disabled={isImproving}
+        onClick={alreadyTranslated ? handleReturnOriginalText : handleGenerate}
+      >
+        <Languages className="mr-2 h-4 w-4" />
+        {t(alreadyTranslated ? 'original' : 'translate')}
+      </Button>
+    );
+  }
 
   return (
     <button

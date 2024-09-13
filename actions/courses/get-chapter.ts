@@ -50,7 +50,16 @@ export const getChapter = async ({ chapterId, courseId, userId }: GetChapter) =>
       },
     });
 
-    return { attachments, chapter, course, muxData, userProgress, purchase, nextChapter };
+    return {
+      attachments,
+      chapter,
+      course,
+      language: course?.language,
+      muxData,
+      nextChapter,
+      purchase,
+      userProgress,
+    };
   } catch (error) {
     console.error('[GET_CHAPTER_ACTION]', error);
 
@@ -58,6 +67,7 @@ export const getChapter = async ({ chapterId, courseId, userId }: GetChapter) =>
       attachments: [],
       chapter: null,
       course: null,
+      language: null,
       muxData: null,
       nextChapter: null,
       purchase: null,

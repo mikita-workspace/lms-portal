@@ -11,6 +11,11 @@
       "title": "Welcome bonus"
     }
   },
+  "error-modal": {
+    "body": "Something went wrong. Please restart the page.",
+    "reload": "Reload",
+    "title": "Oops"
+  },
   "auth-modal": {
     "alreadyHaveAnAccount": "Already have an account?",
     "continueWith": "Continue with { provider }",
@@ -258,12 +263,14 @@
     "input": {
       "ask": "Ask",
       "enterMessage": "Enter your message...",
-      "footer": "AI Chat can make mistakes. Consider checking important information."
+      "footer": "Nova AI Chat can make mistakes. Consider checking important information."
     }
   },
   "ai-generate": {
     "improve": "Improve",
-    "stop": "Stop"
+    "original": "Return the original",
+    "stop": "Stop",
+    "translate": "Translate with Nova AI"
   },
   "cookie-consent": {
     "accept": "Accept",

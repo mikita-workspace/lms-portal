@@ -185,6 +185,7 @@ export const getAnalytics = async (userId: string) => {
     return {
       activePayouts,
       chart,
+      isError: false,
       map,
       stripeConnect,
       stripeConnectPayouts,
@@ -198,6 +199,7 @@ export const getAnalytics = async (userId: string) => {
     return {
       activePayouts: [] as PayoutRequest[],
       chart: [],
+      isError: true,
       map: [],
       stripeConnect: null,
       stripeConnectPayouts: [] as StripeConnectPayouts,

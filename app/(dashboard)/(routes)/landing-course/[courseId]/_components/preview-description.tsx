@@ -2,11 +2,16 @@
 
 import { Fee } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { useState } from 'react';
 
+import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
+import { USER_TRANSLATE } from '@/constants/ai';
+import { ChatCompletionRole } from '@/constants/open-ai';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
   categories: string[];
@@ -16,6 +21,7 @@ type PreviewDescriptionProps = {
   description: string;
   fees?: Fee[];
   hasPurchase?: boolean;
+  language: string | null;
   price: number | null;
   title: string;
 };
@@ -28,19 +34,46 @@ export const PreviewDescription = ({
   description,
   fees,
   hasPurchase,
+  language,
   price,
   title,
 }: PreviewDescriptionProps) => {
   const t = useTranslations('courses.landing.preview');
 
+  const currentLocale = useLocale();
+
+  const { user } = useCurrentUser();
+
+  const [translatedDescription, setTranslatedDescription] = useState('');
+
+  const showTranslateButton = Boolean(
+    language && language !== currentLocale && user?.hasSubscription,
+  );
+
   return (
     <div className="border rounded-lg p-6">
-      <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
-        <IconBadge size="sm" icon={BookOpen} />
-        <span className="text-xs">{t('chapter', { amount: chaptersLength })}</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
+          <IconBadge size="sm" icon={BookOpen} />
+          <span className="text-xs">{t('chapter', { amount: chaptersLength })}</span>
+        </div>
+        {showTranslateButton && (
+          <div className="my-2">
+            <GenerateTextResponseAi
+              isTranslateButton
+              callback={setTranslatedDescription}
+              messages={[
+                {
+                  role: ChatCompletionRole.USER,
+                  content: USER_TRANSLATE(description, currentLocale),
+                },
+              ]}
+            />
+          </div>
+        )}
       </div>
       <h3 className="font-semibold text-lg md:text-2xl mb-2 capitalize">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-4">{description}</p>
+      <p className="text-sm text-muted-foreground mb-4">{translatedDescription || description}</p>
       {Boolean(customTags?.length) && (
         <div className="flex gap-2 items-center mb-2 flex-wrap">
           {customTags?.map((tag) => <TextBadge key={tag} label={tag} variant="yellow" />)}

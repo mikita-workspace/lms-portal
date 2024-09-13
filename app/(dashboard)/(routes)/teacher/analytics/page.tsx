@@ -1,6 +1,7 @@
 import { getAnalytics } from '@/actions/analytics/get-analytics';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { Banner } from '@/components/common/banner';
+import { ErrorModal } from '@/components/modals/error-modal';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
@@ -15,6 +16,7 @@ const AnalyticsPage = async () => {
   const {
     activePayouts,
     chart,
+    isError,
     map: mapData,
     stripeConnect,
     stripeConnectPayouts,
@@ -27,6 +29,7 @@ const AnalyticsPage = async () => {
 
   return (
     <>
+      {isError && <ErrorModal />}
       {hasActivePayouts && (
         <Banner
           label={`You have a pending payment request for ${formatPrice(

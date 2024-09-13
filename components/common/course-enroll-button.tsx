@@ -69,7 +69,7 @@ export const CourseEnrollButton = ({
 
   return (
     <Button
-      className="w-full"
+      className="w-full truncate"
       disabled={isFetching || isLoading}
       onClick={handleClick}
       size="lg"

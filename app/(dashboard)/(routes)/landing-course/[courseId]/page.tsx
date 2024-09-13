@@ -85,6 +85,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
             description={course.description!}
             fees={fees}
             hasPurchase={hasPurchase}
+            language={course.language}
             price={course.price}
             title={course.title}
           />
@@ -117,7 +118,7 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
                 </>
               ) : (
                 <AuthModal>
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full truncate" variant="outline">
                     {t('loginToContinue')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>

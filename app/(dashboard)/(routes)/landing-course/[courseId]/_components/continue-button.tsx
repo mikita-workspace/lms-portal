@@ -16,7 +16,7 @@ export const ContinueButton = ({ redirectUrl }: ContinueButtonProps) => {
   const router = useRouter();
 
   return (
-    <Button className="w-full" onClick={() => router.push(redirectUrl)} variant="outline">
+    <Button className="w-full truncate" onClick={() => router.push(redirectUrl)} variant="outline">
       {t('continue')}
       <ArrowRight className="w-4 h-4 ml-2" />
     </Button>

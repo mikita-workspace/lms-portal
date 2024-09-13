@@ -21,7 +21,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
 
   const user = await getCurrentUser();
 
-  const { chapter, course, muxData, attachments, nextChapter, userProgress, purchase } =
+  const { chapter, course, language, muxData, attachments, nextChapter, userProgress, purchase } =
     await getChapter({
       chapterId: params.chapterId,
       courseId: params.courseId,
@@ -72,7 +72,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         {!isLocked && chapter.description && (
           <>
             <Separator />
-            <Preview value={chapter.description} />
+            <Preview enableTranslate language={language} value={chapter.description} />
           </>
         )}
         {Boolean(attachments.length) && (
