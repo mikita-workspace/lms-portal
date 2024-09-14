@@ -16,5 +16,5 @@ export enum LOCALE {
 export const SUPPORTED_LOCALES = [
   { key: LOCALE.EN, title: 'English' },
   { key: LOCALE.RU, title: 'Русский' },
-  // { key: LOCALE.BE, title: 'Беларускі' },
+  { key: LOCALE.BE, title: 'Беларускі' },
 ];
