@@ -22,7 +22,7 @@ type ChatProps = {
 export const Chat = ({ initialData }: ChatProps) => {
   const { toast } = useToast();
 
-  const { currentModel, messages, removeMessages, setMessages } = useChatStore();
+  const { currentModel, messages, setMessages } = useChatStore();
 
   const [isMounted, setIsMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,8 +33,6 @@ export const Chat = ({ initialData }: ChatProps) => {
 
   useEffect(() => {
     setIsMounted(true);
-
-    return () => removeMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
