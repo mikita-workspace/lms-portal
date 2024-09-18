@@ -98,14 +98,23 @@ export const POST = async (req: NextRequest) => {
   if (event.type === 'customer.subscription.updated') {
     const subscription: Stripe.Subscription = event.data.object;
 
-    const response = await db.stripeSubscription.update({
+    const isSubscriptionExist = await db.stripeSubscription.findUnique({
       where: { stripeSubscriptionId: subscription.id },
-      data: {
-        cancelAt: subscription.cancel_at ? fromUnixTime(subscription.cancel_at) : null,
-      },
+      select: { id: true },
     });
 
-    return new NextResponse(JSON.stringify(response));
+    if (isSubscriptionExist) {
+      const response = await db.stripeSubscription.update({
+        where: { stripeSubscriptionId: subscription.id },
+        data: {
+          cancelAt: subscription.cancel_at ? fromUnixTime(subscription.cancel_at) : null,
+        },
+      });
+
+      return new NextResponse(JSON.stringify(response));
+    }
+
+    return new NextResponse(null);
   }
 
   if (event.type === 'customer.subscription.deleted') {
