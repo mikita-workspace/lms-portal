@@ -47,6 +47,7 @@ const Content = ({ children }: ContentProps) => {
 type ChatBodyProps = {
   assistantMessage?: string;
   introMessages: string[];
+  isSubmitting?: boolean;
   onSubmit: (
     event: SyntheticEvent,
     options?: {
@@ -55,7 +56,12 @@ type ChatBodyProps = {
   ) => void;
 };
 
-export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBodyProps) => {
+export const ChatBody = ({
+  assistantMessage,
+  introMessages,
+  isSubmitting,
+  onSubmit,
+}: ChatBodyProps) => {
   const t = useTranslations('chat.body');
 
   const { user } = useCurrentUser();
@@ -102,6 +108,7 @@ export const ChatBody = ({ assistantMessage, introMessages, onSubmit }: ChatBody
               {assistantMessage && (
                 <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
                   <ChatBubble
+                    isSubmitting={isSubmitting}
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
                     name="Chat GPT"
                     streamMessage={assistantMessage}

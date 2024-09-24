@@ -149,9 +149,10 @@ export const Chat = ({ initialData }: ChatProps) => {
             setAssistantMessage={setAssistantMessage}
           />
           <ChatBody
-            introMessages={initialData.introMessages}
-            onSubmit={handleSubmit}
             assistantMessage={assistantMessage}
+            introMessages={initialData.introMessages}
+            isSubmitting={isSubmitting}
+            onSubmit={handleSubmit}
           />
           <ChatInput
             currenMessage={currentMessage}

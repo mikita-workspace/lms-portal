@@ -7,13 +7,20 @@ import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
+  isSubmitting?: boolean;
   message: { role: string; content: string };
   name: string;
   picture?: string | null;
   streamMessage?: string;
 };
 
-export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubbleProps) => {
+export const ChatBubble = ({
+  isSubmitting,
+  message,
+  name,
+  picture,
+  streamMessage,
+}: ChatBubbleProps) => {
   const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
   const text = streamMessage ?? message.content;
 
@@ -32,7 +39,7 @@ export const ChatBubble = ({ message, name, picture, streamMessage }: ChatBubble
             <span className="text-medium font-bold">{name}</span>
           </div>
           <MarkdownText text={text} />
-          {isAssistant && <CopyClipboard className="mt-4" textToCopy={text} />}
+          {isAssistant && !isSubmitting && <CopyClipboard className="mt-4" textToCopy={text} />}
         </div>
       </div>
     </div>
