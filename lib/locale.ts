@@ -1,9 +1,11 @@
 import { LOCALE } from '@/constants/locale';
 
-export const getLocale = (locale?: string | null) => {
+export const getLocale = (locale?: string | null, restrictedLocales: string[] = []) => {
   if (!locale) {
     return LOCALE.EN;
   }
 
-  return (Object.values(LOCALE) as string[]).includes(locale) ? locale : LOCALE.EN;
+  const availableLocale = (Object.values(LOCALE) as string[]).includes(locale) ? locale : LOCALE.EN;
+
+  return restrictedLocales.includes(availableLocale) ? LOCALE.EN : availableLocale;
 };

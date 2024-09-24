@@ -1,12 +1,12 @@
 import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getLocale as getAppLocale, getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { LOCALE } from '@/constants/locale';
 import { db } from '@/lib/db';
+import { getLocale } from '@/lib/locale';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
@@ -38,7 +38,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse(t('errors.alreadyPurchased'), { status: StatusCodes.BAD_REQUEST });
     }
 
-    const appLocale = (await getLocale()) as Stripe.Checkout.Session['locale'];
+    const appLocale = await getAppLocale();
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
@@ -78,7 +78,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       invoice_creation: {
         enabled: true,
       },
-      locale: appLocale ?? LOCALE.EN,
+      locale: getLocale(appLocale, ['be']) as Stripe.Checkout.Session.Locale,
       line_items: lineItems,
       mode: 'payment',
       success_url: absoluteUrl(`/landing-course/${course.id}?success=true`),
