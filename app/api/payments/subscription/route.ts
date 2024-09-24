@@ -1,8 +1,12 @@
+import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getLocale } from 'next-intl/server';
+import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { TEN_MINUTE_SEC } from '@/constants/common';
+import { LOCALE } from '@/constants/locale';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { absoluteUrl } from '@/lib/utils';
@@ -54,6 +58,8 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ url: stripeSession.url });
     }
 
+    const appLocale = (await getLocale()) as Stripe.Checkout.Session['locale'];
+
     let stripeCustomer = await db.stripeCustomer.findUnique({
       where: { userId: user?.userId },
       select: { stripeCustomerId: true },
@@ -71,9 +77,12 @@ export const POST = async (req: NextRequest) => {
     }
 
     const stripeSession = await stripe.checkout.sessions.create({
+      allow_promotion_codes: true,
+      customer: stripeCustomer.stripeCustomerId,
+      expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
       mode: 'subscription',
       payment_method_types: ['card'],
-      customer: stripeCustomer.stripeCustomerId,
+      locale: appLocale ?? LOCALE.EN,
       line_items: [
         {
           quantity: 1,
