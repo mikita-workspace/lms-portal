@@ -21,7 +21,7 @@ export const CoursesList = ({ fees, items }: CoursesListProps) => {
         {items.map((item) => (
           <CourseCard
             category={item?.category?.name}
-            chaptersLength={item.chapters.length}
+            chaptersLength={item._count.chapters}
             customRates={item.customRates}
             fees={fees}
             id={item.id}
@@ -29,7 +29,7 @@ export const CoursesList = ({ fees, items }: CoursesListProps) => {
             imageUrl={item.imageUrl}
             isPremium={item?.isPremium}
             isPublished={item.isPublished}
-            isPurchased={Boolean(item?.purchases?.length)}
+            isPurchased={Boolean(item?._count?.purchases)}
             key={item.id}
             price={item.price}
             progress={item.progress}

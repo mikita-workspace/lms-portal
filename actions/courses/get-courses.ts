@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Course, Purchase } from '@prisma/client';
+import { Category, Course } from '@prisma/client';
 
 import { db } from '@/lib/db';
 import { getImagePlaceHolder } from '@/lib/image';
@@ -8,12 +8,11 @@ import { getImagePlaceHolder } from '@/lib/image';
 import { getProgress } from './get-progress';
 
 type CourseWithProgressWithCategory = Course & {
+  _count: { chapters: number; purchases?: number };
   category: Category | null;
-  chapters: { id: string }[];
   imagePlaceholder: string;
   price: number | null;
   progress: number | null;
-  purchases?: Purchase[];
 };
 
 type GetCourses = {
@@ -32,9 +31,13 @@ export const getCourses = async ({ categoryId, hasSubscription, title, userId }:
       title: { contains: title, mode: 'insensitive' },
     },
     include: {
-      ...(userId && { purchases: { where: { userId } } }),
+      _count: {
+        select: {
+          ...(userId && { purchases: { where: { userId } } }),
+          chapters: { where: { isPublished: true } },
+        },
+      },
       category: true,
-      chapters: { where: { isPublished: true }, select: { id: true } },
     },
     orderBy: [{ isPremium: 'desc' }, { createdAt: 'desc' }],
   });
@@ -43,7 +46,7 @@ export const getCourses = async ({ categoryId, hasSubscription, title, userId }:
     courses.map(async (course) => {
       const imagePlaceholder = await getImagePlaceHolder(course.imageUrl!);
 
-      if (!course?.purchases?.length || !userId) {
+      if (!course?._count.purchases || !userId) {
         return {
           ...course,
           imagePlaceholder: imagePlaceholder.base64,

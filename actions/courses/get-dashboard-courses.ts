@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Chapter, Course, Purchase } from '@prisma/client';
+import { Category, Course } from '@prisma/client';
 
 import { FilterStatus } from '@/constants/courses';
 import { db } from '@/lib/db';
@@ -9,12 +9,11 @@ import { getImagePlaceHolder } from '@/lib/image';
 import { getProgress } from './get-progress';
 
 type CourseWithProgressAndCategory = Course & {
+  _count: { chapters: number };
   category: Category;
-  chapters: Chapter[];
   imagePlaceholder: string;
   price: number | null;
   progress: number | null;
-  purchases?: Purchase[];
 };
 
 export const getDashboardCourses = async (userId: string, filter: string | null) => {
@@ -22,7 +21,10 @@ export const getDashboardCourses = async (userId: string, filter: string | null)
     where: { userId },
     select: {
       course: {
-        include: { category: true, chapters: { where: { isPublished: true } } },
+        include: {
+          _count: { select: { chapters: { where: { isPublished: true } } } },
+          category: true,
+        },
       },
     },
   });
