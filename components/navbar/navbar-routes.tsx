@@ -43,7 +43,6 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
 
   return (
     <>
-      <Chat />
       {isSearchPage && (
         <Suspense>
           <div className="hidden md:block">
@@ -80,6 +79,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
               <Notifications userNotifications={userNotifications} />
             </>
           )}
+          {user?.hasSubscription && <Chat />}
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
