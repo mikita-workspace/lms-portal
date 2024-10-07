@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { absoluteUrl, cn } from '@/lib/utils';
 
-import { Button, Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui';
+import { Sheet, SheetContent, SheetTrigger } from '../ui';
 
 export const Chat = () => {
   const [open, setOpen] = useState(false);
@@ -30,9 +30,6 @@ export const Chat = () => {
             title="Chat AI"
           />
         </div>
-        <SheetClose asChild>
-          <Button>Save changes</Button>
-        </SheetClose>
       </SheetContent>
     </Sheet>
   );
