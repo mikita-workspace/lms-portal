@@ -13,6 +13,7 @@ import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
+import { Chat } from '../chat/chat';
 import { Notifications } from '../notifications/notifications';
 
 type NavBarRoutesProps = {
@@ -75,6 +76,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                   </Button>
                 </Link>
               )}
+              {user?.hasSubscription && !isChatPage && <Chat />}
               <Notifications userNotifications={userNotifications} />
             </>
           )}
