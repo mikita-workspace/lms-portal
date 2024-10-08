@@ -27,36 +27,36 @@ export const Chat = () => {
           <MessageSquareText className="h-5 w-5" />
         </div>
       </SheetTrigger>
-      <SheetContent className="p-0 w-full h-full" side="right">
-        <div className="relative">
+      <SheetContent className="p-0 w-full" side="right">
+        <div className="relative h-full">
           {!isReady && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-background gap-y-2">
               <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
               <p className="text-sm">{t('loading')}</p>
             </div>
           )}
-          <div style={{ width: '100%', height: '100vh', border: 'none' }}>
-            {isReady && (
-              <div className="fixed pt-4 px-4 flex gap-x-1">
-                <SheetClose asChild>
-                  <Button className="w-full" variant="outline">
-                    <ArrowRightToLine className="h-4 w-4" />
-                  </Button>
-                </SheetClose>
-                <Link href={absoluteUrl('/chat')} target="_blank">
-                  <Button className="w-full" variant="outline">
-                    <SquareArrowOutUpRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            )}
-            <iframe
-              onLoad={() => setIsReady(true)}
-              src={absoluteUrl('/chat/iframe')}
-              style={{ width: '100%', height: '100%', border: 'none' }}
-              title="Chat AI"
-            />
-          </div>
+          {isReady && (
+            <div className="fixed pt-4 px-4 flex gap-x-1">
+              <SheetClose asChild>
+                <Button className="w-full" variant="outline">
+                  <ArrowRightToLine className="h-4 w-4" />
+                </Button>
+              </SheetClose>
+              <Link href={absoluteUrl('/chat')} target="_blank">
+                <Button className="w-full" variant="outline">
+                  <SquareArrowOutUpRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          )}
+          <iframe
+            onLoad={() => setIsReady(true)}
+            src={absoluteUrl('/chat/iframe')}
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            height="100%"
+            width="100%"
+            title="Chat AI"
+          />
         </div>
       </SheetContent>
     </Sheet>
