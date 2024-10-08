@@ -76,10 +76,10 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                   </Button>
                 </Link>
               )}
+              {user?.hasSubscription && !isChatPage && <Chat />}
               <Notifications userNotifications={userNotifications} />
             </>
           )}
-          {user?.hasSubscription && <Chat />}
           <UserProfileButton globalProgress={globalProgress} />
         </div>
       )}
