@@ -72,17 +72,27 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
-        <div
+        <button
           className={cn(
-            'relative rounded-full w-[40px] h-[40px] flex items-center justify-center transition-background ease-in-out duration-300',
-            open ? 'bg-muted ' : 'hover:bg-muted ',
+            'group flex w-full text-sm text-muted-foreground items-center p-2 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out border hover:text-primary dark:border-muted-foreground',
+            open && 'bg-muted text-primary font-medium',
           )}
         >
-          <Inbox className="h-5 w-5" />
+          <Inbox
+            className={cn(
+              'h-5 w-5 font-medium',
+              open && 'text-primary font-medium animate-spin-once',
+            )}
+          />
           {Boolean(unreadNotifications.length) && (
-            <div className="absolute w-[10px] h-[10px] rounded-full bg-red-500 top-2 right-2 flex items-center justify-center truncate"></div>
+            <div
+              className={cn(
+                'absolute w-[10px] h-[10px] rounded-full bg-red-400 group-hover:bg-red-500 top-1.5 right-1.5 flex items-center justify-center truncate',
+                open && 'bg-red-500',
+              )}
+            ></div>
           )}
-        </div>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[340px] sm:mr-16 mr-4 mt-1">
         <div className="flex justify-between items-center px-2 pt-4">

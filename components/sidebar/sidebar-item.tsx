@@ -50,7 +50,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
         onClick={handleClick}
         type="button"
         className={cn(
-          'flex w-full text-sm text-muted-foreground items-center py-3.5 px-3 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out ',
+          'flex w-full text-sm text-muted-foreground items-center py-3.5 px-3 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out',
           isActive && 'bg-muted text-primary font-medium',
         )}
       >

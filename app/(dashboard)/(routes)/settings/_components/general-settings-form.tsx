@@ -28,7 +28,7 @@ type GeneralSettingsFormProps = {
 const formSchema = z.object({
   name: z.string().min(1),
   email: z.string().email().min(1),
-  pictureUrl: z.string().url().min(1),
+  pictureUrl: z.string().url().min(1).optional().or(z.literal('')),
 });
 
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
@@ -52,6 +52,8 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
+
+      console.log({ values });
 
       await update(values);
 

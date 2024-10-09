@@ -57,9 +57,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
         token.name = session.name;
       }
 
-      if (session?.pictureUrl) {
-        token.picture = session.pictureUrl;
-      }
+      token.picture = session.pictureUrl;
     }
 
     return token;

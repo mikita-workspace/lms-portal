@@ -113,13 +113,13 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {(isTeacherCoursesPage || isPromoPage || isNotificationPage) && (
-        <div className="flex items-center pb-4 justify-between space-x-2">
+        <div className="flex sm:items-center pb-4 justify-between sm:space-x-2 sm:flex-row flex-col gap-y-2">
           <div className="flex gap-x-2 w-full">
             <Input
               placeholder={filterPlaceholder}
               value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
               onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
-              className="max-w-sm"
+              className="sm:max-w-sm"
             />
           </div>
           {isTeacherCoursesPage && (

@@ -19,13 +19,14 @@ export const Chat = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="hover:opacity-75 transition duration-300">
-        <div
+        <button
           className={cn(
-            'relative rounded-full w-[40px] h-[40px] flex mt-[22px] justify-center transition-background ease-in-out duration-300',
+            'flex w-full text-sm text-muted-foreground items-center p-2 hover:bg-muted rounded-lg transition-background group duration-300 ease-in-out border hover:text-primary dark:border-muted-foreground',
+            open && 'bg-muted text-primary font-medium',
           )}
         >
-          <MessageSquareText className="h-5 w-5" />
-        </div>
+          <MessageSquareText className="h-5 w-5 font-medium" />
+        </button>
       </SheetTrigger>
       <SheetContent className="p-0 w-full" side="right">
         <div className="relative h-full">
