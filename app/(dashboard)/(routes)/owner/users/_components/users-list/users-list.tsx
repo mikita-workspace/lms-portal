@@ -17,7 +17,13 @@ export const UsersList = ({ pageCount, users }: UsersListProps) => {
         <p className="font-medium text-xl">Users</p>
         <span className="text-xs text-muted-foreground">List of all users of the platform</span>
       </div>
-      <DataTable columns={columns} data={users} noLabel="No users" pageCount={pageCount} />
+      <DataTable
+        columns={columns}
+        data={users}
+        isUsersPage
+        noLabel="No users"
+        pageCount={pageCount}
+      />
     </div>
   );
 };

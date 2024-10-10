@@ -3,7 +3,7 @@ import { getUsers } from '@/actions/users/get-users';
 import { UsersList } from './_components/users-list/users-list';
 
 type UsersPageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: { pageIndex: string; pageSize: string; search?: string };
 };
 
 const UsersPage = async ({ searchParams }: UsersPageProps) => {

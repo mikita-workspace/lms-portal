@@ -8,6 +8,7 @@ import { db } from '@/lib/db';
 type GetUsers = {
   pageIndex?: string | number;
   pageSize?: string | number;
+  search?: string;
 };
 
 type UserWithSubscription = User & { stripeSubscription: StripeSubscription | null };
@@ -15,12 +16,14 @@ type UserWithSubscription = User & { stripeSubscription: StripeSubscription | nu
 export const getUsers = async ({
   pageIndex = 0,
   pageSize = PAGE_SIZES[0],
+  search,
 }: GetUsers): Promise<{ pageCount: number; users: UserWithSubscription[] }> => {
   const index = Number(pageIndex);
   const size = Number(pageSize);
 
   try {
     const users = await db.user.findMany({
+      where: { email: { contains: search, mode: 'insensitive' } },
       include: { stripeSubscription: true },
       orderBy: { createdAt: 'desc' },
       skip: index * size,

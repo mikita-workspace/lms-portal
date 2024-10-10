@@ -4,7 +4,7 @@ import { DataTable } from '@/components/data-table/data-table';
 import { columns } from './_components/columns';
 
 type PromoPageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: { pageIndex: string; pageSize: string; search?: string };
 };
 
 const PromoPage = async ({ searchParams }: PromoPageProps) => {

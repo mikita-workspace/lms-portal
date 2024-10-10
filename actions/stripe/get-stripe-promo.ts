@@ -17,6 +17,7 @@ type StripeCustomers = Stripe.Response<Stripe.ApiList<Stripe.Customer>>['data'];
 type GetStripePromo = {
   pageIndex?: string | number;
   pageSize?: string | number;
+  search?: string;
 };
 
 const getCoupons = (coupons: StripeCoupons) => {
@@ -89,12 +90,14 @@ const getCustomers = (customers: StripeCustomers) => {
 export const getStripePromo = async ({
   pageIndex = 0,
   pageSize = PAGE_SIZES[0],
+  search,
 }: GetStripePromo) => {
   const index = Number(pageIndex);
   const size = Number(pageSize);
 
   try {
     const promos = await db.stripePromo.findMany({
+      where: { code: { contains: search, mode: 'insensitive' } },
       orderBy: { createdAt: 'desc' },
       skip: index * size,
       take: size,

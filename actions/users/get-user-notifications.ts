@@ -8,6 +8,7 @@ import { db } from '@/lib/db';
 type GetUserNotifications = {
   pageIndex?: string | number;
   pageSize?: string | number;
+  search?: string;
   take?: number;
   userId?: string;
 };
@@ -15,6 +16,7 @@ type GetUserNotifications = {
 export const getUserNotifications = async ({
   pageIndex = 0,
   pageSize = PAGE_SIZES[0],
+  search,
   take,
   userId,
 }: GetUserNotifications): Promise<{ notifications: Notification[]; pageCount: number }> => {
@@ -27,7 +29,7 @@ export const getUserNotifications = async ({
 
   try {
     const userNotifications = await db.notification.findMany({
-      where: { userId },
+      where: { userId, title: { contains: search, mode: 'insensitive' } },
       orderBy: { createdAt: 'desc' },
       select: {
         body: true,

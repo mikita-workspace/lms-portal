@@ -6,7 +6,7 @@ import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { Table } from './_components/data-table/table';
 
 type NotificationsPageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: { pageIndex: string; pageSize: string; search?: string };
 };
 
 const NotificationsPage = async ({ searchParams }: NotificationsPageProps) => {

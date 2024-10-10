@@ -28,6 +28,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { PAGE_SIZES } from '@/constants/paginations';
+import { useDebounce } from '@/hooks/use-debounce';
 import { useSearchLineParams } from '@/hooks/use-search-params';
 import { getNotificationActionName } from '@/lib/notifications';
 
@@ -47,6 +48,7 @@ interface DataTableProps<TData, TValue> {
   isPromoPage?: boolean;
   isServerSidePagination?: boolean;
   isTeacherCoursesPage?: boolean;
+  isUsersPage?: boolean;
   noLabel?: string;
   pageCount?: number;
 }
@@ -60,6 +62,7 @@ export function DataTable<TData, TValue>({
   isPromoPage = false,
   isServerSidePagination = true,
   isTeacherCoursesPage = false,
+  isUsersPage = false,
   noLabel,
   pageCount = 0,
 }: Readonly<DataTableProps<TData, TValue>>) {
@@ -73,7 +76,11 @@ export function DataTable<TData, TValue>({
     pageSize: PAGE_SIZES[0],
   });
 
-  useSearchLineParams(pagination, !isServerSidePagination);
+  const [search, setSearch] = React.useState('');
+
+  const debouncedSearch = useDebounce(search);
+
+  useSearchLineParams({ ...pagination, search: debouncedSearch }, !isServerSidePagination);
 
   const table = useReactTable({
     columns,
@@ -107,18 +114,30 @@ export function DataTable<TData, TValue>({
       return notificationsT('filter');
     }
 
+    if (isUsersPage) {
+      return 'Filter users email...';
+    }
+
     return '';
   })();
 
   return (
     <div>
-      {(isTeacherCoursesPage || isPromoPage || isNotificationPage) && (
+      {(isTeacherCoursesPage || isPromoPage || isNotificationPage || isUsersPage) && (
         <div className="flex sm:items-center pb-4 justify-between sm:space-x-2 sm:flex-row flex-col gap-y-2">
           <div className="flex gap-x-2 w-full">
             <Input
               placeholder={filterPlaceholder}
-              value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-              onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
+              value={
+                isUsersPage ? search : (table.getColumn('title')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) => {
+                if (!isUsersPage) {
+                  table.getColumn('title')?.setFilterValue(event.target.value);
+                }
+
+                setSearch(event.target.value);
+              }}
               className="sm:max-w-sm"
             />
           </div>
