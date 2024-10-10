@@ -44,7 +44,9 @@ export const getUserNotifications = async ({
       take: take ?? size,
     });
 
-    const count = await db.notification.count({ where: { userId } });
+    const count = await db.notification.count({
+      where: { userId, title: { contains: search, mode: 'insensitive' } },
+    });
 
     return { notifications: userNotifications, pageCount: Math.ceil(count / size) };
   } catch (error) {

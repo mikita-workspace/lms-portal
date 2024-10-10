@@ -30,7 +30,9 @@ export const getUsers = async ({
       take: size,
     });
 
-    const count = await db.user.count();
+    const count = await db.user.count({
+      where: { email: { contains: search, mode: 'insensitive' } },
+    });
 
     return { pageCount: Math.ceil(count / size), users };
   } catch (error) {
