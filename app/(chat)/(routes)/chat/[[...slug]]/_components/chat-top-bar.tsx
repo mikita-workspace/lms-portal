@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, ChevronsUpDown, RefreshCcw, StopCircle } from 'lucide-react';
+import { Check, ChevronsUpDown, StopCircle } from 'lucide-react';
 import { SyntheticEvent, useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 import { MdIosShare } from 'react-icons/md';
@@ -31,7 +31,7 @@ export const ChatTopBar = ({
   isSubmitting = false,
   lastAssistantMessage,
   onAbortGenerating,
-  onRegenerate,
+  // onRegenerate,
   setAssistantMessage,
 }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
@@ -107,11 +107,11 @@ export const ChatTopBar = ({
                 <StopCircle className="w-4 h-4" />
               </Button>
             )}
-            {!isSubmitting && Boolean(messages.length) && (
+            {/* {!isSubmitting && Boolean(messages.length) && (
               <Button variant="outline" onClick={onRegenerate}>
                 <RefreshCcw className="w-4 h-4" />
               </Button>
-            )}
+            )} */}
             <Button
               variant="outline"
               disabled={isSubmitting || !messages.length}

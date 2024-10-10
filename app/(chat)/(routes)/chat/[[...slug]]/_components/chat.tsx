@@ -99,6 +99,8 @@ export const Chat = ({ initialData }: ChatProps) => {
       const reader = completionStream.body?.getReader();
       const decoder = new TextDecoder('utf-8');
 
+      let streamAssistMessage = '';
+
       while (true) {
         const rawChunk = await reader?.read();
 
@@ -113,9 +115,12 @@ export const Chat = ({ initialData }: ChatProps) => {
         }
 
         const chunk = decoder.decode(value);
+        streamAssistMessage += chunk;
 
         setAssistantMessage((prev) => prev + chunk);
       }
+      saveLastMessage(streamAssistMessage);
+      streamAssistMessage = '';
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         toast({
@@ -135,6 +140,18 @@ export const Chat = ({ initialData }: ChatProps) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+  };
+
+  const saveLastMessage = (message: string) => {
+    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
+
+    chatStorage?.state?.messages.push({
+      content: message,
+      role: ChatCompletionRole.ASSISTANT,
+      timestamp: getTime(Date.now()),
+    });
+
+    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
   };
 
   return (
