@@ -3,5 +3,5 @@ export const enum FilterStatus {
   PROGRESS = 'progress',
 }
 
-export const TEXTAREA_MAX_LENGTH = 256;
+export const TEXTAREA_MAX_LENGTH = 512;
 export const CHAPTER_XP = 20;
