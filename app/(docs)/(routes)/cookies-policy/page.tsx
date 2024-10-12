@@ -147,11 +147,11 @@ const CookiesPolicyPage = async () => {
           <p>
             For the Internet Explorer web browser, please visit this page from Microsoft:{' '}
             <a
-              href="http://support.microsoft.com/kb/278835"
+              href="https://support.microsoft.com/kb/278835"
               rel="external nofollow noopener"
               target="_blank"
             >
-              http://support.microsoft.com/kb/278835
+              https://support.microsoft.com/kb/278835
             </a>
           </p>
         </li>
