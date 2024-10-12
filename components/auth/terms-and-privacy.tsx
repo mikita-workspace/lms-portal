@@ -7,21 +7,13 @@ export const TermsAndPrivacy = () => {
   const t = useTranslations('footer');
 
   const termsUrl = (
-    <Link
-      target="_blank"
-      className="text-primary hover:underline"
-      href={process.env.NEXT_PUBLIC_TERMS_AND_CONDITIONS_URL as string}
-    >
+    <Link target="_blank" className="text-primary hover:underline" href="/terms-and-conditions">
       {t('termsAndConditions')}
     </Link>
   );
 
   const privacyUrl = (
-    <Link
-      target="_blank"
-      className="text-primary hover:underline"
-      href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL as string}
-    >
+    <Link target="_blank" className="text-primary hover:underline" href="privacy-policy">
       {t('privacyPolices')}
     </Link>
   );

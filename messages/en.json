@@ -405,5 +405,8 @@
     "dragAndDrop": "Choose files or drag and drop",
     "upload": "Upload",
     "uploading": "Uploading..."
+  },
+  "docs": {
+    "backNav": "Back to courses"
   }
 }
