@@ -1,5 +1,8 @@
 'use client';
 
+import { RefreshCcw } from 'lucide-react';
+import { SyntheticEvent } from 'react';
+
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { MarkdownText } from '@/components/common/markdown-text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
@@ -7,17 +10,21 @@ import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
+  isLastMessage?: boolean;
   isSubmitting?: boolean;
   message: { role: string; content: string };
   name: string;
+  onRegenerate?: (event: SyntheticEvent) => void;
   picture?: string | null;
   streamMessage?: string;
 };
 
 export const ChatBubble = ({
+  isLastMessage,
   isSubmitting,
   message,
   name,
+  onRegenerate,
   picture,
   streamMessage,
 }: ChatBubbleProps) => {
@@ -30,7 +37,7 @@ export const ChatBubble = ({
         <Avatar className="border dark:border-muted-foreground">
           {!isAssistant && <AvatarImage src={picture || ''} />}
           {isAssistant && (
-            <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />
+            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/logo.svg" />
           )}
           <AvatarFallback>{getFallbackName(name)}</AvatarFallback>
         </Avatar>
@@ -39,7 +46,16 @@ export const ChatBubble = ({
             <span className="text-medium font-bold">{name}</span>
           </div>
           <MarkdownText text={text} />
-          {isAssistant && !isSubmitting && <CopyClipboard className="mt-4" textToCopy={text} />}
+          {isAssistant && !isSubmitting && (
+            <div className="flex gap-x-2 mt-4">
+              <CopyClipboard textToCopy={text} />
+              {isLastMessage && onRegenerate && (
+                <button onClick={onRegenerate}>
+                  <RefreshCcw className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -133,23 +133,35 @@ export const Chat = ({ initialData }: ChatProps) => {
     }
   };
 
-  const handleRegenerate = (event: SyntheticEvent) =>
+  const handleRegenerate = (event: SyntheticEvent) => {
+    deleteLastMessage();
     handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
+  };
 
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
+
+      if (assistantMessage) {
+        saveLastMessage(assistantMessage);
+      }
     }
   };
 
   const saveLastMessage = (message: string) => {
     const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-
     chatStorage?.state?.messages.push({
       content: message,
       role: ChatCompletionRole.ASSISTANT,
       timestamp: getTime(Date.now()),
     });
+
+    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
+  };
+
+  const deleteLastMessage = () => {
+    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
+    chatStorage?.state?.messages?.pop();
 
     localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
   };
@@ -161,19 +173,19 @@ export const Chat = ({ initialData }: ChatProps) => {
           <ChatTopBar
             isSubmitting={isSubmitting}
             lastAssistantMessage={assistantMessage}
-            onAbortGenerating={handleAbortGenerating}
-            onRegenerate={handleRegenerate}
             setAssistantMessage={setAssistantMessage}
           />
           <ChatBody
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
             isSubmitting={isSubmitting}
+            onRegenerate={handleRegenerate}
             onSubmit={handleSubmit}
           />
           <ChatInput
             currenMessage={currentMessage}
             isSubmitting={isSubmitting}
+            onAbortGenerating={handleAbortGenerating}
             onSubmit={handleSubmit}
             setCurrentMessage={setCurrentMessage}
           />

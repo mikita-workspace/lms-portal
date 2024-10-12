@@ -1,7 +1,7 @@
 'use client';
 
-import { Check, ChevronsUpDown, StopCircle } from 'lucide-react';
-import { SyntheticEvent, useState } from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 import { MdIosShare } from 'react-icons/md';
 
@@ -22,16 +22,12 @@ import { cn } from '@/lib/utils';
 type ChatTopBarProps = {
   isSubmitting?: boolean;
   lastAssistantMessage: string;
-  onAbortGenerating: () => void;
-  onRegenerate: (event: SyntheticEvent) => void;
   setAssistantMessage: (value: string) => void;
 };
 
 export const ChatTopBar = ({
   isSubmitting = false,
   lastAssistantMessage,
-  onAbortGenerating,
-  // onRegenerate,
   setAssistantMessage,
 }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
@@ -102,16 +98,6 @@ export const ChatTopBar = ({
             </PopoverContent>
           </Popover>
           <div className="flex gap-1">
-            {isSubmitting && (
-              <Button variant="outline" onClick={onAbortGenerating}>
-                <StopCircle className="w-4 h-4" />
-              </Button>
-            )}
-            {/* {!isSubmitting && Boolean(messages.length) && (
-              <Button variant="outline" onClick={onRegenerate}>
-                <RefreshCcw className="w-4 h-4" />
-              </Button>
-            )} */}
             <Button
               variant="outline"
               disabled={isSubmitting || !messages.length}

@@ -48,6 +48,7 @@ type ChatBodyProps = {
   assistantMessage?: string;
   introMessages: string[];
   isSubmitting?: boolean;
+  onRegenerate: (event: SyntheticEvent) => void;
   onSubmit: (
     event: SyntheticEvent,
     options?: {
@@ -60,6 +61,7 @@ export const ChatBody = ({
   assistantMessage,
   introMessages,
   isSubmitting,
+  onRegenerate,
   onSubmit,
 }: ChatBodyProps) => {
   const t = useTranslations('chat.body');
@@ -93,7 +95,7 @@ export const ChatBody = ({
               {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const name = isAssistant ? 'Chat GPT' : user?.name || 'User';
+                const name = isAssistant ? 'Nova Assistant' : user?.name || 'Current User';
                 const picture = isAssistant ? null : user?.image;
 
                 return (
@@ -108,9 +110,11 @@ export const ChatBody = ({
               {assistantMessage && (
                 <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
                   <ChatBubble
+                    isLastMessage
                     isSubmitting={isSubmitting}
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
-                    name="Chat GPT"
+                    name="Nova Assistant"
+                    onRegenerate={onRegenerate}
                     streamMessage={assistantMessage}
                   />
                 </div>

@@ -1,14 +1,17 @@
 'use client';
 
+import { StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { SyntheticEvent } from 'react';
 import { BsStars } from 'react-icons/bs';
 
 import { Button, Textarea } from '@/components/ui';
+import { cn } from '@/lib/utils';
 
 type ChatInputProps = {
   currenMessage: string;
   isSubmitting?: boolean;
+  onAbortGenerating: () => void;
   onSubmit: (event: SyntheticEvent) => void;
   setCurrentMessage: (value: string) => void;
 };
@@ -16,6 +19,7 @@ type ChatInputProps = {
 export const ChatInput = ({
   currenMessage,
   isSubmitting = false,
+  onAbortGenerating,
   onSubmit,
   setCurrentMessage,
 }: ChatInputProps) => {
@@ -31,6 +35,7 @@ export const ChatInput = ({
           >
             <Textarea
               className="resize-none flex-1 pr-16 overflow-auto z-10"
+              disabled={isSubmitting}
               placeholder={t('enterMessage')}
               value={currenMessage}
               onChange={(event) => {
@@ -44,13 +49,22 @@ export const ChatInput = ({
               }}
             />
             <Button
-              className="absolute bottom-3 right-7 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10 px-2"
-              disabled={isSubmitting || !currenMessage}
-              type="submit"
+              className={cn(
+                'absolute bottom-3 right-7 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:text-white font-medium z-10 px-2',
+                isSubmitting && 'w-12',
+              )}
+              disabled={!currenMessage && !isSubmitting}
+              type={isSubmitting ? 'button' : 'submit'}
               variant="outline"
+              onClick={isSubmitting ? onAbortGenerating : () => {}}
             >
-              <BsStars className="mr-1" />
-              {t('ask')}
+              {isSubmitting && <StopCircle className="w-4 h-4" />}
+              {!isSubmitting && (
+                <>
+                  <BsStars className="mr-1" />
+                  {t('ask')}
+                </>
+              )}
             </Button>
           </form>
           <div className="p-2 text-center text-xs text-muted-foreground z-10">{t('footer')}</div>

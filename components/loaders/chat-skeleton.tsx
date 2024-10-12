@@ -10,7 +10,6 @@ export const ChatSkeleton = () => (
         <div className="flex space-x-2">
           <Skeleton className="h-8 w-8" />
           <Skeleton className="h-8 w-8" />
-          <Skeleton className="h-8 w-8" />
         </div>
       </div>
       <div className="flex flex-col gap-y-6 justify-start h-full">

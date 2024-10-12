@@ -56,7 +56,7 @@ export const Chat = () => {
             style={{ width: '100%', height: '100%', border: 'none' }}
             height="100%"
             width="100%"
-            title="Chat AI"
+            title="Nova AI"
           />
         </div>
       </SheetContent>
