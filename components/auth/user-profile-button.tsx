@@ -63,7 +63,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
             <div className="flex gap-1 items-center">
               <p className="text-sm font-semibold truncate">{user.name}</p>
               <div className="ml-1">
-                {user.hasSubscription && <TextBadge label={t('premium')} variant="indigo" />}
+                {user.hasSubscription && <TextBadge label={t('premium')} variant="lime" />}
               </div>
             </div>
             <p className="text-xs leading-none text-muted-foreground">
