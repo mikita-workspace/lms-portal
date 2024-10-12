@@ -71,7 +71,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
 
     const session = await stripe.checkout.sessions.create({
       allow_promotion_codes: true,
-      cancel_url: absoluteUrl(`/landing-course/${course.id}?canceled=true`),
+      cancel_url: absoluteUrl(`/preview-course/${course.id}?canceled=true`),
       customer: stripeCustomer.stripeCustomerId,
       expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
       payment_method_types: ['card'],
@@ -81,7 +81,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       locale: getLocale(appLocale, ['be']) as Stripe.Checkout.Session.Locale,
       line_items: lineItems,
       mode: 'payment',
-      success_url: absoluteUrl(`/landing-course/${course.id}?success=true`),
+      success_url: absoluteUrl(`/preview-course/${course.id}?success=true`),
       metadata: {
         ...details,
         courseId: course.id,

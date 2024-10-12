@@ -28,15 +28,15 @@ export const OAuthButton = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const isLandingCoursePage = pathname.startsWith('/landing-course');
+  const isPreviewCoursePage = pathname.startsWith('/preview-course');
 
   const callbackUrl = useMemo(() => {
-    if (isLandingCoursePage) {
+    if (isPreviewCoursePage) {
       return pathname;
     }
 
     return searchParams.get('callbackUrl') ?? '/';
-  }, [isLandingCoursePage, pathname, searchParams]);
+  }, [isPreviewCoursePage, pathname, searchParams]);
 
   const handleSignIn = async () => {
     setIsDisabled?.(true);

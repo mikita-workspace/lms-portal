@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 type PreviewVideoPlayerProps = { videoUrl?: string | null; isLocked?: boolean };
 
 export const PreviewVideoPlayer = ({ videoUrl, isLocked = false }: PreviewVideoPlayerProps) => {
-  const t = useTranslations('courses.landing.preview');
+  const t = useTranslations('courses.preview.preview');
 
   const [isReady, setIsReady] = useState(false);
 

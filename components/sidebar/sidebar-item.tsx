@@ -36,7 +36,7 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
       (pathname === '/' && href === '/') ||
       pathname === href ||
       pathname?.startsWith(`${href}/`) ||
-      (pathname?.includes('/landing-course') && href == '/')
+      (pathname?.includes('/preview-course') && href == '/')
     );
   }, [href, pathname]);
 

@@ -15,11 +15,11 @@ import { ContinueButton } from './_components/continue-button';
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
 
-type LandingCourseIdPageProps = {
+type PreviewCourseIdPageProps = {
   params: { courseId: string };
 };
 
-export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: PreviewCourseIdPageProps): Promise<Metadata> => {
   const course = await db.course.findUnique({
     where: { id: params.courseId },
   });
@@ -30,8 +30,8 @@ export const generateMetadata = async ({ params }: LandingCourseIdPageProps): Pr
   };
 };
 
-const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
-  const t = await getTranslations('courses.landing');
+const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
+  const t = await getTranslations('courses.preview');
 
   const user = await getCurrentUser();
 
@@ -132,4 +132,4 @@ const LandingCourseIdPage = async ({ params }: LandingCourseIdPageProps) => {
   );
 };
 
-export default LandingCourseIdPage;
+export default PreviewCourseIdPage;

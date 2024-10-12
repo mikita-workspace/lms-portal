@@ -38,7 +38,7 @@ export const PreviewDescription = ({
   price,
   title,
 }: PreviewDescriptionProps) => {
-  const t = useTranslations('courses.landing.preview');
+  const t = useTranslations('courses.preview.preview');
 
   const currentLocale = useLocale();
 

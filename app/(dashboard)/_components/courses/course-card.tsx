@@ -48,7 +48,7 @@ export const CourseCard = async ({
 
   const path = usePathname();
 
-  const href = `/${isPurchased || path.includes('dashboard') ? 'courses' : 'landing-course'}/${id}`;
+  const href = `/${isPurchased || path.includes('dashboard') ? 'courses' : 'preview-course'}/${id}`;
 
   return (
     <Link href={href} title={title} className={cn(!isPublished && 'pointer-events-none')}>

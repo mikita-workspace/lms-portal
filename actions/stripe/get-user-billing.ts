@@ -37,7 +37,7 @@ export const getUserBilling = async (userId?: string) => {
 
         return {
           amount: dt.amount,
-          courseUrl: courseId ? `/landing-course/${courseId}` : null,
+          courseUrl: courseId ? `/preview-course/${courseId}` : null,
           description: dt.description,
           discount: dt.discount_amounts,
         };

@@ -11,7 +11,7 @@ type ContinueButtonProps = {
 };
 
 export const ContinueButton = ({ redirectUrl }: ContinueButtonProps) => {
-  const t = useTranslations('courses.landing');
+  const t = useTranslations('courses.preview');
 
   const router = useRouter();
 
