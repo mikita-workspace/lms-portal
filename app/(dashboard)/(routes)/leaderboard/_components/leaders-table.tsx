@@ -51,7 +51,7 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
             <TableCell>
               <div className="flex space-x-2 items-center">
                 <div>
-                  <Avatar>
+                  <Avatar className="border dark:border-muted-foreground">
                     <AvatarImage src={leader.picture || ''} />
                     <AvatarFallback>{getFallbackName(leader.name as string)}</AvatarFallback>
                   </Avatar>

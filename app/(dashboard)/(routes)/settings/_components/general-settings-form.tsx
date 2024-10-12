@@ -108,7 +108,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
                     <FormControl>
                       <div className="flex gap-4">
                         <Input {...field} disabled={isSubmitting} placeholder={t('enterAvatar')} />
-                        <Avatar>
+                        <Avatar className="border dark:border-muted-foreground">
                           <AvatarImage src={field.value || ''} />
                           <AvatarFallback>{getFallbackName(initialData.name || '')}</AvatarFallback>
                         </Avatar>

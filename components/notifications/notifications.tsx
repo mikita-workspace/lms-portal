@@ -1,7 +1,7 @@
 'use client';
 
 import { Notification } from '@prisma/client';
-import { Inbox, RefreshCcw } from 'lucide-react';
+import { Inbox } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -38,7 +38,7 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
   const { user } = useCurrentUser();
 
   const router = useRouter();
-  const [isFetching, startTransition] = useTransition();
+  const [isFetching] = useTransition();
 
   const [open, setOpen] = useState(false);
 
@@ -67,8 +67,6 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleFetchNotifications = () => startTransition(() => router.refresh());
-
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
@@ -95,14 +93,6 @@ export const Notifications = ({ userNotifications = [] }: NotificationsProps) =>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[340px] sm:mr-16 mr-4 mt-1">
-        <div className="flex justify-between items-center px-2 pt-4">
-          <p className="font-semibold text-sm">{t('title')}</p>
-          <div className="flex items-center gap-4">
-            <button onClick={handleFetchNotifications} disabled={isFetching}>
-              <RefreshCcw className={cn('w-4 h-4', isFetching ? 'animate-spin' : '')} />
-            </button>
-          </div>
-        </div>
         <div className="px-2 pt-4">
           <Tabs defaultValue="unread" className="w-full">
             <TabsList className="w-full">

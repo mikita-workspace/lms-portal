@@ -27,7 +27,7 @@ export const ChatBubble = ({
   return (
     <div className="pb-4 pt-2">
       <div className="flex gap-x-4">
-        <Avatar>
+        <Avatar className="border dark:border-muted-foreground">
           {!isAssistant && <AvatarImage src={picture || ''} />}
           {isAssistant && (
             <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />

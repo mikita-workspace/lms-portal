@@ -34,7 +34,7 @@ export const columns: ColumnDef<UserWithSubscription>[] = [
 
       return (
         <div className="flex items-center gap-2">
-          <Avatar className="w-[40px] h-[40px]">
+          <Avatar className="w-[40px] h-[40px] border dark:border-muted-foreground">
             <AvatarImage src={pictureUrl || ''} />
             <AvatarFallback>{getFallbackName(name as string)}</AvatarFallback>
           </Avatar>

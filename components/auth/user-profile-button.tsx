@@ -61,15 +61,16 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
         <DropdownMenuLabel className="font-normal p-2">
           <div className="flex flex-col space-y-1">
             <div className="flex gap-1 items-center">
-              <p className="text-sm font-semibold">{user.name}</p>
+              <p className="text-sm font-semibold truncate">{user.name}</p>
               <div className="ml-1">
-                {(isOwner(user.userId) || isAdmin) && (
-                  <TextBadge label={t('admin')} variant="green" />
-                )}
-                {isTeacher && <TextBadge label={t('teacher')} variant="indigo" />}
-                {isStudent && <TextBadge label={t('student')} variant="default" />}
+                {user.hasSubscription && <TextBadge label={t('premium')} variant="indigo" />}
               </div>
             </div>
+            <p className="text-xs leading-none text-muted-foreground">
+              {(isOwner(user.userId) || isAdmin) && t('admin')}
+              {isTeacher && t('teacher')}
+              {isStudent && t('student')}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>

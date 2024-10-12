@@ -76,7 +76,7 @@ export const ChatBody = ({
     <ChatScrollContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
       {!hasMessages && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
-          <Avatar>
+          <Avatar className="border dark:border-muted-foreground">
             <AvatarImage className="bg-white p-1.5 border rounded-full" src="/assets/openai.svg" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
