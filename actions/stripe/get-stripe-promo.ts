@@ -102,7 +102,9 @@ export const getStripePromo = async ({
       skip: index * size,
       take: size,
     });
-    const count = await db.stripePromo.count();
+    const count = await db.stripePromo.count({
+      where: { code: { contains: search, mode: 'insensitive' } },
+    });
 
     const customers = await db.stripeCustomer.findMany();
 
