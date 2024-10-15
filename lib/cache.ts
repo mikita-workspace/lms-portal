@@ -6,9 +6,9 @@ const TTL_DEFAULT = 60;
 export const cacheProvider = (() => {
   if (process.env.NODE_ENV === 'production') {
     return createClient({
-      url: process.env.REDIS_REST_API_URL as string,
-      token: process.env.REDIS_REST_API_TOKEN as string,
       automaticDeserialization: false,
+      token: process.env.NEXT_PUBLIC_REDIS_REST_API_TOKEN as string,
+      url: process.env.NEXT_PUBLIC_REDIS_REST_API_URL as string,
     });
   }
 
