@@ -271,7 +271,7 @@
     "improve": "Паляпшыць",
     "original": "Вярнуць арыгінал",
     "stop": "Спыніць",
-    "translate": "Перакласці з Nova AI"
+    "translate": "Перакласці з Nova\u00a0AI"
   },
   "cookie-consent": {
     "accept": "Прыняць",
@@ -317,7 +317,7 @@
   },
   "leaderboard": {
     "notFound": "Тут пакуль няма лідараў.",
-    "points": "Акуляры",
+    "points": "Ачкі",
     "rank": "Ранг",
     "user": "Карыстальнік",
     "you": "Вы"

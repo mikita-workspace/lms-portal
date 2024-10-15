@@ -21,6 +21,7 @@ type PreviewDescriptionProps = {
   description: string;
   fees?: Fee[];
   hasPurchase?: boolean;
+  id: string;
   language: string | null;
   price: number | null;
   title: string;
@@ -34,6 +35,7 @@ export const PreviewDescription = ({
   description,
   fees,
   hasPurchase,
+  id,
   language,
   price,
   title,
@@ -41,7 +43,6 @@ export const PreviewDescription = ({
   const t = useTranslations('courses.preview.preview');
 
   const currentLocale = useLocale();
-
   const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
@@ -49,6 +50,8 @@ export const PreviewDescription = ({
   const showTranslateButton = Boolean(
     language && language !== currentLocale && user?.hasSubscription,
   );
+
+  const cacheKey = `course-description-[${id}]-[${currentLocale}]`;
 
   return (
     <div className="border rounded-lg p-6">
@@ -60,6 +63,7 @@ export const PreviewDescription = ({
         {showTranslateButton && (
           <div className="my-2">
             <GenerateTextResponseAi
+              cacheKey={cacheKey}
               isTranslateButton
               callback={setTranslatedDescription}
               messages={[

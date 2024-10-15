@@ -7,12 +7,15 @@ import { BsStars } from 'react-icons/bs';
 
 import { useToast } from '@/components/ui/use-toast';
 import { SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
+import { TEN_MINUTE_SEC } from '@/constants/common';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
+import { getValueFromMemoryCache, setValueToMemoryCache } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
 
 import { Button } from '../ui';
 
 type GenerateTextResponseAiProps = {
+  cacheKey?: string;
   callback: Dispatch<SetStateAction<string>>;
   isSubmitting?: boolean;
   isTranslateButton?: boolean;
@@ -21,6 +24,7 @@ type GenerateTextResponseAiProps = {
 };
 
 export const GenerateTextResponseAi = ({
+  cacheKey,
   callback,
   isSubmitting,
   isTranslateButton,
@@ -36,9 +40,20 @@ export const GenerateTextResponseAi = ({
   const [isImproving, setIsImproving] = useState(false);
   const [alreadyTranslated, setAlreadyTranslated] = useState(false);
 
+  const shouldCacheResponse = isTranslateButton && cacheKey;
+
   const handleGenerate = async () => {
     try {
       setIsImproving(true);
+
+      if (shouldCacheResponse) {
+        const cachedResponse = await getValueFromMemoryCache(cacheKey);
+
+        if (cachedResponse) {
+          callback(cachedResponse);
+          return;
+        }
+      }
 
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
@@ -63,6 +78,7 @@ export const GenerateTextResponseAi = ({
       const decoder = new TextDecoder('utf-8');
 
       callback('');
+      let text = '';
 
       while (true) {
         const rawChunk = await reader?.read();
@@ -79,7 +95,12 @@ export const GenerateTextResponseAi = ({
 
         const chunk = decoder.decode(value);
 
+        text += chunk;
         callback((prev) => prev + chunk);
+      }
+
+      if (shouldCacheResponse) {
+        await setValueToMemoryCache(cacheKey, text, TEN_MINUTE_SEC);
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {

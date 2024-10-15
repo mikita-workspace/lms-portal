@@ -116,7 +116,11 @@ export const ChapterDescriptionForm = ({
         <div
           className={cn('text-sm mt-4', !initialData.description && 'text-neutral-500 italic mt-2')}
         >
-          {initialData.description ? <Preview value={initialData.description} /> : 'No description'}
+          {initialData.description ? (
+            <Preview id={initialData.id} value={initialData.description} />
+          ) : (
+            'No description'
+          )}
         </div>
       )}
       {isEditing && newDescription && (

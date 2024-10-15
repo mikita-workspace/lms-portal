@@ -72,7 +72,12 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         {!isLocked && chapter.description && (
           <>
             <Separator />
-            <Preview enableTranslate language={language} value={chapter.description} />
+            <Preview
+              enableTranslate
+              id={chapter.id}
+              language={language}
+              value={chapter.description}
+            />
           </>
         )}
         {Boolean(attachments.length) && (

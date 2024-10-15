@@ -14,15 +14,15 @@ import { GenerateTextResponseAi } from '../ai/generate-text-response-ai';
 
 type PreviewProps = {
   enableTranslate?: boolean;
+  id: string;
   language?: string | null;
   value: string;
 };
 
-export const Preview = ({ enableTranslate, language, value }: PreviewProps) => {
+export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const currentLocale = useLocale();
-
   const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
@@ -31,11 +31,14 @@ export const Preview = ({ enableTranslate, language, value }: PreviewProps) => {
     enableTranslate && language && language !== currentLocale && user?.hasSubscription,
   );
 
+  const cacheKey = `chapter-description-[${id}]-[${currentLocale}]`;
+
   return (
     <>
       {showTranslateButton && (
         <div className="p-4">
           <GenerateTextResponseAi
+            cacheKey={cacheKey}
             isTranslateButton
             callback={setTranslatedDescription}
             messages={[
