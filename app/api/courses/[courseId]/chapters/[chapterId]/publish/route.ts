@@ -32,7 +32,7 @@ export const PATCH = async (
 
     const muxData = await db.muxData.findUnique({ where: { chapterId: params.chapterId } });
 
-    if (!chapter || !muxData || !chapter.title || !chapter.videoUrl) {
+    if (!chapter || !muxData || !chapter.title) {
       return new NextResponse(t('errors.missingRequiredFields'), {
         status: StatusCodes.BAD_REQUEST,
       });

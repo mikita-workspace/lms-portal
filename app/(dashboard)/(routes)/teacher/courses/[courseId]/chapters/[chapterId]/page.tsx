@@ -26,7 +26,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
     return redirect('/');
   }
 
-  const requiredFields = [chapter.title, chapter.videoUrl];
+  const requiredFields = [chapter.title, chapter.videoUrl || chapter.imageUrl];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -95,7 +95,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Film} />
-              <h2 className="text-xl">Add a video</h2>
+              <h2 className="text-xl">Add a video or photo</h2>
             </div>
             <ChapterVideoForm {...chapterFormProps} />
           </div>

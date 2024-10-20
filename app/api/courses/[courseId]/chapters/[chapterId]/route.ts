@@ -32,7 +32,9 @@ export const DELETE = async (
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
-    if (chapter.videoUrl) {
+    const url = chapter.videoUrl ?? chapter.imageUrl;
+
+    if (url) {
       const existingMuxData = await db.muxData.findFirst({
         where: { chapterId: params.chapterId },
       });
@@ -91,10 +93,16 @@ export const PATCH = async (
 
     const chapter = await db.chapter.update({
       where: { id: params.chapterId, courseId: params.courseId },
-      data: { ...values },
+      data: {
+        ...values,
+        imageUrl: values.videoUrl ? '' : values.imageUrl,
+        videoUrl: values.imageUrl ? '' : values.videoUrl,
+      },
     });
 
-    if (values.videoUrl) {
+    const url = values.videoUrl ?? values.imageUrl;
+
+    if (url) {
       const existingMuxData = await db.muxData.findFirst({
         where: { chapterId: params.chapterId },
       });
@@ -112,7 +120,7 @@ export const PATCH = async (
       await db.muxData.create({
         data: {
           chapterId: params.chapterId,
-          videoUrl: values.videoUrl,
+          videoUrl: url,
         },
       });
     }

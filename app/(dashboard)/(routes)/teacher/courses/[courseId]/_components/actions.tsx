@@ -78,11 +78,13 @@ export const Actions = ({
       >
         {isPublished ? 'Unpublish' : 'Publish'}
       </Button>
-      <ConfirmModal onConfirm={handleDelete}>
-        <Button disabled={isLoading || hasPurchases} size="sm">
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </ConfirmModal>
+      {!hasPurchases && (
+        <ConfirmModal onConfirm={handleDelete}>
+          <Button disabled={isLoading || hasPurchases} size="sm">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </ConfirmModal>
+      )}
     </div>
   );
 };

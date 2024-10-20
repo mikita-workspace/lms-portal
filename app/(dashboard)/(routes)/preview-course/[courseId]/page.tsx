@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
@@ -73,10 +74,17 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="space-y-6 md:col-span-3">
-          <PreviewVideoPlayer
-            videoUrl={course.chapters?.[0]?.videoUrl}
-            isLocked={!course.chapters?.[0]?.isFree}
-          />
+          {course.chapters?.[0]?.imageUrl && (
+            <div className="relative aspect-w-16 aspect-h-9">
+              <Image alt="Image" fill src={course.chapters[0].imageUrl} />
+            </div>
+          )}
+          {course.chapters?.[0]?.videoUrl && (
+            <PreviewVideoPlayer
+              videoUrl={course.chapters[0].videoUrl}
+              isLocked={!course.chapters?.[0]?.isFree}
+            />
+          )}
           <PreviewDescription
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}

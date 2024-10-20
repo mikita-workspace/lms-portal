@@ -86,6 +86,7 @@ model Chapter {
   courseId     String
   createdAt    DateTime       @default(now())
   description  String?        @db.Text
+  imageUrl     String?        @db.Text
   isFree       Boolean        @default(false)
   isPublished  Boolean        @default(false)
   muxData      MuxData?

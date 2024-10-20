@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
@@ -41,14 +42,21 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
       {isLocked && <Banner label={t('banner.lock')} variant="warning" />}
       <div className="flex flex-col max-w4xl mx-auto pb-20">
         <div className="p-4">
-          <ChapterVideoPlayer
-            chapterId={params.chapterId}
-            completeOnEnd={completeOnEnd}
-            courseId={params.courseId}
-            isLocked={isLocked}
-            nextChapterId={nextChapter?.id}
-            videoUrl={muxData?.videoUrl}
-          />
+          {chapter?.videoUrl && (
+            <ChapterVideoPlayer
+              chapterId={params.chapterId}
+              completeOnEnd={completeOnEnd}
+              courseId={params.courseId}
+              isLocked={isLocked}
+              nextChapterId={nextChapter?.id}
+              videoUrl={muxData?.videoUrl}
+            />
+          )}
+          {chapter?.imageUrl && muxData?.videoUrl && (
+            <div className="relative aspect-w-16 aspect-h-9">
+              <Image alt="Image" fill src={muxData.videoUrl} />
+            </div>
+          )}
         </div>
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
