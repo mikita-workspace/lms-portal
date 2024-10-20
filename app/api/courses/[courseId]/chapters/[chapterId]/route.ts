@@ -95,8 +95,8 @@ export const PATCH = async (
       where: { id: params.chapterId, courseId: params.courseId },
       data: {
         ...values,
-        imageUrl: values.videoUrl ? '' : values.imageUrl,
-        videoUrl: values.imageUrl ? '' : values.videoUrl,
+        ...(values.imageUrl && { imageUrl: values.imageUrl, videoUrl: '' }),
+        ...(values.videoUrl && { videoUrl: values.videoUrl, imageUrl: '' }),
       },
     });
 
