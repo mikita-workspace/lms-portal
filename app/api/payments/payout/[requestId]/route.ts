@@ -7,8 +7,8 @@ import { DEFAULT_LOCALE } from '@/constants/locale';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { createWebSocketNotification } from '@/lib/notifications';
 import { isOwner } from '@/lib/owner';
-import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (
@@ -35,21 +35,15 @@ export const POST = async (
         include: { connectAccount: true },
       });
 
-      await db.notification.create({
+      await createWebSocketNotification({
+        channel: `notification_channel_${payoutRequest.connectAccount.userId}`,
         data: {
           body: t('decline.body'),
           title: t('decline.title', { payoutRequestId: payoutRequest.id }),
           userId: payoutRequest.connectAccount.userId,
         },
+        event: `private_event_${payoutRequest.connectAccount.userId}`,
       });
-
-      await pusher.trigger(
-        `notification_channel_${payoutRequest.connectAccount.userId}`,
-        `private_event_${payoutRequest.connectAccount.userId}`,
-        {
-          trigger: true,
-        },
-      );
 
       return NextResponse.json(payoutRequest);
     }
@@ -79,7 +73,8 @@ export const POST = async (
         },
       });
 
-      await db.notification.create({
+      await createWebSocketNotification({
+        channel: `notification_channel_${payoutRequest.connectAccount.userId}`,
         data: {
           body: t('paid.body', {
             amount: formatPrice(getConvertedPrice(updatedPayoutRequest.amount), {
@@ -90,15 +85,8 @@ export const POST = async (
           userId: payoutRequest.connectAccount.userId,
           title: t('paid.title', { payoutRequestId: payoutRequest.id }),
         },
+        event: `private_event_${payoutRequest.connectAccount.userId}`,
       });
-
-      await pusher.trigger(
-        `notification_channel_${payoutRequest.connectAccount.userId}`,
-        `private_event_${payoutRequest.connectAccount.userId}`,
-        {
-          trigger: true,
-        },
-      );
 
       return NextResponse.json(updatedPayoutRequest);
     }

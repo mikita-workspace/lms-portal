@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
-import { pusher } from '@/server/pusher';
+import { createWebSocketNotification } from '@/lib/notifications';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -38,31 +38,27 @@ export const POST = async (req: NextRequest) => {
     if (user) {
       const userId = user.userId;
 
-      await db.notification.create({
+      await createWebSocketNotification({
+        channel: `notification_channel_${userId}`,
         data: {
           body: t('success'),
           title: `${issue.name}`.toUpperCase(),
           userId,
         },
-      });
-
-      await pusher.trigger(`notification_channel_${userId}`, `private_event_${userId}`, {
-        trigger: true,
+        event: `private_event_${userId}`,
       });
     }
 
     const ownerId = process.env.NEXT_PUBLIC_OWNER_ID as string;
 
-    await db.notification.create({
+    await createWebSocketNotification({
+      channel: `notification_channel_${ownerId}`,
       data: {
         body: t('ownerSuccess', { user: user?.name || email }),
         title: `${issue.name}`.toUpperCase(),
         userId: ownerId,
       },
-    });
-
-    await pusher.trigger(`notification_channel_${ownerId}`, `private_event_${ownerId}`, {
-      trigger: true,
+      event: `private_event_${ownerId}`,
     });
 
     return NextResponse.json({ issueNumber: issue.name });

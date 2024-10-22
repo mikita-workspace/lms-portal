@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
-import { pusher } from '@/server/pusher';
+import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
 export const PATCH = async (req: NextRequest, { params }: { params: { userId: string } }) => {
@@ -22,20 +22,14 @@ export const PATCH = async (req: NextRequest, { params }: { params: { userId: st
     });
 
     if (notification) {
-      await db.notification.create({
+      await createWebSocketNotification({
+        channel: `notification_channel_${params.userId}`,
         data: {
           userId: params.userId,
           ...notification,
         },
+        event: `private_event_${params.userId}`,
       });
-
-      await pusher.trigger(
-        `notification_channel_${params.userId}`,
-        `private_event_${params.userId}`,
-        {
-          trigger: true,
-        },
-      );
     }
 
     return NextResponse.json(updatedUser);

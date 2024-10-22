@@ -3,8 +3,8 @@
 import { getTranslations } from 'next-intl/server';
 
 import { db } from '@/lib/db';
+import { createWebSocketNotification } from '@/lib/notifications';
 import { generatePromotionCode } from '@/lib/promo';
-import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const loginUser = async (
@@ -77,16 +77,14 @@ export const loginUser = async (
     },
   });
 
-  await db.notification.create({
+  await createWebSocketNotification({
+    channel: `notification_channel_${user.id}`,
     data: {
       body: t('welcomeBonus.body', { promotionCode: promotionCode.code }),
       title: t('welcomeBonus.title'),
       userId: user.id,
     },
-  });
-
-  await pusher.trigger(`notification_channel_${user.id}`, `private_event_${user.id}`, {
-    trigger: true,
+    event: `private_event_${user.id}`,
   });
 
   return {

@@ -6,8 +6,8 @@ import Stripe from 'stripe';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { PromoStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
+import { createWebSocketNotification } from '@/lib/notifications';
 import { isOwner } from '@/lib/owner';
-import { pusher } from '@/server/pusher';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest) => {
@@ -68,21 +68,15 @@ export const POST = async (req: NextRequest) => {
         });
 
         if (stripeCustomer) {
-          await db.notification.create({
+          await createWebSocketNotification({
+            channel: `notification_channel_${stripeCustomer.userId}`,
             data: {
               body: t('new.body', { code: promotionCode.code }),
               title: t('new.title'),
               userId: stripeCustomer.userId,
             },
+            event: `private_event_${stripeCustomer.userId}`,
           });
-
-          await pusher.trigger(
-            `notification_channel_${stripeCustomer.userId}`,
-            `private_event_${stripeCustomer.userId}`,
-            {
-              trigger: true,
-            },
-          );
         }
       }
 

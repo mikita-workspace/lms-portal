@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
-import { pusher } from '@/server/pusher';
+import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, { params }: { params: { userId: string } }) => {
@@ -48,21 +48,15 @@ export const POST = async (req: NextRequest, { params }: { params: { userId: str
     });
 
     // Notification for the bank account holder
-    await db.notification.create({
+    await createWebSocketNotification({
+      channel: `notification_channel_${process.env.NEXT_PUBLIC_OWNER_ID}`,
       data: {
         body: t('request.body', { username: user.name }),
         title: t('request.title', { payoutRequestId: payoutRequest.id }),
         userId: process.env.NEXT_PUBLIC_OWNER_ID as string,
       },
+      event: `private_event_${process.env.NEXT_PUBLIC_OWNER_ID}`,
     });
-
-    await pusher.trigger(
-      `notification_channel_${process.env.NEXT_PUBLIC_OWNER_ID}`,
-      `private_event_${process.env.NEXT_PUBLIC_OWNER_ID}`,
-      {
-        trigger: true,
-      },
-    );
 
     return NextResponse.json(payoutRequest);
   } catch (error) {
