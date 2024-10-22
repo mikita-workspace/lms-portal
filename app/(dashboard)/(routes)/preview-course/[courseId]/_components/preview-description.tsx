@@ -1,7 +1,8 @@
 'use client';
 
 import { Fee } from '@prisma/client';
-import { BookOpen } from 'lucide-react';
+import { format } from 'date-fns';
+import { BookOpen, CalendarDays } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -10,6 +11,7 @@ import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
 import { USER_TRANSLATE } from '@/constants/ai';
+import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
@@ -23,6 +25,7 @@ type PreviewDescriptionProps = {
   hasPurchase?: boolean;
   id: string;
   language: string | null;
+  lastUpdate: Date;
   price: number | null;
   title: string;
 };
@@ -37,6 +40,7 @@ export const PreviewDescription = ({
   hasPurchase,
   id,
   language,
+  lastUpdate,
   price,
   title,
 }: PreviewDescriptionProps) => {
@@ -90,6 +94,12 @@ export const PreviewDescription = ({
           ))}
         </div>
       )}
+      <div className="flex items-center gap-x-1 text-neutral-500 mb-1 mt-4">
+        <CalendarDays className="h-4 w-4" />
+        <span className="text-xs">
+          {t('lastUpdated')}&nbsp;{format(lastUpdate, TIMESTAMP_PREVIEW_TEMPLATE)}
+        </span>
+      </div>
       {!hasPurchase && (
         <div className="mt-4">
           <Price customRates={customRates} price={price} fees={fees} showFeesAccordion />

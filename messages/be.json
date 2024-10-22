@@ -109,13 +109,17 @@
     "contact": "Зьвязацца",
     "copyright": "Nova Technologies. Усе правы абаронены.",
     "creatingAccount": "Ствараючы акаўнт, вы згаджаецеся з нашымі",
-    "privacyPolices": "Палітыка прыватнасці",
-    "privacyPolicy": "Палітыка прыватнасці",
     "releaseNotes": "Заўвагі аб выпусках",
     "reportIssue": "Паведаміць аб праблеме",
-    "termsAndCondition": "Умовы і палажэнні",
-    "termsAndConditions": "Умовы і палажэнні",
-    "testModeDeclaimer": "Партал у цяперашні час знаходзіцца ў тэсціравым рэжыме. Усе плацяжы і дадзеныя фіктыўныя."
+    "testModeDeclaimer": "Партал у цяперашні час знаходзіцца ў тэсціравым рэжыме. Усе плацяжы і дадзеныя фіктыўныя.",
+    "legal": {
+      "cookiePolicy": "Палітыка файлаў Cookie",
+      "privacyPolices": "Палітыка прыватнасці",
+      "privacyPolicy": "Палітыка прыватнасці",
+      "termsAndCondition": "Умовы і палажэнні",
+      "termsAndConditions": "Умовы і палажэнні",
+      "title": "Прававая інфармацыя"
+    }
   },
   "sidebar": {
     "analytics": "Аналітыка",
@@ -231,6 +235,7 @@
       "readyToLearn": "Гатовыя пачаць вучыцца?",
       "preview": {
         "chapter": "{ amount, plural, one {# частка} few {# часткі} many {# частак} other {# частак}}",
+        "lastUpdated": "Апошняе абнаўленне ад",
         "loading": "Загрузка відэа...",
         "lock": "Гэтае папяреджанне заблакавана"
       }

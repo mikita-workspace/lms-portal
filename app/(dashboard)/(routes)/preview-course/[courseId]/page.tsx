@@ -95,6 +95,7 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
             hasPurchase={hasPurchase}
             id={course.id}
             language={course.language}
+            lastUpdate={course.updatedAt}
             price={course.price}
             title={course.title}
           />

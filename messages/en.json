@@ -109,13 +109,17 @@
     "contact": "Contact",
     "copyright": "Nova Technologies. All rights reserved.",
     "creatingAccount": "By creating an account, you agree to our",
-    "privacyPolices": "Privacy Policy",
-    "privacyPolicy": "Privacy Policy",
     "releaseNotes": "Releases notes",
     "reportIssue": " Report Issue",
-    "termsAndCondition": "Terms and Conditions",
-    "termsAndConditions": "Terms and Conditions",
-    "testModeDeclaimer": "The portal is currently in test mode. All payments and data are fictitious."
+    "testModeDeclaimer": "The portal is currently in test mode. All payments and data are fictitious.",
+    "legal": {
+      "cookiePolicy": "Cookie Policy",
+      "privacyPolices": "Privacy Policy",
+      "privacyPolicy": "Privacy Policy",
+      "termsAndCondition": "Terms and Conditions",
+      "termsAndConditions": "Terms and Conditions",
+      "title": "Legal"
+    }
   },
   "sidebar": {
     "analytics": "Analytics",
@@ -231,6 +235,7 @@
       "readyToLearn": "Ready to start learning?",
       "preview": {
         "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+        "lastUpdated": "Last Updated",
         "loading": "Loading a video...",
         "lock": "This preview is locked"
       }

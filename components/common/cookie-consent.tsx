@@ -55,7 +55,7 @@ export const CookieConsent = () => {
       <div className="fixed bottom-0 left-0 right-0 flex items-center justify-between p-6 bg-background border-t shadow-lg animate-cookie-consent-up">
         <span className="text-dark text-sm font-medium mr-16">
           {t('body')}{' '}
-          <Link href="/cookies-policy" target="_blank" className="hover:underline font-bold">
+          <Link href="/legal/cookies-policy" target="_blank" className="hover:underline font-bold">
             {t('policy')}
           </Link>
           .

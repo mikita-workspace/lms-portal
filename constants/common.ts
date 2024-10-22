@@ -10,4 +10,5 @@ export const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 export const TIMESTAMP_TEMPLATE = 'HH:mm, dd MMM yyyy';
 export const TIMESTAMP_SUBSCRIPTION_TEMPLATE = 'dd MMM yyyy';
+export const TIMESTAMP_PREVIEW_TEMPLATE = 'dd MMMM, yyyy';
 export const DATE_RANGE_TEMPLATE = 'LLL dd, y';

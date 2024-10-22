@@ -11,6 +11,7 @@ import { OWNER_EMAIL } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { LanguageSwitcher } from '../common/language-switcher';
+import { LegalMenu } from '../common/legal-menu';
 import { ThemeSwitcher } from '../common/theme-switcher';
 import { CsmModal } from '../modals/csm-modal';
 
@@ -43,19 +44,19 @@ export const Footer = ({ categories }: FooterProps) => {
                 <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
                 <span>{t('copyright')}</span>
               </div>
-              {/* Test Mode Declaimer */}
               <div className="items-end">{t('testModeDeclaimer')}</div>
             </div>
-            <div className="gap-1 md:gap-2 font-semibold flex flex-col md:flex-row">
+            <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
               <Link href="/releases">{t('releaseNotes')}</Link>
-              <Link href="/terms-and-conditions">{t('termsAndCondition')}</Link>
-              <Link href="/privacy-policy">{t('privacyPolicy')}</Link>
+              {/* <Link href="/legal/terms">{t('termsAndCondition')}</Link>
+              <Link href="/legal/privacy-policy">{t('privacyPolicy')}</Link> */}
               <CsmModal categories={categories}>
                 <span className="hover:cursor-pointer"> {t('reportIssue')}</span>
               </CsmModal>
               <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
                 {t('contact')}
               </Link>
+              <LegalMenu />
             </div>
           </div>
         </footer>

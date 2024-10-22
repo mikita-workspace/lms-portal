@@ -5,13 +5,21 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
 
+import { cn } from '@/lib/utils';
+
 type MarkdownTextProps = {
+  className?: string;
   text?: string | null;
 };
 
-export const MarkdownText = ({ text }: MarkdownTextProps) => {
+export const MarkdownText = ({ className, text }: MarkdownTextProps) => {
   return (
-    <div className="text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent">
+    <div
+      className={cn(
+        'text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent',
+        className,
+      )}
+    >
       <Markdown
         remarkPlugins={[remarkGfm]}
         components={{
