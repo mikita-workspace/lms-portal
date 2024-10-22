@@ -46,6 +46,12 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
     include: {
       chapters: {
         orderBy: { position: 'asc' },
+        take: 1,
+      },
+      user: {
+        select: {
+          name: true,
+        },
       },
       category: true,
     },
@@ -86,6 +92,7 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
             />
           )}
           <PreviewDescription
+            author={course?.user?.name}
             categories={[course.category!.name]}
             chaptersLength={course.chapters.length}
             customRates={course.customRates}

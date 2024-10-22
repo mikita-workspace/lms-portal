@@ -234,6 +234,7 @@
       "loginToContinue": "Login to continue",
       "readyToLearn": "Ready to start learning?",
       "preview": {
+        "author": "Course author { author }",
         "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
         "lastUpdated": "Last Updated",
         "loading": "Loading a video...",

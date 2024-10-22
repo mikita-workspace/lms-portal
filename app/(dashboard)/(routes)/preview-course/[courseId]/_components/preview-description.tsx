@@ -2,7 +2,7 @@
 
 import { Fee } from '@prisma/client';
 import { format } from 'date-fns';
-import { BookOpen, CalendarDays } from 'lucide-react';
+import { BookA, BookOpen, CalendarDays } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -16,6 +16,7 @@ import { ChatCompletionRole } from '@/constants/open-ai';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
+  author?: string | null;
   categories: string[];
   chaptersLength: number;
   customRates: string | null;
@@ -31,6 +32,7 @@ type PreviewDescriptionProps = {
 };
 
 export const PreviewDescription = ({
+  author,
   categories,
   chaptersLength,
   customRates,
@@ -94,11 +96,19 @@ export const PreviewDescription = ({
           ))}
         </div>
       )}
-      <div className="flex items-center gap-x-1 text-neutral-500 mb-1 mt-4">
-        <CalendarDays className="h-4 w-4" />
-        <span className="text-xs">
-          {t('lastUpdated')}&nbsp;{format(lastUpdate, TIMESTAMP_PREVIEW_TEMPLATE)}
-        </span>
+      <div className="mt-4 gap-y-1">
+        {author && (
+          <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
+            <BookA className="h-4 w-4" />
+            <span className="text-xs">{t('author', { author })}</span>
+          </div>
+        )}
+        <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
+          <CalendarDays className="h-4 w-4" />
+          <span className="text-xs">
+            {t('lastUpdated')}&nbsp;{format(lastUpdate, TIMESTAMP_PREVIEW_TEMPLATE)}
+          </span>
+        </div>
       </div>
       {!hasPurchase && (
         <div className="mt-4">

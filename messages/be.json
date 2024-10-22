@@ -234,6 +234,7 @@
       "loginToContinue": "Увайдзеце, каб працягнуць",
       "readyToLearn": "Гатовыя пачаць вучыцца?",
       "preview": {
+        "author": "Аўтар курсу { author }",
         "chapter": "{ amount, plural, one {# частка} few {# часткі} many {# частак} other {# частак}}",
         "lastUpdated": "Апошняе абнаўленне ад",
         "loading": "Загрузка відэа...",

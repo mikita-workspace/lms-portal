@@ -233,6 +233,7 @@
       "loginToContinue": "Войдите, чтобы продолжить",
       "readyToLearn": "Готовы начать обучение?",
       "preview": {
+        "author": "Автор курса { author }",
         "chapter": "{ amount, plural, one {# часть} few {# части} many {# частей} other {# частей}}",
         "lastUpdated": "Последнее обновление от",
         "loading": "Загрузка видео...",
