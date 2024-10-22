@@ -20,13 +20,22 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { getSortedCategories } from '@/lib/csm';
 import { fetcher } from '@/lib/fetcher';
 
 import { Editor } from '../common/editor';
 import { FileDownload } from '../common/file-download';
 import { FileUpload } from '../common/file-upload';
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui';
+import {
+  Button,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui';
 import { useToast } from '../ui/use-toast';
 
 type CsmModalProps = {
@@ -37,11 +46,14 @@ type CsmModalProps = {
 const formSchema = z.object({
   categoryId: z.string().min(1),
   description: z.string().min(1),
+  email: z.string().email().min(1),
   files: z.array(z.object({ url: z.string(), name: z.string() })),
 });
 
 export const CsmModal = ({ categories, children }: CsmModalProps) => {
   const t = useTranslations('csm-modal');
+
+  const { user } = useCurrentUser();
 
   const { toast } = useToast();
   const router = useRouter();
@@ -49,6 +61,7 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      email: user?.email ?? '',
       categoryId: '',
       description: '',
       files: [],
@@ -96,6 +109,19 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-4 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <Input
+                    {...field}
+                    disabled={isSubmitting || Boolean(user?.userId)}
+                    placeholder={t('enterEmail')}
+                  />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="categoryId"

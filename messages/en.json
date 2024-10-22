@@ -80,6 +80,7 @@
     "attachments": "Attachments",
     "body": "Provide a detailed description of the bug including steps to reproduce it, expected behavior, and actual behavior. Include any relevant information or observations.",
     "cancel": "Cancel",
+    "enterEmail": "Enter your email",
     "notFound": "No attachments",
     "selectReason": "Choose a reason",
     "submit": "Submit",

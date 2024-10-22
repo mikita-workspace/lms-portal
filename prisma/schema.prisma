@@ -277,6 +277,7 @@ model CsmIssue {
   categoryId  String?
   createdAt   DateTime        @default(now())
   description String
+  email       String?
   name        String
   status      CsmStatus       @default(new)
   updatedAt   DateTime        @updatedAt

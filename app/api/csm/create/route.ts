@@ -12,7 +12,7 @@ export const POST = async (req: NextRequest) => {
 
     const user = await getCurrentUser();
 
-    const { categoryId, description, files } = await req.json();
+    const { email, categoryId, description, files } = await req.json();
 
     const lastIssueInDb = await db.csmIssue.findMany({ orderBy: { createdAt: 'desc' }, take: 1 });
     const issueNumber = `CSM-${lastIssueInDb.length ? Number(lastIssueInDb[0].name.split('-')[1]) + 1 : 1}`;
@@ -21,6 +21,7 @@ export const POST = async (req: NextRequest) => {
       data: {
         categoryId,
         description,
+        email,
         name: issueNumber,
         userId: user?.userId,
       },
@@ -54,7 +55,7 @@ export const POST = async (req: NextRequest) => {
 
     await db.notification.create({
       data: {
-        body: t('ownerSuccess', { user: user?.name || 'User' }),
+        body: t('ownerSuccess', { user: user?.name || email }),
         title: `${issue.name}`.toUpperCase(),
         userId: ownerId,
       },
