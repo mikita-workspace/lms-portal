@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import { MarkdownText } from '@/components/common/markdown-text';
-import { getLegalsDocument } from '@/lib/legals';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -9,7 +8,10 @@ export const metadata: Metadata = {
 };
 
 const PrivacyPolicyPage = async () => {
-  const content = getLegalsDocument('privacy-policy');
+  const res = await fetch(
+    'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/docs/privacy-policy.md',
+  );
+  const content = await res.text();
 
   return (
     <div className="p-6 flex flex-col mb-6">

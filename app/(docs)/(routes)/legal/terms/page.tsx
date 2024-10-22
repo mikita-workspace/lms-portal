@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import { MarkdownText } from '@/components/common/markdown-text';
-import { getLegalsDocument } from '@/lib/legals';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -9,8 +8,10 @@ export const metadata: Metadata = {
 };
 
 const TermsAndConditionsPage = async () => {
-  const content = getLegalsDocument('terms');
-
+  const res = await fetch(
+    'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/docs/terms.md',
+  );
+  const content = await res.text();
   return (
     <div className="p-6 flex flex-col mb-6">
       <div className="w-full flex justify-center">
