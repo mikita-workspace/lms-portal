@@ -4,7 +4,6 @@ import { getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { AuthForm } from '@/components/auth/auth-form';
 import { LanguageSwitcher } from '@/components/common/language-switcher';
-import { LegalMenu } from '@/components/common/legal-menu';
 import { Logo } from '@/components/common/logo';
 import { ThemeSwitcher } from '@/components/common/theme-switcher';
 
@@ -35,12 +34,9 @@ const SignInPage = async () => {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <AuthForm />
         </div>
-        <div className="fixed flex flex-col bottom-0 right-0 mb-6 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
-          <div className="flex gap-x-2">
-            <LanguageSwitcher />
-            <ThemeSwitcher />
-          </div>
-          <LegalMenu />
+        <div className="fixed flex gap-x-2 bottom-0 right-0 mb-6 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
+          <LanguageSwitcher />
+          <ThemeSwitcher />
         </div>
       </div>
     </div>
