@@ -35,7 +35,9 @@ export const Logo = ({ isChat = false, onlyDarkMode = false, onlyLogoIcon = fals
           >
             {t('name')}
           </p>
-          <p className="text-xs text-muted-foreground">{t('description')}</p>
+          <p className={cn(onlyDarkMode ? 'text-neutral-400' : 'text-muted-foreground', 'text-xs')}>
+            {t('description')}
+          </p>
         </div>
       )}
     </div>
