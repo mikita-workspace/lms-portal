@@ -1,19 +1,17 @@
 import { usePathname, useRouter } from 'next/navigation';
 import qs from 'query-string';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+
+import { useHydration } from './use-hydration';
 
 export const useSearchLineParams = (
   searchParams: Record<string, string | number | null>,
   ignore = false,
 ) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const { isMounted } = useHydration();
 
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     if (ignore) {

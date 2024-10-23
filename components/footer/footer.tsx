@@ -48,8 +48,6 @@ export const Footer = ({ categories }: FooterProps) => {
             </div>
             <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
               <Link href="/releases">{t('releaseNotes')}</Link>
-              {/* <Link href="/legal/terms">{t('termsAndCondition')}</Link>
-              <Link href="/legal/privacy-policy">{t('privacyPolicy')}</Link> */}
               <CsmModal categories={categories}>
                 <span className="hover:cursor-pointer"> {t('reportIssue')}</span>
               </CsmModal>

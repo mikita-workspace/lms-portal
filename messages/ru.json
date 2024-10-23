@@ -16,7 +16,7 @@
     "reload": "Перезагрузить",
     "title": "Упс"
   },
-  "auth-modal": {
+  "auth-form": {
     "alreadyHaveAnAccount": "Уже есть аккаунт?",
     "continueWith": "Продолжить с { provider }",
     "doNotHaveAnAccount": "Нет аккаунта?",
@@ -250,6 +250,8 @@
     "releasesNotes": "Выпуски платформы"
   },
   "signIn": {
+    "citeAuthor": "Сократ",
+    "citeBody": "Чем больше я учусь, тем больше я понимаю, как мало я знаю.",
     "body": "Чтобы просмотреть, авторизуйтесь.",
     "login": "Войти",
     "title": "Эта страница защищена."

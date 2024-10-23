@@ -8,6 +8,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { changeLocale } from '@/actions/locale/change-locale';
 import { LOCALE, SUPPORTED_LOCALES } from '@/constants/locale';
+import { useHydration } from '@/hooks/use-hydration';
 
 import {
   DropdownMenuItem,
@@ -17,6 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from '../ui';
 type LanguageSwitcherProps = {
   isMenu?: boolean;
@@ -27,6 +29,12 @@ export const LanguageSwitcher = ({ isMenu = false }: LanguageSwitcherProps) => {
 
   const locale = useLocale();
   const router = useRouter();
+
+  const { isMounted } = useHydration();
+
+  if (!isMounted) {
+    return <Skeleton className="h-[35px] w-[120px]" />;
+  }
 
   const handleLanguage = async (lang: string) => {
     await changeLocale(lang);

@@ -16,7 +16,7 @@
     "reload": "Перазагрузіць",
     "title": "Выбачайце"
   },
-  "auth-modal": {
+  "auth-form": {
     "alreadyHaveAnAccount": "Ужо ёсць акаўнт?",
     "continueWith": "Працягнуць з { provider }",
     "doNotHaveAnAccount": "Няма акаўнта?",
@@ -251,6 +251,8 @@
     "releasesNotes": "Заўвагі аб выпусках"
   },
   "signIn": {
+    "citeAuthor": "Сакрат",
+    "citeBody": "Чым больш я вучуся, тым больш я разумею, як мала я ведаю.",
     "body": "Каб праглядзець, калі ласка, увайдзеце.",
     "login": "Увайсці",
     "title": "Гэтае змест абаронены."

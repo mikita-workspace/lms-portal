@@ -9,10 +9,11 @@ const baloo2 = Baloo_2({ subsets: ['latin'], weight: ['400', '500'] });
 
 type LogoProps = {
   isChat?: boolean;
+  onlyDarkMode?: boolean;
   onlyLogoIcon?: boolean;
 };
 
-export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
+export const Logo = ({ isChat = false, onlyDarkMode = false, onlyLogoIcon = false }: LogoProps) => {
   const t = useTranslations('app');
 
   const Logo = () => (
@@ -26,7 +27,12 @@ export const Logo = ({ isChat = false, onlyLogoIcon = false }: LogoProps) => {
       <Image src="/assets/logo.svg" alt={`${t('name')} Logo`} height={40} width={40} />
       {!onlyLogoIcon && (
         <div className={cn(baloo2.className, isChat && 'hidden md:block')}>
-          <p className="font-semibold text-base text-neutral-700 dark:text-neutral-300">
+          <p
+            className={cn(
+              'font-semibold text-base',
+              onlyDarkMode ? 'text-neutral-300' : 'text-neutral-700 dark:text-neutral-300',
+            )}
+          >
             {t('name')}
           </p>
           <p className="text-xs text-muted-foreground">{t('description')}</p>

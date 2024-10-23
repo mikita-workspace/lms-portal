@@ -6,6 +6,7 @@ import { GripVertical, Pencil } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
+import { useHydration } from '@/hooks/use-hydration';
 import { cn } from '@/lib/utils';
 
 type ChaptersListProps = {
@@ -15,12 +16,9 @@ type ChaptersListProps = {
 };
 
 export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) => {
-  const [isMounted, setIsMounted] = useState(false);
   const [chapters, setChapters] = useState(items);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { isMounted } = useHydration();
 
   useEffect(() => {
     setChapters(items);

@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 
+import { useHydration } from '@/hooks/use-hydration';
+
 import {
   DropdownMenuItem,
   Select,
@@ -13,6 +15,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from '../ui';
 
 type ThemeSwitcherProps = {
@@ -21,6 +24,8 @@ type ThemeSwitcherProps = {
 
 export const ThemeSwitcher = ({ isMenu = false }: ThemeSwitcherProps) => {
   const t = useTranslations('switcher');
+
+  const { isMounted } = useHydration();
 
   const { theme, setTheme } = useTheme();
 
@@ -31,6 +36,10 @@ export const ThemeSwitcher = ({ isMenu = false }: ThemeSwitcherProps) => {
 
     return theme === 'light' ? Sun : MoonStar;
   }, [theme]);
+
+  if (!isMounted) {
+    return <Skeleton className="h-[35px] w-[120px]" />;
+  }
 
   const handleTheme = (theme: string) => setTheme(theme);
 

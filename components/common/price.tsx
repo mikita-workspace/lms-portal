@@ -2,8 +2,8 @@
 
 import { Fee } from '@prisma/client';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
 
+import { useHydration } from '@/hooks/use-hydration';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Skeleton } from '../ui';
@@ -40,11 +40,7 @@ export const Price = ({
     useDefaultLocale,
   });
 
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { isMounted } = useHydration();
 
   if (!isMounted) {
     return <Skeleton className="h-[20px] w-[100px]" />;

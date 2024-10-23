@@ -2,10 +2,11 @@
 
 import { ArrowRight, MoreHorizontal, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
+import { useHydration } from '@/hooks/use-hydration';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
@@ -30,12 +31,9 @@ export const CourseEnrollButton = ({
   const localeInfo = useLocaleStore((state) => state.localeInfo);
   const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
 
-  const [isFetching, setIsFetching] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const { isMounted } = useHydration();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleClick = async () => {
     setIsFetching(true);

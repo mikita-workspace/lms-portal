@@ -1,12 +1,13 @@
 'use client';
 
 import { getTime } from 'date-fns';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useRef, useState } from 'react';
 
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
+import { useHydration } from '@/hooks/use-hydration';
 import { fetcher } from '@/lib/fetcher';
 
 import { ChatBody } from './chat-body';
@@ -24,17 +25,13 @@ export const Chat = ({ initialData }: ChatProps) => {
 
   const { currentModel, messages, setMessages } = useChatStore();
 
-  const [isMounted, setIsMounted] = useState(false);
+  const { isMounted } = useHydration();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
   const [assistantMessage, setAssistantMessage] = useState('');
 
   const abortControllerRef = useRef<AbortController | null>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!isMounted) {
     return <ChatSkeleton />;

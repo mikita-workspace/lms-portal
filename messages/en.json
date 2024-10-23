@@ -16,7 +16,7 @@
     "reload": "Reload",
     "title": "Oops"
   },
-  "auth-modal": {
+  "auth-form": {
     "alreadyHaveAnAccount": "Already have an account?",
     "continueWith": "Continue with { provider }",
     "doNotHaveAnAccount": "Do not have an account?",
@@ -251,6 +251,8 @@
     "releasesNotes": "Releases notes"
   },
   "signIn": {
+    "citeAuthor": "Socrates",
+    "citeBody": "The more I study, the more I realize how little I know.",
     "body": "To view, please login.",
     "login": "Login",
     "title": "This content is protected."
