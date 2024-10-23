@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { MarkdownText } from '@/components/common/markdown-text';
+import { docs } from '@/constants/docs';
+import { fetcher } from '@/lib/fetcher';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -12,10 +14,9 @@ export const metadata: Metadata = {
 
 const TermsAndConditionsPage = async () => {
   const t = await getTranslations('docs');
-  const res = await fetch(
-    'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/docs/terms.md',
-  );
-  const content = await res.text();
+
+  const content = await fetcher.get(docs['terms'], { responseType: 'text' });
+
   return (
     <div className="p-6 flex flex-col mb-6">
       <div className="w-full flex flex-col items-center">

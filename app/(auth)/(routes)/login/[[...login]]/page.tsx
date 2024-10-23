@@ -19,7 +19,7 @@ const SignInPage = async () => {
   return (
     <div className="container relative max-w-[445px] h-full flex flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-        <div className="absolute inset-0 bg-zinc-900" />
+        <div className="absolute inset-0 bg-[url('/assets/login-bg.svg')] bg-no-repeat bg-cover" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           <Logo onlyDarkMode />
         </div>

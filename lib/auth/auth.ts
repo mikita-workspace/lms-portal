@@ -5,7 +5,7 @@ import { providers } from './providers';
 
 export const authOptions = {
   pages: {
-    signIn: '/sign-in',
+    signIn: '/login',
   },
   providers,
   callbacks,

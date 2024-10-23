@@ -19,6 +19,7 @@ const legalLinks = [
   { key: 'cookiePolicy', href: '/legal/cookies-policy' },
   { key: 'termsAndCondition', href: '/legal/terms' },
   { key: 'privacyPolicy', href: '/legal/privacy-policy' },
+  { key: 'releasesNotes', href: '/legal/releases' },
 ];
 
 export const LegalMenu = () => {
@@ -33,9 +34,9 @@ export const LegalMenu = () => {
           <ChevronDown className="h-3 w-3" />
         </div>
       </DrawerTrigger>
-      <DrawerContent className="p-2 mb-2 gap-y-1">
+      <DrawerContent className="p-2 mb-2 gap-y-1 text-sm">
         {legalLinks.map(({ key, href }) => (
-          <div key={key} className="hover:bg-muted hover:cursor-pointer p-2 rounded-md mt-2">
+          <div key={key} className="hover:bg-muted hover:cursor-pointer p-4 rounded-md mt-2">
             <Link href={href}>{t(key)}</Link>
           </div>
         ))}

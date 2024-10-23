@@ -34,32 +34,36 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
           {t('backNav')}
         </Link>
       </div>
-      <h1 className="text-2xl font-medium mb-12">{t('releasesNotes')}</h1>
-      {releases.map((release) => (
-        <div className="mb-8" key={release.name}>
-          <div className="flex flex-col mb-4">
-            {release.html_url && (
-              <Link href={release.html_url} target="_blank">
-                <h2 className="font-bold text-xl">{release.name}</h2>
-              </Link>
+      <div className="w-full flex flex-col items-center">
+        {releases.map((release, index) => (
+          <div className="mb-8" key={release.name}>
+            {index === 0 && (
+              <h1 className="text-2xl font-bold mb-8 self-start">{t('releasesNotes')}</h1>
             )}
-            {release.publishedAt && (
-              <p className="text-sm text-muted-foreground mb-4">
-                {format(release.publishedAt, TIMESTAMP_TEMPLATE)}
-              </p>
-            )}
-            {release.zipUrl && (
-              <Link href={release.zipUrl}>
-                <Button variant="outline">
-                  <Download className="h-4 w-4 mr-2" />
-                  {t('download')}
-                </Button>
-              </Link>
-            )}
+            <div className="flex flex-col mb-4">
+              {release.html_url && (
+                <Link href={release.html_url} target="_blank">
+                  <h2 className="font-bold text-xl">{release.name}</h2>
+                </Link>
+              )}
+              {release.publishedAt && (
+                <p className="text-sm text-muted-foreground mb-4">
+                  {format(release.publishedAt, TIMESTAMP_TEMPLATE)}
+                </p>
+              )}
+              {release.zipUrl && (
+                <Link href={release.zipUrl}>
+                  <Button variant="outline">
+                    <Download className="h-4 w-4 mr-2" />
+                    {t('download')}
+                  </Button>
+                </Link>
+              )}
+            </div>
+            <MarkdownText className="max-w-screen-md" text={release.body} />
           </div>
-          <MarkdownText text={release.body} />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

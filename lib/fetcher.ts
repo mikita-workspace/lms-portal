@@ -4,7 +4,7 @@ type FetchMethod = (
     body?: Record<string, unknown>;
     cache?: RequestCache;
     headers?: HeadersInit;
-    responseType?: 'json' | 'stream';
+    responseType?: 'json' | 'stream' | 'text';
     signal?: AbortSignal;
   },
 ) => Promise<any>;
@@ -15,6 +15,12 @@ class Fetcher {
       const res = await fetch(url);
 
       return await res.json();
+    }
+
+    if (options?.responseType === 'text') {
+      const res = await fetch(url);
+
+      return await res.text();
     }
 
     return fetch(url);

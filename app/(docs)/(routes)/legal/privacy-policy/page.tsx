@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { MarkdownText } from '@/components/common/markdown-text';
+import { docs } from '@/constants/docs';
+import { fetcher } from '@/lib/fetcher';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -13,10 +15,7 @@ export const metadata: Metadata = {
 const PrivacyPolicyPage = async () => {
   const t = await getTranslations('docs');
 
-  const res = await fetch(
-    'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/docs/privacy-policy.md',
-  );
-  const content = await res.text();
+  const content = await fetcher.get(docs['privacy-policy'], { responseType: 'text' });
 
   return (
     <div className="p-6 flex flex-col mb-6">
