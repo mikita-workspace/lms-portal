@@ -3,7 +3,7 @@
 import { getLocale } from 'next-intl/server';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
-import { ONE_DAY_SEC } from '@/constants/common';
+import { TEN_MINUTE_SEC } from '@/constants/common';
 import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetchCachedData } from '@/lib/cache';
 import { openai } from '@/server/openai';
@@ -33,7 +33,7 @@ export const getLoginCite = async () => {
 
         return response;
       },
-      ONE_DAY_SEC,
+      TEN_MINUTE_SEC,
     );
 
     const generatedQuote = JSON.parse(response.choices[0].message.content || '{}');
