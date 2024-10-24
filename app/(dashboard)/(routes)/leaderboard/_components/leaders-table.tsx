@@ -1,6 +1,6 @@
 'use client';
 
-import { CupSoda } from 'lucide-react';
+import { Coffee } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Leader } from '@/actions/courses/get-leaders';
@@ -52,7 +52,7 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
         {currentLeader && (
           <TableRow className="border-4">
             <TableCell className="font-medium">
-              <CupSoda className="w-4 h-4" />
+              <Coffee className="w-4 h-4" />
             </TableCell>
             <TableCell>
               <LeaderItem leader={currentLeader} userId={userId} />
