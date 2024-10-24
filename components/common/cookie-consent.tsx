@@ -18,7 +18,7 @@ export const CookieConsent = () => {
   const [shownConsent, setShownConsent] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
-  const isCookiesPolicyPage = pathname.startsWith('/cookies-policy');
+  const isCookiesPolicyPage = pathname.startsWith('/legal/cookies-policy');
 
   useEffect(() => {
     const hasShownContent = hasCookie('cookie-consent');
