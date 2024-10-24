@@ -115,7 +115,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
             </div>
           )}
           {initialData?.imageUrl && (
-            <div className="relative aspect-w-16 aspect-h-9 mt-4">
+            <div className="relative aspect-w-16 aspect-h-9 mt-4 border">
               <Image
                 alt="Upload"
                 className="object-cover rounded-md"

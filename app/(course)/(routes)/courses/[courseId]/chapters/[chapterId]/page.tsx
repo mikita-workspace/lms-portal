@@ -53,7 +53,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
             />
           )}
           {chapter?.imageUrl && muxData?.videoUrl && (
-            <div className="relative aspect-w-16 aspect-h-9">
+            <div className="relative aspect-w-16 aspect-h-9 border">
               <Image alt="Image" fill src={muxData.videoUrl} />
             </div>
           )}

@@ -81,7 +81,7 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <div className="space-y-6 md:col-span-3">
           {course.chapters?.[0]?.imageUrl && (
-            <div className="relative aspect-w-16 aspect-h-9">
+            <div className="relative aspect-w-16 aspect-h-9 border">
               <Image alt="Image" fill src={course.chapters[0].imageUrl} />
             </div>
           )}
