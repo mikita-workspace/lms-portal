@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getLoginCite } from '@/actions/auth/get-login-cite';
 import { AuthForm } from '@/components/auth/auth-form';
 import { LanguageSwitcher } from '@/components/common/language-switcher';
 import { Logo } from '@/components/common/logo';
@@ -14,6 +15,8 @@ const SignInPage = async () => {
     return redirect('/');
   }
 
+  const { author, model, quote } = await getLoginCite();
+
   const t = await getTranslations('signIn');
 
   return (
@@ -25,9 +28,10 @@ const SignInPage = async () => {
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
-            <p className="text-lg">&ldquo;{t('citeBody')}&rdquo;</p>
-            <footer className="text-sm">{t('citeAuthor')}</footer>
+            <p className="text-lg">&ldquo;{quote ?? t('citeBody')}&rdquo;</p>
+            <footer className="text-sm">{author ?? t('citeAuthor')}</footer>
           </blockquote>
+          <p className="text-xs mt-2 text-muted-foreground">{t('generated', { model })}</p>
         </div>
       </div>
       <div className="lg:p-8">
