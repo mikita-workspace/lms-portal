@@ -23,7 +23,7 @@ export const OAuthButton = ({
   setIsDisabled,
   ...props
 }: OAuthButton) => {
-  const t = useTranslations('auth-modal');
+  const t = useTranslations('auth-form');
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
