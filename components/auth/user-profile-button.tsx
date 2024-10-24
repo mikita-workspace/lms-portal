@@ -13,7 +13,6 @@ import { LanguageSwitcher } from '../common/language-switcher';
 import { ProgressBar } from '../common/progress-bar';
 import { TextBadge } from '../common/text-badge';
 import { ThemeSwitcher } from '../common/theme-switcher';
-import { AuthModal } from '../modals/auth-modal';
 import {
   Avatar,
   AvatarFallback,
@@ -26,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui';
+import { AuthRedirect } from './auth-redirect';
 import { LogoutButton } from './logout-button';
 
 type UserProfileButtonProps = {
@@ -126,11 +126,11 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <AuthModal>
+    <AuthRedirect>
       <Button variant="outline">
         <LogIn className="h-4 w-4 mr-2" />
         {t('login')}
       </Button>
-    </AuthModal>
+    </AuthRedirect>
   );
 };

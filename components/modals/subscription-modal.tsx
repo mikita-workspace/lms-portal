@@ -18,10 +18,10 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 
+import { AuthRedirect } from '../auth/auth-redirect';
 import { Price } from '../common/price';
 import { TextBadge } from '../common/text-badge';
 import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from '../ui';
-import { AuthModal } from './auth-modal';
 
 type SubscriptionModalProps = {
   description: StripeSubscriptionDescription[];
@@ -152,12 +152,12 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
               </Button>
             )}
             {!user?.userId && (
-              <AuthModal>
+              <AuthRedirect>
                 <Button className="w-full">
                   {t('loginToContinue')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-              </AuthModal>
+              </AuthRedirect>
             )}
           </DialogFooter>
         </form>

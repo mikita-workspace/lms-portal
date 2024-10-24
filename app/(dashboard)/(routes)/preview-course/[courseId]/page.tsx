@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { AuthRedirect } from '@/components/auth/auth-redirect';
 import { CourseEnrollButton } from '@/components/common/course-enroll-button';
-import { AuthModal } from '@/components/modals/auth-modal';
 import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
@@ -134,12 +134,12 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
                   {hasPurchase && <ContinueButton redirectUrl={`/courses/${params.courseId}`} />}
                 </>
               ) : (
-                <AuthModal>
+                <AuthRedirect>
                   <Button className="w-full truncate" variant="outline">
                     {t('loginToContinue')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                </AuthModal>
+                </AuthRedirect>
               )}
             </div>
           </div>
