@@ -19,7 +19,7 @@ export const TermsAndPrivacy = () => {
   );
 
   return (
-    <p className="text-xs text-muted-foreground mt-4">
+    <p className="text-xs text-muted-foreground mt-4 text-center">
       {t('creatingAccount')} {termsUrl} {t('and')} {privacyUrl}.
     </p>
   );

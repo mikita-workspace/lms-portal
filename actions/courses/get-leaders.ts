@@ -7,7 +7,7 @@ import { db } from '@/lib/db';
 
 import { getUserSubscription } from '../stripe/get-user-subscription';
 
-type Leaders = {
+export type Leader = {
   hasSubscription?: boolean;
   name: string;
   picture: string | null;
@@ -35,6 +35,7 @@ export const getLeaders = async () => {
 
   const users = await db.user.findMany({
     where: { id: { in: userIds }, isPublic: true },
+    select: { id: true, name: true, pictureUrl: true },
   });
 
   const userSubscriptions = await Promise.all(
@@ -46,7 +47,7 @@ export const getLeaders = async () => {
   );
 
   return Object.entries(groupedByUser)
-    .reduce<Leaders[]>((acc, [userId, items]) => {
+    .reduce<Leader[]>((acc, [userId, items]) => {
       const userInfo = users.find((user) => user.id === userId);
 
       if (userInfo) {

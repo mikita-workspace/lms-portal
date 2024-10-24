@@ -1,12 +1,11 @@
 'use client';
 
+import { CupSoda } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { Leader } from '@/actions/courses/get-leaders';
 import { TextBadge } from '@/components/common/text-badge';
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Table,
   TableBody,
   TableCaption,
@@ -15,24 +14,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import { getFallbackName } from '@/lib/utils';
+
+import { LeaderItem } from './leader-item';
 
 type LeadersTableProps = {
-  leaders: {
-    name: string;
-    hasSubscription?: boolean;
-    picture: string | null;
-    userId: string;
-    xp: number;
-  }[];
+  leaders: Leader[];
   userId?: string;
 };
 
 export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
   const t = useTranslations('leaderboard');
 
-  const filteredLeaders = leaders.filter((leader) => leader.userId !== userId);
-  const currentLeader = leaders.find((leader) => leader.userId === userId);
+  const [filteredLeaders, currentLeader] = leaders.reduce<[Leader[], Leader | null]>(
+    ([filteredLeaders, currentLeader], leader) => {
+      if (leader.userId !== userId) {
+        filteredLeaders.push(leader);
+      } else {
+        currentLeader = leader;
+      }
+
+      return [filteredLeaders, currentLeader];
+    },
+    [[], null],
+  );
 
   return (
     <Table className="w-full md:w-4/5 mx-auto">
@@ -45,23 +49,24 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {[...(currentLeader ? [currentLeader] : []), ...filteredLeaders].map((leader, index) => (
+        {currentLeader && (
+          <TableRow className="border-4">
+            <TableCell className="font-medium">
+              <CupSoda className="w-4 h-4" />
+            </TableCell>
+            <TableCell>
+              <LeaderItem leader={currentLeader} userId={userId} />
+            </TableCell>
+            <TableCell className="text-right">
+              <TextBadge label={String(currentLeader.xp)} variant="yellow" />
+            </TableCell>
+          </TableRow>
+        )}
+        {filteredLeaders.map((leader, index) => (
           <TableRow key={leader.userId} className="space-y-6">
             <TableCell className="font-medium">{index + 1}</TableCell>
             <TableCell>
-              <div className="flex space-x-2 items-center">
-                <div>
-                  <Avatar className="border dark:border-muted-foreground">
-                    <AvatarImage src={leader.picture || ''} />
-                    <AvatarFallback>{getFallbackName(leader.name as string)}</AvatarFallback>
-                  </Avatar>
-                </div>
-                <div className="flex space-x-2 items-center">
-                  <p className="text-small font-semibold">{leader.name}</p>
-                  {leader.userId === userId && <TextBadge label={t('you')} variant="indigo" />}
-                  {leader.hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
-                </div>
-              </div>
+              <LeaderItem leader={leader} />
             </TableCell>
             <TableCell className="text-right">
               <TextBadge label={String(leader.xp)} variant="yellow" />
