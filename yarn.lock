@@ -6622,7 +6622,7 @@ __metadata:
     react-icons: "npm:^5.0.1"
     react-leaflet: "npm:^4.2.1"
     react-markdown: "npm:^9.0.1"
-    react-player: "npm:^2.14.1"
+    react-player: "npm:^2.16.0"
     react-quill: "npm:^2.0.0"
     react-responsive: "npm:^10.0.0"
     react-scroll-to-bottom: "npm:^4.2.0"
@@ -8867,9 +8867,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-player@npm:^2.14.1":
-  version: 2.14.1
-  resolution: "react-player@npm:2.14.1"
+"react-player@npm:^2.16.0":
+  version: 2.16.0
+  resolution: "react-player@npm:2.16.0"
   dependencies:
     deepmerge: "npm:^4.0.0"
     load-script: "npm:^1.0.0"
@@ -8878,7 +8878,7 @@ __metadata:
     react-fast-compare: "npm:^3.0.1"
   peerDependencies:
     react: ">=16.6.0"
-  checksum: 10c0/dbd8e5989f0039c8bfa08c222469719e7f7e35d0c8de5e3b260f1d30e3d6ca5e652515f31a50da65b109be87a3b63b8088b6bed18e179700a569b0074c3429bb
+  checksum: 10c0/ee0f4cd3bd468b28af38dbbb65cae1659218153956f43c0bdd15cd8b38aaaf151deec43b93b7dd887c0ac28242a4ba7e9d01823351e78ba60ae04d5fb51defb4
   languageName: node
   linkType: hard
 

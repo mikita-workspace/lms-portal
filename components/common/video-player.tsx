@@ -23,18 +23,17 @@ export const VideoPlayer = ({
   const isGoogleDrivePlayer = videoUrl.includes('drive.google.com');
   const isGoogleSlidesPlayer = videoUrl.includes('docs.google.com');
   const isVKPlayer = videoUrl.includes('vk.com');
-  const isYoutubePlayer = videoUrl.includes('youtube.com');
 
   const url = new URL(videoUrl);
 
-  if (isGoogleDrivePlayer || isGoogleSlidesPlayer || isYoutubePlayer || isVKPlayer) {
+  if (isGoogleDrivePlayer || isGoogleSlidesPlayer || isVKPlayer) {
     if (autoPlay && !isGoogleDrivePlayer) {
       url.searchParams.append('autoplay', '1');
     }
 
     return (
       <iframe
-        allow="autoplay"
+        allow="autoplay screen-wake-lock=*"
         allowFullScreen
         className="border-0"
         height="100%"

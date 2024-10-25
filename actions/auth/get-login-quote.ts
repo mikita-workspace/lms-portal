@@ -8,12 +8,12 @@ import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetchCachedData } from '@/lib/cache';
 import { openai } from '@/server/openai';
 
-export const getLoginCite = async () => {
+export const getLoginQuote = async () => {
   const locale = await getLocale();
 
   try {
     const response = await fetchCachedData(
-      `login-cite-[${locale}]`,
+      `login-quote-[${locale}]`,
       async () => {
         const response = await openai.chat.completions.create({
           messages: [

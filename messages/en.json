@@ -253,8 +253,8 @@
   },
   "signIn": {
     "body": "To view, please login.",
-    "citeAuthor": "Socrates",
-    "citeBody": "The more I study, the more I realize how little I know.",
+    "quoteAuthor": "Socrates",
+    "quoteBody": "The more I study, the more I realize how little I know.",
     "generated": "Generated using Nova AI ({ model })",
     "login": "Login",
     "title": "This content is protected."
