@@ -22,12 +22,21 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
 
   const user = await getCurrentUser();
 
-  const { chapter, course, language, muxData, attachments, nextChapter, userProgress, purchase } =
-    await getChapter({
-      chapterId: params.chapterId,
-      courseId: params.courseId,
-      userId: user!.userId,
-    });
+  const {
+    attachments,
+    chapter,
+    chapterImagePlaceholder,
+    course,
+    language,
+    muxData,
+    nextChapter,
+    purchase,
+    userProgress,
+  } = await getChapter({
+    chapterId: params.chapterId,
+    courseId: params.courseId,
+    userId: user!.userId,
+  });
 
   if (!chapter || !course) {
     return redirect('/');
@@ -54,7 +63,12 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
           )}
           {chapter?.imageUrl && muxData?.videoUrl && (
             <div className="relative aspect-w-16 aspect-h-9 border">
-              <Image alt="Image" fill src={muxData.videoUrl} />
+              <Image
+                alt="Image"
+                blurDataURL={chapterImagePlaceholder}
+                fill
+                src={muxData.videoUrl}
+              />
             </div>
           )}
         </div>

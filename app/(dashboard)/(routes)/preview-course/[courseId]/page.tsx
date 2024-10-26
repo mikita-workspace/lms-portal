@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getPreviewCourse } from '@/actions/courses/get-preview-course';
 import { AuthRedirect } from '@/components/auth/auth-redirect';
 import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { Button } from '@/components/ui/button';
@@ -36,34 +37,14 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
 
   const user = await getCurrentUser();
 
-  const purchase = await db.purchase.findUnique({
-    where: { userId_courseId: { userId: user?.userId ?? '', courseId: params.courseId } },
-    select: { id: true },
+  const { chapterImagePlaceholder, course, fees, hasPurchase } = await getPreviewCourse({
+    courseId: params.courseId,
+    userId: user?.userId,
   });
-
-  const course = await db.course.findUnique({
-    where: { id: params.courseId },
-    include: {
-      chapters: {
-        orderBy: { position: 'asc' },
-        take: 1,
-      },
-      user: {
-        select: {
-          name: true,
-        },
-      },
-      category: true,
-    },
-  });
-
-  const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
   if (!course || (course?.isPremium && !user?.hasSubscription)) {
     redirect('/');
   }
-
-  const hasPurchase = Boolean(purchase?.id);
 
   return (
     <div className="p-6">
@@ -82,7 +63,12 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
         <div className="space-y-6 md:col-span-3">
           {course.chapters?.[0]?.imageUrl && (
             <div className="relative aspect-w-16 aspect-h-9 border">
-              <Image alt="Image" fill src={course.chapters[0].imageUrl} />
+              <Image
+                alt="Image"
+                blurDataURL={chapterImagePlaceholder}
+                fill
+                src={course.chapters[0].imageUrl}
+              />
             </div>
           )}
           {course.chapters?.[0]?.videoUrl && (

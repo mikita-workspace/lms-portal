@@ -8,7 +8,11 @@ import { LanguageSwitcher } from '@/components/common/language-switcher';
 import { Logo } from '@/components/common/logo';
 import { ThemeSwitcher } from '@/components/common/theme-switcher';
 
-const SignInPage = async () => {
+type SignInPageProps = {
+  searchParams: { callbackUrl?: string };
+};
+
+const SignInPage = async ({ searchParams }: SignInPageProps) => {
   const user = await getCurrentUser();
 
   if (user?.userId) {
@@ -36,7 +40,7 @@ const SignInPage = async () => {
       </div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <AuthForm />
+          <AuthForm callbackUrl={searchParams.callbackUrl} />
         </div>
         <div className="fixed flex gap-x-2 bottom-0 right-0 mb-6 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
           <LanguageSwitcher />

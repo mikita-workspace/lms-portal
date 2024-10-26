@@ -3,6 +3,7 @@
 import { Attachment, Chapter } from '@prisma/client';
 
 import { db } from '@/lib/db';
+import { getImagePlaceHolder } from '@/lib/image';
 
 type GetChapter = {
   chapterId: string;
@@ -50,9 +51,17 @@ export const getChapter = async ({ chapterId, courseId, userId }: GetChapter) =>
       },
     });
 
+    const chapterImage = chapter?.imageUrl;
+    let chapterImagePlaceholder = null;
+
+    if (chapterImage) {
+      chapterImagePlaceholder = await getImagePlaceHolder(chapterImage);
+    }
+
     return {
       attachments,
       chapter,
+      chapterImagePlaceholder: chapterImagePlaceholder?.base64 ?? '',
       course,
       language: course?.language,
       muxData,
@@ -66,6 +75,7 @@ export const getChapter = async ({ chapterId, courseId, userId }: GetChapter) =>
     return {
       attachments: [],
       chapter: null,
+      chapterImagePlaceholder: '',
       course: null,
       language: null,
       muxData: null,

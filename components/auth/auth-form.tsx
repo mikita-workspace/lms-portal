@@ -21,6 +21,10 @@ import { useToast } from '../ui/use-toast';
 import { OAuthButton } from './ouath-button';
 import { TermsAndPrivacy } from './terms-and-privacy';
 
+type AuthFormProps = {
+  callbackUrl?: string;
+};
+
 const signInSchema = z.object({
   email: z.string().min(8, { message: 'errors.email' }).email({ message: 'errors.invalidEmail' }),
   password: z.string().min(4, { message: 'errors.password' }).regex(PASSWORD_VALIDATION, {
@@ -33,7 +37,7 @@ const signUpSchema = z.intersection(
   z.object({ name: z.string().min(4, { message: 'errors.username' }).trim() }),
 );
 
-export const AuthForm = () => {
+export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
   const t = useTranslations('auth-form');
   const appName = useTranslations('app')('name');
 
@@ -67,6 +71,7 @@ export const AuthForm = () => {
     try {
       const response = await signIn('credentials', {
         ...values,
+        callbackUrl,
         isSignUpFlow,
         redirect: false,
       });
