@@ -254,7 +254,7 @@
     "body": "Чтобы просмотреть, авторизуйтесь.",
     "quoteAuthor": "Сократ",
     "quoteBody": "Чем больше я учусь, тем больше я понимаю, как мало я знаю.",
-    "generated": "Сгенерировано с использованием Nova AI ({ model })",
+    "generated": "Сгенерировано с использованием Nova Copilot ({ model })",
     "login": "Войти",
     "title": "Эта страница защищена."
   },
@@ -274,7 +274,7 @@
     "input": {
       "ask": "Спросить",
       "enterMessage": "Введите ваше сообщение...",
-      "footer": "Nova AI Чат может совершать ошибки. Будьте внимательны."
+      "footer": "Nova Copilot может совершать ошибки. Будьте внимательны."
     }
   },
   "ai-generate": {
@@ -308,7 +308,7 @@
     "bannerTitle": "Обновитесь до Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Отмените в любое время",
-      "get-access-nova-ai": "Получите доступ к Nova AI",
+      "get-access-nova-ai": "Получите доступ к Nova Copilot",
       "unlock-premium-courses": "Разблокируйте премиум курсы"
     },
     "bestChoice": "Лучший выбор!",

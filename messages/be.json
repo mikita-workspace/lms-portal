@@ -255,7 +255,7 @@
     "body": "Каб праглядзець, калі ласка, увайдзеце.",
     "quoteAuthor": "Сакрат",
     "quoteBody": "Чым больш я вучуся, тым больш я разумею, як мала я ведаю.",
-    "generated": "Згенеравана з выкарыстаннем Nova AI ({ model })",
+    "generated": "Згенеравана з выкарыстаннем Nova Copilot ({ model })",
     "login": "Увайсці",
     "title": "Гэтае змест абаронены."
   },
@@ -275,7 +275,7 @@
     "input": {
       "ask": "Спытайце",
       "enterMessage": "Увайдзіце сваё паведамленне...",
-      "footer": "Nova AI Чат можа памыляцца. Праверце важную інфармацыю."
+      "footer": "Nova Copilot можа памыляцца. Праверце важную інфармацыю."
     }
   },
   "ai-generate": {
@@ -309,7 +309,7 @@
     "bannerTitle": "Абнавіць да Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Ануляваць у любы час",
-      "get-access-nova-ai": "Атрымаць доступ да Nova AI",
+      "get-access-nova-ai": "Атрымаць доступ да Nova Copilot",
       "unlock-premium-courses": "Разблакаваць прэміум-курсы"
     },
     "bestChoice": "Лепшы выбар!",

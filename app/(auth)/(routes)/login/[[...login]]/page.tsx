@@ -21,6 +21,8 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
 
   const { author, model, quote } = await getLoginQuote();
 
+  console.log({ author, model, quote });
+
   const t = await getTranslations('signIn');
 
   return (

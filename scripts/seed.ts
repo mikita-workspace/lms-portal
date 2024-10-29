@@ -46,12 +46,12 @@ async function main() {
       data: [
         {
           period: 'monthly',
-          points: ['Unlock premium courses', 'Get access to Nova AI', 'Cancel anytime'],
+          points: ['unlock-premium-courses', 'get-access-nova-ai', 'cancel-anytime'],
           price: 4900,
         },
         {
           period: 'yearly',
-          points: ['Unlock premium courses', 'Get access to Nova AI', 'Cancel anytime'],
+          points: ['unlock-premium-courses', 'get-access-nova-ai', 'cancel-anytime'],
           price: 2400,
         },
       ],

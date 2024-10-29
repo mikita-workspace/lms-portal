@@ -8,8 +8,8 @@ import { NavBar } from '@/components/navbar/navbar';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Nova AI',
-  description: 'Nova AI',
+  title: 'Nova Copilot',
+  description: 'Nova Copilot',
 };
 
 type ChatLayoutProps = Readonly<{

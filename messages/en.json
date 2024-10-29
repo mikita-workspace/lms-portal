@@ -255,7 +255,7 @@
     "body": "To view, please login.",
     "quoteAuthor": "Socrates",
     "quoteBody": "The more I study, the more I realize how little I know.",
-    "generated": "Generated using Nova AI ({ model })",
+    "generated": "Generated using Nova Copilot ({ model })",
     "login": "Login",
     "title": "This content is protected."
   },
@@ -275,7 +275,7 @@
     "input": {
       "ask": "Ask",
       "enterMessage": "Enter your message...",
-      "footer": "Nova AI Chat can make mistakes. Consider checking important information."
+      "footer": "Nova Copilot can make mistakes. Consider checking important information."
     }
   },
   "ai-generate": {
@@ -309,7 +309,7 @@
     "bannerTitle": "Upgrade to Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Cancel anytime",
-      "get-access-nova-ai": "Get access to Nova AI",
+      "get-access-nova-ai": "Get access to Nova Copilot",
       "unlock-premium-courses": "Unlock premium courses"
     },
     "bestChoice": "The best choice!",
