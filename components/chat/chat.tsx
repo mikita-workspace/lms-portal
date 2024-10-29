@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowRightToLine, MessageSquareText, SquareArrowOutUpRight } from 'lucide-react';
+import { ArrowRightToLine, SquareArrowOutUpRight } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -25,7 +26,9 @@ export const Chat = () => {
             open && 'bg-muted text-primary font-medium',
           )}
         >
-          <MessageSquareText className="h-5 w-5 font-medium" />
+          <div className="h-5 w-5 flex justify-center items-center">
+            <Image src="/assets/copilot.svg" alt="vk" height={18} width={18} priority />
+          </div>
         </button>
       </SheetTrigger>
       <SheetContent className="p-0 w-full" side="right">
