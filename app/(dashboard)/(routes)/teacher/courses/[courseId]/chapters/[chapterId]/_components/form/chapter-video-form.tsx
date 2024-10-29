@@ -26,6 +26,9 @@ type ChapterVideoFormProps = {
 
 const formSchema = z.object({
   videoUrl: z.string().url().optional().or(z.literal('')),
+});
+
+const formImageSchema = z.object({
   imageUrl: z.string().url().optional().or(z.literal('')),
 });
 
@@ -51,7 +54,7 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
     setIsVideoReady(isEditing ? false : isVideoReady);
   };
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof formSchema & typeof formImageSchema>) => {
     try {
       await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, { body: values });
 
