@@ -3,17 +3,14 @@
 import { ArrowRightToLine, SquareArrowOutUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { BiLoaderAlt } from 'react-icons/bi';
 
 import { absoluteUrl, cn } from '@/lib/utils';
 
+import { PrettyLoader } from '../loaders/pretty-loader';
 import { Button, Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui';
 
 export const Chat = () => {
-  const t = useTranslations('app');
-
   const [open, setOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
@@ -27,18 +24,13 @@ export const Chat = () => {
           )}
         >
           <div className="h-5 w-5 flex justify-center items-center">
-            <Image src="/assets/copilot.svg" alt="vk" height={18} width={18} priority />
+            <Image src="/assets/copilot.svg" alt="Copilot Logo" height={18} width={18} priority />
           </div>
         </button>
       </SheetTrigger>
       <SheetContent className="p-0 w-full" side="right">
         <div className="relative h-full">
-          {!isReady && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-background gap-y-2">
-              <BiLoaderAlt className="h-8 w-8 animate-spin text-secondary-foreground" />
-              <p className="text-sm">{t('loading')}</p>
-            </div>
-          )}
+          {!isReady && <PrettyLoader isCopilot />}
           {isReady && (
             <div className="fixed pt-4 px-4 flex gap-x-1">
               <SheetClose asChild>

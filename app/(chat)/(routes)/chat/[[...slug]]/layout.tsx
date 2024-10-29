@@ -36,7 +36,11 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
       <div className="flex-1 h-full">
         {!isIframe && (
           <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
-            <NavBar isChat globalProgress={globalProgress} userNotifications={userNotifications} />
+            <NavBar
+              isCopilot
+              globalProgress={globalProgress}
+              userNotifications={userNotifications}
+            />
           </div>
         )}
         <main className={cn(isIframe ? 'pt-[50px]' : 'pt-[80px]', 'h-full')}>{children}</main>

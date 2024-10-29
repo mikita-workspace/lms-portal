@@ -19,7 +19,7 @@ const DocsLayout = async ({ children }: DocsLayoutProps) => {
     <div className="h-full flex flex-col">
       <div className="flex-1 h-full">
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
-          <NavBar isChat globalProgress={globalProgress} userNotifications={userNotifications} />
+          <NavBar globalProgress={globalProgress} userNotifications={userNotifications} />
         </div>
         <main className="pt-[80px] h-full">{children}</main>
       </div>

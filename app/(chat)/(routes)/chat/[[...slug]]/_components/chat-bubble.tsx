@@ -37,7 +37,7 @@ export const ChatBubble = ({
         <Avatar className="border dark:border-muted-foreground">
           {!isAssistant && <AvatarImage src={picture || ''} />}
           {isAssistant && (
-            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/logo.svg" />
+            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
           )}
           <AvatarFallback>{getFallbackName(name)}</AvatarFallback>
         </Avatar>

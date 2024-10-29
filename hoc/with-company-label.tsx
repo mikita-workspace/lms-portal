@@ -16,7 +16,7 @@ const withCompanyLabel =
           {t('poweredBy')}
           <div className="font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-x-1">
             <div className="h-4 w-4">
-              <Logo onlyLogoIcon isChat />
+              <Logo onlyLogoIcon isLoader />
             </div>
             <span>{t('name')}</span>
           </div>

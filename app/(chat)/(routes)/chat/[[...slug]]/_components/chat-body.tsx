@@ -79,7 +79,7 @@ export const ChatBody = ({
       {!hasMessages && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
           <Avatar className="border dark:border-muted-foreground">
-            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/logo.svg" />
+            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
           <p className="mb-5 text-2xl font-medium text-center">{t('title')}</p>
