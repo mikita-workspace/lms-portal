@@ -95,7 +95,7 @@ export const ChatBody = ({
               {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const name = isAssistant ? 'Nova Assistant' : user?.name || 'Current User';
+                const name = isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
                 const picture = isAssistant ? null : user?.image;
 
                 return (
@@ -113,7 +113,7 @@ export const ChatBody = ({
                     isLastMessage
                     isSubmitting={isSubmitting}
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
-                    name="Nova Assistant"
+                    name="Nova Copilot"
                     onRegenerate={onRegenerate}
                     streamMessage={assistantMessage}
                   />
