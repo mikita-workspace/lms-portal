@@ -165,7 +165,7 @@ export const Chat = ({ initialData }: ChatProps) => {
 
   return (
     <div className="flex h-full w-full">
-      <div className="flex h-full w-full flex-col overflow-auto bg-background outline-none">
+      <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
           <ChatTopBar
             isSubmitting={isSubmitting}

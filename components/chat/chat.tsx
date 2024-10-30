@@ -28,7 +28,7 @@ export const Chat = () => {
           </div>
         </button>
       </SheetTrigger>
-      <SheetContent className="p-0 w-full" side="right">
+      <SheetContent className="p-0 w-full" side="rightCopilot">
         <div className="relative h-full">
           {!isReady && <PrettyLoader isCopilot />}
           {isReady && (
