@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
   });
 
   return {
-    title: course?.title || 'Nova LMS',
+    title: course?.title || 'Nova Academy',
     description: course?.description || 'Educational portal',
   };
 }

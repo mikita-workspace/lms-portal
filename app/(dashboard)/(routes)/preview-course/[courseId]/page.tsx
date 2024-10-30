@@ -27,7 +27,7 @@ export const generateMetadata = async ({ params }: PreviewCourseIdPageProps): Pr
   });
 
   return {
-    title: course?.title || 'Nova LMS',
+    title: course?.title || 'Nova Academy',
     description: course?.description || 'Educational portal',
   };
 };

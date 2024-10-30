@@ -18,9 +18,9 @@ The words of which the initial letter is capitalized have meanings defined under
 
 For the purposes of this Cookies Policy:
 
-- __Company__ (referred to as either "the Company", "We", "Us" or "Our" in this Cookies Policy) refers to Nova LMS.
+- __Company__ (referred to as either "the Company", "We", "Us" or "Our" in this Cookies Policy) refers to Nova Academy.
 - __Cookies__ means small files that are placed on Your computer, mobile device or any other device by a website, containing details of your browsing history on that website among its many uses.
-- __Website__ refers to Nova LMS, accessible from [https://nova-lms-portal.vercel.app/](https://nova-lms-portal.vercel.app/)
+- __Website__ refers to Nova Academy, accessible from [https://nova-lms-portal.vercel.app/](https://nova-lms-portal.vercel.app/)
 - __You__ means the individual accessing or using the Website, or a company, or any legal entity on behalf of which such individual is accessing or using the Website, as applicable.
 
 ## The use of the Cookies
