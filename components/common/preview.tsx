@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { useLocale } from 'next-intl';
 import { useMemo, useState } from 'react';
 
-import { USER_TRANSLATE } from '@/constants/ai';
+import { USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
@@ -44,7 +44,7 @@ export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) 
             messages={[
               {
                 role: ChatCompletionRole.USER,
-                content: USER_TRANSLATE(value, currentLocale),
+                content: USER_TRANSLATE_PROMPT(value, currentLocale),
               },
             ]}
           />

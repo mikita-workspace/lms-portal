@@ -17,6 +17,7 @@ import {
 import { ChatCompletionRole, OPEN_AI_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { isOwner } from '@/lib/owner';
 import { cn } from '@/lib/utils';
 
 type ChatTopBarProps = {
@@ -52,6 +53,8 @@ export const ChatTopBar = ({
     link.click();
   };
 
+  const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
+
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
       <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
@@ -65,7 +68,7 @@ export const ChatTopBar = ({
                 className="w-[180px] justify-between truncate"
               >
                 {currentModel
-                  ? OPEN_AI_MODELS.find((model) => model.value === currentModel)?.label
+                  ? models.find((model) => model.value === currentModel)?.label
                   : 'Select model...'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -73,7 +76,7 @@ export const ChatTopBar = ({
             <PopoverContent className="w-[200px] p-0">
               <Command>
                 <CommandGroup>
-                  {OPEN_AI_MODELS.map((model) => (
+                  {models.map((model) => (
                     <CommandItem
                       key={model.value}
                       value={model.value}

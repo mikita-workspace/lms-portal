@@ -10,7 +10,7 @@ import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-a
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
-import { USER_TRANSLATE } from '@/constants/ai';
+import { USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -75,7 +75,7 @@ export const PreviewDescription = ({
               messages={[
                 {
                   role: ChatCompletionRole.USER,
-                  content: USER_TRANSLATE(description, currentLocale),
+                  content: USER_TRANSLATE_PROMPT(description, currentLocale),
                 },
               ]}
             />
