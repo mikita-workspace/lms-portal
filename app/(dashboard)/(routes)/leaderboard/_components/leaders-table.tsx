@@ -50,7 +50,7 @@ export const LeadersTable = ({ leaders, userId }: LeadersTableProps) => {
       </TableHeader>
       <TableBody>
         {currentLeader && (
-          <TableRow className="border-4">
+          <TableRow>
             <TableCell className="font-medium">
               <Coffee className="w-4 h-4" />
             </TableCell>

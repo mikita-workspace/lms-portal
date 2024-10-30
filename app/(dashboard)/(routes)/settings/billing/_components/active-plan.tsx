@@ -57,7 +57,7 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
         />
       )}
       {userSubscription && (
-        <Card className="shadow-none rounded-sm">
+        <Card className="shadow-none rounded-lg">
           <CardContent>
             <div className="pt-6 flex flex-col justify-center space-y-2 mb-4">
               <p className="text-lg font-semibold">{userSubscription.planName}</p>
