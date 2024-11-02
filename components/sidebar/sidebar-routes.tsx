@@ -118,22 +118,22 @@ const paymentsRoutes = [
 const docsRoutes = [
   {
     href: '/docs/cookies-policy',
-    isProtected: true,
+    isProtected: false,
     label: 'cookies-policy',
   },
   {
     href: '/docs/terms',
-    isProtected: true,
+    isProtected: false,
     label: 'terms',
   },
   {
     href: '/docs/privacy-policy',
-    isProtected: true,
+    isProtected: false,
     label: 'privacy-policy',
   },
   {
     href: '/docs/releases',
-    isProtected: true,
+    isProtected: false,
     label: 'releases',
   },
 ];
