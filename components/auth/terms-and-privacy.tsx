@@ -7,13 +7,13 @@ export const TermsAndPrivacy = () => {
   const t = useTranslations('footer');
 
   const termsUrl = (
-    <Link target="_blank" className="text-primary hover:underline" href="legal/terms">
+    <Link target="_blank" className="text-primary hover:underline" href="docs/terms">
       {t('legal.termsAndConditions')}
     </Link>
   );
 
   const privacyUrl = (
-    <Link target="_blank" className="text-primary hover:underline" href="legal/privacy-policy">
+    <Link target="_blank" className="text-primary hover:underline" href="docs/privacy-policy">
       {t('legal.privacyPolices')}
     </Link>
   );

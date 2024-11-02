@@ -82,7 +82,7 @@ export const ChatBody = ({
             <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
-          <p className="mb-5 text-2xl font-medium text-center">{t('title')}</p>
+          <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
         </div>
       )}
       <div className="h-[calc(100%-12rem)] relative">

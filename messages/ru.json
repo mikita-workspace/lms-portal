@@ -126,6 +126,7 @@
     "billingAndSubscription": "Оплата и подписка",
     "browse": "Обзор",
     "config": "Конфигурация",
+    "cookies-policy": "Политика использования Cookies",
     "courses": "Курсы",
     "dashboard": "Панель управления",
     "general": "Общие",
@@ -133,7 +134,10 @@
     "new": "новый",
     "notifications": "Уведомления",
     "payments": "Платежи",
+    "privacy-policy": "Политика конфиденциальности",
     "promo": "Промо",
+    "releases": "Выпуски платформы",
+    "terms": "Условия и положения",
     "users": "Пользователи"
   },
   "error": {

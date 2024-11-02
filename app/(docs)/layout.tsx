@@ -2,6 +2,7 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { NavBar } from '@/components/navbar/navbar';
+import { SideBar } from '@/components/sidebar/sidebar';
 
 type DocsLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -21,7 +22,10 @@ const DocsLayout = async ({ children }: DocsLayoutProps) => {
         <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
           <NavBar globalProgress={globalProgress} userNotifications={userNotifications} />
         </div>
-        <main className="pt-[80px] h-full">{children}</main>
+        <div className="hidden md:flex h-full w-64 flex-col fixed inset-y-0 z-[48]">
+          <SideBar />
+        </div>
+        <main className="md:pl-64 pt-[80px] h-full">{children}</main>
       </div>
     </div>
   );

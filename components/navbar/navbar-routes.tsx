@@ -38,6 +38,7 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
   const isSettingsPage = pathname?.startsWith('/settings');
   const isStudentPage = pathname?.includes('/chapter') && !pathname?.includes('/teacher');
   const isTeacherPage = pathname?.startsWith('/teacher');
+  const isDocsPage = pathname?.startsWith('/docs');
 
   const isLoading = status === AuthStatus.LOADING;
 
@@ -68,11 +69,14 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
                 isTeacherPage ||
                 isChatPage ||
                 isSettingsPage ||
+                isDocsPage ||
                 isOwnerPage) && (
                 <Link href="/">
                   <Button size="sm" variant="ghost">
                     <LogOut className="h-4 w-4 mr-2" />
-                    {t(isTeacherPage || isOwnerPage || isChatPage ? 'exit' : 'backTo')}
+                    {t(
+                      isTeacherPage || isOwnerPage || isChatPage || isDocsPage ? 'exit' : 'backTo',
+                    )}
                   </Button>
                 </Link>
               )}

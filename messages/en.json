@@ -127,6 +127,7 @@
     "billingAndSubscription": "Billing & Subscription",
     "browse": "Browse",
     "config": "Config",
+    "cookies-policy": "Cookie Policy",
     "courses": "Courses",
     "dashboard": "Dashboard",
     "general": "General",
@@ -134,7 +135,10 @@
     "new": "new",
     "notifications": "Notifications",
     "payments": "Payments",
+    "privacy-policy": "Privacy Policy",
     "promo": "Promo",
+    "releases": "Releases notes",
+    "terms": "Terms and Conditions",
     "users": "Users"
   },
   "error": {
@@ -270,7 +274,7 @@
   },
   "chat": {
     "body": {
-      "title": "How can I help you today?"
+      "title": "What can I assist you with today?"
     },
     "input": {
       "ask": "Ask",

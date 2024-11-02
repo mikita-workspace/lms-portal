@@ -16,10 +16,10 @@ import {
 } from '../ui';
 
 const legalLinks = [
-  { key: 'cookiePolicy', href: '/legal/cookies-policy' },
-  { key: 'termsAndCondition', href: '/legal/terms' },
-  { key: 'privacyPolicy', href: '/legal/privacy-policy' },
-  { key: 'releasesNotes', href: '/legal/releases' },
+  { key: 'cookiePolicy', href: '/docs/cookies-policy' },
+  { key: 'termsAndCondition', href: '/docs/terms' },
+  { key: 'privacyPolicy', href: '/docs/privacy-policy' },
+  { key: 'releasesNotes', href: '/docs/releases' },
 ];
 
 export const LegalMenu = () => {

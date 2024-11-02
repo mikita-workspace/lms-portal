@@ -124,7 +124,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {(isTeacherCoursesPage || isPromoPage || isNotificationPage || isUsersPage) && (
-        <div className="flex sm:items-center pb-4 justify-between sm:space-x-2 sm:flex-row flex-col gap-y-2">
+        <div className="flex sm:items-center pb-4 justify-between sm:space-x-2 sm:flex-row flex-col gap-y-4">
           <div className="flex gap-x-2 w-full">
             <Input
               placeholder={filterPlaceholder}

@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { ArrowLeft, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
@@ -25,15 +25,6 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
 
   return (
     <div className="p-6 flex flex-col mb-6">
-      <div className="w-full">
-        <Link
-          className="flex items-center text-sm hover:opacity-75 transition duration-300 mb-6"
-          href={'/'}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          {t('backNav')}
-        </Link>
-      </div>
       <div className="w-full flex flex-col items-center">
         {releases.map((release, index) => (
           <div className="mb-8" key={release.name}>

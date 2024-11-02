@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { TextBadge } from '@/components/common/text-badge';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
@@ -13,13 +12,12 @@ import { AuthRedirect } from '../auth/auth-redirect';
 
 type SideBarItemProps = {
   href: string;
-  icon: LucideIcon;
-  isNew?: boolean;
+  icon?: LucideIcon;
   isProtected?: boolean;
   label: string;
 };
 
-export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: SideBarItemProps) => {
+export const SideBarItem = ({ href, icon: Icon, isProtected, label }: SideBarItemProps) => {
   const t = useTranslations('sidebar');
 
   const { user } = useCurrentUser();
@@ -54,18 +52,19 @@ export const SideBarItem = ({ href, icon: Icon, isNew, isProtected, label }: Sid
           isActive && 'bg-muted text-primary font-medium',
         )}
       >
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full text-left">
           <div className="flex items-center gap-x-2">
-            <Icon
-              size={20}
-              className={cn(
-                'h-5 w-5 font-medium',
-                isActive && 'text-primary font-medium animate-spin-once',
-              )}
-            />
+            {Icon && (
+              <Icon
+                size={20}
+                className={cn(
+                  'h-5 w-5 font-medium',
+                  isActive && 'text-primary font-medium animate-spin-once',
+                )}
+              />
+            )}
             {t(label)}
           </div>
-          {isNew && <TextBadge label={t('new')} variant="green" />}
         </div>
       </button>
     </AuthRedirect>

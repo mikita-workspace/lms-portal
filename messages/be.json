@@ -127,6 +127,7 @@
     "billingAndSubscription": "Аплата і падпіска",
     "browse": "Прагляд",
     "config": "Канфігурацыя",
+    "cookies-policy": "Палітыка файлаў Cookie",
     "courses": "Курсы",
     "dashboard": "Панэль кіравання",
     "general": "Агульныя",
@@ -134,7 +135,10 @@
     "new": "новы",
     "notifications": "Апавяшчэнні",
     "payments": "Плацяжы",
+    "privacy-policy": "Палітыка прыватнасці",
     "promo": "Прома",
+    "releases": "Заўвагі аб выпусках",
+    "terms": "Умовы і палажэнні",
     "users": "Карыстальнікі"
   },
   "error": {
