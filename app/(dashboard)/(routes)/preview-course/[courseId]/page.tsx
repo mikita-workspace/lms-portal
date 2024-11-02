@@ -80,7 +80,7 @@ const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
           <PreviewDescription
             author={course?.user?.name}
             categories={[course.category!.name]}
-            chaptersLength={course.chapters.length}
+            chaptersLength={course._count.chapters}
             customRates={course.customRates}
             customTags={course.customTags}
             description={course.description!}

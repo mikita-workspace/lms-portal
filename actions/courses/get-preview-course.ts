@@ -17,6 +17,11 @@ export const getPreviewCourse = async ({ courseId, userId }: GetPreviewCourse) =
   const course = await db.course.findUnique({
     where: { id: courseId },
     include: {
+      _count: {
+        select: {
+          chapters: { where: { isPublished: true } },
+        },
+      },
       chapters: {
         orderBy: { position: 'asc' },
         take: 1,
