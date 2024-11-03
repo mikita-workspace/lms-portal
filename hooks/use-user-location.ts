@@ -12,6 +12,19 @@ import { fetcher } from '@/lib/fetcher';
 
 import { ExchangeRates, useLocaleStore } from './use-locale-store';
 
+const defaultLocaleInfo = {
+  locale: { currency: DEFAULT_CURRENCY, locale: DEFAULT_LOCALE },
+  details: {
+    city: '',
+    country: '',
+    countryCode: DEFAULT_COUNTRY_CODE,
+    latitude: 0,
+    longitude: 0,
+    timezone: DEFAULT_TIMEZONE,
+  },
+  rate: DEFAULT_EXCHANGE_RATE,
+};
+
 export const useUserLocation = (exchangeRates: ExchangeRates) => {
   const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
     handleExchangeRates: state.setExchangeRates,
@@ -52,22 +65,16 @@ export const useUserLocation = (exchangeRates: ExchangeRates) => {
           rate: exchangeRates?.rates?.[currency] ?? DEFAULT_EXCHANGE_RATE,
         });
       } catch (error) {
-        handleLocaleInfo({
-          locale: { currency: DEFAULT_CURRENCY, locale: DEFAULT_LOCALE },
-          details: {
-            city: '',
-            country: '',
-            countryCode: DEFAULT_COUNTRY_CODE,
-            latitude: 0,
-            longitude: 0,
-            timezone: DEFAULT_TIMEZONE,
-          },
-          rate: DEFAULT_EXCHANGE_RATE,
-        });
+        handleLocaleInfo(defaultLocaleInfo);
       }
     };
 
-    getUserLocation();
+    if (process.env.NODE_ENV === 'development') {
+      handleLocaleInfo(defaultLocaleInfo);
+    } else {
+      getUserLocation();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
