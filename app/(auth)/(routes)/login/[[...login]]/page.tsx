@@ -6,6 +6,7 @@ import { getLoginQuote } from '@/actions/auth/get-login-quote';
 import { AuthForm } from '@/components/auth/auth-form';
 import { LanguageSwitcher } from '@/components/common/language-switcher';
 import { Logo } from '@/components/common/logo';
+import { MadeWithLove } from '@/components/common/made-with-love';
 import { ThemeSwitcher } from '@/components/common/theme-switcher';
 
 type SignInPageProps = {
@@ -36,15 +37,19 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
             <footer className="text-sm">{author ?? t('quoteAuthor')}</footer>
           </blockquote>
           <p className="text-xs mt-2 text-muted-foreground">{t('generated', { model })}</p>
+          <MadeWithLove className="mt-2 text-xs" />
         </div>
       </div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <AuthForm callbackUrl={searchParams.callbackUrl} />
         </div>
-        <div className="fixed flex gap-x-2 bottom-0 right-0 mb-6 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
+        <div className="fixed flex gap-x-2 bottom-0 right-0 mb-10 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
           <LanguageSwitcher />
           <ThemeSwitcher />
+        </div>
+        <div className="lg:hidden fixed right-0 left-0 bottom-0 flex justify-center text-xs mb-2.5">
+          <MadeWithLove />
         </div>
       </div>
     </div>

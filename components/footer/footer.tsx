@@ -12,6 +12,7 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { LanguageSwitcher } from '../common/language-switcher';
 import { LegalMenu } from '../common/legal-menu';
+import { MadeWithLove } from '../common/made-with-love';
 import { ThemeSwitcher } from '../common/theme-switcher';
 import { CsmModal } from '../modals/csm-modal';
 
@@ -45,6 +46,7 @@ export const Footer = ({ categories }: FooterProps) => {
                 <span>{t('copyright')}</span>
               </div>
               <div className="items-end">{t('testModeDeclaimer')}</div>
+              <MadeWithLove className="mt-2" />
             </div>
             <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
               <CsmModal categories={categories}>
