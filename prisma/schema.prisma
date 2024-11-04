@@ -13,7 +13,7 @@ model User {
   conversations      ChatConversation[]
   courses            Course[]
   createdAt          DateTime            @default(now())
-  csmIssue           CsmIssue[]
+  csmIssues          CsmIssue[]
   email              String              @unique
   isPublic           Boolean?            @default(false)
   name               String?
