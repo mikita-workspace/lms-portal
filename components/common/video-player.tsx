@@ -41,7 +41,7 @@ export const VideoPlayer = ({
         onLoad={onReady}
         src={url.toString()}
         width="100%"
-      ></iframe>
+      />
     );
   }
 

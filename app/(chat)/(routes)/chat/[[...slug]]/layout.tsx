@@ -29,12 +29,12 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
     return redirect('/');
   }
 
-  const isIframe = params.slug?.includes('iframe');
+  const isEmbed = params.slug?.includes('embed');
 
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 h-full">
-        {!isIframe && (
+        {!isEmbed && (
           <div className="h-[80px] inset-y-0 w-full z-[50] fixed">
             <NavBar
               isCopilot
@@ -43,7 +43,7 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
             />
           </div>
         )}
-        <main className={cn(isIframe ? 'pt-[50px]' : 'pt-[80px]', 'h-full')}>{children}</main>
+        <main className={cn(isEmbed ? 'pt-[50px]' : 'pt-[80px]', 'h-full')}>{children}</main>
       </div>
     </div>
   );
