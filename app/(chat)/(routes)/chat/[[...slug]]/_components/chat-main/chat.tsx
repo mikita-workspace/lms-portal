@@ -2,7 +2,7 @@
 
 import { getTime } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useRef, useState } from 'react';
 
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
