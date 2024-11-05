@@ -1,16 +1,15 @@
 'use client';
 
 import { getTime } from 'date-fns';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, SyntheticEvent, useRef, useState } from 'react';
 
-import { getChatConversations } from '@/actions/chat/get-chat-conversations';
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useHydration } from '@/hooks/use-hydration';
-import { useSearchLineParams } from '@/hooks/use-search-params';
 import { fetcher } from '@/lib/fetcher';
 
 import { ChatBody } from './chat-body';
@@ -18,27 +17,23 @@ import { ChatInput } from './chat-input';
 import { ChatTopBar } from './chat-top-bar';
 
 type ChatProps = {
-  conversations: Awaited<ReturnType<typeof getChatConversations>>;
   initialData: Awaited<ReturnType<typeof getChatInitial>>;
 };
 
-export const Chat = ({ conversations, initialData }: ChatProps) => {
+export const Chat = ({ initialData }: ChatProps) => {
+  const searchParams = useSearchParams();
+
   const { toast } = useToast();
 
-  const { currentModel, currentConversationId, messages, setMessages } = useChatStore();
+  const { currentModel, messages, setMessages } = useChatStore();
 
   const { isMounted } = useHydration();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
   const [assistantMessage, setAssistantMessage] = useState('');
-  const [conversationId, setConversationId] = useState(
-    currentConversationId ?? conversations.conversations?.[0]?.id ?? '',
-  );
 
   const abortControllerRef = useRef<AbortController | null>(null);
-
-  useSearchLineParams({ conversationId });
 
   if (!isMounted) {
     return <ChatSkeleton />;
@@ -167,7 +162,7 @@ export const Chat = ({ conversations, initialData }: ChatProps) => {
 
     await fetcher.post('/api/chat', {
       body: {
-        conversationId,
+        conversationId: searchParams.get('conversationId'),
         messages: [
           { content: userMessage, role: ChatCompletionRole.USER },
           { content: assistMessage, role: ChatCompletionRole.ASSISTANT },

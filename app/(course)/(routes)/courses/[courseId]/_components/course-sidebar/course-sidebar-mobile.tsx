@@ -5,12 +5,12 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { CourseSideBar } from './course-sidebar';
 
-type CourseNobileSideBarProps = {
+type CourseMobileSideBarProps = {
   course: Course & { chapters: (Chapter & { userProgress: UserProgress[] | null })[] };
   progressCount: number;
 };
 
-export const CourseMobileSideBar = ({ course, progressCount }: CourseNobileSideBarProps) => {
+export const CourseMobileSideBar = ({ course, progressCount }: CourseMobileSideBarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition duration-300">

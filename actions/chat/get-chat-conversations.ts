@@ -6,7 +6,7 @@ import { db } from '@/lib/db';
 
 import { getCurrentUser } from '../auth/get-current-user';
 
-export const getChatConversations = async (conversationId?: string) => {
+export const getChatConversations = async () => {
   try {
     const user = await getCurrentUser();
     const t = await getTranslations('chat.conversation');
@@ -14,11 +14,8 @@ export const getChatConversations = async (conversationId?: string) => {
     const conversations = await db.chatConversation.findMany({
       where: { userId: user?.userId },
       orderBy: { updatedAt: 'desc' },
-      select: { id: true, title: true, messages: true },
+      select: { id: true, title: true },
     });
-
-    const messages =
-      conversations.find((conversation) => conversation.id === conversationId)?.messages ?? [];
 
     if (!conversations.length) {
       const newChatConversation = await db.chatConversation.create({
@@ -32,16 +29,13 @@ export const getChatConversations = async (conversationId?: string) => {
         },
       });
 
-      return {
-        conversations: [{ id: newChatConversation.id, title: newChatConversation.title }],
-        messages: [],
-      };
+      return [{ id: newChatConversation.id, title: newChatConversation.title }];
     }
 
-    return { conversations, messages };
+    return conversations;
   } catch (error) {
     console.error('[GET_CHAT_CONVERSATIONS]', error);
 
-    return { conversations: [], messages: [] };
+    return [];
   }
 };
