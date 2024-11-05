@@ -8,8 +8,7 @@ export const ChatSkeleton = () => (
       <div className="flex mb-10 justify-between space-x-2">
         <Skeleton className="h-8 w-[140px]" />
         <div className="flex space-x-2">
-          <Skeleton className="h-8 w-8" />
-          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-10" />
         </div>
       </div>
       <div className="flex flex-col gap-y-6 justify-start h-full">

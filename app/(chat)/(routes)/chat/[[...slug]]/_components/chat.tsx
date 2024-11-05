@@ -46,8 +46,10 @@ export const Chat = ({ initialData }: ChatProps) => {
 
       setIsSubmitting(true);
 
+      const userMessage = currentMessage || options?.userMessage || '';
+
       const currentUserMessage = {
-        content: currentMessage || options?.userMessage || '',
+        content: userMessage,
         role: ChatCompletionRole.USER,
         timestamp: getTime(Date.now()),
       };
@@ -116,7 +118,8 @@ export const Chat = ({ initialData }: ChatProps) => {
 
         setAssistantMessage((prev) => prev + chunk);
       }
-      saveLastMessage(streamAssistMessage);
+
+      saveLastMessage(userMessage, streamAssistMessage);
       streamAssistMessage = '';
     } catch (error: any) {
       if (error.name !== 'AbortError') {
@@ -140,23 +143,34 @@ export const Chat = ({ initialData }: ChatProps) => {
       abortControllerRef.current.abort();
 
       if (assistantMessage) {
-        saveLastMessage(assistantMessage);
+        saveLastMessage('', assistantMessage);
       }
     }
   };
 
-  const saveLastMessage = (message: string) => {
+  const saveLastMessage = async (userMessage: string, assistMessage: string) => {
     const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
     chatStorage?.state?.messages.push({
-      content: message,
+      content: assistMessage,
       role: ChatCompletionRole.ASSISTANT,
       timestamp: getTime(Date.now()),
     });
 
     localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
+
+    await fetcher.post('/api/chat', {
+      body: {
+        messages: [
+          { content: userMessage, role: ChatCompletionRole.USER },
+          { content: assistMessage, role: ChatCompletionRole.ASSISTANT },
+        ],
+        model: currentModel,
+      },
+      responseType: 'json',
+    });
   };
 
-  const deleteLastMessage = () => {
+  const deleteLastMessage = async () => {
     const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
     chatStorage?.state?.messages?.pop();
 
@@ -167,11 +181,7 @@ export const Chat = ({ initialData }: ChatProps) => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar
-            isSubmitting={isSubmitting}
-            lastAssistantMessage={assistantMessage}
-            setAssistantMessage={setAssistantMessage}
-          />
+          <ChatTopBar isSubmitting={isSubmitting} setAssistantMessage={setAssistantMessage} />
           <ChatBody
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
