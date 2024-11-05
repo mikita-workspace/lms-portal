@@ -15,15 +15,16 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { messages, model } = await req.json();
+    const { conversationId, messages, model } = await req.json();
 
-    if (!messages?.length) {
+    if (!messages?.length || !conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
     const chatMessages = await db.chatMessage.createManyAndReturn({
       data: messages.map(({ content, role }: { content: string; role: ChatRole }) => ({
         content,
+        conversationId,
         model,
         role,
         // Necessary for the correct order of messages in DB

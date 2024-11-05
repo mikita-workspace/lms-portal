@@ -276,6 +276,9 @@
     "body": {
       "title": "What can I assist you with today?"
     },
+    "conversation": {
+      "title": "New conversation { order }"
+    },
     "input": {
       "ask": "Ask",
       "enterMessage": "Enter your message...",
