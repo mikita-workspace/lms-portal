@@ -1,7 +1,6 @@
 'use client';
 
 import { getTime } from 'date-fns';
-import { useSearchParams } from 'next/navigation';
 import { SyntheticEvent, useRef, useState } from 'react';
 
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
@@ -21,11 +20,11 @@ type ChatProps = {
 };
 
 export const Chat = ({ initialData }: ChatProps) => {
-  const searchParams = useSearchParams();
-
   const { toast } = useToast();
 
-  const { currentModel, messages, setMessages } = useChatStore();
+  const { conversationId, currentModel, messages, setMessages, chatMessages } = useChatStore();
+
+  console.log({ chatMessages });
 
   const { isMounted } = useHydration();
 
@@ -151,18 +150,18 @@ export const Chat = ({ initialData }: ChatProps) => {
   };
 
   const saveLastMessage = async (userMessage: string, assistMessage: string) => {
-    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-    chatStorage?.state?.messages.push({
-      content: assistMessage,
-      role: ChatCompletionRole.ASSISTANT,
-      timestamp: getTime(Date.now()),
-    });
+    // const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
+    // chatStorage?.state?.messages.push({
+    //   content: assistMessage,
+    //   role: ChatCompletionRole.ASSISTANT,
+    //   timestamp: getTime(Date.now()),
+    // });
 
-    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
+    // localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
 
     await fetcher.post('/api/chat', {
       body: {
-        conversationId: searchParams.get('conversationId'),
+        conversationId,
         messages: [
           { content: userMessage, role: ChatCompletionRole.USER },
           { content: assistMessage, role: ChatCompletionRole.ASSISTANT },

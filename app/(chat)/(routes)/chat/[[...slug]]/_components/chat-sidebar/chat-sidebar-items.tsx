@@ -1,47 +1,34 @@
 'use client';
 
 import { Text } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import qs from 'query-string';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { getChatConversations } from '@/actions/chat/get-chat-conversations';
+import { Conversation } from '@/actions/chat/get-chat-conversations';
+import { useChatStore } from '@/hooks/use-chat-store';
+import { getChatMessages } from '@/lib/chat';
 import { cn } from '@/lib/utils';
 
 type ChatSideBarItemsProps = {
-  conversations: Awaited<ReturnType<typeof getChatConversations>>;
+  conversations: Conversation[];
 };
 
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const hasConversationId = Boolean(searchParams.get('conversationId'));
-
-  const handleOnClick = useCallback(
-    (id: string) => {
-      const url = qs.stringifyUrl(
-        {
-          url: pathname,
-          query: { conversationId: id },
-        },
-        { skipNull: true, skipEmptyString: true },
-      );
-
-      router.push(url);
-    },
-    [pathname, router],
-  );
+  const { conversationId, setConversationId, setChatMessages } = useChatStore();
 
   useEffect(() => {
-    if (!hasConversationId) {
-      handleOnClick(conversations[0].id);
-    }
-  }, [conversations, handleOnClick, hasConversationId]);
+    const chatMessages = getChatMessages(conversations);
+
+    setConversationId(conversations[0].id);
+    setChatMessages(chatMessages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleOnClick = (id: string) => {
+    setConversationId(id);
+  };
 
   return conversations.map(({ id, title }) => {
-    const isActive = searchParams.get('conversationId') === id;
+    const isActive = conversationId === id;
 
     return (
       <button

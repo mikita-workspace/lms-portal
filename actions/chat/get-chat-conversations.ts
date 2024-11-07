@@ -6,6 +6,8 @@ import { db } from '@/lib/db';
 
 import { getCurrentUser } from '../auth/get-current-user';
 
+export type Conversation = Awaited<ReturnType<typeof getChatConversations>>[0];
+
 export const getChatConversations = async () => {
   try {
     const user = await getCurrentUser();
@@ -14,7 +16,13 @@ export const getChatConversations = async () => {
     const conversations = await db.chatConversation.findMany({
       where: { userId: user?.userId },
       orderBy: { updatedAt: 'desc' },
-      select: { id: true, title: true },
+      select: {
+        id: true,
+        title: true,
+        messages: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     });
 
     if (!conversations.length) {
@@ -29,7 +37,7 @@ export const getChatConversations = async () => {
         },
       });
 
-      return [{ id: newChatConversation.id, title: newChatConversation.title }];
+      return [{ id: newChatConversation.id, title: newChatConversation.title, messages: [] }];
     }
 
     return conversations;

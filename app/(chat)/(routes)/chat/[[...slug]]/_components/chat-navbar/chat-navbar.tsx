@@ -1,13 +1,13 @@
 import { Notification } from '@prisma/client';
 
-import { getChatConversations } from '@/actions/chat/get-chat-conversations';
+import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { Logo } from '@/components/common/logo';
 import { NavBarRoutes } from '@/components/navbar/navbar-routes';
 
 import { ChatMobileSideBar } from '../chat-sidebar/chat-sidebar-mobile';
 
 type ChatNavBarProps = {
-  conversations: Awaited<ReturnType<typeof getChatConversations>>;
+  conversations: Conversation[];
   globalProgress?: {
     progressPercentage: number;
     total: number;

@@ -1,12 +1,12 @@
 import { Menu } from 'lucide-react';
 
-import { getChatConversations } from '@/actions/chat/get-chat-conversations';
+import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { ChatSideBar } from './chat-sidebar';
 
 type ChatMobileSideBarProps = {
-  conversations: Awaited<ReturnType<typeof getChatConversations>>;
+  conversations: Conversation[];
 };
 
 export const ChatMobileSideBar = ({ conversations }: ChatMobileSideBarProps) => {
