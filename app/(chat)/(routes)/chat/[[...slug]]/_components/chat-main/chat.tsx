@@ -1,8 +1,9 @@
 'use client';
 
-import { getTime } from 'date-fns';
 import { SyntheticEvent, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
+import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
@@ -15,6 +16,8 @@ import { ChatBody } from './chat-body';
 import { ChatInput } from './chat-input';
 import { ChatTopBar } from './chat-top-bar';
 
+type Message = Conversation['messages'][0];
+
 type ChatProps = {
   initialData: Awaited<ReturnType<typeof getChatInitial>>;
 };
@@ -22,9 +25,7 @@ type ChatProps = {
 export const Chat = ({ initialData }: ChatProps) => {
   const { toast } = useToast();
 
-  const { conversationId, currentModel, messages, setMessages, chatMessages } = useChatStore();
-
-  console.log({ chatMessages });
+  const { conversationId, currentModel, chatMessages, setChatMessages } = useChatStore();
 
   const { isMounted } = useHydration();
 
@@ -47,19 +48,19 @@ export const Chat = ({ initialData }: ChatProps) => {
 
       setIsSubmitting(true);
 
-      const userMessage = currentMessage || options?.userMessage || '';
+      const messages = chatMessages[conversationId];
 
       const currentUserMessage = {
-        content: userMessage,
+        content: currentMessage || options?.userMessage || '',
+        id: uuidv4(),
         role: ChatCompletionRole.USER,
-        timestamp: getTime(Date.now()),
-      };
+      } as Message;
 
       const currentAssistantMessage = {
         content: options?.userMessage ? '' : assistantMessage,
+        id: uuidv4(),
         role: ChatCompletionRole.ASSISTANT,
-        timestamp: getTime(Date.now()),
-      };
+      } as Message;
 
       const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
         (message) => message.content.length,
@@ -70,7 +71,12 @@ export const Chat = ({ initialData }: ChatProps) => {
       }
 
       if (!options?.regenerate) {
-        setMessages([...messages, ...messagesForApi]);
+        const updatedChatMessages = {
+          ...chatMessages,
+          [conversationId]: [...messages, ...messagesForApi],
+        };
+
+        setChatMessages(updatedChatMessages);
       }
 
       setAssistantMessage('');
@@ -120,7 +126,12 @@ export const Chat = ({ initialData }: ChatProps) => {
         setAssistantMessage((prev) => prev + chunk);
       }
 
-      saveLastMessage(userMessage, streamAssistMessage);
+      saveLastMessage(currentUserMessage, {
+        content: streamAssistMessage,
+        id: uuidv4(),
+        role: ChatCompletionRole.ASSISTANT,
+      } as Message);
+
       streamAssistMessage = '';
     } catch (error: any) {
       if (error.name !== 'AbortError') {
@@ -136,40 +147,47 @@ export const Chat = ({ initialData }: ChatProps) => {
 
   const handleRegenerate = (event: SyntheticEvent) => {
     deleteLastMessage();
-    handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
+    // handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
   };
 
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
 
-      if (assistantMessage) {
-        saveLastMessage('', assistantMessage);
-      }
+      // if (assistantMessage) {
+      //   saveLastMessage('', assistantMessage);
+      // }
     }
   };
 
-  const saveLastMessage = async (userMessage: string, assistMessage: string) => {
-    // const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-    // chatStorage?.state?.messages.push({
-    //   content: assistMessage,
-    //   role: ChatCompletionRole.ASSISTANT,
-    //   timestamp: getTime(Date.now()),
-    // });
-
-    // localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
-
-    await fetcher.post('/api/chat', {
+  const saveLastMessage = async (userMessage: Message, assistMessage: Message) => {
+    const response = await fetcher.post('/api/chat', {
       body: {
         conversationId,
         messages: [
-          { content: userMessage, role: ChatCompletionRole.USER },
-          { content: assistMessage, role: ChatCompletionRole.ASSISTANT },
+          { content: userMessage.content, role: ChatCompletionRole.USER },
+          { content: assistMessage.content, role: ChatCompletionRole.ASSISTANT },
         ],
         model: currentModel,
       },
       responseType: 'json',
     });
+
+    if (response?.messages) {
+      setAssistantMessage('');
+
+      const updatedChatMessages = {
+        ...chatMessages,
+        [conversationId]: [
+          ...chatMessages[conversationId].filter(
+            (msg) => ![userMessage.id, assistMessage.id].includes(msg.id),
+          ),
+          ...response.messages,
+        ],
+      };
+
+      setChatMessages(updatedChatMessages);
+    }
   };
 
   const deleteLastMessage = async () => {
@@ -178,6 +196,8 @@ export const Chat = ({ initialData }: ChatProps) => {
 
     localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
   };
+
+  console.log(chatMessages[conversationId]);
 
   return (
     <div className="flex h-full w-full">

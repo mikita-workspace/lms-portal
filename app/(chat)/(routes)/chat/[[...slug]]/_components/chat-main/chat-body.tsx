@@ -67,11 +67,15 @@ export const ChatBody = ({
   const t = useTranslations('chat.body');
 
   const { user } = useCurrentUser();
-  const messages = useChatStore((state) => state.messages);
+  const { chatMessages, conversationId } = useChatStore((state) => ({
+    chatMessages: state.chatMessages,
+    conversationId: state.conversationId,
+  }));
 
   const [sticky, setSticky] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(false);
 
+  const messages = chatMessages[conversationId];
   const hasMessages = Boolean(messages.length);
 
   return (
@@ -86,13 +90,13 @@ export const ChatBody = ({
         </div>
       )}
       <div className="h-[calc(100%-12rem)] relative">
-        {hasMessages ? (
+        {hasMessages && (
           <ScrollToBottom
             className="flex h-full w-full flex-col"
             followButtonClassName="scroll-to-bottom-button"
           >
             <Content>
-              {messages.map((message, index) => {
+              {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
                 const name = isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
@@ -100,7 +104,7 @@ export const ChatBody = ({
 
                 return (
                   <div
-                    key={index}
+                    key={message.id}
                     className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
                   >
                     <ChatBubble message={message} name={name} picture={picture} />
@@ -121,9 +125,8 @@ export const ChatBody = ({
               )}
             </Content>
           </ScrollToBottom>
-        ) : (
-          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         )}
+        {!hasMessages && <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />}
         {!sticky && hasMessages && (
           <Button
             className="w-10 h-10 rounded-full p-2 absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"

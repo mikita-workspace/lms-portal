@@ -20,7 +20,7 @@ export const getChatConversations = async () => {
         id: true,
         title: true,
         messages: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: 'asc' },
         },
       },
     });
