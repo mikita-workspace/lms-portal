@@ -43,45 +43,47 @@ export const Chat = ({ initialData }: ChatProps) => {
     event: SyntheticEvent,
     options?: { userMessage?: string; regenerate?: boolean },
   ) => {
+    event.preventDefault();
+
+    setIsSubmitting(true);
+
+    const messages = chatMessages[conversationId];
+
+    const currentUserMessage = {
+      content: currentMessage || options?.userMessage || '',
+      id: uuidv4(),
+      role: ChatCompletionRole.USER,
+    } as Message;
+
+    const currentAssistantMessage = {
+      content: options?.userMessage ? '' : assistantMessage,
+      id: uuidv4(),
+      role: ChatCompletionRole.ASSISTANT,
+    } as Message;
+
+    const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
+      (message) => message.content.length,
+    );
+
+    if (!messagesForApi.length) {
+      return;
+    }
+
+    if (!options?.regenerate) {
+      const updatedChatMessages = {
+        ...chatMessages,
+        [conversationId]: [...messages, ...messagesForApi],
+      };
+
+      setChatMessages(updatedChatMessages);
+    }
+
+    setAssistantMessage('');
+    setCurrentMessage('');
+
+    let streamAssistMessage = '';
+
     try {
-      event.preventDefault();
-
-      setIsSubmitting(true);
-
-      const messages = chatMessages[conversationId];
-
-      const currentUserMessage = {
-        content: currentMessage || options?.userMessage || '',
-        id: uuidv4(),
-        role: ChatCompletionRole.USER,
-      } as Message;
-
-      const currentAssistantMessage = {
-        content: options?.userMessage ? '' : assistantMessage,
-        id: uuidv4(),
-        role: ChatCompletionRole.ASSISTANT,
-      } as Message;
-
-      const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
-        (message) => message.content.length,
-      );
-
-      if (!messagesForApi.length) {
-        return;
-      }
-
-      if (!options?.regenerate) {
-        const updatedChatMessages = {
-          ...chatMessages,
-          [conversationId]: [...messages, ...messagesForApi],
-        };
-
-        setChatMessages(updatedChatMessages);
-      }
-
-      setAssistantMessage('');
-      setCurrentMessage('');
-
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
 
@@ -105,8 +107,6 @@ export const Chat = ({ initialData }: ChatProps) => {
       const reader = completionStream.body?.getReader();
       const decoder = new TextDecoder('utf-8');
 
-      let streamAssistMessage = '';
-
       while (true) {
         const rawChunk = await reader?.read();
 
@@ -125,14 +125,6 @@ export const Chat = ({ initialData }: ChatProps) => {
 
         setAssistantMessage((prev) => prev + chunk);
       }
-
-      saveLastMessage(currentUserMessage, {
-        content: streamAssistMessage,
-        id: uuidv4(),
-        role: ChatCompletionRole.ASSISTANT,
-      } as Message);
-
-      streamAssistMessage = '';
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         toast({
@@ -141,22 +133,25 @@ export const Chat = ({ initialData }: ChatProps) => {
         });
       }
     } finally {
+      saveLastMessage(currentUserMessage, {
+        content: streamAssistMessage,
+        id: uuidv4(),
+        role: ChatCompletionRole.ASSISTANT,
+      } as Message);
+
+      streamAssistMessage = '';
       setIsSubmitting(false);
     }
   };
 
   const handleRegenerate = (event: SyntheticEvent) => {
-    deleteLastMessage();
+    // deleteLastMessage();
     // handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
   };
 
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
-
-      // if (assistantMessage) {
-      //   saveLastMessage('', assistantMessage);
-      // }
     }
   };
 
@@ -190,12 +185,12 @@ export const Chat = ({ initialData }: ChatProps) => {
     }
   };
 
-  const deleteLastMessage = async () => {
-    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-    chatStorage?.state?.messages?.pop();
+  // const deleteLastMessage = async () => {
+  //   const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
+  //   chatStorage?.state?.messages?.pop();
 
-    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
-  };
+  //   localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
+  // };
 
   return (
     <div className="flex h-full w-full">
