@@ -26,10 +26,11 @@ type ChatTopBarProps = {
 
 export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTopBarProps) => {
   const { user } = useCurrentUser();
-  const { messages, currentModel, setCurrentModel, removeMessages } = useChatStore();
+  const { currentModel, setCurrentModel, conversationId, chatMessages } = useChatStore();
 
   const [open, setOpen] = useState(false);
 
+  const messages = chatMessages[conversationId];
   const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
 
   return (
@@ -82,7 +83,6 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
               variant="outline"
               disabled={isSubmitting || !messages.length}
               onClick={() => {
-                removeMessages();
                 setAssistantMessage('');
               }}
             >

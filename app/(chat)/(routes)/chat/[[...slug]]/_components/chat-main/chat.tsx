@@ -197,8 +197,6 @@ export const Chat = ({ initialData }: ChatProps) => {
     localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
   };
 
-  console.log(chatMessages[conversationId]);
-
   return (
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
