@@ -133,7 +133,7 @@ export const Chat = ({ initialData }: ChatProps) => {
         });
       }
     } finally {
-      saveLastMessage(currentUserMessage, {
+      saveLastMessages(currentUserMessage, {
         content: streamAssistMessage,
         id: uuidv4(),
         role: ChatCompletionRole.ASSISTANT,
@@ -155,42 +155,26 @@ export const Chat = ({ initialData }: ChatProps) => {
     }
   };
 
-  const saveLastMessage = async (userMessage: Message, assistMessage: Message) => {
+  const saveLastMessages = async (userMessage: Message, assistMessage: Message) => {
     const response = await fetcher.post('/api/chat', {
       body: {
         conversationId,
-        messages: [
-          { content: userMessage.content, role: ChatCompletionRole.USER },
-          { content: assistMessage.content, role: ChatCompletionRole.ASSISTANT },
-        ],
+        messages: [userMessage, assistMessage],
         model: currentModel,
       },
       responseType: 'json',
     });
 
     if (response?.messages) {
-      setAssistantMessage('');
-
       const updatedChatMessages = {
         ...chatMessages,
-        [conversationId]: [
-          ...chatMessages[conversationId].filter(
-            (msg) => ![userMessage.id, assistMessage.id].includes(msg.id),
-          ),
-          ...response.messages,
-        ],
+        [conversationId]: [...chatMessages[conversationId], ...response.messages],
       };
 
+      setAssistantMessage('');
       setChatMessages(updatedChatMessages);
     }
   };
-
-  // const deleteLastMessage = async () => {
-  //   const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-  //   chatStorage?.state?.messages?.pop();
-
-  //   localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
-  // };
 
   return (
     <div className="flex h-full w-full">

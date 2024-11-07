@@ -22,16 +22,19 @@ export const POST = async (req: NextRequest) => {
     }
 
     const chatMessages = await db.chatMessage.createManyAndReturn({
-      data: messages.map(({ content, role }: { content: string; role: ChatRole }) => ({
-        content,
-        conversationId,
-        model,
-        role,
-        // Necessary for the correct order of messages in DB
-        createdAt: new Date(
-          role === ChatCompletionRole.USER ? Date.now() : addMilliseconds(Date.now(), 10),
-        ),
-      })),
+      data: messages.map(
+        ({ id, content, role }: { id: string; content: string; role: ChatRole }) => ({
+          id,
+          content,
+          conversationId,
+          model,
+          role,
+          // Necessary for the correct order of messages in DB
+          createdAt: new Date(
+            role === ChatCompletionRole.USER ? Date.now() : addMilliseconds(Date.now(), 10),
+          ),
+        }),
+      ),
     });
 
     return NextResponse.json({ messages: chatMessages });
