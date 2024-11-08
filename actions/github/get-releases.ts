@@ -22,10 +22,6 @@ export const getGithubReleases = async ({
     zipUrl: string | null;
   }[]
 > => {
-  console.log(
-    `https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/releases?per_page=${pageSize}&page=${pageIndex}`,
-  );
-
   try {
     const githubReleases = await fetchCachedData(
       'github-releases',

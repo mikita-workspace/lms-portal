@@ -18,7 +18,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   useEffect(() => {
     const chatMessages = getChatMessages(conversations);
 
-    setConversationId(conversationId ?? conversations[0].id);
+    setConversationId(conversationId || conversations[0].id);
     setChatMessages(chatMessages);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -53,8 +53,6 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
 
-      console.log({ values });
-
       await update(values);
 
       toast({ title: t('accInfoUpdated') });

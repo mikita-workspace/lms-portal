@@ -73,7 +73,7 @@ export const ChatBody = ({
   const [sticky, setSticky] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(false);
 
-  const messages = chatMessages[conversationId];
+  const messages = chatMessages[conversationId] ?? [];
   const hasMessages = Boolean(messages.length);
 
   return (

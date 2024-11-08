@@ -37,7 +37,7 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const messages = chatMessages[conversationId];
+  const messages = chatMessages[conversationId] ?? [];
   const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
 
   const handleDeleteMessages = async () => {
