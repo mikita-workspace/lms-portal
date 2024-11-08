@@ -277,6 +277,7 @@
       "title": "What can I assist you with today?"
     },
     "conversation": {
+      "add": "New conversation",
       "title": "New conversation { order }",
       "delete-all": "Delete all conversations"
     },

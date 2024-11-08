@@ -26,7 +26,9 @@ export const ChatSideBarBottom = () => {
     setIsDeleting(true);
 
     try {
-      await fetcher.post(`/api/chat/conversation?action=${CONVERSATION_ACTION.DELETE_ALL}`);
+      await fetcher.post(`/api/chat/conversation?action=${CONVERSATION_ACTION.DELETE_ALL}`, {
+        responseType: 'json',
+      });
     } catch (error) {
       toast({ isError: true });
     } finally {
@@ -40,12 +42,7 @@ export const ChatSideBarBottom = () => {
   return (
     <div className="w-full p-4 border-t">
       <ConfirmModal onConfirm={handleDeleteConversations}>
-        <Button
-          className="w-full"
-          variant="secondary"
-          disabled={isDeleting}
-          onClick={handleDeleteConversations}
-        >
+        <Button className="w-full" variant="secondary" disabled={isDeleting}>
           <Trash2 className="w-4 h-4 mr-2" />
           {t('delete-all')}
         </Button>
