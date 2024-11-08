@@ -1,7 +1,6 @@
 'use client';
 
-import { RefreshCcw } from 'lucide-react';
-import { SyntheticEvent } from 'react';
+import { MoreHorizontal, RefreshCcw } from 'lucide-react';
 
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { MarkdownText } from '@/components/common/markdown-text';
@@ -14,7 +13,6 @@ type ChatBubbleProps = {
   isSubmitting?: boolean;
   message: { role: string; content: string };
   name: string;
-  onRegenerate?: (event: SyntheticEvent) => void;
   picture?: string | null;
   streamMessage?: string;
 };
@@ -24,7 +22,6 @@ export const ChatBubble = ({
   isSubmitting,
   message,
   name,
-  onRegenerate,
   picture,
   streamMessage,
 }: ChatBubbleProps) => {
@@ -42,18 +39,16 @@ export const ChatBubble = ({
           <AvatarFallback>{getFallbackName(name)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <div className="space-x-2">
+          <div className="flex items-center space-x-2">
             <span className="text-medium font-bold">{name}</span>
+            {Boolean(isAssistant && streamMessage && isSubmitting) && (
+              <MoreHorizontal className="w-6 h-6 animate-pulse" />
+            )}
           </div>
           <MarkdownText text={text} />
           {isAssistant && !isSubmitting && (
             <div className="flex gap-x-2 mt-4">
               <CopyClipboard textToCopy={text} />
-              {isLastMessage && onRegenerate && (
-                <button onClick={onRegenerate}>
-                  <RefreshCcw className="h-4 w-4" />
-                </button>
-              )}
             </div>
           )}
         </div>

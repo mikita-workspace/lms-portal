@@ -48,7 +48,6 @@ type ChatBodyProps = {
   assistantMessage?: string;
   introMessages: string[];
   isSubmitting?: boolean;
-  onRegenerate: (event: SyntheticEvent) => void;
   onSubmit: (
     event: SyntheticEvent,
     options?: {
@@ -61,7 +60,6 @@ export const ChatBody = ({
   assistantMessage,
   introMessages,
   isSubmitting,
-  onRegenerate,
   onSubmit,
 }: ChatBodyProps) => {
   const t = useTranslations('chat.body');
@@ -112,7 +110,6 @@ export const ChatBody = ({
                       isLastMessage={isLastMessage}
                       message={message}
                       name={name}
-                      onRegenerate={onRegenerate}
                       picture={picture}
                     />
                   </div>

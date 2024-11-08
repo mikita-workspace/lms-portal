@@ -144,11 +144,6 @@ export const Chat = ({ initialData }: ChatProps) => {
     }
   };
 
-  const handleRegenerate = (event: SyntheticEvent) => {
-    // deleteLastMessage();
-    // handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
-  };
-
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -185,7 +180,6 @@ export const Chat = ({ initialData }: ChatProps) => {
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
             isSubmitting={isSubmitting}
-            onRegenerate={handleRegenerate}
             onSubmit={handleSubmit}
           />
           <ChatInput
