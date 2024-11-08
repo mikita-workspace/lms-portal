@@ -2,7 +2,7 @@
 
 import { MoreHorizontal, Pencil, Text, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
 import {
@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Input,
 } from '@/components/ui';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { getChatMessages } from '@/lib/chat';
@@ -25,6 +26,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
   const { conversationId, setConversationId, setChatMessages } = useChatStore();
 
+  const [editTitleId, setEditTitleId] = useState('');
+
   useEffect(() => {
     const chatMessages = getChatMessages(conversations);
 
@@ -35,6 +38,10 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
   const handleOnClick = (id: string) => {
     setConversationId(id);
+
+    if (editTitleId.length && id !== editTitleId) {
+      setEditTitleId('');
+    }
   };
 
   return conversations.map(({ id, title }) => {
@@ -55,7 +62,10 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
             className={cn('text-muted-foreground', isActive && 'text-primary animate-spin-once')}
             size={22}
           />
-          <p className="text-left line-clamp-2">{title}</p>
+          <p className="text-left line-clamp-2">
+            {editTitleId === id && <Input value={title} />}
+            {editTitleId !== id && title}
+          </p>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -65,7 +75,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem className="hover:cursor-pointer">
+            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => setEditTitleId(id)}>
               <Pencil className="h-4 w-4  mr-2" />
               {t('edit')}
             </DropdownMenuItem>
