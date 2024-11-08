@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
-    if (!user || !user?.hasSubscription) {
+    if (!user?.hasSubscription) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 

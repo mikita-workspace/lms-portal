@@ -139,7 +139,6 @@ export const Chat = ({ initialData }: ChatProps) => {
         role: ChatCompletionRole.ASSISTANT,
       } as Message);
 
-      streamAssistMessage = '';
       setIsSubmitting(false);
     }
   };
