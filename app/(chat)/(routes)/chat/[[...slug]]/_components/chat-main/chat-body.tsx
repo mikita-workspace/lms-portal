@@ -94,7 +94,7 @@ export const ChatBody = ({
             followButtonClassName="scroll-to-bottom-button"
           >
             <Content>
-              {messages.map((message, index) => {
+              {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
                 const name = isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
