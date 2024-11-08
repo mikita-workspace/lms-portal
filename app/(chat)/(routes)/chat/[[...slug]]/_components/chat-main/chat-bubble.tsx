@@ -1,6 +1,6 @@
 'use client';
 
-import { MoreHorizontal, RefreshCcw } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { MarkdownText } from '@/components/common/markdown-text';
@@ -9,7 +9,6 @@ import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
-  isLastMessage?: boolean;
   isSubmitting?: boolean;
   message: { role: string; content: string };
   name: string;
@@ -18,7 +17,6 @@ type ChatBubbleProps = {
 };
 
 export const ChatBubble = ({
-  isLastMessage,
   isSubmitting,
   message,
   name,

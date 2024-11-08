@@ -96,7 +96,6 @@ export const ChatBody = ({
             <Content>
               {messages.map((message, index) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
-                const isLastMessage = isAssistant && index === messages.length - 1;
 
                 const name = isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
                 const picture = isAssistant ? null : user?.image;
@@ -106,12 +105,7 @@ export const ChatBody = ({
                     key={message.id}
                     className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
                   >
-                    <ChatBubble
-                      isLastMessage={isLastMessage}
-                      message={message}
-                      name={name}
-                      picture={picture}
-                    />
+                    <ChatBubble message={message} name={name} picture={picture} />
                   </div>
                 );
               })}
