@@ -30,7 +30,7 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
     userId: user?.userId,
     take: 5,
   });
-  const conversations = await getChatConversations(isEmbed);
+  const conversations = isEmbed ? [] : await getChatConversations();
 
   if (!user?.hasSubscription) {
     return redirect('/');

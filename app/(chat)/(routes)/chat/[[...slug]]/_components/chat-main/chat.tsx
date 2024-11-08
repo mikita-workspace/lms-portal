@@ -1,6 +1,6 @@
 'use client';
 
-import { SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useHydration } from '@/hooks/use-hydration';
+import { getChatMessages } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
 
 import { ChatBody } from './chat-body';
@@ -19,13 +20,15 @@ import { ChatTopBar } from './chat-top-bar';
 type Message = Conversation['messages'][0];
 
 type ChatProps = {
+  conversations?: Conversation[];
   initialData: Awaited<ReturnType<typeof getChatInitial>>;
 };
 
-export const Chat = ({ initialData }: ChatProps) => {
+export const Chat = ({ conversations = [], initialData }: ChatProps) => {
   const { toast } = useToast();
 
-  const { conversationId, currentModel, chatMessages, setChatMessages } = useChatStore();
+  const { conversationId, setConversationId, currentModel, chatMessages, setChatMessages } =
+    useChatStore();
 
   const { isMounted } = useHydration();
 
@@ -34,6 +37,16 @@ export const Chat = ({ initialData }: ChatProps) => {
   const [assistantMessage, setAssistantMessage] = useState('');
 
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    if (conversations.length) {
+      const chatMessages = getChatMessages(conversations);
+
+      setConversationId(conversations[0].id);
+      setChatMessages(chatMessages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!isMounted) {
     return <ChatSkeleton />;
