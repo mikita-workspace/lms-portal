@@ -1,9 +1,17 @@
 'use client';
 
-import { Text } from 'lucide-react';
+import { MoreHorizontal, Pencil, Text, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { getChatMessages } from '@/lib/chat';
 import { cn } from '@/lib/utils';
@@ -13,6 +21,8 @@ type ChatSideBarItemsProps = {
 };
 
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
+  const t = useTranslations('chat.conversation');
+
   const { conversationId, setConversationId, setChatMessages } = useChatStore();
 
   useEffect(() => {
@@ -34,7 +44,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
       <button
         key={id}
         className={cn(
-          'flex items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-4 pr-2 transition-all duration-300 hover:bg-muted border-b last:border-none',
+          'flex justify-between items-center gap-x-2 text-muted-foreground text-sm font-[500] pl-4 pr-2 transition-all duration-300 hover:bg-muted border-b last:border-none',
           isActive && 'text-primary bg-muted',
         )}
         type="button"
@@ -47,6 +57,27 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
           />
           <p className="text-left line-clamp-2">{title}</p>
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="h-4 w-8 p-0 outline-none" variant="ghost">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="hover:cursor-pointer">
+              <Pencil className="h-4 w-4  mr-2" />
+              {t('edit')}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="hover:cursor-pointer text-red-500"
+              disabled={id === conversationId}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {t('remove')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </button>
     );
   });

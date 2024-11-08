@@ -278,8 +278,10 @@
     },
     "conversation": {
       "add": "New conversation",
-      "title": "New conversation { order }",
-      "delete-all": "Delete all conversations"
+      "delete-all": "Delete all conversations",
+      "edit": "Edit title",
+      "remove": "Remove",
+      "title": "New conversation { order }"
     },
     "input": {
       "ask": "Ask",
