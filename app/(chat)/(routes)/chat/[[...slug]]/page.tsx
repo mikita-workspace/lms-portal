@@ -1,6 +1,6 @@
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 
-import { Chat } from './_components/chat';
+import { Chat } from './_components/chat-main/chat';
 
 const ChatPage = async () => {
   const initialData = await getChatInitial();

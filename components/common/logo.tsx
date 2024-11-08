@@ -26,7 +26,7 @@ export const Logo = ({
     <div
       className={cn(
         'items-center gap-x-3 md:flex',
-        !(isCopilot || isLoader) && 'hidden',
+        !isLoader && 'hidden',
         !onlyLogoIcon && 'hover:opacity-75 transition-opacity',
       )}
     >
@@ -37,7 +37,7 @@ export const Logo = ({
         width={40}
       />
       {!onlyLogoIcon && (
-        <div className={cn(baloo2.className, (isCopilot || isLoader) && 'hidden md:block')}>
+        <div className={cn(baloo2.className, isLoader && 'hidden md:block')}>
           <p
             className={cn(
               'font-semibold text-base',

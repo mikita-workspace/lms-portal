@@ -41,7 +41,7 @@ export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
 
   const isSelected = currentFilter === filterInfo.filter;
 
-  const handleClick = () => {
+  const handleOnClick = () => {
     const url = qs.stringifyUrl(
       {
         url: pathname,
@@ -54,7 +54,7 @@ export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
   };
 
   return (
-    <button onClick={handleClick}>
+    <button onClick={handleOnClick}>
       <div
         className={cn(
           'border rounded-lg flex items-center gap-x-2 p-3 transition duration-300 hover:bg-accent hover:text-accent-foreground',

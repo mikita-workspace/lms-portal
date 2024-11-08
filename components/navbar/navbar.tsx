@@ -5,7 +5,6 @@ import { SideBarMobile } from '../sidebar/sidebar-mobile';
 import { NavBarRoutes } from './navbar-routes';
 
 type NavBarProps = {
-  isCopilot?: boolean;
   globalProgress?: {
     progressPercentage: number;
     total: number;
@@ -14,11 +13,11 @@ type NavBarProps = {
   userNotifications?: Omit<Notification, 'userId'>[];
 };
 
-export const NavBar = ({ isCopilot = false, globalProgress, userNotifications }: NavBarProps) => {
+export const NavBar = ({ globalProgress, userNotifications }: NavBarProps) => {
   return (
     <div className="p-4 gap-x-4 h-full flex items-center justify-between bg-white dark:bg-neutral-800 border-b">
-      {!isCopilot && <SideBarMobile />}
-      <Logo isCopilot={isCopilot} />
+      <SideBarMobile />
+      <Logo />
       <NavBarRoutes globalProgress={globalProgress} userNotifications={userNotifications} />
     </div>
   );

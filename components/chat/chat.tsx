@@ -47,7 +47,7 @@ export const Chat = () => {
           )}
           <iframe
             onLoad={() => setIsReady(true)}
-            src={absoluteUrl('/chat/iframe')}
+            src={absoluteUrl('/chat/embed')}
             style={{ width: '100%', height: '100%', border: 'none' }}
             height="100%"
             width="100%"

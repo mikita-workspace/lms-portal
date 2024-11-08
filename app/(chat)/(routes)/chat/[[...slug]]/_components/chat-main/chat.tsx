@@ -1,8 +1,10 @@
 'use client';
 
-import { getTime } from 'date-fns';
 import { SyntheticEvent, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
+import { Conversation } from '@/actions/chat/get-chat-conversations';
+import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
@@ -14,16 +16,16 @@ import { ChatBody } from './chat-body';
 import { ChatInput } from './chat-input';
 import { ChatTopBar } from './chat-top-bar';
 
+type Message = Conversation['messages'][0];
+
 type ChatProps = {
-  initialData: {
-    introMessages: string[];
-  };
+  initialData: Awaited<ReturnType<typeof getChatInitial>>;
 };
 
 export const Chat = ({ initialData }: ChatProps) => {
   const { toast } = useToast();
 
-  const { currentModel, messages, setMessages } = useChatStore();
+  const { conversationId, currentModel, chatMessages, setChatMessages } = useChatStore();
 
   const { isMounted } = useHydration();
 
@@ -41,38 +43,47 @@ export const Chat = ({ initialData }: ChatProps) => {
     event: SyntheticEvent,
     options?: { userMessage?: string; regenerate?: boolean },
   ) => {
+    event.preventDefault();
+
+    setIsSubmitting(true);
+
+    const messages = chatMessages[conversationId];
+
+    const currentUserMessage = {
+      content: currentMessage || options?.userMessage || '',
+      id: uuidv4(),
+      role: ChatCompletionRole.USER,
+    } as Message;
+
+    const currentAssistantMessage = {
+      content: options?.userMessage ? '' : assistantMessage,
+      id: uuidv4(),
+      role: ChatCompletionRole.ASSISTANT,
+    } as Message;
+
+    const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
+      (message) => message.content.length,
+    );
+
+    if (!messagesForApi.length) {
+      return;
+    }
+
+    if (!options?.regenerate) {
+      const updatedChatMessages = {
+        ...chatMessages,
+        [conversationId]: [...messages, ...messagesForApi],
+      };
+
+      setChatMessages(updatedChatMessages);
+    }
+
+    setAssistantMessage('');
+    setCurrentMessage('');
+
+    let streamAssistMessage = '';
+
     try {
-      event.preventDefault();
-
-      setIsSubmitting(true);
-
-      const currentUserMessage = {
-        content: currentMessage || options?.userMessage || '',
-        role: ChatCompletionRole.USER,
-        timestamp: getTime(Date.now()),
-      };
-
-      const currentAssistantMessage = {
-        content: options?.userMessage ? '' : assistantMessage,
-        role: ChatCompletionRole.ASSISTANT,
-        timestamp: getTime(Date.now()),
-      };
-
-      const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
-        (message) => message.content.length,
-      );
-
-      if (!messagesForApi.length) {
-        return;
-      }
-
-      if (!options?.regenerate) {
-        setMessages([...messages, ...messagesForApi]);
-      }
-
-      setAssistantMessage('');
-      setCurrentMessage('');
-
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
 
@@ -96,8 +107,6 @@ export const Chat = ({ initialData }: ChatProps) => {
       const reader = completionStream.body?.getReader();
       const decoder = new TextDecoder('utf-8');
 
-      let streamAssistMessage = '';
-
       while (true) {
         const rawChunk = await reader?.read();
 
@@ -116,8 +125,6 @@ export const Chat = ({ initialData }: ChatProps) => {
 
         setAssistantMessage((prev) => prev + chunk);
       }
-      saveLastMessage(streamAssistMessage);
-      streamAssistMessage = '';
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         toast({
@@ -126,57 +133,52 @@ export const Chat = ({ initialData }: ChatProps) => {
         });
       }
     } finally {
+      saveLastMessages(currentUserMessage, {
+        content: streamAssistMessage,
+        id: uuidv4(),
+        role: ChatCompletionRole.ASSISTANT,
+      } as Message);
+
       setIsSubmitting(false);
     }
-  };
-
-  const handleRegenerate = (event: SyntheticEvent) => {
-    deleteLastMessage();
-    handleSubmit(event, { userMessage: messages.slice(-1)[0].content, regenerate: true });
   };
 
   const handleAbortGenerating = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
-
-      if (assistantMessage) {
-        saveLastMessage(assistantMessage);
-      }
     }
   };
 
-  const saveLastMessage = (message: string) => {
-    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-    chatStorage?.state?.messages.push({
-      content: message,
-      role: ChatCompletionRole.ASSISTANT,
-      timestamp: getTime(Date.now()),
+  const saveLastMessages = async (userMessage: Message, assistMessage: Message) => {
+    const response = await fetcher.post('/api/chat', {
+      body: {
+        conversationId,
+        messages: [userMessage, assistMessage],
+        model: currentModel,
+      },
+      responseType: 'json',
     });
 
-    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
-  };
+    if (response?.messages) {
+      const updatedChatMessages = {
+        ...chatMessages,
+        [conversationId]: [...chatMessages[conversationId], ...response.messages],
+      };
 
-  const deleteLastMessage = () => {
-    const chatStorage = JSON.parse(localStorage.getItem('chat-storage') ?? '{}');
-    chatStorage?.state?.messages?.pop();
-
-    localStorage.setItem('chat-storage', JSON.stringify(chatStorage));
+      setAssistantMessage('');
+      setChatMessages(updatedChatMessages);
+    }
   };
 
   return (
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar
-            isSubmitting={isSubmitting}
-            lastAssistantMessage={assistantMessage}
-            setAssistantMessage={setAssistantMessage}
-          />
+          <ChatTopBar isSubmitting={isSubmitting} setAssistantMessage={setAssistantMessage} />
           <ChatBody
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
             isSubmitting={isSubmitting}
-            onRegenerate={handleRegenerate}
             onSubmit={handleSubmit}
           />
           <ChatInput
