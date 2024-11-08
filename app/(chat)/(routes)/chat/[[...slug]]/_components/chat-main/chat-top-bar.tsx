@@ -13,9 +13,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { useToast } from '@/components/ui/use-toast';
+import { CONVERSATION_ACTION } from '@/constants/chat';
 import { OPEN_AI_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { fetcher } from '@/lib/fetcher';
 import { isOwner } from '@/lib/owner';
 import { cn } from '@/lib/utils';
 
@@ -25,13 +28,39 @@ type ChatTopBarProps = {
 };
 
 export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTopBarProps) => {
+  const { toast } = useToast();
+
   const { user } = useCurrentUser();
-  const { currentModel, setCurrentModel, conversationId, chatMessages } = useChatStore();
+  const { currentModel, setCurrentModel, conversationId, chatMessages, setChatMessages } =
+    useChatStore();
 
   const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const messages = chatMessages[conversationId];
   const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
+
+  const handleDeleteMessages = async () => {
+    setIsDeleting(true);
+
+    try {
+      const updatedChatMessages = {
+        ...chatMessages,
+        [conversationId]: [],
+      };
+
+      await fetcher.patch(
+        `/api/chat/conversation/${conversationId}?action=${CONVERSATION_ACTION.EMPTY_MESSAGES}`,
+      );
+
+      setAssistantMessage('');
+      setChatMessages(updatedChatMessages);
+    } catch (error) {
+      toast({ isError: true });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
@@ -81,10 +110,8 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
           <div className="flex gap-1">
             <Button
               variant="outline"
-              disabled={isSubmitting || !messages.length}
-              onClick={() => {
-                setAssistantMessage('');
-              }}
+              disabled={isSubmitting || isDeleting || !messages.length}
+              onClick={handleDeleteMessages}
             >
               <GrClearOption className="w-4 h-4" />
             </Button>

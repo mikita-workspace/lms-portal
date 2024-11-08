@@ -299,7 +299,7 @@ model AuthFlow {
 model ChatMessage {
   id             String            @id @default(uuid())
   content        String
-  conversation   ChatConversation? @relation(fields: [conversationId], references: [id])
+  conversation   ChatConversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId String?
   createdAt      DateTime          @default(now())
   model          String
