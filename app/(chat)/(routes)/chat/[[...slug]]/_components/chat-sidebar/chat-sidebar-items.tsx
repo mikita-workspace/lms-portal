@@ -1,6 +1,6 @@
 'use client';
 
-import { MoreHorizontal, Pencil, Text, Trash2 } from 'lucide-react';
+import { GlobeLock, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -58,7 +58,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
         onClick={() => handleOnClick(id)}
       >
         <div className="flex items-center gap-x-2 py-5">
-          <Text
+          <GlobeLock
             className={cn('text-muted-foreground', isActive && 'text-primary animate-spin-once')}
             size={22}
           />
