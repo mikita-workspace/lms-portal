@@ -22,18 +22,19 @@ type ChatLayoutProps = Readonly<{
 
 const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
   const user = await getCurrentUser();
+
+  const isEmbed = params.slug?.includes('embed');
+
   const globalProgress = await getGlobalProgress(user?.userId);
   const { notifications: userNotifications } = await getUserNotifications({
     userId: user?.userId,
     take: 5,
   });
-  const conversations = await getChatConversations();
+  const conversations = await getChatConversations(isEmbed);
 
   if (!user?.hasSubscription) {
     return redirect('/');
   }
-
-  const isEmbed = params.slug?.includes('embed');
 
   return (
     <div className="h-full flex flex-col">

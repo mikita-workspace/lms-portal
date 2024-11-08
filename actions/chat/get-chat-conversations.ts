@@ -8,12 +8,13 @@ import { getCurrentUser } from '../auth/get-current-user';
 
 export type Conversation = Awaited<ReturnType<typeof getChatConversations>>[0];
 
-export const getChatConversations = async () => {
+export const getChatConversations = async (isEmbed = false) => {
   try {
     const user = await getCurrentUser();
     const t = await getTranslations('chat.conversation');
 
     const conversations = await db.chatConversation.findMany({
+      ...(isEmbed && { take: 1 }),
       where: { userId: user?.userId },
       orderBy: { updatedAt: 'desc' },
       select: {
