@@ -33,6 +33,7 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
 
           return (
             <div
+              aria-hidden="true"
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
               onClick={(event) => {
@@ -49,6 +50,7 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
 
           return (
             <div
+              aria-hidden="true"
               key={index}
               className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
               onClick={(event) => {

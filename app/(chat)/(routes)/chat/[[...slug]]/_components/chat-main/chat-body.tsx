@@ -2,7 +2,14 @@
 
 import { ArrowDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
 import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
@@ -76,8 +83,13 @@ export const ChatBody = ({
   const messages = chatMessages[conversationId] ?? [];
   const hasMessages = Boolean(messages.length);
 
+  const value = useMemo(
+    () => ({ sticky, scrollToBottom, setSticky, setScrollToBottom }),
+    [scrollToBottom, sticky],
+  );
+
   return (
-    <ChatScrollContext.Provider value={{ sticky, scrollToBottom, setSticky, setScrollToBottom }}>
+    <ChatScrollContext.Provider value={value}>
       {!hasMessages && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
           <Avatar className="border dark:border-muted-foreground">

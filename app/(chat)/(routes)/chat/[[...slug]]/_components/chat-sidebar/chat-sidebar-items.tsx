@@ -21,6 +21,7 @@ type ChatSideBarItemsProps = {
   conversations: Conversation[];
 };
 
+//FIXME: Add Edit and remove functionality
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   const t = useTranslations('chat.conversation');
 
@@ -75,13 +76,18 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem className="hover:cursor-pointer" onClick={() => setEditTitleId(id)}>
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={() => setEditTitleId(id)}
+              disabled
+            >
               <Pencil className="h-4 w-4  mr-2" />
               {t('edit')}
             </DropdownMenuItem>
             <DropdownMenuItem
               className="hover:cursor-pointer text-red-500"
-              disabled={id === conversationId}
+              // disabled={id === conversationId}
+              disabled
             >
               <Trash2 className="h-4 w-4 mr-2" />
               {t('remove')}
