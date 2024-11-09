@@ -25,15 +25,15 @@ type ChatSideBarItemsProps = {
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   const t = useTranslations('chat.conversation');
 
-  const { conversationId, setConversationId, setChatMessages } = useChatStore();
+  const { conversationId, setConversationId, chatMessages, setChatMessages } = useChatStore();
 
   const [editTitleId, setEditTitleId] = useState('');
 
   useEffect(() => {
-    const chatMessages = getChatMessages(conversations);
-
-    setConversationId(conversationId || conversations[0].id);
-    setChatMessages(chatMessages);
+    if (Object.keys(chatMessages).length !== conversations.length) {
+      setConversationId(conversationId || conversations[0].id);
+      setChatMessages(getChatMessages(conversations));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversations.length]);
 
@@ -68,32 +68,34 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
             {editTitleId !== id && title}
           </p>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="h-4 w-8 p-0 outline-none" variant="ghost">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              className="hover:cursor-pointer"
-              onClick={() => setEditTitleId(id)}
-              disabled
-            >
-              <Pencil className="h-4 w-4  mr-2" />
-              {t('edit')}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="hover:cursor-pointer text-red-500"
-              // disabled={id === conversationId}
-              disabled
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              {t('remove')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {conversationId && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="h-4 w-8 p-0 outline-none" variant="ghost">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={() => setEditTitleId(id)}
+                disabled
+              >
+                <Pencil className="h-4 w-4  mr-2" />
+                {t('edit')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="hover:cursor-pointer text-red-500"
+                // disabled={id === conversationId}
+                disabled
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                {t('remove')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </button>
     );
   });

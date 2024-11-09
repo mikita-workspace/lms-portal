@@ -18,7 +18,7 @@ export const ChatSideBarBottom = () => {
 
   const t = useTranslations('chat.conversation');
 
-  const { setConversationId } = useChatStore();
+  const { setConversationId, setChatMessages } = useChatStore();
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -34,6 +34,7 @@ export const ChatSideBarBottom = () => {
     } finally {
       setIsDeleting(false);
       setConversationId('');
+      setChatMessages({});
     }
 
     router.refresh();
