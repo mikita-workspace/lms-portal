@@ -281,6 +281,7 @@
       "delete-all": "Delete all conversations",
       "edit": "Edit title",
       "remove": "Remove",
+      "share": "Share",
       "title": "New conversation { order }"
     },
     "input": {

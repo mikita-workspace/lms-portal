@@ -1,6 +1,6 @@
 'use client';
 
-import { GlobeLock, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { GlobeLock, MoreHorizontal, Pencil, Share, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -84,6 +84,10 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
               >
                 <Pencil className="h-4 w-4  mr-2" />
                 {t('edit')}
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:cursor-pointer" disabled>
+                <Share className="h-4 w-4  mr-2" />
+                {t('share')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="hover:cursor-pointer text-red-500"
