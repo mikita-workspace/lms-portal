@@ -4,7 +4,7 @@ import { GlobeLock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
-import {} from '@/components/ui';
+import { Input } from '@/components/ui';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { getChatMessages } from '@/lib/chat';
 import { cn } from '@/lib/utils';
