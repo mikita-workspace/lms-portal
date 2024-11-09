@@ -1,21 +1,15 @@
 'use client';
 
-import { GlobeLock, MoreHorizontal, Pencil, Share, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { GlobeLock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Input,
-} from '@/components/ui';
+import {} from '@/components/ui';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { getChatMessages } from '@/lib/chat';
 import { cn } from '@/lib/utils';
+
+import { ConversationActions } from './conversation-actions';
 
 type ChatSideBarItemsProps = {
   conversations: Conversation[];
@@ -23,8 +17,6 @@ type ChatSideBarItemsProps = {
 
 //FIXME: Add Edit and remove functionality
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
-  const t = useTranslations('chat.conversation');
-
   const { conversationId, setConversationId, chatMessages, setChatMessages } = useChatStore();
 
   const [editTitleId, setEditTitleId] = useState('');
@@ -68,38 +60,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
             {editTitleId !== id && title}
           </p>
         </div>
-        {conversationId && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="h-4 w-8 p-0 outline-none" variant="ghost">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="hover:cursor-pointer"
-                onClick={() => setEditTitleId(id)}
-                disabled
-              >
-                <Pencil className="h-4 w-4  mr-2" />
-                {t('edit')}
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:cursor-pointer" disabled>
-                <Share className="h-4 w-4  mr-2" />
-                {t('share')}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="hover:cursor-pointer text-red-500"
-                // disabled={id === conversationId}
-                disabled
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                {t('remove')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        {conversationId && <ConversationActions id={id} setEditTitleId={setEditTitleId} />}
       </button>
     );
   });

@@ -2,7 +2,7 @@ import { Conversation } from '@/actions/chat/get-chat-conversations';
 
 import { ChatSideBarBottom } from './chat-sidebar-bottom';
 import { ChatSideBarItems } from './chat-sidebar-items';
-import { ChatSideBarTop } from './chat-sidebat-top';
+import { ChatSideBarTop } from './chat-sidebar-top';
 
 type ChatSideBarProps = {
   conversations: Conversation[];
