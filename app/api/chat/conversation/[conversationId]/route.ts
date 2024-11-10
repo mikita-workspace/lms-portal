@@ -20,10 +20,22 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
+    const { title } = await req.json();
+
     const action = req.nextUrl.searchParams.get('action');
 
     if (action === CONVERSATION_ACTION.EMPTY_MESSAGES) {
       await db.chatMessage.deleteMany({ where: { conversationId: params.conversationId } });
+    }
+
+    if (title && action === CONVERSATION_ACTION.EDIT) {
+      const updatedConversation = await db.chatConversation.update({
+        where: { id: params.conversationId },
+        data: { title },
+        select: { title },
+      });
+
+      return NextResponse.json(updatedConversation);
     }
 
     return NextResponse.json({ success: true });

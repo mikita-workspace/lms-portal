@@ -46,7 +46,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
       <div
         key={id}
         className={cn(
-          'flex justify-between items-center transition-all duration-300 hover:bg-muted border-b last:border-none pr-2',
+          'flex justify-between items-center transition-all duration-300 hover:bg-muted border-b last:border-none pr-2 hover:cursor-pointer',
           isActive && 'text-primary bg-muted',
         )}
       >
