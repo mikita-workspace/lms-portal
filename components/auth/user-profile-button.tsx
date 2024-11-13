@@ -43,7 +43,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
 
   const { user } = useCurrentUser();
 
-  const handleSettings = () => router.push('/settings');
+  const handleSettings = () => router.push('/settings/general');
 
   const isAdmin = user?.role === UserRole.ADMIN;
   const isStudent = user?.role === UserRole.STUDENT;

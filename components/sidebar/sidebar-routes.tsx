@@ -69,7 +69,7 @@ const teacherRoutes = [
 
 const settingsRoutes = [
   {
-    href: '/settings',
+    href: '/settings/general',
     icon: Settings2,
     isProtected: true,
     label: 'general',
