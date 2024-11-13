@@ -279,7 +279,7 @@
     "conversation": {
       "add": "New conversation",
       "delete-all": "Delete all conversations",
-      "edit": "Edit title",
+      "edit": "Edit",
       "remove": "Remove",
       "share": "Share",
       "title": "New conversation { order }"
