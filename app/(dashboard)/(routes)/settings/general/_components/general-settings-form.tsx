@@ -2,6 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
+import { format } from 'date-fns';
+import { MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -18,6 +20,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { TIMESTAMP_USER_PROFILE_TEMPLATE } from '@/constants/common';
+import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
 
@@ -34,6 +38,8 @@ const formSchema = z.object({
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
   const t = useTranslations('settings.generalForm');
 
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
+
   const { toast } = useToast();
   const { update } = useSession();
   const router = useRouter();
@@ -46,6 +52,8 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
       pictureUrl: initialData.pictureUrl || '',
     },
   });
+
+  console.log(localeInfo);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -66,6 +74,19 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <p className="font-medium text-xl">{t('accInfo')}</p>
+        <p className="text-xs text-muted-foreground">
+          {t('lastUpdated')}&nbsp;{format(initialData.updatedAt, TIMESTAMP_USER_PROFILE_TEMPLATE)}
+        </p>
+        {localeInfo && (
+          <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
+            <MapPin className="h-3 w-3" />
+            <span>
+              {localeInfo.details.city}, {localeInfo.details.country} (
+              {localeInfo.details.countryCode}) | {localeInfo.locale.currency} (
+              {localeInfo.locale.locale})
+            </span>
+          </p>
+        )}
       </div>
       <div>
         <Form {...form}>
