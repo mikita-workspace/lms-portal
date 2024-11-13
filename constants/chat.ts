@@ -4,3 +4,5 @@ export enum CONVERSATION_ACTION {
   EMPTY_MESSAGES = 'empty-messages',
   NEW = 'new',
 }
+
+export const LIMIT_CONVERSATIONS = 10;
