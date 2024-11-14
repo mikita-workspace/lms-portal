@@ -26,7 +26,7 @@ export const ChatSideBarBottom = () => {
     setIsDeleting(true);
 
     try {
-      await fetcher.post(`/api/chat/conversation?action=${CONVERSATION_ACTION.DELETE_ALL}`, {
+      await fetcher.post(`/api/chat/conversations?action=${CONVERSATION_ACTION.DELETE_ALL}`, {
         responseType: 'json',
       });
     } catch (error) {

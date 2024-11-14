@@ -77,29 +77,10 @@ export const ChatConversationModal = ({
     onChange(title);
   };
 
-  // const handleCreateConversation = async () => {
-  //   setIsCreating(true);
-
-  //   try {
-  // const response = await fetcher.post(
-  //   `/api/chat/conversation?action=${CONVERSATION_ACTION.NEW}`,
-  //   { responseType: 'json' },
-  // );
-
-  //     setConversationId(response?.id ?? '');
-  //   } catch (error) {
-  //     toast({ isError: true });
-  //   } finally {
-  //     setIsCreating(false);
-  //   }
-
-  //   router.refresh();
-  // };
-
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await fetcher.post(
-        `/api/chat/conversation?action=${CONVERSATION_ACTION.NEW}`,
+        `/api/chat/conversations?action=${CONVERSATION_ACTION.NEW}`,
         { body: { ...values }, responseType: 'json' },
       );
 
