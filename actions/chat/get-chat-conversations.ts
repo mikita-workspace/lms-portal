@@ -16,10 +16,11 @@ export const getChatConversations = async (isEmbed = false) => {
     const conversations = await db.chatConversation.findMany({
       ...(isEmbed && { take: 1 }),
       where: { userId: user?.userId },
-      orderBy: { position: 'desc' },
+      orderBy: { position: 'asc' },
       select: {
         id: true,
         title: true,
+        position: true,
         messages: {
           orderBy: { createdAt: 'asc' },
         },
@@ -35,11 +36,19 @@ export const getChatConversations = async (isEmbed = false) => {
         },
         select: {
           id: true,
+          position: true,
           title: true,
         },
       });
 
-      return [{ id: newChatConversation.id, title: newChatConversation.title, messages: [] }];
+      return [
+        {
+          id: newChatConversation.id,
+          messages: [],
+          position: newChatConversation.position,
+          title: newChatConversation.title,
+        },
+      ];
     }
 
     return conversations;

@@ -2,10 +2,12 @@
 
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { BiLoader } from 'react-icons/bi';
 
 import { ChatConversationModal } from '@/components/modals/chat-conversation-modal';
 import { Button } from '@/components/ui';
 import { LIMIT_CONVERSATIONS } from '@/constants/chat';
+import { useChatStore } from '@/hooks/use-chat-store';
 
 type ChatSideBarTopProps = {
   amountOfConversations?: number;
@@ -13,18 +15,23 @@ type ChatSideBarTopProps = {
 export const ChatSideBarTop = ({ amountOfConversations = 1 }: ChatSideBarTopProps) => {
   const t = useTranslations('chat.conversation');
 
+  const isFetching = useChatStore((state) => state.isFetching);
+
   const isLimitReached = amountOfConversations >= LIMIT_CONVERSATIONS;
 
   return (
     <div className="w-full px-4 pb-2 pt-4 border-b">
       <ChatConversationModal>
-        <Button className="w-full" variant="secondary" disabled={isLimitReached}>
+        <Button className="w-full" variant="secondary" disabled={isLimitReached || isFetching}>
           <Plus className="w-4 h-4 mr-2" />
           {t('add')}
         </Button>
       </ChatConversationModal>
       <div className="flex justify-between items-center mt-4 text-xs text-muted-foreground">
-        <span>{t('conversations')}</span>
+        <div className="flex gap-x-1 items-center">
+          <span>{t('conversations')}</span>
+          {isFetching && <BiLoader className="h-3 w-3 animate-spin text-primary" />}
+        </div>
         <span>
           {amountOfConversations}/{LIMIT_CONVERSATIONS}
         </span>
