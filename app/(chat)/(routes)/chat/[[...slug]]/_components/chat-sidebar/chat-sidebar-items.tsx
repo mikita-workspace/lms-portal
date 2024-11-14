@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
+import { ChatConversationModal } from '@/components/modals/chat-conversation-modal';
 import {
   Button,
   DropdownMenu,
@@ -34,10 +35,11 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
   const [editTitleId, setEditTitleId] = useState('');
   const [isFetching, setIsFetching] = useState(false);
+  const [actionMenuOpen, setActionMenuOpen] = useState(false);
 
   useEffect(() => {
     if (Object.keys(chatMessages).length !== conversations.length) {
-      setConversationId(conversationId || conversations[0].id);
+      setConversationId(conversations[0].id);
       setChatMessages(getChatMessages(conversations));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,7 +59,14 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
     setIsFetching(true);
 
     try {
-      await fetcher.delete(`/api/chat/conversation/${id}`);
+      fetcher.delete(`/api/chat/conversation/${id}`);
+
+      toast({
+        title: t('removed-conversation', {
+          conversation: conversations.find((conversation) => conversation.id === id)?.title,
+        }),
+      });
+
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -105,11 +114,11 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
                       </div>
                       <div className="flex items-center gap-x-2">
                         <GlobeLock className="w-4 h-4" />
-                        <span> {conversation.title}</span>
+                        <div className="line-clamp-1 flex-1">{conversation.title}</div>
                       </div>
                       <div className="ml-auto flex items-center gap-x-2">
                         {isActive && (
-                          <DropdownMenu>
+                          <DropdownMenu open={actionMenuOpen} onOpenChange={setActionMenuOpen}>
                             <DropdownMenuTrigger asChild>
                               <Button
                                 className="h-4 w-4 p-0 outline-none"
@@ -121,14 +130,16 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem className="hover:cursor-pointer">
-                                <Pencil className="h-4 w-4  mr-2" />
-                                {t('edit')}
-                              </DropdownMenuItem>
+                              <ChatConversationModal setActionMenuOpen={setActionMenuOpen}>
+                                <button className="flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-muted hover:cursor-pointer">
+                                  <Pencil className="h-4 w-4 mr-2" />
+                                  {t('edit')}
+                                </button>
+                              </ChatConversationModal>
                               <DropdownMenuItem
                                 className="hover:cursor-pointer text-red-500"
                                 onClick={() => handleRemoveConversation(conversation.id)}
-                                disabled={isFetching}
+                                disabled={isFetching || conversations.length === 1}
                               >
                                 <Trash2 className="h-4 w-4 mr-2" />
                                 {t('remove')}

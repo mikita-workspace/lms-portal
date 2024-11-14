@@ -16,7 +16,7 @@ export const getChatConversations = async (isEmbed = false) => {
     const conversations = await db.chatConversation.findMany({
       ...(isEmbed && { take: 1 }),
       where: { userId: user?.userId },
-      orderBy: { updatedAt: 'desc' },
+      orderBy: { position: 'desc' },
       select: {
         id: true,
         title: true,
@@ -29,6 +29,7 @@ export const getChatConversations = async (isEmbed = false) => {
     if (!conversations.length) {
       const newChatConversation = await db.chatConversation.create({
         data: {
+          position: 0,
           title: t('title', { order: 1 }),
           userId: user?.userId,
         },

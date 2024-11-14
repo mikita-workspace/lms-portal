@@ -15,8 +15,8 @@ import { ExchangeRates, useLocaleStore } from './use-locale-store';
 const defaultLocaleInfo = {
   locale: { currency: DEFAULT_CURRENCY, locale: DEFAULT_LOCALE },
   details: {
-    city: '',
-    country: '',
+    city: 'Unknown',
+    country: 'Unknown',
     countryCode: DEFAULT_COUNTRY_CODE,
     latitude: 0,
     longitude: 0,

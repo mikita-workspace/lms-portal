@@ -278,9 +278,11 @@
     },
     "conversation": {
       "add": "New conversation",
+      "conversations": "Conversations",
       "delete-all": "Delete all conversations",
       "edit": "Edit",
       "remove": "Remove",
+      "removed-conversation": "The conversation \"{conversation}\" has been successfully deleted.",
       "share": "Share",
       "title": "New conversation { order }"
     },
