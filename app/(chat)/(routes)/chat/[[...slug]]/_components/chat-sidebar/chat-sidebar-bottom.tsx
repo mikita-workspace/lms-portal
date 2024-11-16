@@ -11,7 +11,9 @@ import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { fetcher } from '@/lib/fetcher';
 
-export const ChatSideBarBottom = () => {
+type ChatSideBarBottomProps = { amountOfConversations?: number };
+
+export const ChatSideBarBottom = ({ amountOfConversations }: ChatSideBarBottomProps) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -47,7 +49,11 @@ export const ChatSideBarBottom = () => {
   return (
     <div className="w-full p-4 border-t">
       <ConfirmModal onConfirm={handleDeleteConversations}>
-        <Button className="w-full" variant="secondary" disabled={isFetching}>
+        <Button
+          className="w-full"
+          variant="secondary"
+          disabled={isFetching || amountOfConversations === 1}
+        >
           <Trash2 className="w-4 h-4 mr-2" />
           {t('delete-all')}
         </Button>

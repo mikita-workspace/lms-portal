@@ -15,7 +15,7 @@ export const ChatSideBar = async ({ conversations }: ChatSideBarProps) => {
       <div className="flex flex-col w-full overflow-y-auto h-full">
         <ChatSideBarItems conversations={conversations} />
       </div>
-      <ChatSideBarBottom />
+      <ChatSideBarBottom amountOfConversations={conversations.length} />
     </div>
   );
 };
