@@ -1,5 +1,7 @@
 import { Conversation } from '@/actions/chat/get-chat-conversations';
 
+import { getRandomInt } from './utils';
+
 export const getChatMessages = (conversations: Conversation[]) =>
   conversations.reduce<Record<string, Conversation['messages']>>((acc, conversation) => {
     acc[conversation.id] = conversation.messages;
@@ -34,11 +36,11 @@ export const generateConversationTitle = () => {
     'Fantasy',
   ];
 
-  const titleLength = Math.floor(Math.random() * 3) + 2;
+  const titleLength = getRandomInt(1, 3);
   let title = '';
 
   for (let i = 0; i < titleLength; i++) {
-    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomIndex = getRandomInt(1, words.length);
     title += words[randomIndex] + ' ';
   }
 
