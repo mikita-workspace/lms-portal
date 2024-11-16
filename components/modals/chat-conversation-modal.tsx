@@ -31,10 +31,10 @@ import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { generateConversationTitle } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
+import { cn } from '@/lib/utils';
 
 import { Button, Checkbox, Input } from '../ui';
 import { useToast } from '../ui/use-toast';
-import { cn } from '@/lib/utils';
 
 type ChatConversationModalProps = {
   initialData?: Conversation;
@@ -79,8 +79,8 @@ export const ChatConversationModal = ({
   const [isUpdatingSharedLink, setIsUpdatingSharedLink] = useState(false);
   const [sharedLink, setSharedLink] = useState(initialData?.shared.link ?? '');
 
-  const watchIsShared = form.watch('isShared') as Boolean;
-  const watchIsOnlyAuth = form.watch('isOnlyAuth') as Boolean;
+  const watchIsShared = form.watch('isShared') as boolean;
+  const watchIsOnlyAuth = form.watch('isOnlyAuth') as boolean;
 
   const handleOpenChange = (value: boolean) => {
     setOpen?.(value);
@@ -93,7 +93,7 @@ export const ChatConversationModal = ({
     onChange(title);
   };
 
-  const handleShareConversation = async (isActive: Boolean, isOnlyAuth: Boolean) => {
+  const handleShareConversation = async (isActive: boolean, isOnlyAuth: boolean) => {
     setIsUpdatingSharedLink(true);
 
     try {
