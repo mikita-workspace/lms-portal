@@ -21,7 +21,6 @@ export const PATCH = async (
     }
 
     const { title } = await req.json();
-
     const action = req.nextUrl.searchParams.get('action');
 
     if (action === CONVERSATION_ACTION.EMPTY_MESSAGES) {
@@ -32,7 +31,7 @@ export const PATCH = async (
       const updatedConversation = await db.chatConversation.update({
         where: { id: params.conversationId },
         data: { title },
-        select: { title },
+        select: { id: true, title: true },
       });
 
       return NextResponse.json(updatedConversation);

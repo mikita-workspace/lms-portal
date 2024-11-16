@@ -43,6 +43,15 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   const [editTitleId, setEditTitleId] = useState('');
   const [isReordering, setIsReordering] = useState(false);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const currentConversation = conversations.find(
+    (conversation) => conversation.id === conversationId,
+  );
+
+  useEffect(() => {
+    document.body.style.removeProperty('pointer-events');
+  }, [open]);
 
   useEffect(() => {
     if (Object.keys(chatMessages).length !== conversations.length) {
@@ -92,8 +101,6 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
         responseType: 'json',
       });
 
-      // toast({ title: 'Chapters reordered' });
-
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -129,86 +136,96 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="conversations">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {conversations.map((conversation, index) => {
-              const isActive = conversationId === conversation.id;
+    <>
+      <ChatConversationModal
+        open={open}
+        setOpen={setOpen}
+        initialData={currentConversation}
+        isEdit
+      />
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="conversations">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {conversations.map((conversation, index) => {
+                const isActive = conversationId === conversation.id;
 
-              return (
-                <Draggable
-                  draggableId={conversation.id}
-                  index={index}
-                  isDragDisabled={isReordering}
-                  key={conversation.id}
-                >
-                  {(innerProvided) => (
-                    <div
-                      {...innerProvided.draggableProps}
-                      className={cn(
-                        'flex justify-between items-center transition-all duration-300 hover:bg-muted pr-2 hover:cursor-pointer text-sm text-muted-foreground font-[500] px-3 py-6',
-                        isActive && 'text-primary bg-muted',
-                      )}
-                      ref={innerProvided.innerRef}
-                      onClick={(event) => handleOnClick(event, conversation.id)}
-                    >
+                return (
+                  <Draggable
+                    draggableId={conversation.id}
+                    index={index}
+                    isDragDisabled={isReordering}
+                    key={conversation.id}
+                  >
+                    {(innerProvided) => (
                       <div
-                        {...innerProvided.dragHandleProps}
-                        className="flex justify-between items-center gap-x-2 pr-2"
+                        {...innerProvided.draggableProps}
+                        className={cn(
+                          'flex justify-between items-center transition-all duration-300 hover:bg-muted pr-2 hover:cursor-pointer text-sm text-muted-foreground font-[500] px-3 py-6',
+                          isActive && 'text-primary bg-muted',
+                        )}
+                        ref={innerProvided.innerRef}
+                        onClick={(event) => handleOnClick(event, conversation.id)}
                       >
-                        <GripVertical
-                          className={cn(
-                            'text-muted-foreground h-5 w-5',
-                            isActive && 'text-primary animate-spin-once',
-                          )}
-                        />
-                      </div>
-                      <div className="flex items-center gap-x-2">
-                        <GlobeLock className="w-4 h-4" />
-                        <div className="line-clamp-1 flex-1">{conversation.title}</div>
-                      </div>
-                      <div className="ml-auto flex items-center gap-x-2">
-                        {isActive && (
-                          <DropdownMenu open={actionMenuOpen} onOpenChange={setActionMenuOpen}>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                className="h-4 w-4 p-0 outline-none"
-                                variant="ghost"
-                                disabled={isFetching}
-                              >
-                                <EllipsisVertical className="w-4 h-4 cursor-pointer hover:opacity-75 transition duration-300" />
-                                <span className="sr-only">Open menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <ChatConversationModal setActionMenuOpen={setActionMenuOpen}>
-                                <button className="flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-muted hover:cursor-pointer">
+                        <div
+                          {...innerProvided.dragHandleProps}
+                          className="flex justify-between items-center gap-x-2 pr-2"
+                        >
+                          <GripVertical
+                            className={cn(
+                              'text-muted-foreground h-5 w-5',
+                              isActive && 'text-primary animate-spin-once',
+                            )}
+                          />
+                        </div>
+                        <div className="flex items-center gap-x-2">
+                          <GlobeLock className="w-4 h-4" />
+                          <div className="line-clamp-1 flex-1">{conversation.title}</div>
+                        </div>
+                        <div className="ml-auto flex items-center gap-x-2">
+                          {isActive && (
+                            <DropdownMenu open={actionMenuOpen} onOpenChange={setActionMenuOpen}>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  className="h-4 w-4 p-0 outline-none"
+                                  variant="ghost"
+                                  disabled={isFetching}
+                                >
+                                  <EllipsisVertical className="w-4 h-4 cursor-pointer hover:opacity-75 transition duration-300" />
+                                  <span className="sr-only">Open menu</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  className="hover:cursor-pointer"
+                                  onClick={() => setOpen(true)}
+                                  disabled={isFetching}
+                                >
                                   <Pencil className="h-4 w-4 mr-2" />
                                   {t('edit')}
-                                </button>
-                              </ChatConversationModal>
-                              <DropdownMenuItem
-                                className="hover:cursor-pointer text-red-500"
-                                onClick={() => handleRemoveConversation(conversation.id)}
-                                disabled={isFetching || conversations.length === 1}
-                              >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                {t('remove')}
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        )}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="hover:cursor-pointer text-red-500"
+                                  onClick={() => handleRemoveConversation(conversation.id)}
+                                  disabled={isFetching || conversations.length === 1}
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  {t('remove')}
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };

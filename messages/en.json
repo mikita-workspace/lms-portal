@@ -104,6 +104,17 @@
       "success": "Thanks for your report. We will notify you as soon as the problem is resolved."
     }
   },
+  "chat-conversation-modal": {
+    "copyLink": "Copy the link",
+    "description":"Click \"Submit\" when you are done.",
+    "onlyAuth": "Only for authorized users",
+    "openAccess": "Open access to the conversation via the link",
+    "sharedAccess": "Shared access",
+    "submit": "Done",
+    "title": "Title",
+    "titleAdd": "Add conversation",
+    "titleEdit": "Edit conversation"
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
