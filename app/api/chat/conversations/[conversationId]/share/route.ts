@@ -58,10 +58,10 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    const { isOnlyAuth, isActive } = await req.json();
+    const { isActive, isOnlyAuth } = await req.json();
 
     const updatedSharedConversation = await db.chatSharedConversation.update({
-      where: { id: params.conversationId },
+      where: { conversationId: params.conversationId },
       data: {
         expireAt: addMonths(Date.now(), 1),
         isActive: isActive ?? false,

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -34,6 +34,7 @@ import { fetcher } from '@/lib/fetcher';
 
 import { Button, Checkbox, Input } from '../ui';
 import { useToast } from '../ui/use-toast';
+import { cn } from '@/lib/utils';
 
 type ChatConversationModalProps = {
   initialData?: Conversation;
@@ -67,27 +68,53 @@ export const ChatConversationModal = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isOnlyAuth: false,
-      isShared: false,
+      isOnlyAuth: initialData?.shared.isOnlyAuth,
+      isShared: initialData?.shared.isShared,
       title: initialData?.title ?? '',
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [sharedLink, setSharedLink] = useState('');
+  const [isUpdatingSharedLink, setIsUpdatingSharedLink] = useState(false);
+  const [sharedLink, setSharedLink] = useState(initialData?.shared.link ?? '');
 
-  const watchIsShared = form.watch('isShared');
+  const watchIsShared = form.watch('isShared') as Boolean;
+  const watchIsOnlyAuth = form.watch('isOnlyAuth') as Boolean;
 
   const handleOpenChange = (value: boolean) => {
     setOpen?.(value);
+    router.refresh();
   };
 
   const handleGenerateTitle = (onChange: (value: string) => void) => {
     const title = generateConversationTitle();
 
     onChange(title);
+  };
+
+  const handleShareConversation = async (isActive: Boolean, isOnlyAuth: Boolean) => {
+    setIsUpdatingSharedLink(true);
+
+    try {
+      const response =
+        initialData?.shared.isCreated || sharedLink
+          ? await fetcher.patch(`/api/chat/conversations/${initialData?.id}/share`, {
+              body: { isActive, isOnlyAuth },
+              responseType: 'json',
+            })
+          : await fetcher.post(`/api/chat/conversations/${initialData?.id}/share`, {
+              responseType: 'json',
+            });
+
+      if (response?.link) {
+        setSharedLink(response.link);
+      }
+    } catch (error) {
+      toast({ isError: true });
+    } finally {
+      setIsUpdatingSharedLink(false);
+    }
   };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -139,6 +166,7 @@ export const ChatConversationModal = ({
                           type="button"
                           variant="outline"
                           onClick={() => handleGenerateTitle(field.onChange)}
+                          disabled={isSubmitting || isUpdatingSharedLink}
                         >
                           <RefreshCcw className="w-4 h-4" />
                         </Button>
@@ -148,55 +176,68 @@ export const ChatConversationModal = ({
                   </FormItem>
                 )}
               />
-              <p className="text-sm font-medium pt-2">{t('sharedAccess')}</p>
-              <FormField
-                control={form.control}
-                name="isShared"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        disabled={isSubmitting}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormDescription>{t('openAccess')}</FormDescription>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="isOnlyAuth"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        disabled={!watchIsShared || isSubmitting}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormDescription>{t('onlyAuth')}</FormDescription>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isEdit && (
+                <>
+                  <p className="text-sm font-medium pt-2">{t('sharedAccess')}</p>
+                  <FormField
+                    control={form.control}
+                    name="isShared"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            onClick={() => handleShareConversation(!field.value, watchIsOnlyAuth)}
+                            disabled={isSubmitting || isUpdatingSharedLink}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormDescription>{t('openAccess')}</FormDescription>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="isOnlyAuth"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            onClick={() => handleShareConversation(watchIsShared, !field.value)}
+                            disabled={!watchIsShared || isSubmitting || isUpdatingSharedLink}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormDescription>{t('onlyAuth')}</FormDescription>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
               <DialogFooter className="pt-4">
-                <div className="w-full flex justify-between">
-                  <Button variant="outline" disabled={isSubmitting || !sharedLink} type="button">
-                    <div className="flex items-center gap-x-2">
-                      <Link className="w-4 h-4" />
-                      <span>{t('copyLink')}</span>
-                    </div>
-                  </Button>
+                <div className={cn('w-full flex', isEdit ? 'justify-between' : 'justify-end')}>
+                  {isEdit && (
+                    <Button
+                      disabled={isSubmitting || !sharedLink || isUpdatingSharedLink}
+                      onClick={() => navigator.clipboard.writeText(sharedLink)}
+                      type="button"
+                      variant="outline"
+                    >
+                      <div className="flex items-center gap-x-2">
+                        <Link className="w-4 h-4" />
+                        <span>{t('copyLink')}</span>
+                      </div>
+                    </Button>
+                  )}
                   <Button
-                    disabled={!isValid || isSubmitting}
+                    disabled={!isValid || isSubmitting || isUpdatingSharedLink}
                     isLoading={isSubmitting}
                     type="submit"
                   >

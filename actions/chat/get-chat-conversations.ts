@@ -21,6 +21,7 @@ export const getChatConversations = async (isEmbed = false) => {
         id: true,
         title: true,
         position: true,
+        shared: true,
         messages: {
           orderBy: { createdAt: 'asc' },
         },
@@ -47,11 +48,27 @@ export const getChatConversations = async (isEmbed = false) => {
           messages: [],
           position: newChatConversation.position,
           title: newChatConversation.title,
+          shared: {
+            expiredAt: null,
+            isCreated: false,
+            isOnlyAuth: false,
+            isShared: false,
+            link: '',
+          },
         },
       ];
     }
 
-    return conversations;
+    return conversations.map((conversation) => ({
+      ...conversation,
+      shared: {
+        expiredAt: conversation.shared?.expireAt,
+        isCreated: Boolean(conversation.shared),
+        isOnlyAuth: conversation.shared?.isOnlyAuth ?? false,
+        isShared: conversation.shared?.isActive ?? false,
+        link: conversation.shared?.link ?? '',
+      },
+    }));
   } catch (error) {
     console.error('[GET_CHAT_CONVERSATIONS]', error);
 

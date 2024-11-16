@@ -24,7 +24,7 @@ export const ChatSideBarTop = ({ amountOfConversations = 1 }: ChatSideBarTopProp
 
   return (
     <>
-      <ChatConversationModal open={open} setOpen={setOpen} />
+      {open && <ChatConversationModal open={open} setOpen={setOpen} />}
       <div className="w-full px-4 pb-2 pt-4 border-b">
         <Button
           className="w-full"

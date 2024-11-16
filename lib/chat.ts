@@ -40,7 +40,7 @@ export const generateConversationTitle = () => {
   let title = '';
 
   for (let i = 0; i < titleLength; i++) {
-    const randomIndex = getRandomInt(1, words.length);
+    const randomIndex = getRandomInt(1, words.length - 1);
     title += words[randomIndex] + ' ';
   }
 

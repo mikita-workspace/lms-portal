@@ -1,7 +1,7 @@
 'use client';
 
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
-import { EllipsisVertical, GlobeLock, GripVertical, Pencil, Trash2 } from 'lucide-react';
+import { EllipsisVertical, Globe, GlobeLock, GripVertical, Pencil, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
@@ -137,18 +137,21 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
   return (
     <>
-      <ChatConversationModal
-        open={open}
-        setOpen={setOpen}
-        initialData={currentConversation}
-        isEdit
-      />
+      {open && (
+        <ChatConversationModal
+          open={open}
+          setOpen={setOpen}
+          initialData={currentConversation}
+          isEdit
+        />
+      )}
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="conversations">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {conversations.map((conversation, index) => {
                 const isActive = conversationId === conversation.id;
+                const isShared = conversation.shared.isShared;
 
                 return (
                   <Draggable
@@ -179,7 +182,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
                           />
                         </div>
                         <div className="flex items-center gap-x-2">
-                          <GlobeLock className="w-4 h-4" />
+                          {isShared && <Globe className="w-4 h-4" />}
+                          {!isShared && <GlobeLock className="w-4 h-4" />}
                           <div className="line-clamp-1 flex-1">{conversation.title}</div>
                         </div>
                         <div className="ml-auto flex items-center gap-x-2">
