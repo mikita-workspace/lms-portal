@@ -95,7 +95,7 @@ export const ChatBody = ({
 
   return (
     <ChatScrollContext.Provider value={value}>
-      {!hasMessages && (
+      {!hasMessages && !isShared && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
           <Avatar className="border dark:border-muted-foreground">
             <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
@@ -150,7 +150,9 @@ export const ChatBody = ({
             </Content>
           </ScrollToBottom>
         )}
-        {!hasMessages && <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />}
+        {!hasMessages && !isShared && (
+          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
+        )}
         {!sticky && hasMessages && (
           <Button
             className="w-10 h-10 rounded-full p-2 absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
