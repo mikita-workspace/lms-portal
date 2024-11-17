@@ -15,6 +15,7 @@ import { fetcher } from '@/lib/fetcher';
 
 import { ChatBody } from './chat-body';
 import { ChatInput } from './chat-input';
+import { ChatSharedTopBar } from './chat-shared-top-bar';
 import { ChatTopBar } from './chat-top-bar';
 
 type Message = Conversation['messages'][0];
@@ -22,9 +23,10 @@ type Message = Conversation['messages'][0];
 type ChatProps = {
   conversations?: Conversation[];
   initialData: Awaited<ReturnType<typeof getChatInitial>>;
+  isShared?: boolean;
 };
 
-export const Chat = ({ conversations = [], initialData }: ChatProps) => {
+export const Chat = ({ conversations = [], initialData, isShared }: ChatProps) => {
   const { toast } = useToast();
 
   const { conversationId, setConversationId, currentModel, chatMessages, setChatMessages } =
@@ -187,20 +189,32 @@ export const Chat = ({ conversations = [], initialData }: ChatProps) => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
         <div className="flex h-full w-full flex-col justify-between">
-          <ChatTopBar isSubmitting={isSubmitting} setAssistantMessage={setAssistantMessage} />
+          {isShared && (
+            <ChatSharedTopBar
+              expiredAt={conversations?.[0]?.shared?.expiredAt}
+              title={conversations?.[0]?.title}
+            />
+          )}
+          {!isShared && (
+            <ChatTopBar isSubmitting={isSubmitting} setAssistantMessage={setAssistantMessage} />
+          )}
           <ChatBody
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
+            isShared={isShared}
             isSubmitting={isSubmitting}
             onSubmit={handleSubmit}
+            sharedName={conversations?.[0]?.shared?.username}
           />
-          <ChatInput
-            currenMessage={currentMessage}
-            isSubmitting={isSubmitting}
-            onAbortGenerating={handleAbortGenerating}
-            onSubmit={handleSubmit}
-            setCurrentMessage={setCurrentMessage}
-          />
+          {!isShared && (
+            <ChatInput
+              currenMessage={currentMessage}
+              isSubmitting={isSubmitting}
+              onAbortGenerating={handleAbortGenerating}
+              onSubmit={handleSubmit}
+              setCurrentMessage={setCurrentMessage}
+            />
+          )}
         </div>
       </div>
     </div>

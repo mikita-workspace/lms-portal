@@ -50,7 +50,7 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
       };
 
       await fetcher.patch(
-        `/api/chat/conversation/${conversationId}?action=${CONVERSATION_ACTION.EMPTY_MESSAGES}`,
+        `/api/chat/conversations/${conversationId}?action=${CONVERSATION_ACTION.EMPTY_MESSAGES}`,
       );
 
       setAssistantMessage('');

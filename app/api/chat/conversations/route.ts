@@ -25,11 +25,19 @@ export const POST = async (req: NextRequest) => {
     }
 
     if (action === CONVERSATION_ACTION.NEW) {
-      const count = await db.chatConversation.count({ where: { userId: user.userId } });
+      const { title } = await req.json();
+
+      const lastConversation = await db.chatConversation.findFirst({
+        where: { userId: user?.userId },
+        orderBy: { position: 'desc' },
+      });
+
+      const nextPosition = lastConversation ? lastConversation.position + 1 : 0;
 
       const newChatConversation = await db.chatConversation.create({
         data: {
-          title: t('title', { order: count + 1 }),
+          position: nextPosition,
+          title: title || t('title', { order: nextPosition }),
           userId: user?.userId,
         },
         select: {

@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { cn } from '@/lib/utils';
 
 import { ChatBubble } from './chat-bubble';
 import { ChatIntro } from './chat-intro';
@@ -54,7 +55,9 @@ const Content = ({ children }: ContentProps) => {
 type ChatBodyProps = {
   assistantMessage?: string;
   introMessages: string[];
+  isShared?: boolean;
   isSubmitting?: boolean;
+  sharedName?: string | null;
   onSubmit: (
     event: SyntheticEvent,
     options?: {
@@ -66,7 +69,9 @@ type ChatBodyProps = {
 export const ChatBody = ({
   assistantMessage,
   introMessages,
+  isShared,
   isSubmitting,
+  sharedName,
   onSubmit,
 }: ChatBodyProps) => {
   const t = useTranslations('chat.body');
@@ -90,7 +95,7 @@ export const ChatBody = ({
 
   return (
     <ChatScrollContext.Provider value={value}>
-      {!hasMessages && (
+      {!hasMessages && !isShared && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
           <Avatar className="border dark:border-muted-foreground">
             <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
@@ -99,7 +104,7 @@ export const ChatBody = ({
           <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
         </div>
       )}
-      <div className="h-[calc(100%-12rem)] relative">
+      <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-12rem)]', 'relative')}>
         {hasMessages && (
           <ScrollToBottom
             className="flex h-full w-full flex-col"
@@ -109,7 +114,13 @@ export const ChatBody = ({
               {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const name = isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
+                const name = (() => {
+                  if (isShared && !isAssistant) {
+                    return sharedName ?? 'Current User';
+                  }
+
+                  return isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
+                })();
                 const picture = isAssistant ? null : user?.image;
 
                 return (
@@ -117,7 +128,12 @@ export const ChatBody = ({
                     key={message.id}
                     className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
                   >
-                    <ChatBubble message={message} name={name} picture={picture} />
+                    <ChatBubble
+                      isShared={isShared}
+                      message={message}
+                      name={name}
+                      picture={picture}
+                    />
                   </div>
                 );
               })}
@@ -134,7 +150,9 @@ export const ChatBody = ({
             </Content>
           </ScrollToBottom>
         )}
-        {!hasMessages && <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />}
+        {!hasMessages && !isShared && (
+          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
+        )}
         {!sticky && hasMessages && (
           <Button
             className="w-10 h-10 rounded-full p-2 absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"

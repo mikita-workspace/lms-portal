@@ -104,6 +104,17 @@
       "success": "Thanks for your report. We will notify you as soon as the problem is resolved."
     }
   },
+  "chat-conversation-modal": {
+    "copyLink": "Copy the link",
+    "description":"Click \"Submit\" when you are done.",
+    "onlyAuth": "Only for authorized users",
+    "openAccess": "Open access to the conversation via the link",
+    "sharedAccess": "Shared access",
+    "submit": "Done",
+    "title": "Title",
+    "titleAdd": "Add conversation",
+    "titleEdit": "Edit conversation"
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
@@ -278,9 +289,11 @@
     },
     "conversation": {
       "add": "New conversation",
+      "conversations": "Conversations",
       "delete-all": "Delete all conversations",
-      "edit": "Edit title",
+      "edit": "Edit",
       "remove": "Remove",
+      "removed-conversation": "The conversation \"{conversation}\" has been successfully deleted.",
       "share": "Share",
       "title": "New conversation { order }"
     },
@@ -288,6 +301,9 @@
       "ask": "Ask",
       "enterMessage": "Enter your message...",
       "footer": "Nova Copilot can make mistakes. Consider checking important information."
+    },
+    "shared": {
+      "expiredAt": "Available until { date }"
     }
   },
   "ai-generate": {

@@ -10,9 +10,11 @@ type ChatStore = {
   chatMessages: ChatMessages;
   conversationId: string;
   currentModel: string;
+  isFetching: boolean;
   setChatMessages: (messages: ChatMessages) => void;
   setConversationId: (conversationId: string) => void;
   setCurrentModel: (model: string) => void;
+  setIsFetching: (value: boolean) => void;
 };
 
 export const useChatStore = create<ChatStore, any>(
@@ -21,9 +23,11 @@ export const useChatStore = create<ChatStore, any>(
       chatMessages: {},
       conversationId: '',
       currentModel: DEFAULT_MODEL,
+      isFetching: false,
       setChatMessages: (messages) => set({ chatMessages: messages }),
       setConversationId: (conversationId) => set({ conversationId }),
       setCurrentModel: (model) => set({ currentModel: model }),
+      setIsFetching: (value) => set({ isFetching: value }),
     }),
     {
       name: 'chat-storage',

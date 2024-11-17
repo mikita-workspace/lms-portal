@@ -59,7 +59,7 @@ export const CourseEnrollButton = ({
 
   if (!isMounted) {
     return (
-      <Button className="w-full truncate" size="lg" variant={variant} disabled>
+      <Button className="w-full line-clamp-1" size="lg" variant={variant} disabled>
         <MoreHorizontal className="w-6 h-6 animate-pulse" />
       </Button>
     );
@@ -67,7 +67,7 @@ export const CourseEnrollButton = ({
 
   return (
     <Button
-      className="w-full truncate"
+      className="w-full line-clamp-1 flex items-center"
       disabled={isFetching || isLoading}
       onClick={handleClick}
       size="lg"

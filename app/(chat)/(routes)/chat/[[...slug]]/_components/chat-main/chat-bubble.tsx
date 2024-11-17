@@ -9,14 +9,16 @@ import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
 type ChatBubbleProps = {
+  isShared?: boolean;
   isSubmitting?: boolean;
-  message: { role: string; content: string };
+  message: { role: string; content: string; model?: string };
   name: string;
   picture?: string | null;
   streamMessage?: string;
 };
 
 export const ChatBubble = ({
+  isShared,
   isSubmitting,
   message,
   name,
@@ -41,6 +43,9 @@ export const ChatBubble = ({
             <span className="text-medium font-bold">{name}</span>
             {Boolean(isAssistant && streamMessage && isSubmitting) && (
               <MoreHorizontal className="w-6 h-6 animate-pulse" />
+            )}
+            {isAssistant && isShared && (
+              <div className="text-xs text-muted-foreground">{message.model}</div>
             )}
           </div>
           <MarkdownText text={text} />

@@ -13,17 +13,19 @@ type ChatNavBarProps = {
     total: number;
     value: number;
   } | null;
+  isShared?: boolean;
   userNotifications?: Omit<Notification, 'userId'>[];
 };
 
 export const ChatNavBar = ({
   conversations,
   globalProgress,
+  isShared,
   userNotifications,
 }: ChatNavBarProps) => {
   return (
     <div className="p-4 gap-x-4 h-full flex items-center justify-between bg-white dark:bg-neutral-800 border-b">
-      <ChatMobileSideBar conversations={conversations} />
+      {!isShared && <ChatMobileSideBar conversations={conversations} />}
       <Logo isCopilot />
       <NavBarRoutes globalProgress={globalProgress} userNotifications={userNotifications} />
     </div>
