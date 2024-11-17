@@ -191,8 +191,8 @@ export const Chat = ({ conversations = [], initialData, isShared }: ChatProps) =
         <div className="flex h-full w-full flex-col justify-between">
           {isShared && (
             <ChatSharedTopBar
-              expiredAt={conversations[0].shared.expiredAt}
-              title={conversations[0].title}
+              expiredAt={conversations?.[0]?.shared?.expiredAt}
+              title={conversations?.[0]?.title}
             />
           )}
           {!isShared && (
@@ -204,7 +204,7 @@ export const Chat = ({ conversations = [], initialData, isShared }: ChatProps) =
             isShared={isShared}
             isSubmitting={isSubmitting}
             onSubmit={handleSubmit}
-            sharedName={conversations[0].shared.username}
+            sharedName={conversations?.[0]?.shared?.username}
           />
           {!isShared && (
             <ChatInput
