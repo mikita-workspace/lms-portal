@@ -163,6 +163,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
                     {(innerProvided) => (
                       <div
                         {...innerProvided.draggableProps}
+                        aria-hidden="true"
                         className={cn(
                           'flex justify-between items-center transition-all duration-300 hover:bg-muted pr-2 hover:cursor-pointer text-sm text-muted-foreground font-[500] px-3 py-6',
                           isActive && 'text-primary bg-muted',
