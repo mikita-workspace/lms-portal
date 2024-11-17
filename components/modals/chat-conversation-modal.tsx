@@ -213,11 +213,9 @@ export const ChatConversationModal = ({
                         <FormControl>
                           <Checkbox
                             checked={field.value}
+                            disabled={!watchIsShared || isSubmitting || isUpdatingSharedLink}
                             onCheckedChange={field.onChange}
                             onClick={() => handleShareConversation(watchIsShared, !field.value)}
-                            disabled
-                            // FIXME: Need to fix auth for specific routes
-                            // disabled={!watchIsShared || isSubmitting || isUpdatingSharedLink}
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">

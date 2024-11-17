@@ -43,8 +43,8 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
   }
 
   if (isShared) {
-    const sharedConversation = await db.chatSharedConversation.findFirst({
-      where: { id: params.slug[1] },
+    const sharedConversation = await db.chatSharedConversation.findUnique({
+      where: { id: params.slug[1] ?? '' },
       select: { isActive: true, isOnlyAuth: true },
     });
 

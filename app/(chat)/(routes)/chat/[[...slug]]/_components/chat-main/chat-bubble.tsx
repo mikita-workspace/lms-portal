@@ -32,7 +32,7 @@ export const ChatBubble = ({
     <div className="pb-4 pt-2">
       <div className="flex gap-x-4">
         <Avatar className="border dark:border-muted-foreground">
-          {!isAssistant && <AvatarImage src={picture ?? ''} />}
+          {!isAssistant && !isShared && <AvatarImage src={picture ?? ''} />}
           {isAssistant && (
             <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
           )}
