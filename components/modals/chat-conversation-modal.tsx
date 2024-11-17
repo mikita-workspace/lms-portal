@@ -84,7 +84,13 @@ export const ChatConversationModal = ({
 
   const handleOpenChange = (value: boolean) => {
     setOpen?.(value);
-    router.refresh();
+
+    if (
+      initialData?.shared.isShared !== watchIsShared ||
+      initialData.shared.isOnlyAuth !== watchIsOnlyAuth
+    ) {
+      router.refresh();
+    }
   };
 
   const handleGenerateTitle = (onChange: (value: string) => void) => {

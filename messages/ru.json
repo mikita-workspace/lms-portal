@@ -300,6 +300,9 @@
       "ask": "Спросить",
       "enterMessage": "Введите ваше сообщение...",
       "footer": "Nova Copilot может совершать ошибки. Будьте внимательны."
+    },
+    "shared": {
+      "expiredAt": "Доступно до { date }"
     }
   },
   "ai-generate": {

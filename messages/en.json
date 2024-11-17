@@ -301,6 +301,9 @@
       "ask": "Ask",
       "enterMessage": "Enter your message...",
       "footer": "Nova Copilot can make mistakes. Consider checking important information."
+    },
+    "shared": {
+      "expiredAt": "Available until { date }"
     }
   },
   "ai-generate": {

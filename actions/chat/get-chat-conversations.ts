@@ -8,10 +8,55 @@ import { getCurrentUser } from '../auth/get-current-user';
 
 export type Conversation = Awaited<ReturnType<typeof getChatConversations>>[0];
 
-export const getChatConversations = async (isEmbed = false) => {
+type GetChatConversations = { isEmbed?: boolean; sharedConversationId?: string };
+
+export const getChatConversations = async ({
+  isEmbed,
+  sharedConversationId,
+}: GetChatConversations) => {
   try {
     const user = await getCurrentUser();
     const t = await getTranslations('chat.conversation');
+
+    if (sharedConversationId) {
+      const shared = await db.chatSharedConversation.findUnique({
+        where: {
+          id: sharedConversationId,
+        },
+        include: {
+          conversation: {
+            include: {
+              messages: true,
+              shared: true,
+              user: true,
+            },
+          },
+        },
+      });
+
+      if (!shared) {
+        return [];
+      }
+
+      const conversation = shared.conversation;
+
+      return [
+        {
+          id: conversation.id,
+          messages: conversation.messages,
+          position: conversation.position,
+          title: conversation.title,
+          shared: {
+            expiredAt: conversation.shared?.expireAt,
+            isCreated: Boolean(conversation.shared),
+            isOnlyAuth: conversation.shared?.isOnlyAuth ?? false,
+            isShared: conversation.shared?.isActive ?? false,
+            link: conversation.shared?.link ?? '',
+            username: conversation.user?.name,
+          },
+        },
+      ];
+    }
 
     const conversations = await db.chatConversation.findMany({
       ...(isEmbed && { take: 1 }),
@@ -22,6 +67,7 @@ export const getChatConversations = async (isEmbed = false) => {
         title: true,
         position: true,
         shared: true,
+        user: true,
         messages: {
           orderBy: { createdAt: 'asc' },
         },
@@ -54,6 +100,7 @@ export const getChatConversations = async (isEmbed = false) => {
             isOnlyAuth: false,
             isShared: false,
             link: '',
+            username: '',
           },
         },
       ];
@@ -67,6 +114,7 @@ export const getChatConversations = async (isEmbed = false) => {
         isOnlyAuth: conversation.shared?.isOnlyAuth ?? false,
         isShared: conversation.shared?.isActive ?? false,
         link: conversation.shared?.link ?? '',
+        username: conversation.user?.name,
       },
     }));
   } catch (error) {
