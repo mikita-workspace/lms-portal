@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
-import { MapPin } from 'lucide-react';
+import { BadgeDollarSign, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -53,8 +53,6 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     },
   });
 
-  console.log(localeInfo);
-
   const { isSubmitting, isValid } = form.formState;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -78,14 +76,19 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
           {t('lastUpdated')}&nbsp;{format(initialData.updatedAt, TIMESTAMP_USER_PROFILE_TEMPLATE)}
         </p>
         {localeInfo && (
-          <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
-            <MapPin className="h-3 w-3" />
-            <span>
-              {localeInfo.details.city}, {localeInfo.details.country} (
-              {localeInfo.details.countryCode}) | {localeInfo.locale.currency} (
-              {localeInfo.locale.locale})
-            </span>
-          </p>
+          <div className="flex flex-col gap-y-1">
+            <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
+              <MapPin className="h-3 w-3" />
+              <span>
+                {localeInfo.details.city}, {localeInfo.details.country} (
+                {localeInfo.details.countryCode}, {localeInfo.locale.locale})
+              </span>
+            </p>
+            <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
+              <BadgeDollarSign className="h-3 w-3" />
+              <span>{localeInfo.locale.currency}</span>
+            </p>
+          </div>
         )}
       </div>
       <div>
