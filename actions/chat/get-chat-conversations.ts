@@ -48,10 +48,10 @@ export const getChatConversations = async ({
           title: conversation.title,
           shared: {
             expiredAt: conversation.shared?.expireAt,
+            id: conversation.shared?.id,
             isCreated: Boolean(conversation.shared),
             isOnlyAuth: conversation.shared?.isOnlyAuth ?? false,
             isShared: conversation.shared?.isActive ?? false,
-            link: conversation.shared?.link ?? '',
             username: conversation.user?.name,
           },
         },
@@ -95,11 +95,11 @@ export const getChatConversations = async ({
           position: newChatConversation.position,
           title: newChatConversation.title,
           shared: {
+            id: null,
             expiredAt: null,
             isCreated: false,
             isOnlyAuth: false,
             isShared: false,
-            link: '',
             username: '',
           },
         },
@@ -110,10 +110,10 @@ export const getChatConversations = async ({
       ...conversation,
       shared: {
         expiredAt: conversation.shared?.expireAt,
+        id: conversation.shared?.id,
         isCreated: Boolean(conversation.shared),
         isOnlyAuth: conversation.shared?.isOnlyAuth ?? false,
         isShared: conversation.shared?.isActive ?? false,
-        link: conversation.shared?.link ?? '',
         username: conversation.user?.name,
       },
     }));

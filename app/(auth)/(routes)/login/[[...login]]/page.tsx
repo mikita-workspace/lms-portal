@@ -41,14 +41,14 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
         </div>
       </div>
       <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="mx-auto flex w-full flex-col justify-center sm:space-y-6 space-y-4 sm:w-[350px]">
           <AuthForm callbackUrl={searchParams.callbackUrl} />
         </div>
-        <div className="fixed flex gap-x-2 bottom-0 right-0 mb-10 mr-6 text-xs text-muted-foreground gap-y-4 items-end">
+        <div className="lg:left-auto lg:mr-6 text-muted-foreground gap-y-4 fixed right-0 left-0 bottom-0 flex justify-center text-xs gap-x-2 lg:mb-10 mb-20">
           <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
-        <div className="lg:hidden fixed right-0 left-0 bottom-0 flex justify-center text-xs mb-2.5">
+        <div className="lg:hidden fixed right-0 left-0 bottom-0 flex justify-center text-xs mb-10">
           <MadeWithLove />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { CONVERSATION_ACTION } from '@/constants/chat';
+import { generateConversationTitle } from '@/lib/chat';
 import { db } from '@/lib/db';
 
 export const PATCH = async (
@@ -20,17 +21,18 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    const { title } = await req.json();
     const action = req.nextUrl.searchParams.get('action');
 
     if (action === CONVERSATION_ACTION.EMPTY_MESSAGES) {
       await db.chatMessage.deleteMany({ where: { conversationId: params.conversationId } });
     }
 
-    if (title && action === CONVERSATION_ACTION.EDIT) {
+    if (action === CONVERSATION_ACTION.EDIT) {
+      const { title } = await req.json();
+
       const updatedConversation = await db.chatConversation.update({
         where: { id: params.conversationId },
-        data: { title },
+        data: { title: title || generateConversationTitle() },
         select: { id: true, title: true },
       });
 

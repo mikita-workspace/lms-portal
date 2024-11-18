@@ -1,3 +1,4 @@
+import { compareAsc } from 'date-fns';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -45,10 +46,14 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
   if (isShared) {
     const sharedConversation = await db.chatSharedConversation.findUnique({
       where: { id: params.slug[1] ?? '' },
-      select: { isActive: true, isOnlyAuth: true },
+      select: { isActive: true, isOnlyAuth: true, expireAt: true },
     });
 
-    if (!sharedConversation?.isActive || (sharedConversation?.isOnlyAuth && !user)) {
+    const isExpired = sharedConversation?.expireAt
+      ? compareAsc(sharedConversation.expireAt, Date.now()) < 0
+      : false;
+
+    if (isExpired || !sharedConversation?.isActive || (sharedConversation?.isOnlyAuth && !user)) {
       notFound();
     }
   }

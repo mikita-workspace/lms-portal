@@ -31,7 +31,7 @@ import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { generateConversationTitle } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
-import { cn } from '@/lib/utils';
+import { absoluteUrl, cn } from '@/lib/utils';
 
 import { Button, Checkbox, Input } from '../ui';
 import { useToast } from '../ui/use-toast';
@@ -77,7 +77,9 @@ export const ChatConversationModal = ({
   const { isSubmitting, isValid } = form.formState;
 
   const [isUpdatingSharedLink, setIsUpdatingSharedLink] = useState(false);
-  const [sharedLink, setSharedLink] = useState(initialData?.shared.link ?? '');
+  const [sharedLink, setSharedLink] = useState(
+    initialData?.shared?.id ? absoluteUrl(`/chat/shared/${initialData.shared.id}`) : '',
+  );
 
   const watchIsShared = form.watch('isShared') as boolean;
   const watchIsOnlyAuth = form.watch('isOnlyAuth') as boolean;
@@ -113,14 +115,18 @@ export const ChatConversationModal = ({
               responseType: 'json',
             });
 
-      if (response?.link) {
-        setSharedLink(response.link);
-      }
+      setSharedLink(absoluteUrl(`/chat/shared/${response?.id}`));
     } catch (error) {
       toast({ isError: true });
     } finally {
       setIsUpdatingSharedLink(false);
     }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(sharedLink);
+
+    toast({ title: t('copied') });
   };
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -232,7 +238,7 @@ export const ChatConversationModal = ({
                   {isEdit && (
                     <Button
                       disabled={isSubmitting || !sharedLink || isUpdatingSharedLink}
-                      onClick={() => navigator.clipboard.writeText(sharedLink)}
+                      onClick={handleCopyLink}
                       type="button"
                       variant="outline"
                     >

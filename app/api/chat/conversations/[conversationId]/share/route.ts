@@ -1,11 +1,9 @@
 import { addMonths } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
-import { absoluteUrl } from '@/lib/utils';
 
 export const POST = async (_: NextRequest, { params }: { params: { conversationId: string } }) => {
   try {
@@ -19,18 +17,13 @@ export const POST = async (_: NextRequest, { params }: { params: { conversationI
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    const id = uuidv4();
-    const link = absoluteUrl(`/chat/shared/${id}`);
-
     const newSharedConversation = await db.chatSharedConversation.create({
       data: {
         conversationId: params.conversationId,
         expireAt: addMonths(Date.now(), 1),
-        id,
-        link,
         userId: user.userId,
       },
-      select: { link: true, isActive: true, expireAt: true, isOnlyAuth: true },
+      select: { id: true, isActive: true, expireAt: true, isOnlyAuth: true },
     });
 
     return NextResponse.json(newSharedConversation);
@@ -67,7 +60,7 @@ export const PATCH = async (
         isActive: isActive ?? false,
         isOnlyAuth: isOnlyAuth ?? false,
       },
-      select: { link: true, isActive: true, expireAt: true, isOnlyAuth: true },
+      select: { isActive: true, expireAt: true, isOnlyAuth: true },
     });
 
     return NextResponse.json(updatedSharedConversation);

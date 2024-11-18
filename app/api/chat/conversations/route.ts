@@ -1,9 +1,9 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
-import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { CONVERSATION_ACTION } from '@/constants/chat';
+import { generateConversationTitle } from '@/lib/chat';
 import { db } from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {
@@ -13,8 +13,6 @@ export const POST = async (req: NextRequest) => {
     if (!user?.hasSubscription) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
-
-    const t = await getTranslations('chat.conversation');
 
     const action = req.nextUrl.searchParams.get('action');
 
@@ -37,7 +35,7 @@ export const POST = async (req: NextRequest) => {
       const newChatConversation = await db.chatConversation.create({
         data: {
           position: nextPosition,
-          title: title || t('title', { order: nextPosition }),
+          title: title || generateConversationTitle(),
           userId: user?.userId,
         },
         select: {

@@ -3,7 +3,6 @@
 import { CsmCategory } from '@prisma/client';
 import { Copyright } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { AuthStatus } from '@/constants/auth';
@@ -22,44 +21,39 @@ type FooterProps = {
 
 export const Footer = ({ categories }: FooterProps) => {
   const t = useTranslations('footer');
-  const pathname = usePathname();
 
   const { user, status } = useCurrentUser();
 
   const showLanguageSwitcher = !user?.userId && status !== AuthStatus.LOADING;
 
   return (
-    <>
-      {!pathname?.includes('/chat') && (
-        <footer className="md:p-4 p-2 w-full border-t bg-white dark:bg-neutral-950">
-          <div className="text-xs text-muted-foreground py-2 px-2 flex flex-col md:items-end md:ml-[255px]">
-            {showLanguageSwitcher && (
-              <div className="mb-4 flex gap-x-2">
-                <LanguageSwitcher />
-                <ThemeSwitcher />
-              </div>
-            )}
-            <div className="flex flex-col mb-4 md:items-end">
-              <div className="flex items-center">
-                <Copyright className="h-3 w-3" />
-                <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
-                <span>{t('copyright')}</span>
-              </div>
-              <div className="items-end">{t('testModeDeclaimer')}</div>
-              <MadeWithLove className="mt-2" />
-            </div>
-            <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
-              <CsmModal categories={categories}>
-                <span className="hover:cursor-pointer"> {t('reportIssue')}</span>
-              </CsmModal>
-              <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
-                {t('contact')}
-              </Link>
-              <LegalMenu />
-            </div>
+    <footer className="md:p-4 p-2 w-full border-t bg-white dark:bg-neutral-950">
+      <div className="text-xs text-muted-foreground py-2 px-2 flex flex-col md:items-end md:ml-[255px]">
+        {showLanguageSwitcher && (
+          <div className="mb-4 flex gap-x-2">
+            <LanguageSwitcher />
+            <ThemeSwitcher />
           </div>
-        </footer>
-      )}
-    </>
+        )}
+        <div className="flex flex-col mb-4 md:items-end">
+          <div className="flex items-center">
+            <Copyright className="h-3 w-3" />
+            <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
+            <span>{t('copyright')}</span>
+          </div>
+          <div className="items-end">{t('testModeDeclaimer')}</div>
+          <MadeWithLove className="mt-2" />
+        </div>
+        <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
+          <CsmModal categories={categories}>
+            <span className="hover:cursor-pointer"> {t('reportIssue')}</span>
+          </CsmModal>
+          <Link href={`mailto:${OWNER_EMAIL}`} target="_blank">
+            {t('contact')}
+          </Link>
+          <LegalMenu />
+        </div>
+      </div>
+    </footer>
   );
 };

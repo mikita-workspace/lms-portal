@@ -105,6 +105,7 @@
     }
   },
   "chat-conversation-modal": {
+    "copied": "The link has been copied",
     "copyLink": "Copy the link",
     "description":"Click \"Submit\" when you are done.",
     "onlyAuth": "Only for authorized users",

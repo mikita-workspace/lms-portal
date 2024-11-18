@@ -31,17 +31,23 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
   const { toast } = useToast();
 
   const { user } = useCurrentUser();
-  const { currentModel, setCurrentModel, conversationId, chatMessages, setChatMessages } =
-    useChatStore();
+  const {
+    chatMessages,
+    conversationId,
+    currentModel,
+    isFetching,
+    setChatMessages,
+    setCurrentModel,
+    setIsFetching,
+  } = useChatStore();
 
   const [open, setOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const messages = chatMessages[conversationId] ?? [];
   const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
 
   const handleDeleteMessages = async () => {
-    setIsDeleting(true);
+    setIsFetching(true);
 
     try {
       const updatedChatMessages = {
@@ -58,7 +64,7 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
     } catch (error) {
       toast({ isError: true });
     } finally {
-      setIsDeleting(false);
+      setIsFetching(false);
     }
   };
 
@@ -110,7 +116,7 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
           <div className="flex gap-1">
             <Button
               variant="outline"
-              disabled={isSubmitting || isDeleting || !messages.length}
+              disabled={isSubmitting || isFetching || !messages.length}
               onClick={handleDeleteMessages}
             >
               <GrClearOption className="w-4 h-4" />
