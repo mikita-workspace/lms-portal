@@ -15,7 +15,7 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
         ? await fs.readFile(`${process.cwd()}/configs/app.json`, 'utf8')
         : await fetcher.get(
             'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/configs/app.json',
-            { responseType: 'json' },
+            { responseType: 'text' },
           );
 
     return JSON.parse(config);
