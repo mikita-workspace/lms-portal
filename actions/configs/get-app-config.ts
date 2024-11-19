@@ -12,9 +12,9 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
   try {
     const config =
       process.env.NODE_ENV === 'development'
-        ? await fs.readFile(`${process.cwd()}/configurations/app.json`, 'utf8')
+        ? await fs.readFile(`${process.cwd()}/configs/app.json`, 'utf8')
         : await fetcher.get(
-            'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/configurations/app.json',
+            'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/configs/app.json',
             { responseType: 'json' },
           );
 
