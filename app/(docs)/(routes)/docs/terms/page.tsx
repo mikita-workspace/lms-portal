@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 
+import { getAppDocs } from '@/actions/docs/get-app-docs';
 import { MarkdownText } from '@/components/common/markdown-text';
-import { docs } from '@/constants/docs';
-import { fetcher } from '@/lib/fetcher';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const TermsAndConditionsPage = async () => {
-  const content = await fetcher.get(docs['terms'], { responseType: 'text' });
+  const content = await getAppDocs('terms');
 
   return (
     <div className="p-6 flex flex-col mb-6">
