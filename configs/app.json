@@ -1,0 +1,12 @@
+{
+  "providers": {
+    "credentials": true,
+    "github": true,
+    "google": true,
+    "linkedin": false,
+    "mailru": false,
+    "slack": false,
+    "vk": true,
+    "yandex": true
+  }
+}

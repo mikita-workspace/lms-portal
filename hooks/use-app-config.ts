@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
-import { GetAppConfig } from '@/actions/config/get-app-config';
+import { GetAppConfig } from '@/actions/configs/get-app-config';
 
 import { useAppConfigStore } from './use-app-config-store';
 
-export const useAppConfig = (appConfig: GetAppConfig) => {
-  const { handleAuthFlow } = useAppConfigStore((state) => ({ handleAuthFlow: state.setAuthFlow }));
+export const useAppConfig = (config: GetAppConfig) => {
+  const { setConfig } = useAppConfigStore((state) => ({ setConfig: state.setConfig }));
 
   useEffect(() => {
     const getAppConfig = () => {
-      handleAuthFlow(appConfig.authFlow);
+      setConfig(config);
     };
 
     getAppConfig();

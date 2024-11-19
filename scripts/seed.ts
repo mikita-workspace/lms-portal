@@ -30,18 +30,6 @@ async function main() {
       ],
     });
 
-    await database.authFlow.createMany({
-      data: [
-        { isActive: true, provider: 'google' },
-        { isActive: true, provider: 'yandex' },
-        { isActive: true, provider: 'vk' },
-        { isActive: false, provider: 'mailru' },
-        { isActive: false, provider: 'linkedin' },
-        { isActive: false, provider: 'slack' },
-        { isActive: true, provider: 'github' },
-      ],
-    });
-
     await database.stripeSubscriptionDescription.createMany({
       data: [
         {

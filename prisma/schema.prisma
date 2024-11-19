@@ -287,15 +287,6 @@ model CsmIssue {
   @@index([categoryId])
 }
 
-// Configuration
-model AuthFlow {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  isActive  Boolean
-  provider  String
-  updatedAt DateTime @updatedAt
-}
-
 // Chat Copilot
 model ChatMessage {
   id             String            @id @default(uuid())

@@ -4,7 +4,6 @@ import {
   BarChart4,
   Compass,
   Crown,
-  FileSliders,
   Landmark,
   Layout,
   List,
@@ -106,12 +105,6 @@ const paymentsRoutes = [
     isProtected: true,
     label: 'users',
     icon: Users,
-  },
-  {
-    href: '/owner/config',
-    isProtected: true,
-    label: 'config',
-    icon: FileSliders,
   },
 ];
 
