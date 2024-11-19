@@ -6,7 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import { useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 
-import { GetAppConfig } from '@/actions/config/get-app-config';
+import { GetAppConfig } from '@/actions/configs/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
 import { useAppConfig } from '@/hooks/use-app-config';
 import { useConfettiStore } from '@/hooks/use-confetti-store';

@@ -6,7 +6,7 @@ import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
 import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 
-import { getAppConfig } from '@/actions/config/get-app-config';
+import { getAppConfig } from '@/actions/configs/get-app-config';
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
 import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';

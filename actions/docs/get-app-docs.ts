@@ -1,5 +1,7 @@
 'use server';
 
+import { promises as fs } from 'fs';
+
 import { fetcher } from '@/lib/fetcher';
 
 const docs = {
@@ -12,11 +14,14 @@ const docs = {
 
 export const getAppDocs = async (document: keyof typeof docs) => {
   try {
-    const content = await fetcher.get(docs[document], { responseType: 'text' });
+    const content =
+      process.env.NODE_ENV === 'development'
+        ? await fs.readFile(`${process.cwd()}/docs/${document}.md`, 'utf8')
+        : await fetcher.get(docs[document], { responseType: 'text' });
 
     return content;
   } catch (error) {
-    console.error('[GET_APP_DOCS]', error);
+    console.error('[GET_APP_DOCS_ACTION]', error);
 
     return '';
   }

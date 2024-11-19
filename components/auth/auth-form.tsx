@@ -47,7 +47,8 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { authFlow } = useAppConfigStore((state) => ({ authFlow: state.authFlow }));
+  const { config } = useAppConfigStore((state) => ({ config: state.config }));
+  const providers = config?.providers ?? {};
 
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
@@ -96,9 +97,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
     }
   };
 
-  const isCredentialsProvider = authFlow.find(
-    (fl) => fl.provider === Provider.CREDENTIALS,
-  )?.isActive;
+  const isCredentialsProvider = providers[Provider.CREDENTIALS];
 
   return (
     <>
@@ -193,11 +192,9 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
         )}
       >
         {Object.values(Provider).map((provider) => {
-          const flow = authFlow.find(
-            (fl) => fl.provider === provider && fl.provider !== Provider.CREDENTIALS,
-          );
+          const isActiveProvider = providers[provider];
 
-          if (flow && flow.isActive) {
+          if (provider !== Provider.CREDENTIALS && isActiveProvider) {
             return (
               <OAuthButton
                 key={provider}

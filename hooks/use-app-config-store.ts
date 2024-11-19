@@ -1,12 +1,13 @@
-import { AuthFlow } from '@prisma/client';
 import { create } from 'zustand';
 
+import { GetAppConfig } from '@/actions/configs/get-app-config';
+
 type AppConfig = {
-  authFlow: AuthFlow[];
-  setAuthFlow: (flow: AuthFlow[]) => void;
+  config: GetAppConfig | null;
+  setConfig: (config: GetAppConfig) => void;
 };
 
 export const useAppConfigStore = create<AppConfig>((set) => ({
-  authFlow: [],
-  setAuthFlow: (flow) => set({ authFlow: flow }),
+  config: null,
+  setConfig: (config) => set({ config }),
 }));
