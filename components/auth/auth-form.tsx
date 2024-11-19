@@ -49,6 +49,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
 
   const { config } = useAppConfigStore((state) => ({ config: state.config }));
   const providers = config?.providers ?? {};
+  const isBlockedNewLogin = config?.auth?.isBlockedNewLogin;
 
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
@@ -181,7 +182,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
               </div>
             </form>
           </Form>
-          <Separator />
+          {!isBlockedNewLogin && <Separator />}
         </>
       )}
 
@@ -209,7 +210,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
           return null;
         })}
       </div>
-      {isCredentialsProvider && (
+      {isCredentialsProvider && !isBlockedNewLogin && (
         <p className="text-sm text-muted-foreground text-center mt-4">
           {t(`${isSignUpFlow ? 'alreadyHaveAnAccount' : 'doNotHaveAnAccount'}`)}{' '}
           <Link
@@ -221,7 +222,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
           </Link>
         </p>
       )}
-      <TermsAndPrivacy />
+      {!isBlockedNewLogin && <TermsAndPrivacy />}
     </>
   );
 };

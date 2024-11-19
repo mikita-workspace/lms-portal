@@ -66,7 +66,7 @@ model Course {
   purchases   Purchase[]
   title       String       @db.Text
   updatedAt   DateTime     @updatedAt
-  user        User         @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
   @@index([categoryId])
@@ -187,7 +187,7 @@ model StripeSubscription {
   stripePriceId        String    @unique
   stripeSubscriptionId String    @unique
   updatedAt            DateTime  @updatedAt
-  user                 User      @relation(fields: [userId], references: [id])
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId               String    @unique
 
   @@index([userId])
@@ -309,7 +309,7 @@ model ChatConversation {
   shared    ChatSharedConversation?
   title     String
   updatedAt DateTime                @updatedAt
-  user      User?                   @relation(fields: [userId], references: [id])
+  user      User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String?
 
   @@index([userId])
@@ -324,7 +324,7 @@ model ChatSharedConversation {
   isActive       Boolean?         @default(true)
   isOnlyAuth     Boolean?         @default(false)
   updatedAt      DateTime         @updatedAt
-  user           User?            @relation(fields: [userId], references: [id])
+  user           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String?
 
   @@index([conversationId])

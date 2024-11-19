@@ -1,4 +1,7 @@
 {
+  "auth": {
+    "isBlockedNewLogin": true
+  },
   "providers": {
     "credentials": true,
     "github": true,

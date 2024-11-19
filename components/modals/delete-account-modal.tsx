@@ -35,7 +35,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
   const [input, setInput] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('test');
 
   useEffect(() => {
     setIsValid(input === email);

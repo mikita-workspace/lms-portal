@@ -5,6 +5,7 @@ import { promises as fs } from 'fs';
 import { fetcher } from '@/lib/fetcher';
 
 export type GetAppConfig = {
+  auth: Record<string, boolean>;
   providers: Record<string, boolean>;
 };
 
@@ -23,6 +24,9 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
     console.error('[GET_APP_CONFIG_ACTION]', error);
 
     return {
+      auth: {
+        isBlockedNewLogin: true,
+      },
       providers: {
         google: false,
         yandex: false,

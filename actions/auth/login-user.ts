@@ -7,12 +7,16 @@ import { createWebSocketNotification } from '@/lib/notifications';
 import { generatePromotionCode } from '@/lib/promo';
 import { stripe } from '@/server/stripe';
 
+import { getAppConfig } from '../configs/get-app-config';
+
 export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
   password?: string | null,
 ) => {
+  const config = await getAppConfig();
+
   const existingUser = await db.user.findUnique({
     where: { email },
     include: { stripeSubscription: true },
@@ -28,6 +32,10 @@ export const loginUser = async (
       otpSecret: existingUser.otpSecret,
       role: existingUser.role,
     };
+  }
+
+  if (config?.auth?.isBlockedNewLogin) {
+    return null;
   }
 
   const t = await getTranslations('auth');

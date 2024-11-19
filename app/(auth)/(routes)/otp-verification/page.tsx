@@ -1,4 +1,5 @@
 import { Smartphone } from 'lucide-react';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
@@ -9,6 +10,11 @@ import withCompanyLabel from '@/hoc/with-company-label';
 import { decrypt } from '@/lib/utils';
 
 import { OtpVerify } from './_components/otp-verify';
+
+export const metadata: Metadata = {
+  title: 'OTP',
+  description: 'Educational portal',
+};
 
 type OtpVerificationPageProps = {
   searchParams: { code: string };

@@ -284,6 +284,11 @@
       "somethingWentWrong": "Something went wrong. Try again!"
     }
   },
+  "restricted": {
+    "title": "Restricted",
+    "body": "Registration of new users is closed. We apologize 🥺",
+    "goBackHome": "Go back home"
+  },
   "chat": {
     "body": {
       "title": "What can I assist you with today?"
