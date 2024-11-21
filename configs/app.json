@@ -1,6 +1,6 @@
 {
   "auth": {
-    "isBlockedNewLogin": false
+    "isBlockedNewLogin": true
   },
   "providers": {
     "credentials": true,
