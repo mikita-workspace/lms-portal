@@ -116,6 +116,14 @@
     "titleAdd": "Add conversation",
     "titleEdit": "Edit conversation"
   },
+  "profile-image-modal": {
+    "accInfoUpdated": "Account information updated",
+    "body": "Add a photo, it will make your profile more attractive and interesting.",
+    "delete": "Delete a profile picture",
+    "footer": "You can upload an image in JPG, GIF or PNG format. The maximum file size is 8 MB",
+    "title": "Profile Picture",
+    "upload": "Upload a new profile picture"
+  },
   "footer": {
     "and": "and",
     "contact": "Contact",
@@ -444,7 +452,9 @@
         "price": "Price",
         "view": "View"
       },
-      "title": "Billing & Subscription"
+      "title": "Billing & Subscription",
+      "mo": "/mo",
+      "year": "/year"
     }
   },
   "file-upload": {

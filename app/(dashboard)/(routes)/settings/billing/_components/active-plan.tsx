@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import { getUserSubscription } from '@/actions/stripe/get-user-subscription';
 import { Banner } from '@/components/common/banner';
+import { Price } from '@/components/common/price';
 import { Button, Card, CardContent } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_SUBSCRIPTION_TEMPLATE } from '@/constants/common';
@@ -59,7 +60,18 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
       {userSubscription && (
         <Card className="shadow-none rounded-lg">
           <CardContent>
-            <div className="pt-6 flex flex-col justify-center space-y-2 mb-4">
+            <div className="pt-6 flex flex-col justify-center space-y-2 mb-6">
+              <div className="flex items-baseline">
+                <p className="text-center text-3xl font-semibold">
+                  <Price
+                    currency={userSubscription.price.currency}
+                    price={userSubscription.price.unitAmount}
+                  />
+                </p>
+                <span className="text-sm leading-7 text-muted-foreground ml-1">
+                  {t(userSubscription.plan.interval === 'month' ? 'mo' : 'year')}
+                </span>
+              </div>
               <p className="text-lg font-semibold">{userSubscription.planName}</p>
               <p className="text-sm">
                 {t('cancel', {

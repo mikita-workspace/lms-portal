@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Skeleton 
 import { TextBadge } from './text-badge';
 
 type PriceProps = {
+  currency?: string;
   customRates?: string | null;
   fees?: Fee[];
   price: number | null;
@@ -18,6 +19,7 @@ type PriceProps = {
 };
 
 export const Price = ({
+  currency,
   customRates,
   fees = [],
   price,
@@ -34,6 +36,7 @@ export const Price = ({
     formattedNet,
     isLoading,
   } = useLocaleAmount({
+    currency,
     customRates,
     fees,
     price,

@@ -10,6 +10,7 @@ import { useFeesAmount } from './use-fees-amount';
 import { useLocaleStore } from './use-locale-store';
 
 type UseLocaleAmount = {
+  currency?: string;
   customRates?: string | null;
   fees?: Fee[];
   price: number | null;
@@ -17,6 +18,7 @@ type UseLocaleAmount = {
 };
 
 export const useLocaleAmount = ({
+  currency,
   customRates,
   fees = [],
   price,
@@ -25,41 +27,38 @@ export const useLocaleAmount = ({
   const localeInfo = useLocaleStore((state) => state.localeInfo);
 
   const defaultLocale = { locale: DEFAULT_LOCALE, currency: DEFAULT_CURRENCY };
+  const locale = localeInfo?.locale
+    ? { ...localeInfo.locale, currency: currency ?? localeInfo.locale.currency }
+    : null;
 
   const exchangeRate = useMemo(() => {
     if (useDefaultLocale) {
       return DEFAULT_EXCHANGE_RATE;
     }
 
-    if (localeInfo?.locale.currency && hasJsonStructure(customRates ?? '')) {
-      return JSON.parse(customRates!)[localeInfo.locale.currency];
+    if (locale?.currency && hasJsonStructure(customRates ?? '')) {
+      return JSON.parse(customRates!)[locale.currency];
     }
     return localeInfo?.rate ?? DEFAULT_EXCHANGE_RATE;
-  }, [customRates, localeInfo?.locale.currency, localeInfo?.rate, useDefaultLocale]);
+  }, [customRates, locale?.currency, localeInfo?.rate, useDefaultLocale]);
 
   const amount = (price ?? 0) * exchangeRate;
 
   const { net, calculatedFees } = useFeesAmount({ exchangeRate, fees, price: amount });
 
-  const formattedPrice = localeInfo?.locale
-    ? formatPrice(getConvertedPrice(amount), localeInfo.locale)
-    : null;
+  const formattedPrice = locale ? formatPrice(getConvertedPrice(amount), locale) : null;
 
-  const formattedNet = localeInfo?.locale
-    ? formatPrice(getConvertedPrice(net), localeInfo.locale)
-    : null;
+  const formattedNet = locale ? formatPrice(getConvertedPrice(net), locale) : null;
 
   const formattedCalculatedFees = calculatedFees.map((fee) => ({
     ...fee,
-    amount: localeInfo?.locale
-      ? formatPrice(getConvertedPrice(fee.amount), localeInfo.locale)
-      : null,
+    amount: locale ? formatPrice(getConvertedPrice(fee.amount), locale) : null,
   }));
 
-  const formattedTotalFees = localeInfo?.locale
+  const formattedTotalFees = locale
     ? formatPrice(
         getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
-        localeInfo.locale,
+        locale,
       )
     : null;
 

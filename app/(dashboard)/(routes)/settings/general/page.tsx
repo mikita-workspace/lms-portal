@@ -18,10 +18,12 @@ const SettingsPage = async () => {
   return (
     <div className="p-6 flex flex-col mb-6 md:max-w-[868px]">
       <h1 className="text-2xl font-medium">{t('general')}</h1>
-      <div className="mt-12">
-        <GeneralSettingsForm initialData={userInfo!} />
-        <AdvancedOptions initialData={userInfo!} />
-      </div>
+      {userInfo && (
+        <div className="mt-12">
+          <GeneralSettingsForm initialData={userInfo} />
+          <AdvancedOptions initialData={userInfo} />
+        </div>
+      )}
       <DeleteAccountModal userId={user?.userId} email={user?.email}>
         <div className="flex items-center gap-x-2 mt-8">
           <Button variant="destructive">

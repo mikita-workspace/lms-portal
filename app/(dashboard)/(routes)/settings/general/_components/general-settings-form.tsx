@@ -1,26 +1,18 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
 import { BadgeDollarSign, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { useEffect, useState } from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@/components/ui';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { UpdateProfileImageModal } from '@/components/modals/update-profile-image-modal';
+import { Avatar, AvatarFallback, AvatarImage, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_USER_PROFILE_TEMPLATE } from '@/constants/common';
+import { useDebounce } from '@/hooks/use-debounce';
 import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
@@ -28,12 +20,6 @@ import { getFallbackName } from '@/lib/utils';
 type GeneralSettingsFormProps = {
   initialData: User;
 };
-
-const formSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email().min(1),
-  pictureUrl: z.string().url().min(1).optional().or(z.literal('')),
-});
 
 export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
   const t = useTranslations('settings.generalForm');
@@ -44,18 +30,14 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
   const { update } = useSession();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: initialData.name || '',
-      email: initialData.email || '',
-      pictureUrl: initialData.pictureUrl || '',
-    },
-  });
+  const [name, setName] = useState(initialData?.name || '');
+  const [isFetching, setIsFetching] = useState(false);
 
-  const { isSubmitting, isValid } = form.formState;
+  const debouncedValue = useDebounce(name);
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: Record<string, string | null>) => {
+    setIsFetching(true);
+
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
 
@@ -65,8 +47,17 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
       router.refresh();
     } catch (error) {
       toast({ isError: true });
+    } finally {
+      setIsFetching(false);
     }
   };
+
+  useEffect(() => {
+    if (debouncedValue.length > 0 && debouncedValue !== initialData.name) {
+      handleSubmit({ name: debouncedValue });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -91,63 +82,30 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
           </div>
         )}
       </div>
-      <div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs text-muted-foreground">{t('name')}</FormLabel>
-                    <FormControl>
-                      <Input {...field} disabled={isSubmitting} placeholder={t('enterName')} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs text-muted-foreground">{t('email')}</FormLabel>
-                    <FormControl>
-                      <Input {...field} disabled placeholder={t('enterEmail')} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="pictureUrl"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel className="text-xs text-muted-foreground">{t('avatar')}</FormLabel>
-                    <FormControl>
-                      <div className="flex gap-4">
-                        <Input {...field} disabled={isSubmitting} placeholder={t('enterAvatar')} />
-                        <Avatar className="border dark:border-muted-foreground">
-                          <AvatarImage src={field.value || ''} />
-                          <AvatarFallback>{getFallbackName(initialData.name || '')}</AvatarFallback>
-                        </Avatar>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex items-center gap-x-2 mt-6">
-              <Button disabled={!isValid || isSubmitting} isLoading={isSubmitting} type="submit">
-                {t('update')}
-              </Button>
-            </div>
-          </form>
-        </Form>
+      <div className="flex items-center gap-x-4 w-full">
+        <UpdateProfileImageModal>
+          <button disabled={isFetching}>
+            <Avatar className="border dark:border-muted-foreground w-24 h-24">
+              <AvatarImage src={initialData?.pictureUrl ?? ''} />
+              <AvatarFallback>{getFallbackName(initialData?.name || '')}</AvatarFallback>
+            </Avatar>
+          </button>
+        </UpdateProfileImageModal>
+        <div className="flex flex-col gap-y-4 flex-1">
+          <div className="flex flex-col gap-y-2">
+            <div className="text-xs text-muted-foreground font-medium">{t('name')}</div>
+            <Input
+              disabled={isFetching}
+              placeholder={t('enterName')}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
+            <Input disabled placeholder={t('enterEmail')} value={initialData.email} />
+          </div>
+        </div>
       </div>
     </div>
   );
