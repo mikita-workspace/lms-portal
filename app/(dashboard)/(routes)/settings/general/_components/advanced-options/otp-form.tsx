@@ -36,7 +36,7 @@ export const OtpForm = ({ initialData }: OtpFormProps) => {
     try {
       setIsFetching(true);
 
-      const otp = await fetcher.post('api/otp/generate', {
+      const otp = await fetcher.post('/api/otp/generate', {
         responseType: 'json',
         body: { email: initialData.email },
       });
