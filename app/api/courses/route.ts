@@ -9,23 +9,26 @@ import { isOwner } from '@/lib/owner';
 
 export const GET = async (req: NextRequest) => {
   try {
+    const user = await getCurrentUser();
+
+    if (!isOwner(user?.userId)) {
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
     const searchParams = req.nextUrl.searchParams;
 
     const cid = searchParams.get('cid');
-    const userId = searchParams.get('userId');
     const courseId = searchParams.get('courseId');
 
-    if (!isOwner(userId) || !courseId) {
-      return new NextResponse(ReasonPhrases.FORBIDDEN, { status: StatusCodes.FORBIDDEN });
-    }
-
     const data = await fetchCachedData(
-      `${userId}-${courseId}-${cid}`,
+      `${cid}`,
       async () => {
-        const course = await db.course.findUnique({
-          where: { id: courseId },
-          include: { chapters: true },
-        });
+        const course = courseId
+          ? await db.course.findUnique({
+              where: { id: courseId },
+              include: { chapters: true },
+            })
+          : await db.course.findMany({ include: { chapters: true } });
 
         return course;
       },
@@ -38,7 +41,7 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('[GET_COURSES]', error);
+    console.error('[GET_COURSES_INFO]', error);
 
     return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
       status: StatusCodes.INTERNAL_SERVER_ERROR,

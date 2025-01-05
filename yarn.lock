@@ -6582,6 +6582,7 @@ __metadata:
     react-quill: "npm:^2.0.0"
     react-responsive: "npm:^10.0.0"
     react-scroll-to-bottom: "npm:^4.2.0"
+    react-snowfall: "npm:^2.2.0"
     react-svg-credit-card-payment-icons: "npm:^2.1.3"
     react-syntax-highlighter: "npm:^15.5.0"
     react-tag-autocomplete: "npm:^7.2.0"
@@ -8757,7 +8758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-fast-compare@npm:^3.0.1":
+"react-fast-compare@npm:^3.0.1, react-fast-compare@npm:^3.2.2":
   version: 3.2.2
   resolution: "react-fast-compare@npm:3.2.2"
   checksum: 10c0/0bbd2f3eb41ab2ff7380daaa55105db698d965c396df73e6874831dbafec8c4b5b08ba36ff09df01526caa3c61595247e3269558c284e37646241cba2b90a367
@@ -9022,6 +9023,18 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 10c0/b5d1028e46467adebb3d754d1f93f9d051e9f3c817a57f167c8fbb1a79579809bfc65a491a6578ed5165fa0845a36d28a46378a25894c76b78f37a9cfba8a7a1
+  languageName: node
+  linkType: hard
+
+"react-snowfall@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-snowfall@npm:2.2.0"
+  dependencies:
+    react-fast-compare: "npm:^3.2.2"
+  peerDependencies:
+    react: ^16.8 || 17.x || 18.x
+    react-dom: ^16.8 || 17.x || 18.x
+  checksum: 10c0/278fb6fd6f9e79fd747c243761ea546a1e441d73a2ba1b78e2977de53161fccf675665f0f4eb0417e352e493da13ee440a6dc671ab61a7e72de68354245e06c0
   languageName: node
   linkType: hard
 
