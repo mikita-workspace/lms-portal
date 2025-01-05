@@ -8,7 +8,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 
 import { VideoPlayer } from '@/components/common/video-player';
 import { useToast } from '@/components/ui/use-toast';
-import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { useConfettiStore } from '@/hooks/store/use-confetti-store';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 

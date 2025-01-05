@@ -12,8 +12,8 @@ import { UpdateProfileImageModal } from '@/components/modals/update-profile-imag
 import { Avatar, AvatarFallback, AvatarImage, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_USER_PROFILE_TEMPLATE } from '@/constants/common';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { useDebounce } from '@/hooks/use-debounce';
-import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
 

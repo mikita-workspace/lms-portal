@@ -65,6 +65,7 @@ export const ActivePlan = ({ userSubscription }: ActivePlanProps) => {
                 <p className="text-center text-3xl font-semibold">
                   <Price
                     currency={userSubscription.price.currency}
+                    ignoreExchangeRate
                     price={userSubscription.price.unitAmount}
                   />
                 </p>

@@ -8,7 +8,7 @@ import { BiLoader } from 'react-icons/bi';
 import { ChatConversationModal } from '@/components/modals/chat-conversation-modal';
 import { Button } from '@/components/ui';
 import { LIMIT_CONVERSATIONS } from '@/constants/chat';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 
 type ChatSideBarTopProps = {
   amountOfConversations?: number;

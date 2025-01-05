@@ -8,7 +8,7 @@ import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/open-ai';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { getChatMessages } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';

@@ -22,7 +22,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { MAX_PRICE_INT } from '@/constants/payments';
-import { useLocaleStore } from '@/hooks/use-locale-store';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { hasJsonStructure } from '@/lib/utils';

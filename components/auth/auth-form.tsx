@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
-import { useAppConfigStore } from '@/hooks/use-app-config-store';
+import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { cn, isValidUrl } from '@/lib/utils';
 

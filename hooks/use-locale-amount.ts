@@ -6,13 +6,14 @@ import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { isNumber } from '@/lib/guard';
 import { hasJsonStructure } from '@/lib/utils';
 
+import { useLocaleStore } from './store/use-locale-store';
 import { useFeesAmount } from './use-fees-amount';
-import { useLocaleStore } from './use-locale-store';
 
 type UseLocaleAmount = {
   currency?: string;
   customRates?: string | null;
   fees?: Fee[];
+  ignoreExchangeRate?: boolean;
   price: number | null;
   useDefaultLocale?: boolean;
 };
@@ -21,6 +22,7 @@ export const useLocaleAmount = ({
   currency,
   customRates,
   fees = [],
+  ignoreExchangeRate = false,
   price,
   useDefaultLocale = false,
 }: UseLocaleAmount) => {
@@ -32,7 +34,7 @@ export const useLocaleAmount = ({
     : null;
 
   const exchangeRate = useMemo(() => {
-    if (useDefaultLocale) {
+    if (useDefaultLocale || ignoreExchangeRate) {
       return DEFAULT_EXCHANGE_RATE;
     }
 
@@ -40,7 +42,7 @@ export const useLocaleAmount = ({
       return JSON.parse(customRates!)[locale.currency];
     }
     return localeInfo?.rate ?? DEFAULT_EXCHANGE_RATE;
-  }, [customRates, locale?.currency, localeInfo?.rate, useDefaultLocale]);
+  }, [customRates, ignoreExchangeRate, locale?.currency, localeInfo?.rate, useDefaultLocale]);
 
   const amount = (price ?? 0) * exchangeRate;
 

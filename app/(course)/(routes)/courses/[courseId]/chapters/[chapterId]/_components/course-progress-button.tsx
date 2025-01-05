@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
-import { useConfettiStore } from '@/hooks/use-confetti-store';
+import { useConfettiStore } from '@/hooks/store/use-confetti-store';
 import { fetcher } from '@/lib/fetcher';
 
 type CourseProgressButton = {

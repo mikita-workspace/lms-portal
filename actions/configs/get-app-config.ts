@@ -6,6 +6,7 @@ import { fetcher } from '@/lib/fetcher';
 
 export type GetAppConfig = {
   auth: Record<string, boolean>;
+  features: Record<string, boolean>;
   providers: Record<string, boolean>;
 };
 
@@ -14,10 +15,7 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
     const config =
       process.env.NODE_ENV === 'development'
         ? await fs.readFile(`${process.cwd()}/configs/app.json`, 'utf8')
-        : await fetcher.get(
-            'https://raw.githubusercontent.com/mikita-workspace/lms-portal/main/configs/app.json',
-            { responseType: 'text' },
-          );
+        : await fetcher.get(process.env.NEXT_PUBLIC_CONFIG_URL as string, { responseType: 'text' });
 
     return JSON.parse(config);
   } catch (error) {
@@ -26,6 +24,9 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
     return {
       auth: {
         isBlockedNewLogin: true,
+      },
+      features: {
+        christmas: false,
       },
       providers: {
         google: false,

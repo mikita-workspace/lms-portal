@@ -28,7 +28,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { CONVERSATION_ACTION } from '@/constants/chat';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { generateConversationTitle } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
 import { absoluteUrl, cn } from '@/lib/utils';
