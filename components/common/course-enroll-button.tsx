@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
-import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 
 type CourseEnrollButtonProps = {
