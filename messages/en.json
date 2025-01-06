@@ -455,6 +455,10 @@
       "title": "Billing & Subscription",
       "mo": "/mo",
       "year": "/year"
+    },
+    "christmas": {
+      "title": "Turn on the Christmas mood 🎄🎁",
+      "body": "The Christmas theme adds a little magic."
     }
   },
   "file-upload": {
