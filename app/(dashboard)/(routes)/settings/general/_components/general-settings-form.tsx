@@ -54,7 +54,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
 
   useEffect(() => {
     if (debouncedValue.length > 0 && debouncedValue !== initialData.name) {
-      handleSubmit({ name: debouncedValue });
+      handleSubmit({ name: debouncedValue, pictureUrl: initialData?.pictureUrl ?? '' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
