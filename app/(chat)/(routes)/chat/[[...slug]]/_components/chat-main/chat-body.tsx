@@ -14,7 +14,7 @@ import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bo
 
 import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 

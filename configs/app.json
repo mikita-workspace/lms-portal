@@ -2,6 +2,9 @@
   "auth": {
     "isBlockedNewLogin": true
   },
+  "features": {
+    "christmas": true
+  },
   "providers": {
     "credentials": true,
     "github": true,

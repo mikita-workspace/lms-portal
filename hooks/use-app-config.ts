@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 
 import { GetAppConfig } from '@/actions/configs/get-app-config';
 
-import { useAppConfigStore } from './use-app-config-store';
+import { useAppConfigStore } from './store/use-app-config-store';
 
 export const useAppConfig = (config: GetAppConfig) => {
-  const { setConfig } = useAppConfigStore((state) => ({ setConfig: state.setConfig }));
+  const { config: appConfig, setConfig } = useAppConfigStore((state) => ({
+    config: state.config,
+    setConfig: state.setConfig,
+  }));
 
   useEffect(() => {
     const getAppConfig = () => {
@@ -15,4 +18,6 @@ export const useAppConfig = (config: GetAppConfig) => {
     getAppConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  return { config: appConfig };
 };

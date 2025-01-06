@@ -7,8 +7,10 @@ import { useTranslations } from 'next-intl';
 
 import { AuthStatus } from '@/constants/auth';
 import { OWNER_EMAIL } from '@/constants/common';
+import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
+import { ChristmasSwitch } from '../common/christmas-switch';
 import { LanguageSwitcher } from '../common/language-switcher';
 import { LegalMenu } from '../common/legal-menu';
 import { MadeWithLove } from '../common/made-with-love';
@@ -23,6 +25,8 @@ export const Footer = ({ categories }: FooterProps) => {
   const t = useTranslations('footer');
 
   const { user, status } = useCurrentUser();
+
+  const { config } = useAppConfigStore((state) => ({ config: state.config }));
 
   const showLanguageSwitcher = !user?.userId && status !== AuthStatus.LOADING;
 
@@ -43,6 +47,7 @@ export const Footer = ({ categories }: FooterProps) => {
           </div>
           <div className="items-end">{t('testModeDeclaimer')}</div>
           <MadeWithLove className="mt-2" />
+          {config?.features?.christmas && <ChristmasSwitch className="mt-4" />}
         </div>
         <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
           <CsmModal categories={categories}>

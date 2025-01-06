@@ -14,8 +14,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/use-toast';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { useLocaleStore } from '@/hooks/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 
 import { AuthRedirect } from '../auth/auth-redirect';

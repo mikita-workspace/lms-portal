@@ -10,7 +10,7 @@ import {
 } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 
-import { ExchangeRates, useLocaleStore } from './use-locale-store';
+import { ExchangeRates, useLocaleStore } from './store/use-locale-store';
 
 const defaultLocaleInfo = {
   locale: { currency: DEFAULT_CURRENCY, locale: DEFAULT_LOCALE },

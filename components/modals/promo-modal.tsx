@@ -41,7 +41,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { PromoStatus } from '@/constants/payments';
-import { useLocaleStore } from '@/hooks/use-locale-store';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { fetcher } from '@/lib/fetcher';
 import { getScaledPrice } from '@/lib/format';
 import { generatePromotionCode } from '@/lib/promo';

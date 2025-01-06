@@ -8,7 +8,7 @@ import { ConfirmModal } from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
 import { CONVERSATION_ACTION } from '@/constants/chat';
-import { useChatStore } from '@/hooks/use-chat-store';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { fetcher } from '@/lib/fetcher';
 
 type ChatSideBarBottomProps = { amountOfConversations?: number };

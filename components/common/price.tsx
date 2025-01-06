@@ -13,6 +13,7 @@ type PriceProps = {
   currency?: string;
   customRates?: string | null;
   fees?: Fee[];
+  ignoreExchangeRate?: boolean;
   price: number | null;
   showFeesAccordion?: boolean;
   useDefaultLocale?: boolean;
@@ -22,6 +23,7 @@ export const Price = ({
   currency,
   customRates,
   fees = [],
+  ignoreExchangeRate = false,
   price,
   showFeesAccordion = false,
   useDefaultLocale = false,
@@ -39,6 +41,7 @@ export const Price = ({
     currency,
     customRates,
     fees,
+    ignoreExchangeRate,
     price,
     useDefaultLocale,
   });

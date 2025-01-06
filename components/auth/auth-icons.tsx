@@ -22,7 +22,6 @@ const YandexIcon = ({ className }: IconProps) => (
 
 const SlackIcon = ({ className }: IconProps) => (
   <Image
-    // className="ml-0.5 mr-[1.125rem]"
     className={className}
     src="/assets/slack.svg"
     alt="slack"
