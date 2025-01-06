@@ -9,6 +9,7 @@ import Snowfall from 'react-snowfall';
 
 import { GetAppConfig } from '@/actions/configs/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
+import { useChristmasStore } from '@/hooks/store/use-christmas-store';
 import { useConfettiStore } from '@/hooks/store/use-confetti-store';
 import { ExchangeRates } from '@/hooks/store/use-locale-store';
 import { useAppConfig } from '@/hooks/use-app-config';
@@ -40,6 +41,12 @@ const ConfettiProvider = () => {
 };
 
 const ChristmasProvider = () => {
+  const isEnabled = useChristmasStore((state) => state.isEnabled);
+
+  if (!isEnabled) {
+    return null;
+  }
+
   return (
     <Snowfall
       radius={[0.5, 2]}
@@ -73,7 +80,8 @@ export const Providers = ({
   messages,
   timeZone,
 }: ProvidersProps) => {
-  useAppConfig(appConfig);
+  const { config } = useAppConfig(appConfig);
+
   useUserLocation(exchangeRates);
 
   useEffect(() => {
@@ -85,7 +93,7 @@ export const Providers = ({
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <NextIntlClientProvider messages={messages} locale={locale} timeZone={timeZone}>
         <AuthProvider>
-          <ChristmasProvider />
+          {config?.features?.christmas && <ChristmasProvider />}
           <ConfettiProvider />
           <ToastProvider />
           {children}
