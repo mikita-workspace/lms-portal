@@ -237,7 +237,9 @@ export const ChatConversationModal = ({
                 <div className={cn('w-full flex', isEdit ? 'justify-between' : 'justify-end')}>
                   {isEdit && (
                     <Button
-                      disabled={isSubmitting || !sharedLink || isUpdatingSharedLink}
+                      disabled={
+                        isSubmitting || !sharedLink || isUpdatingSharedLink || !watchIsShared
+                      }
                       onClick={handleCopyLink}
                       type="button"
                       variant="outline"

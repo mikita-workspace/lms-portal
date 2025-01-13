@@ -14,7 +14,7 @@ export const MadeWithLove = ({ className }: MadeWithLoveProps) => {
   return (
     <div
       className={cn(className, 'flex items-center')}
-      title={`${packageJson?.name}::${packageJson?.version}`}
+      title={`${packageJson?.name}:${packageJson?.version}`}
     >
       <span>Made&nbsp;with&nbsp;</span>
       <FaHeart className="text-red-400 h-3 w-3" />

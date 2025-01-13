@@ -50,7 +50,7 @@ const ChristmasProvider = () => {
   return (
     <Snowfall
       radius={[0.5, 2]}
-      snowflakeCount={320}
+      snowflakeCount={250}
       style={{
         height: '100vh',
         pointerEvents: 'none',
@@ -58,7 +58,7 @@ const ChristmasProvider = () => {
         width: '100vw',
         zIndex: 100,
       }}
-      wind={[0, 2]}
+      wind={[0, 1]}
     />
   );
 };
