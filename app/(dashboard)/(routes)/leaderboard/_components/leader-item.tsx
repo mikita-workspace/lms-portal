@@ -23,7 +23,10 @@ export const LeaderItem = ({ leader, userId }: LeaderItemProps) => {
       <div className="flex space-x-2 items-center">
         <p className="text-small font-semibold">{leader.name}</p>
         {leader.userId === userId && <TextBadge label={t('you')} variant="indigo" />}
-        {leader.hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
+        {leader.hasSubscription && !leader.isOwner && (
+          <TextBadge label="Nova&nbsp;Plus" variant="lime" />
+        )}
+        {leader.isOwner && <TextBadge label="Owner" variant="indigo" />}
       </div>
     </div>
   );

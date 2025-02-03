@@ -4,11 +4,13 @@ import groupBy from 'lodash.groupby';
 
 import { CHAPTER_XP } from '@/constants/courses';
 import { db } from '@/lib/db';
+import { isOwner as isOwnerFunc } from '@/lib/owner';
 
 import { getUserSubscription } from '../stripe/get-user-subscription';
 
 export type Leader = {
   hasSubscription?: boolean;
+  isOwner?: boolean;
   name: string;
   picture: string | null;
   userId: string;
@@ -41,8 +43,13 @@ export const getLeaders = async () => {
   const userSubscriptions = await Promise.all(
     users.map(async (user) => {
       const userSubscription = await getUserSubscription(user.id);
+      const isOwner = isOwnerFunc(user.id);
 
-      return { userId: user.id, hasSubscription: Boolean(userSubscription) };
+      return {
+        hasSubscription: isOwner ?? Boolean(userSubscription),
+        isOwner,
+        userId: user.id,
+      };
     }),
   );
 
@@ -54,12 +61,12 @@ export const getLeaders = async () => {
         const xp =
           items.filter((item) => publishedChapterIds.includes(item.chapterId)).length * CHAPTER_XP;
 
-        const hasSubscription = userSubscriptions.find(
-          (sb) => sb.userId === userId,
-        )?.hasSubscription;
+        const { hasSubscription, isOwner } =
+          userSubscriptions.find((sb) => sb.userId === userId) ?? {};
 
         if (xp > 0) {
           acc.push({
+            isOwner,
             hasSubscription,
             name: userInfo.name || '',
             picture: userInfo.pictureUrl,
