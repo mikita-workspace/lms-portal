@@ -5,9 +5,9 @@ export const ChatCompletionRole = {
 };
 
 export const OPEN_AI_MODELS = [
-  { value: 'o3-mini-2025-01-31', label: 'GPT-o3 mini' },
   { value: 'gpt-4o', label: 'GPT-4o' },
   { value: 'gpt-4o-mini', label: 'GPT-4o mini' },
+  { value: 'o3-mini-2025-01-31', label: 'GPT-o3 mini' },
   { value: 'gpt-4-turbo-2024-04-09', label: 'GPT-4 Turbo' },
   { value: 'gpt-4-0125-preview', label: 'GPT-4 Turbo Preview' },
   { value: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo' },
