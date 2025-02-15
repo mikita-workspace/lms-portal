@@ -7,8 +7,7 @@ import { OPEN_AI_MODELS } from '@/constants/open-ai';
 import { isOwner } from '@/lib/owner';
 import { openai } from '@/server/openai';
 
-// Only for Hobby Plan on Vercel Cloud. For normal use, 60s is enough.
-export const maxDuration = 10;
+export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
   try {
