@@ -58,37 +58,41 @@ export const POST = async (req: NextRequest) => {
 
       return new NextResponse(JSON.stringify(response));
     } else {
-      const purchase = await db.purchase.create({
-        data: {
-          courseId: courseId!,
-          userId,
-        },
-      });
+      const response = await db.$transaction(async (prisma) => {
+        const purchase = await prisma.purchase.create({
+          data: {
+            courseId: courseId!,
+            userId,
+          },
+        });
 
-      const invoiceId = (() => {
-        if (isString(session.invoice)) {
-          return session.invoice;
-        }
+        const invoiceId = (() => {
+          if (isString(session.invoice)) {
+            return session.invoice;
+          }
 
-        if (isObject(session.invoice)) {
-          return session.invoice?.id;
-        }
-        return null;
-      })();
+          if (isObject(session.invoice)) {
+            return session.invoice?.id;
+          }
+          return null;
+        })();
 
-      const response = await db.purchaseDetails.create({
-        data: {
-          city: session?.metadata?.city,
-          country: session?.metadata?.country,
-          countryCode: session?.metadata?.countryCode,
-          currency: session.currency?.toUpperCase(),
-          invoiceId,
-          latitude: Number(session?.metadata?.latitude),
-          longitude: Number(session?.metadata?.longitude),
-          paymentIntent: session.payment_intent?.toString(),
-          price: session.amount_total ?? 0,
-          purchaseId: purchase.id,
-        },
+        const transaction = await db.purchaseDetails.create({
+          data: {
+            city: session?.metadata?.city,
+            country: session?.metadata?.country,
+            countryCode: session?.metadata?.countryCode,
+            currency: session.currency?.toUpperCase(),
+            invoiceId,
+            latitude: Number(session?.metadata?.latitude),
+            longitude: Number(session?.metadata?.longitude),
+            paymentIntent: session.payment_intent?.toString(),
+            price: session.amount_total ?? 0,
+            purchaseId: purchase.id,
+          },
+        });
+
+        return transaction;
       });
 
       return new NextResponse(JSON.stringify(response));

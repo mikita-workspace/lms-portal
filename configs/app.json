@@ -3,7 +3,7 @@
     "isBlockedNewLogin": true
   },
   "features": {
-    "christmas": true
+    "christmas": false
   },
   "providers": {
     "credentials": true,

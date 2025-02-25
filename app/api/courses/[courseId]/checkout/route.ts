@@ -38,6 +38,42 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       return new NextResponse(t('errors.alreadyPurchased'), { status: StatusCodes.BAD_REQUEST });
     }
 
+    const metadata = {
+      ...details,
+      courseId: course.id,
+      userId: user.userId,
+    };
+
+    if (!course.price) {
+      await db.$transaction(async (prisma) => {
+        const purchase = await prisma.purchase.create({
+          data: {
+            courseId: metadata.courseId,
+            userId: metadata.userId,
+          },
+        });
+
+        const transaction = await prisma.purchaseDetails.create({
+          data: {
+            city: metadata?.city,
+            country: metadata?.country,
+            countryCode: metadata?.countryCode,
+            currency: locale.currency.toUpperCase(),
+            latitude: Number(metadata?.latitude),
+            longitude: Number(metadata?.longitude),
+            price: 0,
+            purchaseId: purchase.id,
+          },
+        });
+
+        return transaction;
+      });
+
+      return NextResponse.json({
+        url: absoluteUrl(`/courses/${metadata.courseId}`),
+      });
+    }
+
     const appLocale = await getAppLocale();
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
@@ -82,11 +118,7 @@ export const POST = async (req: NextRequest, { params }: { params: { courseId: s
       line_items: lineItems,
       mode: 'payment',
       success_url: absoluteUrl(`/preview-course/${course.id}?success=true`),
-      metadata: {
-        ...details,
-        courseId: course.id,
-        userId: user.userId,
-      },
+      metadata,
     });
 
     return NextResponse.json({ url: session.url });
