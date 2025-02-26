@@ -23,10 +23,11 @@ type Message = Conversation['messages'][0];
 type ChatProps = {
   conversations?: Conversation[];
   initialData: Awaited<ReturnType<typeof getChatInitial>>;
+  isEmbed?: boolean;
   isShared?: boolean;
 };
 
-export const Chat = ({ conversations = [], initialData, isShared }: ChatProps) => {
+export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: ChatProps) => {
   const { toast } = useToast();
 
   const { conversationId, setConversationId, currentModel, chatMessages, setChatMessages } =
@@ -196,7 +197,12 @@ export const Chat = ({ conversations = [], initialData, isShared }: ChatProps) =
             />
           )}
           {!isShared && (
-            <ChatTopBar isSubmitting={isSubmitting} setAssistantMessage={setAssistantMessage} />
+            <ChatTopBar
+              conversations={conversations}
+              isEmbed={isEmbed}
+              isSubmitting={isSubmitting}
+              setAssistantMessage={setAssistantMessage}
+            />
           )}
           <ChatBody
             assistantMessage={assistantMessage}

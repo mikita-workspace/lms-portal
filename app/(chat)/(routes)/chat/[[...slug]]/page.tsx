@@ -17,7 +17,6 @@ const ChatPage = async ({ params }: ChatPageProps) => {
   const conversations =
     isEmbed || isShared
       ? await getChatConversations({
-          isEmbed,
           sharedConversationId: isShared ? params.slug[1] : '',
         })
       : [];
@@ -28,7 +27,12 @@ const ChatPage = async ({ params }: ChatPageProps) => {
 
   return (
     <div className="w-full h-full overflow-hidden">
-      <Chat conversations={conversations} initialData={initialData} isShared={isShared} />
+      <Chat
+        conversations={conversations}
+        initialData={initialData}
+        isEmbed={isEmbed}
+        isShared={isShared}
+      />
     </div>
   );
 };

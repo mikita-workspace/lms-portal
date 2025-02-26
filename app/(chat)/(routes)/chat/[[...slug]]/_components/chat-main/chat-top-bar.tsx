@@ -4,6 +4,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 
+import { Conversation } from '@/actions/chat/get-chat-conversations';
 import {
   Button,
   Command,
@@ -22,12 +23,21 @@ import { fetcher } from '@/lib/fetcher';
 import { isOwner } from '@/lib/owner';
 import { cn } from '@/lib/utils';
 
+import { ChatConversationSwitch } from './chat-conversation-switch';
+
 type ChatTopBarProps = {
+  conversations?: Conversation[];
+  isEmbed?: boolean;
   isSubmitting?: boolean;
   setAssistantMessage: (value: string) => void;
 };
 
-export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTopBarProps) => {
+export const ChatTopBar = ({
+  conversations = [],
+  isEmbed = false,
+  isSubmitting = false,
+  setAssistantMessage,
+}: ChatTopBarProps) => {
   const { toast } = useToast();
 
   const { user } = useCurrentUser();
@@ -70,10 +80,10 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
 
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
-      <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
-        <div className="flex items-center justify-between w-full">
+      <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
+        <div className="flex items-center justify-between w-full gap-x-2">
           <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger className={cn(isEmbed && 'flex-1')} asChild>
               <Button
                 variant="outline"
                 role="combobox"
@@ -113,15 +123,18 @@ export const ChatTopBar = ({ isSubmitting = false, setAssistantMessage }: ChatTo
               </Command>
             </PopoverContent>
           </Popover>
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              disabled={isSubmitting || isFetching || !messages.length}
-              onClick={handleDeleteMessages}
-            >
-              <GrClearOption className="w-4 h-4" />
-            </Button>
-          </div>
+          {isEmbed && <ChatConversationSwitch conversations={conversations} />}
+          {!isEmbed && (
+            <div className="flex gap-1">
+              <Button
+                variant="outline"
+                disabled={isSubmitting || isFetching || !messages.length}
+                onClick={handleDeleteMessages}
+              >
+                <GrClearOption className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

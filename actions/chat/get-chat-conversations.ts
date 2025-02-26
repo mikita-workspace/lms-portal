@@ -10,10 +10,7 @@ export type Conversation = Awaited<ReturnType<typeof getChatConversations>>[0];
 
 type GetChatConversations = { isEmbed?: boolean; sharedConversationId?: string };
 
-export const getChatConversations = async ({
-  isEmbed,
-  sharedConversationId,
-}: GetChatConversations) => {
+export const getChatConversations = async ({ sharedConversationId }: GetChatConversations) => {
   try {
     const user = await getCurrentUser();
     const t = await getTranslations('chat.conversation');
@@ -59,7 +56,6 @@ export const getChatConversations = async ({
     }
 
     const conversations = await db.chatConversation.findMany({
-      ...(isEmbed && { take: 1 }),
       where: { userId: user?.userId },
       orderBy: { position: 'asc' },
       select: {
