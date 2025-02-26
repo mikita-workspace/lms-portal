@@ -82,7 +82,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
       const userId = session?.user?.userId;
 
       const updatedToken = await getUpdatedUser(userId);
-      const userSubscription = isOwner(userId) ?? (await getUserSubscription(userId));
+      const userSubscription = isOwner(userId) || (await getUserSubscription(userId));
 
       if (updatedToken?.role && updatedToken.role !== session?.user?.role) {
         session.user.role = updatedToken.role;
