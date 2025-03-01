@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,6 +15,7 @@ import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { cn, isValidUrl } from '@/lib/utils';
 
+import { Captcha } from '../common/captcha';
 import { AuthFormSkeleton } from '../loaders/auth-form-skeleton';
 import { Button, Input, Separator } from '../ui';
 import { useToast } from '../ui/use-toast';
@@ -46,6 +47,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
   const { toast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
+  const locale = useLocale();
 
   const { config } = useAppConfigStore((state) => ({ config: state.config }));
   const providers = config?.providers ?? {};
@@ -53,6 +55,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
 
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(isSignUpFlow ? signUpSchema : signInSchema),
@@ -173,7 +176,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
               <div className="flex items-center gap-x-2">
                 <Button
                   className="w-full"
-                  disabled={isSubmitting || isDisabledButtons}
+                  disabled={isSubmitting || isDisabledButtons || !captchaToken}
                   isLoading={isSubmitting}
                   type="submit"
                 >
@@ -185,7 +188,14 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
           {!isBlockedNewLogin && <Separator />}
         </>
       )}
-
+      <Captcha
+        callback={(token) => {
+          if (token) {
+            setCaptchaToken(token);
+          }
+        }}
+        locale={locale}
+      />
       <div
         className={cn(
           'space-y-2 w-full mt-2',
