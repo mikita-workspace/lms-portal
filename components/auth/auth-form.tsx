@@ -13,13 +13,13 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { PASSWORD_VALIDATION, Provider } from '@/constants/auth';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useHydration } from '@/hooks/use-hydration';
-import { cn, isValidUrl } from '@/lib/utils';
+import { isValidUrl } from '@/lib/utils';
 
 import { Captcha } from '../common/captcha';
 import { AuthFormSkeleton } from '../loaders/auth-form-skeleton';
 import { Button, Input, Separator } from '../ui';
 import { useToast } from '../ui/use-toast';
-import { OAuthButton } from './ouath-button';
+import { OAuthButtons } from './oauth-buttons';
 import { TermsAndPrivacy } from './terms-and-privacy';
 
 type AuthFormProps = {
@@ -101,7 +101,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
     }
   };
 
-  const isCredentialsProvider = providers[Provider.CREDENTIALS];
+  const hasCredentialsProvider = providers[Provider.CREDENTIALS];
 
   return (
     <>
@@ -109,7 +109,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
         <div className="text-lg font-[600]">{t(`${isSignUpFlow ? 'signUp' : 'signIn'}`)}</div>
         <div className="text-base text-muted-foreground">{t('toContinue', { appName })}</div>
       </div>
-      {isCredentialsProvider && (
+      {hasCredentialsProvider && (
         <>
           <Form {...form}>
             <form className="space-y-4 mb-2" onSubmit={form.handleSubmit(handleSubmit)}>
@@ -188,6 +188,12 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
           {!isBlockedNewLogin && <Separator />}
         </>
       )}
+      <OAuthButtons
+        hasCredentialsProvider={hasCredentialsProvider}
+        isDisabledButtons={isDisabledButtons || !captchaToken}
+        providers={providers}
+        setIsDisabledButtons={setIsDisabledButtons}
+      />
       <Captcha
         callback={(token) => {
           if (token) {
@@ -196,31 +202,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
         }}
         locale={locale}
       />
-      <div
-        className={cn(
-          'space-y-2 w-full mt-2',
-          isCredentialsProvider && 'flex items-end w-full justify-between space-x-2 mt-0',
-        )}
-      >
-        {Object.values(Provider).map((provider) => {
-          const isActiveProvider = providers[provider];
-
-          if (provider !== Provider.CREDENTIALS && isActiveProvider) {
-            return (
-              <OAuthButton
-                key={provider}
-                disabled={isDisabledButtons}
-                isCredentialsProvider={isCredentialsProvider}
-                provider={provider as Provider}
-                setIsDisabled={setIsDisabledButtons}
-              />
-            );
-          }
-
-          return null;
-        })}
-      </div>
-      {isCredentialsProvider && !isBlockedNewLogin && (
+      {hasCredentialsProvider && !isBlockedNewLogin && (
         <p className="text-sm text-muted-foreground text-center mt-4">
           {t(`${isSignUpFlow ? 'alreadyHaveAnAccount' : 'doNotHaveAnAccount'}`)}{' '}
           <Link

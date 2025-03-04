@@ -9,9 +9,9 @@
     "credentials": true,
     "github": true,
     "google": true,
-    "linkedin": false,
-    "mailru": false,
-    "slack": false,
+    "linkedin": true,
+    "mailru": true,
+    "slack": true,
     "vk": true,
     "yandex": true
   }
