@@ -13,7 +13,6 @@ import { TextBadge } from '@/components/common/text-badge';
 import { USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 import { ChatCompletionRole } from '@/constants/open-ai';
-import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
   author?: string | null;
@@ -47,17 +46,9 @@ export const PreviewDescription = ({
   title,
 }: PreviewDescriptionProps) => {
   const t = useTranslations('courses.preview.preview');
-
   const currentLocale = useLocale();
-  const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
-
-  const showTranslateButton = Boolean(
-    language && language !== currentLocale && user?.hasSubscription,
-  );
-
-  const cacheKey = `course-description-[${id}]-[${currentLocale}]`;
 
   return (
     <div className="border rounded-lg p-6">
@@ -66,10 +57,10 @@ export const PreviewDescription = ({
           <IconBadge size="sm" icon={BookOpen} />
           <span className="text-xs">{t('chapter', { amount: chaptersLength })}</span>
         </div>
-        {showTranslateButton && (
+        {language !== currentLocale && (
           <div className="my-2">
             <GenerateTextResponseAi
-              cacheKey={cacheKey}
+              cacheKey={`course-description-[${id}]-[${currentLocale}]`}
               isTranslateButton
               callback={setTranslatedDescription}
               messages={[

@@ -8,7 +8,6 @@ import { useMemo, useState } from 'react';
 
 import { USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { ChatCompletionRole } from '@/constants/open-ai';
-import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { GenerateTextResponseAi } from '../ai/generate-text-response-ai';
 
@@ -23,22 +22,15 @@ export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) 
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const currentLocale = useLocale();
-  const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
 
-  const showTranslateButton = Boolean(
-    enableTranslate && language && language !== currentLocale && user?.hasSubscription,
-  );
-
-  const cacheKey = `chapter-description-[${id}]-[${currentLocale}]`;
-
   return (
     <>
-      {showTranslateButton && (
+      {enableTranslate && language !== currentLocale && (
         <div className="p-4">
           <GenerateTextResponseAi
-            cacheKey={cacheKey}
+            cacheKey={`chapter-description-[${id}]-[${currentLocale}]`}
             isTranslateButton
             callback={setTranslatedDescription}
             messages={[
