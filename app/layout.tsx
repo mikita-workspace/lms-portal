@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans } from 'next/font/google';
+import Script from 'next/script';
 import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 
 import { getAppConfig } from '@/actions/configs/get-app-config';
@@ -55,6 +56,10 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
         {/* Vercel Cloud Tools */}
         <SpeedInsights />
         <Analytics />
+        <Script src="https://yandex.ru/ads/system/context.js" strategy="beforeInteractive" />
+        <Script id="ya-ads" strategy="beforeInteractive">
+          {`(window.yaContextCb = window.yaContextCb || []);`}
+        </Script>
       </body>
     </html>
   );
