@@ -17,10 +17,10 @@ import {
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
-// import { AuthStatus } from '@/constants/auth';
-// import { useCurrentUser } from '@/hooks/use-current-user';
-import { Ads } from '../common/ads';
-// import { SubscriptionBanner } from '../common/subscription-banner';
+import { AuthStatus } from '@/constants/auth';
+import { useCurrentUser } from '@/hooks/use-current-user';
+
+import { SubscriptionBanner } from '../common/subscription-banner';
 import { SideBarItem } from './sidebar-item';
 
 type RouteItem = {
@@ -132,7 +132,7 @@ const docsRoutes = [
 ];
 
 export const SideBarRoutes = () => {
-  // const { user, status } = useCurrentUser();
+  const { user, status } = useCurrentUser();
   const pathname = usePathname();
 
   const isSettingsPage = pathname?.includes('/settings');
@@ -140,7 +140,7 @@ export const SideBarRoutes = () => {
   const isPaymentsPage = pathname?.includes('/owner');
   const isDocsPage = pathname?.includes('/docs');
 
-  // const isLoading = status === AuthStatus.LOADING;
+  const isLoading = status === AuthStatus.LOADING;
 
   const routes: RouteItem[] = useMemo(() => {
     if (isSettingsPage) {
@@ -171,8 +171,7 @@ export const SideBarRoutes = () => {
           />
         ))}
       </div>
-      {/* {!isLoading && !user?.hasSubscription && <SubscriptionBanner />} */}
-      <Ads />
+      {!isLoading && !user?.hasSubscription && <SubscriptionBanner />}
     </div>
   );
 };
