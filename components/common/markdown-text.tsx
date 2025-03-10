@@ -16,7 +16,7 @@ export const MarkdownText = ({ className, text }: MarkdownTextProps) => {
   return (
     <div
       className={cn(
-        'text-sm prose dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent',
+        'text-sm prose prose-sm !max-w-none dark:prose-invert prose-a:text-accent-primary prose-a:no-underline hover:prose-a:underline prose-pre:bg-transparent',
         className,
       )}
     >

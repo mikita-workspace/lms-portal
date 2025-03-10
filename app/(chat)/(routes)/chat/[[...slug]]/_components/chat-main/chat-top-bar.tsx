@@ -80,7 +80,7 @@ export const ChatTopBar = ({
 
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
-      <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
+      <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl pt-4 px-4">
         <div className="flex items-center justify-between w-full gap-x-2">
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger className={cn(isEmbed && 'flex-1')} asChild>

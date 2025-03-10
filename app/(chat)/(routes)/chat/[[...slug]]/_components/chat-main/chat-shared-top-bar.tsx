@@ -15,7 +15,7 @@ export const ChatSharedTopBar = ({ expiredAt, title }: ChatSharedTopBarProps) =>
 
   return (
     <div className={'w-full h-[75px]'}>
-      <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] pt-4 px-4">
+      <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl pt-4 px-4">
         <div className="font-medium">{title}</div>
         {expiredAt && (
           <div className="text-xs text-muted-foreground">
