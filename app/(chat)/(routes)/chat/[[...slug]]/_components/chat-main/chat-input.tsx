@@ -28,8 +28,8 @@ export const ChatInput = ({
   const [inputLength, setInputLength] = useState(0);
 
   return (
-    <div className="w-full h-full relative">
-      <div className="flex flex-1 w-full flex-shrink-0 items-center justify-center">
+    <div className="w-full h-full relative flex items-end">
+      <div className="flex flex-1 w-full flex-shrink-0">
         <div className="flex w-full h-full flex-col pb-2 px-4">
           <form
             className={cn(

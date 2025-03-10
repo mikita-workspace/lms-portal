@@ -36,13 +36,13 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
             <div
               aria-hidden="true"
               key={uuidv4()}
-              className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
+              className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex flex-col overflow-hidden p-4 h-[100px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer"
               onClick={(event) => {
                 onSubmit(event, { userMessage: message });
               }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>
-              <div className="truncate text-secondary-foreground text-xs">{tail}</div>
+              <div className="text-secondary-foreground text-xs">{tail}</div>
             </div>
           );
         })}
@@ -53,13 +53,13 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
             <div
               aria-hidden="true"
               key={uuidv4()}
-              className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
+              className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[100px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
               onClick={(event) => {
                 onSubmit(event, { userMessage: message });
               }}
             >
               <div className="truncate font-semibold text-sm">{head}</div>
-              <div className="line-clamp-1 text-secondary-foreground text-xs">{tail}</div>
+              <div className="text-secondary-foreground text-xs">{tail}</div>
             </div>
           );
         })}
