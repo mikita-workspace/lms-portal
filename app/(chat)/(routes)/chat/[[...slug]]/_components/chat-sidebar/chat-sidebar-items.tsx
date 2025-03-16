@@ -51,8 +51,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   );
 
   useEffect(() => {
-    setClientConversations(clientConversations);
-  }, [clientConversations]);
+    setClientConversations(conversations);
+  }, [conversations]);
 
   useEffect(() => {
     document.body.style.removeProperty('pointer-events');
