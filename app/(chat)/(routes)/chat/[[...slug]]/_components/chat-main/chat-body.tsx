@@ -102,9 +102,10 @@ export const ChatBody = ({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
           <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
+          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         </div>
       )}
-      <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-12rem)]', 'relative')}>
+      <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-17rem)]', 'relative')}>
         {hasMessages && (
           <ScrollToBottom
             className="flex h-full w-full flex-col"
@@ -126,7 +127,7 @@ export const ChatBody = ({
                 return (
                   <div
                     key={message.id}
-                    className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6"
+                    className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl px-4 first:mt-4 last:mb-6"
                   >
                     <ChatBubble
                       isShared={isShared}
@@ -138,7 +139,7 @@ export const ChatBody = ({
                 );
               })}
               {assistantMessage && (
-                <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] px-4 first:mt-4 last:mb-6">
+                <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl px-4 first:mt-4 last:mb-6">
                   <ChatBubble
                     isSubmitting={isSubmitting}
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
@@ -149,9 +150,6 @@ export const ChatBody = ({
               )}
             </Content>
           </ScrollToBottom>
-        )}
-        {!hasMessages && !isShared && (
-          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         )}
         {!sticky && hasMessages && (
           <Button

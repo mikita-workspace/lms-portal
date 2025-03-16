@@ -27,8 +27,8 @@ export const ChatIntro = ({ introMessages, onSubmit }: ChatIntroProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-end">
-      <div className="mx-auto grid m:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2 lg:max-w-2xl xl:max-w-3xl w-full pb-6 px-4">
+    <div className="h-full flex flex-col justify-center">
+      <div className="mx-auto grid m:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2 lg:max-w-2xl xl:max-w-4xl w-full pb-6 px-4">
         {introMessages.slice(0, 2).map((message) => {
           const { head, tail } = mapQuestion(message);
 

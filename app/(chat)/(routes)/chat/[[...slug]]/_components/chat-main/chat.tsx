@@ -189,7 +189,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
   return (
     <div className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden bg-background outline-none">
-        <div className="flex h-full w-full flex-col justify-between">
+        <div className="flex h-full w-full flex-col">
           {isShared && (
             <ChatSharedTopBar
               expiredAt={conversations?.[0]?.shared?.expiredAt}

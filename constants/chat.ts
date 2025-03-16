@@ -6,3 +6,4 @@ export enum CONVERSATION_ACTION {
 }
 
 export const LIMIT_CONVERSATIONS = 10;
+export const LIMIT_CHAT_INPUT = 8000;

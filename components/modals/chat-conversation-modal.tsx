@@ -89,7 +89,7 @@ export const ChatConversationModal = ({
 
     if (
       initialData?.shared.isShared !== watchIsShared ||
-      initialData.shared.isOnlyAuth !== watchIsOnlyAuth
+      initialData?.shared.isOnlyAuth !== watchIsOnlyAuth
     ) {
       router.refresh();
     }

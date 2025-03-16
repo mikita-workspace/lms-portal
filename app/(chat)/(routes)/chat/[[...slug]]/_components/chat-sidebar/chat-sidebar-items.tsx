@@ -40,6 +40,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
     setIsFetching,
   } = useChatStore();
 
+  const [clientConversations, setClientConversations] = useState(conversations);
   const [editTitleId, setEditTitleId] = useState('');
   const [isReordering, setIsReordering] = useState(false);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
@@ -48,6 +49,10 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   const currentConversation = conversations.find(
     (conversation) => conversation.id === conversationId,
   );
+
+  useEffect(() => {
+    setClientConversations(conversations);
+  }, [conversations]);
 
   useEffect(() => {
     document.body.style.removeProperty('pointer-events');
@@ -115,10 +120,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
       return;
     }
 
-    const copyConversations = conversations.map((conversation) => ({
-      id: conversation.id,
-      position: conversation.position,
-    }));
+    const copyConversations = Array.from(conversations);
     const [reorderedItem] = copyConversations.splice(result.source.index, 1);
     copyConversations.splice(result.destination.index, 0, reorderedItem);
 
@@ -126,6 +128,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
     const endIndex = Math.max(result.source.index, result.destination.index);
 
     const updatedConversations = copyConversations.slice(startIndex, endIndex + 1);
+
+    setClientConversations(copyConversations);
 
     const bulkUpdateData = updatedConversations.map((conversation) => ({
       id: conversation.id,
@@ -149,7 +153,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
         <Droppable droppableId="conversations">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {conversations.map((conversation, index) => {
+              {clientConversations.map((conversation, index) => {
                 const isActive = conversationId === conversation.id;
                 const isShared = conversation.shared.isShared;
 
