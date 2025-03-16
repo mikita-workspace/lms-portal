@@ -102,6 +102,7 @@ export const ChatBody = ({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
           <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
+          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         </div>
       )}
       <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-17rem)]', 'relative')}>
@@ -149,9 +150,6 @@ export const ChatBody = ({
               )}
             </Content>
           </ScrollToBottom>
-        )}
-        {!hasMessages && !isShared && (
-          <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         )}
         {!sticky && hasMessages && (
           <Button
