@@ -104,7 +104,7 @@ export const ChatBody = ({
           <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
         </div>
       )}
-      <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-16rem)]', 'relative')}>
+      <div className={cn(isShared ? 'h-[calc(100%-4rem)]' : 'h-[calc(100%-17rem)]', 'relative')}>
         {hasMessages && (
           <ScrollToBottom
             className="flex h-full w-full flex-col"
