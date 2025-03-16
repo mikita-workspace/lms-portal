@@ -22,7 +22,7 @@ export const getChatInitial = async () => {
               content: 'You are a machine that only returns array format.',
             },
             {
-              content: `Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat. Language code is ${locale}. Write the result to an array.`,
+              content: `Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat on the topic of programming. Language code is ${locale}. Write the result to an array.`,
               role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
             },
           ],

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRightToLine, SquareArrowOutUpRight } from 'lucide-react';
+import { SquareArrowOutUpRight, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -35,7 +35,7 @@ export const Chat = () => {
             <div className="fixed pt-4 px-4 flex gap-x-1">
               <SheetClose asChild>
                 <Button className="w-full" variant="outline">
-                  <ArrowRightToLine className="h-4 w-4" />
+                  <X className="h-4 w-4" />
                 </Button>
               </SheetClose>
               <Link href={absoluteUrl('/chat')} target="_blank">
