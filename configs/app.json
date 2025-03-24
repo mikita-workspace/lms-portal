@@ -1,6 +1,6 @@
 {
   "auth": {
-    "isBlockedNewLogin": true
+    "isBlockedNewLogin": false
   },
   "features": {
     "christmas": false
