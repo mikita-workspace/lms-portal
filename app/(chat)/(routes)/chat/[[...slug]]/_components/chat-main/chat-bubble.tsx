@@ -13,7 +13,7 @@ import { ChatFeedback } from './chat-feedback';
 type ChatBubbleProps = {
   isShared?: boolean;
   isSubmitting?: boolean;
-  message: { role: string; content: string; model?: string; id: string };
+  message: { role: string; content: string; model?: string; id?: string };
   name: string;
   picture?: string | null;
   streamMessage?: string;
