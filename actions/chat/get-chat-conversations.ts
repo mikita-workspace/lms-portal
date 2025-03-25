@@ -66,6 +66,7 @@ export const getChatConversations = async ({ sharedConversationId }: GetChatConv
         user: true,
         messages: {
           orderBy: { createdAt: 'asc' },
+          include: { feedback: true },
         },
       },
     });
