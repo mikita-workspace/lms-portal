@@ -13,7 +13,7 @@ import { ChatFeedback } from './chat-feedback';
 type ChatBubbleProps = {
   isShared?: boolean;
   isSubmitting?: boolean;
-  message: { role: string; content: string; model?: string };
+  message: { role: string; content: string; model?: string; id: string };
   name: string;
   picture?: string | null;
   streamMessage?: string;
@@ -54,7 +54,7 @@ export const ChatBubble = ({
           {isAssistant && !isSubmitting && (
             <div className="flex gap-x-3 mt-4">
               <CopyClipboard textToCopy={text} />
-              <ChatFeedback />
+              <ChatFeedback id={message.id} />
             </div>
           )}
         </div>

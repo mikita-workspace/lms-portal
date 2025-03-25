@@ -288,17 +288,34 @@ model CsmIssue {
 }
 
 // Chat Copilot
+enum ChatFeedback {
+  positive
+  negative
+}
+
 model ChatMessage {
-  id             String            @id @default(uuid())
+  id             String               @id @default(uuid())
   content        String
-  conversation   ChatConversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation   ChatConversation?    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId String?
-  createdAt      DateTime          @default(now())
+  createdAt      DateTime             @default(now())
+  feedback       ChatMessageFeedback?
   model          String
   role           String
-  updatedAt      DateTime          @updatedAt
+  updatedAt      DateTime             @updatedAt
 
   @@index([conversationId])
+}
+
+model ChatMessageFeedback {
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+  feedback  ChatFeedback
+  message   ChatMessage  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId String       @unique
+  updatedAt DateTime     @updatedAt
+
+  @@index([messageId])
 }
 
 model ChatConversation {

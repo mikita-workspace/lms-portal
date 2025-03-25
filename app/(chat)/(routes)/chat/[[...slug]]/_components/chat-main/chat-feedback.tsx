@@ -13,6 +13,7 @@ const enum Feedback {
 type ChatFeedback = {
   className?: string;
   disabled?: boolean;
+  id: string;
 };
 
 export const ChatFeedback = ({ className, disabled }: ChatFeedback) => {
