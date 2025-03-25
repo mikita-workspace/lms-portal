@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/open-ai';
 import { getFallbackName } from '@/lib/utils';
 
+import { ChatFeedback } from './chat-feedback';
+
 type ChatBubbleProps = {
   isShared?: boolean;
   isSubmitting?: boolean;
@@ -50,8 +52,9 @@ export const ChatBubble = ({
           </div>
           <MarkdownText text={text} />
           {isAssistant && !isSubmitting && (
-            <div className="flex gap-x-2 mt-4">
+            <div className="flex gap-x-3 mt-4">
               <CopyClipboard textToCopy={text} />
+              <ChatFeedback />
             </div>
           )}
         </div>
