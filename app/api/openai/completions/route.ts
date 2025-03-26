@@ -3,6 +3,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { OPEN_AI_MODELS } from '@/constants/open-ai';
 import { isOwner } from '@/lib/owner';
 import { openai } from '@/server/openai';
@@ -13,15 +14,17 @@ export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
-    if (!user) {
+    const { messages, model, system } = await req.json();
+
+    const isTranslator = system.content === SYSTEM_TRANSLATE_PROMPT;
+
+    if (!isTranslator && !user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
     const models = (isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2)).map(
       ({ value }) => value,
     );
-
-    const { messages, model, system } = await req.json();
 
     if (!models.includes(model)) {
       console.error('[OPEN_AI_FORBIDDEN_MODEL]', user);
