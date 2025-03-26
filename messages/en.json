@@ -314,7 +314,8 @@
     "input": {
       "ask": "Ask",
       "enterMessage": "Enter your message...",
-      "footer": "Nova Copilot can make mistakes. Consider checking important information."
+      "footer": "Nova Copilot can make mistakes. Consider checking important information.",
+      "image-generation-mode": "Image generation mode (DALL·E 3)"
     },
     "shared": {
       "expiredAt": "Available until { date }"

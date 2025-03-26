@@ -313,7 +313,8 @@
     "input": {
       "ask": "Спросить",
       "enterMessage": "Введите ваше сообщение...",
-      "footer": "Nova Copilot может совершать ошибки. Будьте внимательны."
+      "footer": "Nova Copilot может совершать ошибки. Будьте внимательны.",
+      "image-generation-mode": "Режим генерации изображения (DALL·E 3)"
     },
     "shared": {
       "expiredAt": "Доступно до { date }"

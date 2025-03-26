@@ -11,10 +11,12 @@ type ChatStore = {
   conversationId: string;
   currentModel: string;
   isFetching: boolean;
+  isImageGeneration?: boolean;
   setChatMessages: (messages: ChatMessages) => void;
   setConversationId: (conversationId: string) => void;
   setCurrentModel: (model: string) => void;
   setIsFetching: (value: boolean) => void;
+  setIsImageGeneration: (value: boolean) => void;
 };
 
 export const useChatStore = create<ChatStore, any>(
@@ -24,10 +26,12 @@ export const useChatStore = create<ChatStore, any>(
       conversationId: '',
       currentModel: DEFAULT_MODEL,
       isFetching: false,
+      isImageGeneration: false,
       setChatMessages: (messages) => set({ chatMessages: messages }),
       setConversationId: (conversationId) => set({ conversationId }),
       setCurrentModel: (model) => set({ currentModel: model }),
       setIsFetching: (value) => set({ isFetching: value }),
+      setIsImageGeneration: (value) => set({ isImageGeneration: value }),
     }),
     {
       name: 'chat-storage',

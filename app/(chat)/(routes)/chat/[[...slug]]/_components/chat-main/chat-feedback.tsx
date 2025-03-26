@@ -82,7 +82,7 @@ export const ChatFeedback = ({ className, disabled, messageId, state }: ChatFeed
       <button onClick={handleClick} disabled={disabled || isFetching} name={Feedback.POSITIVE}>
         <ThumbsUp
           className={cn(
-            'h-4 w-4 hover:text-green-500 transition-all duration-300',
+            'h-4 w-4 hover:text-green-500 transition-colors duration-300',
             state === Feedback.POSITIVE && 'text-green-500',
             clicked[Feedback.POSITIVE] ? 'animate-spin-once' : '',
             className,
@@ -92,7 +92,7 @@ export const ChatFeedback = ({ className, disabled, messageId, state }: ChatFeed
       <button onClick={handleClick} disabled={disabled || isFetching} name={Feedback.NEGATIVE}>
         <ThumbsDown
           className={cn(
-            'h-4 w-4 hover:text-red-500 transition-all duration-300',
+            'h-4 w-4 hover:text-red-500 transition-color duration-300',
             state === Feedback.NEGATIVE && 'text-red-500',
             clicked[Feedback.NEGATIVE] ? 'animate-spin-once' : '',
             className,

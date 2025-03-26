@@ -314,7 +314,8 @@
     "input": {
       "ask": "Спытайце",
       "enterMessage": "Увайдзіце сваё паведамленне...",
-      "footer": "Nova Copilot можа памыляцца. Праверце важную інфармацыю."
+      "footer": "Nova Copilot можа памыляцца. Праверце важную інфармацыю.",
+      "image-generation-mode": "Рэжым генерацыі малюнка (DALL·E 3)"
     },
     "shared": {
       "expiredAt": "Даступна да { date }"

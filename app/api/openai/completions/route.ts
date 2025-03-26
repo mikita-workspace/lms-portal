@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
 
     const { messages, model, system } = await req.json();
 
-    const isTranslator = system.content === SYSTEM_TRANSLATE_PROMPT;
+    const isTranslator = system?.content === SYSTEM_TRANSLATE_PROMPT;
 
     if (!isTranslator && !user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
