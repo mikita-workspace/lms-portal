@@ -50,7 +50,7 @@ export const ChatInput = ({
               className="resize-none overflow-auto z-10 border-none"
               disabled={isSubmitting}
               maxLength={LIMIT_CHAT_INPUT}
-              placeholder={t('enterMessage')}
+              placeholder={t(isImageGeneration ? 'enterImageMessage' : 'enterMessage')}
               value={currenMessage}
               onChange={(event) => {
                 setCurrentMessage(event.target.value);

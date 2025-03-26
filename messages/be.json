@@ -313,6 +313,7 @@
     },
     "input": {
       "ask": "Спытайце",
+      "enterImageMessage": "Увядзіце свой запыт...",
       "enterMessage": "Увайдзіце сваё паведамленне...",
       "footer": "Nova Copilot можа памыляцца. Праверце важную інфармацыю.",
       "image-generation-mode": "Рэжым генерацыі малюнка (DALL·E 3)"
