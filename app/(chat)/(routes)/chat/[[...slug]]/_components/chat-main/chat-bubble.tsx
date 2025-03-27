@@ -1,7 +1,8 @@
 'use client';
 
-import { MoreHorizontal } from 'lucide-react';
+import { Download, MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { MarkdownText } from '@/components/common/markdown-text';
@@ -21,6 +22,7 @@ type ChatBubbleProps = {
     id?: string;
     feedback?: { feedback: string } | null;
     imageGeneration?: {
+      model: string;
       revisedPrompt: string;
       url: string;
     } | null;
@@ -44,6 +46,7 @@ export const ChatBubble = ({
 
   const text = streamMessage ?? message.content;
   const image = streamImage ?? message?.imageGeneration?.url;
+  const model = message?.imageGeneration ? message.imageGeneration.model : message.model;
 
   return (
     <div className="pb-4 pt-2">
@@ -62,7 +65,7 @@ export const ChatBubble = ({
               <MoreHorizontal className="w-6 h-6 animate-pulse" />
             )}
             {isAssistant && isShared && (
-              <div className="text-xs text-muted-foreground">{message.model}</div>
+              <div className="text-xs text-muted-foreground">{model}</div>
             )}
           </div>
           {image && (
@@ -72,9 +75,18 @@ export const ChatBubble = ({
           )}
           <MarkdownText text={text} />
           {isAssistant && !isSubmitting && (
-            <div className="flex gap-x-3 mt-4">
+            <div className="flex gap-x-3 mt-4 items-center">
               <CopyClipboard textToCopy={text} />
-              <ChatFeedback messageId={message.id} state={message.feedback?.feedback} />
+              {image && (
+                <Link href={image} target="_blank">
+                  <button className="flex items-center">
+                    <Download className="h-4 w-4" />
+                  </button>
+                </Link>
+              )}
+              {!isShared && (
+                <ChatFeedback messageId={message.id} state={message.feedback?.feedback} />
+              )}
             </div>
           )}
         </div>
