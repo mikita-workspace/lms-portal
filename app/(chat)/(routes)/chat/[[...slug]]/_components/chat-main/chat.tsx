@@ -7,7 +7,7 @@ import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole, OPEN_AI_IMAGE_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { getChatMessages } from '@/lib/chat';
@@ -30,14 +30,21 @@ type ChatProps = {
 export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: ChatProps) => {
   const { toast } = useToast();
 
-  const { conversationId, setConversationId, currentModel, chatMessages, setChatMessages } =
-    useChatStore();
+  const {
+    chatMessages,
+    conversationId,
+    currentModel,
+    isImageGeneration,
+    setChatMessages,
+    setConversationId,
+  } = useChatStore();
 
   const { isMounted } = useHydration();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
   const [assistantMessage, setAssistantMessage] = useState('');
+  const [assistantImage, setAssistantImage] = useState('');
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -98,48 +105,69 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     setCurrentMessage('');
 
     let streamAssistMessage = '';
+    let streamAssistImage = '';
 
     try {
-      abortControllerRef.current = new AbortController();
-      const signal = abortControllerRef.current.signal;
+      if (isImageGeneration) {
+        const imageGeneration = await fetcher.post('api/openai/image', {
+          responseType: 'json',
+          body: {
+            model: OPEN_AI_IMAGE_MODELS[0].value,
+            prompt: currentMessage,
+          },
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const completionStream = await fetcher.post('/api/openai/completions', {
-        body: {
-          messages: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
-            ({ content, role }) => ({
-              content,
-              role,
-            }),
-          ),
-          model: currentModel,
-        },
-        cache: 'no-cache',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal,
-      });
+        streamAssistMessage = imageGeneration.revisedPrompt;
+        streamAssistImage = imageGeneration.url;
 
-      const reader = completionStream.body?.getReader();
-      const decoder = new TextDecoder('utf-8');
+        setAssistantMessage(imageGeneration.revisedPrompt);
+        setAssistantImage(imageGeneration.url);
+      } else {
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal;
 
-      while (true) {
-        const rawChunk = await reader?.read();
+        const completionStream = await fetcher.post('/api/openai/completions', {
+          body: {
+            messages: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
+              ({ content, role }) => ({
+                content,
+                role,
+              }),
+            ),
+            model: currentModel,
+          },
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal,
+        });
 
-        if (!rawChunk) {
-          throw new Error('Unable to process chunk');
+        const reader = completionStream.body?.getReader();
+        const decoder = new TextDecoder('utf-8');
+
+        while (true) {
+          const rawChunk = await reader?.read();
+
+          if (!rawChunk) {
+            throw new Error('Unable to process chunk');
+          }
+
+          const { done, value } = rawChunk;
+
+          if (done) {
+            break;
+          }
+
+          const chunk = decoder.decode(value);
+          streamAssistMessage += chunk;
+
+          setAssistantMessage((prev) => prev + chunk);
         }
-
-        const { done, value } = rawChunk;
-
-        if (done) {
-          break;
-        }
-
-        const chunk = decoder.decode(value);
-        streamAssistMessage += chunk;
-
-        setAssistantMessage((prev) => prev + chunk);
       }
     } catch (error: any) {
       if (error.name !== 'AbortError') {
@@ -153,7 +181,8 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
         content: streamAssistMessage,
         id: uuidv4(),
         role: ChatCompletionRole.ASSISTANT,
-      } as Message);
+        url: streamAssistImage,
+      } as Message & { url: string });
 
       setIsSubmitting(false);
     }
@@ -165,10 +194,21 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     }
   };
 
-  const saveLastMessages = async (userMessage: Message, assistMessage: Message) => {
+  const saveLastMessages = async (
+    userMessage: Message,
+    assistMessage: Message & { url: string },
+  ) => {
     const response = await fetcher.post('/api/chat', {
       body: {
         conversationId,
+        image: isImageGeneration
+          ? {
+              messageId: assistMessage.id,
+              model: OPEN_AI_IMAGE_MODELS[0].value,
+              revisedPrompt: assistMessage.content,
+              url: assistMessage.url,
+            }
+          : null,
         messages: [userMessage, assistMessage],
         model: currentModel,
       },
@@ -182,6 +222,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       };
 
       setAssistantMessage('');
+      setAssistantImage('');
       setChatMessages(updatedChatMessages);
     }
   };
@@ -205,6 +246,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
             />
           )}
           <ChatBody
+            assistantImage={assistantImage}
             assistantMessage={assistantMessage}
             introMessages={initialData.introMessages}
             isShared={isShared}

@@ -26,11 +26,11 @@ export const FileDownload = ({
   const [name, extension] = fileName.split('.');
 
   return (
-    <div className="flex items-center justify-between p-3 w-full rounded-md border mb-2">
+    <div className="flex items-center justify-between p-3 w-full rounded-md border mb-2 gap-x-2">
       <div className="flex items-center">
         <FileText className="h-4 w-4 mr-3 flex-shrink-0 text-red-500" />
         <div className="flex flex-col">
-          <p className="text-primary font-medium text-sm">{name}</p>
+          <p className="text-primary font-medium text-sm line-clamp-2">{name}</p>
           <p className="text-muted-foreground text-xs">{`.${extension}`}</p>
         </div>
       </div>

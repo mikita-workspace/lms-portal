@@ -294,15 +294,16 @@ enum ChatFeedback {
 }
 
 model ChatMessage {
-  id             String               @id @default(uuid())
-  content        String
-  conversation   ChatConversation?    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId String?
-  createdAt      DateTime             @default(now())
-  feedback       ChatMessageFeedback?
-  model          String
-  role           String
-  updatedAt      DateTime             @updatedAt
+  id              String                      @id @default(uuid())
+  content         String
+  conversation    ChatConversation?           @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId  String?
+  createdAt       DateTime                    @default(now())
+  feedback        ChatMessageFeedback?
+  imageGeneration ChatImageGenerationMessage?
+  model           String
+  role            String
+  updatedAt       DateTime                    @updatedAt
 
   @@index([conversationId])
 }
@@ -314,6 +315,19 @@ model ChatMessageFeedback {
   message   ChatMessage  @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String       @unique
   updatedAt DateTime     @updatedAt
+
+  @@index([messageId])
+}
+
+model ChatImageGenerationMessage {
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  message       ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId     String      @unique
+  model         String
+  revisedPrompt String
+  updatedAt     DateTime    @updatedAt
+  url           String
 
   @@index([messageId])
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, LoaderPinwheel } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, {
   createContext,
@@ -53,6 +53,7 @@ const Content = ({ children }: ContentProps) => {
 };
 
 type ChatBodyProps = {
+  assistantImage?: string;
   assistantMessage?: string;
   introMessages: string[];
   isShared?: boolean;
@@ -67,6 +68,7 @@ type ChatBodyProps = {
 };
 
 export const ChatBody = ({
+  assistantImage,
   assistantMessage,
   introMessages,
   isShared,
@@ -77,9 +79,10 @@ export const ChatBody = ({
   const t = useTranslations('chat.body');
 
   const { user } = useCurrentUser();
-  const { chatMessages, conversationId } = useChatStore((state) => ({
+  const { chatMessages, conversationId, isImageGeneration } = useChatStore((state) => ({
     chatMessages: state.chatMessages,
     conversationId: state.conversationId,
+    isImageGeneration: state.isImageGeneration,
   }));
 
   const [sticky, setSticky] = useState(false);
@@ -138,16 +141,24 @@ export const ChatBody = ({
                   </div>
                 );
               })}
-              {assistantMessage && (
-                <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl px-4 first:mt-4 last:mb-6">
+
+              <div className="flex flex-1 text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl px-4 first:mt-4 last:mb-6">
+                {!assistantMessage && isSubmitting && isImageGeneration && (
+                  <div className="flex gap-x-2 items-center justify-center w-full mt-4">
+                    <LoaderPinwheel className="h-4 w-4 animate-spin text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">{t('image-loading')}</p>
+                  </div>
+                )}
+                {assistantMessage && (
                   <ChatBubble
+                    streamImage={assistantImage}
                     isSubmitting={isSubmitting}
                     message={{ role: ChatCompletionRole.ASSISTANT, content: '' }}
                     name="Nova Copilot"
                     streamMessage={assistantMessage}
                   />
-                </div>
-              )}
+                )}
+              </div>
             </Content>
           </ScrollToBottom>
         )}

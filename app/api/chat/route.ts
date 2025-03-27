@@ -15,13 +15,13 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { conversationId, messages, model } = await req.json();
+    const { conversationId, messages, model, image } = await req.json();
 
     if (!messages?.length || !conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    const chatMessages = await db.chatMessage.createManyAndReturn({
+    await db.chatMessage.createManyAndReturn({
       data: messages.map(
         ({ id, content, role }: { id: string; content: string; role: ChatRole }) => ({
           id,
@@ -35,6 +35,25 @@ export const POST = async (req: NextRequest) => {
           ),
         }),
       ),
+    });
+
+    if (image) {
+      await db.chatImageGenerationMessage.create({
+        data: {
+          messageId: image.messageId,
+          model: image.model,
+          revisedPrompt: image.revisedPrompt,
+          url: image.url,
+        },
+      });
+    }
+
+    const messageIds = messages.map(({ id }: { id: string }) => id);
+
+    const chatMessages = await db.chatMessage.findMany({
+      where: { id: { in: messageIds } },
+      orderBy: { createdAt: 'asc' },
+      include: { imageGeneration: true },
     });
 
     return NextResponse.json({ messages: chatMessages });
