@@ -23,7 +23,10 @@ export const getChatConversations = async ({ sharedConversationId }: GetChatConv
         include: {
           conversation: {
             include: {
-              messages: true,
+              messages: {
+                orderBy: { createdAt: 'asc' },
+                include: { imageGeneration: true },
+              },
               shared: true,
               user: true,
             },
@@ -66,7 +69,7 @@ export const getChatConversations = async ({ sharedConversationId }: GetChatConv
         user: true,
         messages: {
           orderBy: { createdAt: 'asc' },
-          include: { feedback: true },
+          include: { feedback: true, imageGeneration: true },
         },
       },
     });

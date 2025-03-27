@@ -298,6 +298,7 @@
   },
   "chat": {
     "body": {
+      "image-loading": "Cоздаю кое-что интересное. Немного терпения...",
       "title": "Как я могу помочь вам сегодня?"
     },
     "conversation": {
@@ -315,7 +316,7 @@
       "enterImageMessage": "Введите ваш запрос...",
       "enterMessage": "Введите ваше сообщение...",
       "footer": "Nova Copilot может совершать ошибки. Будьте внимательны.",
-      "image-generation-mode": "Режим генерации изображения (({model}))"
+      "image-generation-mode": "Режим генерации изображения ({model})"
     },
     "shared": {
       "expiredAt": "Доступно до { date }"
