@@ -13,4 +13,6 @@ export const OPEN_AI_MODELS = [
   { value: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo' },
 ];
 
+export const OPEN_AI_IMAGE_MODELS = [{ value: 'dall-e-3', label: 'DALL·E 3' }];
+
 export const DEFAULT_MODEL = OPEN_AI_MODELS[0].value;

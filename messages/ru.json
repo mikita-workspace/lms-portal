@@ -315,7 +315,7 @@
       "enterImageMessage": "Введите ваш запрос...",
       "enterMessage": "Введите ваше сообщение...",
       "footer": "Nova Copilot может совершать ошибки. Будьте внимательны.",
-      "image-generation-mode": "Режим генерации изображения (DALL·E 3)"
+      "image-generation-mode": "Режим генерации изображения (({model}))"
     },
     "shared": {
       "expiredAt": "Доступно до { date }"

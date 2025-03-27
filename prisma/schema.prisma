@@ -324,6 +324,7 @@ model ChatImageGenerationMessage {
   createdAt     DateTime    @default(now())
   message       ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId     String      @unique
+  model         String
   revisedPrompt String
   updatedAt     DateTime    @updatedAt
   url           String

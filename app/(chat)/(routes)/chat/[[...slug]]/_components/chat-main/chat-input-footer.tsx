@@ -4,6 +4,7 @@ import { ImageIcon, Paperclip, SendHorizonal, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Badge, Button, Separator } from '@/components/ui';
+import { OPEN_AI_IMAGE_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { cn } from '@/lib/utils';
 
@@ -30,7 +31,7 @@ export const ChatInputFooter = ({
       <div className="text-xs text-muted-foreground flex items-center gap-x-2 pr-2">
         {isImageGeneration && (
           <Badge variant="secondary" className="rounded-sm px-1 font-normal line-clamp-2">
-            {t('image-generation-mode')}
+            {t('image-generation-mode', { model: OPEN_AI_IMAGE_MODELS[0].label })}
           </Badge>
         )}
       </div>
