@@ -39,6 +39,7 @@ export const ChatInputFooter = ({
         <button
           type="button"
           className="mr-3"
+          disabled={isSubmitting}
           onClick={() => setIsImageGeneration(!isImageGeneration)}
         >
           <ImageIcon
@@ -48,7 +49,7 @@ export const ChatInputFooter = ({
             )}
           />
         </button>
-        <button type="button">
+        <button type="button" disabled={isSubmitting}>
           <Paperclip className="w-4 h-4 text-muted-foreground" />
         </button>
         <Separator orientation="vertical" className="mr-4 ml-2 h-6" />
