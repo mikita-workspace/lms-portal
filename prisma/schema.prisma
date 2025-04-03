@@ -1,120 +1,112 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  url      = env("DATABASE_URL")
 }
 
-// User
 model User {
   id                  String                   @id @default(uuid())
-  conversations       ChatConversation[]
-  courses             Course[]
   createdAt           DateTime                 @default(now())
-  csmIssues           CsmIssue[]
   email               String                   @unique
   isPublic            Boolean?                 @default(false)
   name                String?
-  notifications       Notification[]
   otpCreatedAt        DateTime?
   otpSecret           String?
   password            String?
   pictureUrl          String?
   role                String                   @default("student")
-  sharedConversations ChatSharedConversation[]
-  stripeSubscription  StripeSubscription?
   updatedAt           DateTime                 @updatedAt
+  conversations       ChatConversation[]
+  sharedConversations ChatSharedConversation[]
+  courses             Course[]
+  csmIssues           CsmIssue[]
+  notifications       Notification[]
+  stripeSubscription  StripeSubscription?
 }
 
 model UserProgress {
   id          String   @id @default(uuid())
-  chapter     Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId   String
   createdAt   DateTime @default(now())
   isCompleted Boolean  @default(false)
   updatedAt   DateTime @updatedAt
   userId      String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@unique([userId, chapterId])
   @@index([chapterId])
 }
 
-// Courses
 model Category {
   id      String   @id @default(uuid())
-  courses Course[]
   name    String   @unique
+  courses Course[]
 }
 
 model Course {
   id          String       @id @default(uuid())
-  attachments Attachment[]
-  category    Category?    @relation(fields: [categoryId], references: [id])
   categoryId  String?
-  chapters    Chapter[]
   createdAt   DateTime     @default(now())
   customRates String?
   customTags  String[]
-  description String?      @db.Text
-  imageUrl    String?      @db.Text
+  description String?
+  imageUrl    String?
   isPremium   Boolean?     @default(false)
   isPublished Boolean      @default(false)
   language    String?
   price       Int?         @default(0)
-  purchases   Purchase[]
-  title       String       @db.Text
+  title       String
   updatedAt   DateTime     @updatedAt
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
+  attachments Attachment[]
+  chapters    Chapter[]
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchases   Purchase[]
 
   @@index([categoryId])
 }
 
 model Attachment {
   id        String   @id @default(uuid())
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String
   createdAt DateTime @default(now())
   name      String
   updatedAt DateTime @updatedAt
-  url       String   @db.Text
+  url       String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
 }
 
-// Chapters
 model MuxData {
   id        String  @id @default(uuid())
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String  @unique
-  videoUrl  String? @db.Text
+  videoUrl  String?
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
 
 model Chapter {
   id           String         @id @default(uuid())
-  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId     String
   createdAt    DateTime       @default(now())
-  description  String?        @db.Text
-  imageUrl     String?        @db.Text
+  description  String?
+  imageUrl     String?
   isFree       Boolean        @default(false)
   isPublished  Boolean        @default(false)
-  muxData      MuxData?
   position     Int
   title        String
   updatedAt    DateTime       @updatedAt
+  videoUrl     String?
+  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  muxData      MuxData?
   userProgress UserProgress[]
-  videoUrl     String?        @db.Text
 
   @@index([courseId])
-}
-
-// Payments
-enum StripeSubscriptionPeriod {
-  monthly
-  yearly
 }
 
 model PurchaseDetails {
@@ -129,21 +121,19 @@ model PurchaseDetails {
   longitude     Float?
   paymentIntent String?
   price         Int?
-  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
-  purchaseId    String
+  purchaseId    String   @unique
   updatedAt     DateTime @updatedAt
-
-  @@unique([purchaseId])
+  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 }
 
 model Purchase {
   id        String           @id @default(uuid())
-  course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String
   createdAt DateTime         @default(now())
-  details   PurchaseDetails?
   updatedAt DateTime         @updatedAt
   userId    String
+  course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  details   PurchaseDetails?
 
   @@unique([userId, courseId])
   @@index([courseId])
@@ -160,10 +150,10 @@ model StripeCustomer {
 model StripeConnectAccount {
   id              String          @id @default(uuid())
   createdAt       DateTime        @default(now())
-  payoutRequests  PayoutRequest[]
   stripeAccountId String          @unique
   updatedAt       DateTime        @updatedAt
   userId          String          @unique
+  payoutRequests  PayoutRequest[]
 }
 
 model StripePromo {
@@ -187,8 +177,8 @@ model StripeSubscription {
   stripePriceId        String    @unique
   stripeSubscriptionId String    @unique
   updatedAt            DateTime  @updatedAt
-  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId               String    @unique
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -206,7 +196,6 @@ model StripeSubscriptionDescription {
 model PayoutRequest {
   id                   String               @id @default(uuid())
   amount               Int
-  connectAccount       StripeConnectAccount @relation(fields: [connectAccountId], references: [id])
   connectAccountId     String
   createdAt            DateTime             @default(now())
   currency             String
@@ -214,6 +203,7 @@ model PayoutRequest {
   status               String
   transactionId        String?
   updatedAt            DateTime             @updatedAt
+  connectAccount       StripeConnectAccount @relation(fields: [connectAccountId], references: [id])
 
   @@index([connectAccountId])
 }
@@ -229,7 +219,6 @@ model Fee {
   updatedAt DateTime @updatedAt
 }
 
-// User notifications
 model Notification {
   id        String   @id @default(uuid())
   body      String
@@ -237,43 +226,32 @@ model Notification {
   isRead    Boolean  @default(false)
   title     String
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
-// CSM System
-enum CsmStatus {
-  done
-  new
-  progress
-  review
-  todo
-}
-
 model CsmCategory {
   id       String     @id @default(uuid())
-  csmIssue CsmIssue[]
   name     String     @unique
+  csmIssue CsmIssue[]
 }
 
 model CsmAttachment {
   id         String    @id @default(uuid())
   createdAt  DateTime  @default(now())
   name       String
-  csmIssue   CsmIssue? @relation(fields: [csmIssueId], references: [id])
   csmIssueId String?
   updatedAt  DateTime  @updatedAt
-  url        String    @db.Text
+  url        String
+  csmIssue   CsmIssue? @relation(fields: [csmIssueId], references: [id])
 
   @@index([csmIssueId])
 }
 
 model CsmIssue {
   id          String          @id @default(uuid())
-  attachments CsmAttachment[]
-  category    CsmCategory?    @relation(fields: [categoryId], references: [id])
   categoryId  String?
   createdAt   DateTime        @default(now())
   description String
@@ -281,28 +259,24 @@ model CsmIssue {
   name        String
   status      CsmStatus       @default(new)
   updatedAt   DateTime        @updatedAt
-  user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String?
+  attachments CsmAttachment[]
+  category    CsmCategory?    @relation(fields: [categoryId], references: [id])
+  user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])
-}
-
-// Chat Copilot
-enum ChatFeedback {
-  positive
-  negative
 }
 
 model ChatMessage {
   id             String               @id @default(uuid())
   content        String
-  conversation   ChatConversation?    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId String?
   createdAt      DateTime             @default(now())
-  feedback       ChatMessageFeedback?
   model          String
   role           String
   updatedAt      DateTime             @updatedAt
+  conversation   ChatConversation?    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  feedback       ChatMessageFeedback?
 
   @@index([conversationId])
 }
@@ -311,9 +285,9 @@ model ChatMessageFeedback {
   id        String       @id @default(uuid())
   createdAt DateTime     @default(now())
   feedback  ChatFeedback
-  message   ChatMessage  @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String       @unique
   updatedAt DateTime     @updatedAt
+  message   ChatMessage  @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@index([messageId])
 }
@@ -321,28 +295,46 @@ model ChatMessageFeedback {
 model ChatConversation {
   id        String                  @id @default(uuid())
   createdAt DateTime                @default(now())
-  messages  ChatMessage[]
   position  Int
-  shared    ChatSharedConversation?
   title     String
   updatedAt DateTime                @updatedAt
-  user      User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String?
+  user      User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  ChatMessage[]
+  shared    ChatSharedConversation?
 
   @@index([userId])
 }
 
 model ChatSharedConversation {
   id             String           @id @default(uuid())
-  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   conversationId String           @unique
   createdAt      DateTime         @default(now())
   expireAt       DateTime?
   isActive       Boolean?         @default(true)
   isOnlyAuth     Boolean?         @default(false)
   updatedAt      DateTime         @updatedAt
-  user           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String?
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
+}
+
+enum StripeSubscriptionPeriod {
+  monthly
+  yearly
+}
+
+enum CsmStatus {
+  done
+  new
+  progress
+  review
+  todo
+}
+
+enum ChatFeedback {
+  positive
+  negative
 }

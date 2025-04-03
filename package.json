@@ -25,7 +25,9 @@
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
     "@hookform/resolvers": "^3.3.4",
+    "@neondatabase/serverless": "^1.0.0",
     "@plaiceholder/next": "^3.0.0",
+    "@prisma/adapter-neon": "^6.5.0",
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -103,6 +105,7 @@
     "uploadthing": "^7.3.0",
     "uuid": "^10.0.0",
     "vaul": "^1.1.0",
+    "ws": "^8.18.1",
     "zod": "^3.22.4",
     "zustand": "^4.5.0"
   },
@@ -120,6 +123,7 @@
     "@types/react-scroll-to-bottom": "^4.2.4",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/uuid": "^10",
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^8.56.0",
