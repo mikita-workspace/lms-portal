@@ -105,7 +105,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         {Boolean(attachments.length) && (
           <>
             <Separator />
-            <div className="p-4">
+            <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-4">
               {attachments.map(({ id, url, name: fileName }) => (
                 <FileDownload key={id} fileName={fileName} url={url} showDownloadButton />
               ))}

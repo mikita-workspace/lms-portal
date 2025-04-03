@@ -69,3 +69,16 @@ export const splitIntoWords = (sentence: string) => {
 
   return cleanSentence.split(/\s+/);
 };
+
+export const base64ToBlob = (base64: string, contentType: string = '') => {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length).fill(0);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+
+  return new Blob([byteArray], { type: contentType });
+};
