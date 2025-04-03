@@ -31,8 +31,6 @@ export const getGithubContents = async ({
           },
         );
 
-        console.log(res);
-
         return res;
       },
       ONE_DAY_SEC,
