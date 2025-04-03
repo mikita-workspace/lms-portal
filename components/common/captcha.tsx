@@ -10,6 +10,7 @@ export const Captcha = ({ callback, locale }: CaptchaProps) => {
       language={locale as SmartCaptchaProps['language']}
       onSuccess={callback}
       sitekey={process.env.NEXT_PUBLIC_YD_CAPTCHA as string}
+      test={process.env.NODE_ENV === 'development'}
       webview
     />
   );
