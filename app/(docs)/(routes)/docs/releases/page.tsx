@@ -1,12 +1,10 @@
 import { format } from 'date-fns';
-import { Download } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { getGithubReleases } from '@/actions/github/get-releases';
 import { MarkdownText } from '@/components/common/markdown-text';
-import { Button } from '@/components/ui';
 import { TIMESTAMP_TEMPLATE } from '@/constants/common';
 
 export const metadata: Metadata = {
@@ -25,7 +23,7 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
 
   return (
     <div className="p-6 flex flex-col mb-6">
-      <div className="w-full flex flex-col items-center">
+      <div className="w-full flex flex-col items-start">
         {releases.map((release, index) => (
           <div className="mb-8" key={release.name}>
             {index === 0 && (
@@ -41,14 +39,6 @@ const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
                 <p className="text-sm text-muted-foreground mb-4">
                   {format(release.publishedAt, TIMESTAMP_TEMPLATE)}
                 </p>
-              )}
-              {release.zipUrl && (
-                <Link href={release.zipUrl}>
-                  <Button variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    {t('download')}
-                  </Button>
-                </Link>
               )}
             </div>
             <MarkdownText className="max-w-screen-md" text={release.body} />

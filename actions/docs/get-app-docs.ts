@@ -2,20 +2,14 @@
 
 import { promises as fs } from 'fs';
 
-import { fetcher } from '@/lib/fetcher';
+import { getGithubContents } from '../github/get-contents';
 
-const docs = {
-  'cookies-policy': process.env.COOKIES_POLICY,
-  'privacy-policy': process.env.PRIVACY_POLICY,
-  terms: process.env.TERMS,
-};
-
-export const getAppDocs = async (document: keyof typeof docs) => {
+export const getAppDocs = async (document: string) => {
   try {
     const content =
       process.env.NODE_ENV === 'development'
         ? await fs.readFile(`${process.cwd()}/docs/${document}.md`, 'utf8')
-        : await fetcher.get(docs[document] as string, { responseType: 'text' });
+        : await getGithubContents({ path: `docs/${document}.md` });
 
     return content;
   } catch (error) {

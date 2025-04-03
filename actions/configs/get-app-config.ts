@@ -2,7 +2,7 @@
 
 import { promises as fs } from 'fs';
 
-import { fetcher } from '@/lib/fetcher';
+import { getGithubContents } from '../github/get-contents';
 
 export type GetAppConfig = {
   auth: Record<string, boolean>;
@@ -15,7 +15,7 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
     const config =
       process.env.NODE_ENV === 'development'
         ? await fs.readFile(`${process.cwd()}/configs/app.json`, 'utf8')
-        : await fetcher.get(process.env.NEXT_PUBLIC_CONFIG_URL as string, { responseType: 'text' });
+        : await getGithubContents({ path: 'configs/app.json' });
 
     return JSON.parse(config);
   } catch (error) {

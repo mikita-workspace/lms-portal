@@ -19,7 +19,6 @@ export const getGithubReleases = async ({
     html_url: string | null;
     name: string | null;
     publishedAt: string | null;
-    zipUrl: string | null;
   }[]
 > => {
   try {
@@ -42,7 +41,6 @@ export const getGithubReleases = async ({
           html_url: release.html_url,
           name: release.name,
           publishedAt: release.published_at,
-          zipUrl: release.zipball_url,
         }));
       },
       ONE_DAY_SEC,

@@ -12,13 +12,13 @@ type FetchMethod = (
 class Fetcher {
   get: FetchMethod = async (url, options) => {
     if (options?.responseType === 'json') {
-      const res = await fetch(url);
+      const res = await fetch(url, { headers: options.headers });
 
       return await res.json();
     }
 
     if (options?.responseType === 'text') {
-      const res = await fetch(url);
+      const res = await fetch(url, { headers: options.headers });
 
       return await res.text();
     }
