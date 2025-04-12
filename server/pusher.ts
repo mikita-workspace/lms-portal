@@ -1,5 +1,3 @@
-'use server';
-
 import Pusher from 'pusher';
 
 export const pusher = new Pusher({

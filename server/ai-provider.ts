@@ -1,5 +1,3 @@
-'use server';
-
 import OpenAI from 'openai';
 
 import { AI_PROVIDER } from '@/constants/ai';
