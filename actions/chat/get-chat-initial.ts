@@ -3,19 +3,24 @@
 import { getLocale } from 'next-intl/server';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
+import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/ai';
 import { ONE_DAY_SEC } from '@/constants/common';
-import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { fetchCachedData } from '@/lib/cache';
-import { openai } from '@/server/openai';
+import { AIProvider } from '@/server/ai-provider';
+
+import { getAppConfig } from '../configs/get-app-config';
 
 export const getChatInitial = async () => {
   const locale = await getLocale();
+  const config = await getAppConfig();
+
+  const provider = AIProvider(config?.ai?.provider);
 
   try {
     const introMessages = await fetchCachedData(
       `chat-initial-[${locale}]`,
       async () => {
-        const response = await openai.chat.completions.create({
+        const response = await provider.chat.completions.create({
           messages: [
             {
               role: 'system',

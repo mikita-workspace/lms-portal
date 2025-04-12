@@ -4,7 +4,7 @@ import { ImageIcon, Paperclip, SendHorizonal, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Badge, Button, Separator } from '@/components/ui';
-import { OPEN_AI_IMAGE_MODELS } from '@/constants/open-ai';
+import { OPEN_AI_IMAGE_MODELS } from '@/constants/ai';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { cn } from '@/lib/utils';
 

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { MarkdownText } from '@/components/common/markdown-text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole } from '@/constants/ai';
 import { getFallbackName } from '@/lib/utils';
 
 import { ChatFeedback } from './chat-feedback';

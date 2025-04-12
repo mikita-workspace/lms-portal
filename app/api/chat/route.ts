@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ChatCompletionRole as ChatRole } from 'openai/resources/index.mjs';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole } from '@/constants/ai';
 import { db } from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {

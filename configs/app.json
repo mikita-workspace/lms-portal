@@ -1,4 +1,7 @@
 {
+  "ai": {
+    "provider": "openai"
+  },
   "auth": {
     "isBlockedNewLogin": false
   },

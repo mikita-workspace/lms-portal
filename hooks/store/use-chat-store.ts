@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
-import { DEFAULT_MODEL } from '@/constants/open-ai';
+import { DEFAULT_MODEL } from '@/constants/ai';
 
 type ChatMessages = Record<string, Conversation['messages']>;
 

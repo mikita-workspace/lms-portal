@@ -3,17 +3,20 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
-import { OPEN_AI_MODELS } from '@/constants/open-ai';
+import { getAppConfig } from '@/actions/configs/get-app-config';
+import { OPEN_AI_MODELS, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { isOwner } from '@/lib/owner';
-import { openai } from '@/server/openai';
+import { AIProvider } from '@/server/ai-provider';
 
 export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
-  try {
-    const user = await getCurrentUser();
+  const user = await getCurrentUser();
+  const config = await getAppConfig();
 
+  const provider = AIProvider(config?.ai?.provider);
+
+  try {
     const { messages, model, system } = await req.json();
 
     const isTranslator = system?.content === SYSTEM_TRANSLATE_PROMPT;
@@ -34,7 +37,7 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const completion = await openai.chat.completions.create({
+    const completion = await provider.chat.completions.create({
       messages: [...(system ? [system] : []), ...messages],
       model,
       top_p: 0.5,

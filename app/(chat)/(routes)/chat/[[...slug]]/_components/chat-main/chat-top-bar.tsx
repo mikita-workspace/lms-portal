@@ -15,8 +15,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
+import { OPEN_AI_MODELS } from '@/constants/ai';
 import { CONVERSATION_ACTION } from '@/constants/chat';
-import { OPEN_AI_MODELS } from '@/constants/open-ai';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';

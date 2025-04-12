@@ -3,16 +3,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getAppConfig } from '@/actions/configs/get-app-config';
 import { uploadFiles } from '@/actions/uploadthing/upload-files';
-import { OPEN_AI_IMAGE_MODELS } from '@/constants/open-ai';
-import { openai } from '@/server/openai';
+import { OPEN_AI_IMAGE_MODELS } from '@/constants/ai';
+import { AIProvider } from '@/server/ai-provider';
 
 export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
-  try {
-    const user = await getCurrentUser();
+  const user = await getCurrentUser();
+  const config = await getAppConfig();
 
+  const provider = AIProvider(config?.ai?.provider);
+
+  try {
     const { model, prompt } = await req.json();
 
     if (!user) {
@@ -29,7 +33,7 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const response = await openai.images.generate({
+    const response = await provider.images.generate({
       model,
       n: 1,
       prompt,

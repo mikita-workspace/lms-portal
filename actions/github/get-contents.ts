@@ -1,6 +1,6 @@
 'use server';
 
-import { ONE_DAY_SEC } from '@/constants/common';
+import { TEN_MINUTE_SEC } from '@/constants/common';
 import { PAGE_SIZES } from '@/constants/paginations';
 import { fetchCachedData } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
@@ -33,7 +33,7 @@ export const getGithubContents = async ({
 
         return res;
       },
-      ONE_DAY_SEC,
+      TEN_MINUTE_SEC,
     );
 
     return githubContents;

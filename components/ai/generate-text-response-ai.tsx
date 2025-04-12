@@ -6,9 +6,13 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 
 import { useToast } from '@/components/ui/use-toast';
-import { SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
+import {
+  ChatCompletionRole,
+  DEFAULT_MODEL,
+  SYSTEM_COURSE_PROMPT,
+  SYSTEM_TRANSLATE_PROMPT,
+} from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
-import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/open-ai';
 import { getValueFromMemoryCache, setValueToMemoryCache } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
 

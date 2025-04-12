@@ -17,8 +17,7 @@ import { Preview } from '@/components/common/preview';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
-import { USER_CHAPTER_DESCRIPTION_PROMPT } from '@/constants/ai';
-import { ChatCompletionRole } from '@/constants/open-ai';
+import { ChatCompletionRole, USER_CHAPTER_DESCRIPTION_PROMPT } from '@/constants/ai';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
