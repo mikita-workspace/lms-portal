@@ -1,33 +1,29 @@
+'use server';
+
 import OpenAI from 'openai';
 
 import { AI_PROVIDER } from '@/constants/ai';
-
-const deepSeekOptions = {
-  apiKey: process.env.DEEP_SEEK_TOKEN,
-  baseURL: 'https://api.deepseek.com',
-};
-
-const ollamaOptions = {
-  api_key: 'ollama',
-  base_url: process.env.OLLAMA_BASE_URL,
-};
-
-const openaiOptions = {
-  apiKey: process.env.OPEN_AI_TOKEN,
-};
 
 export const AIProvider = (provider: string) => {
   let options = {};
 
   switch (provider) {
     case AI_PROVIDER.deepseek:
-      options = deepSeekOptions;
+      options = {
+        apiKey: process.env.DEEP_SEEK_TOKEN,
+        baseURL: 'https://api.deepseek.com',
+      };
       break;
     case AI_PROVIDER.openai:
-      options = openaiOptions;
+      options = {
+        apiKey: process.env.OPEN_AI_TOKEN,
+      };
       break;
     default:
-      options = ollamaOptions;
+      options = {
+        api_key: 'ollama',
+        base_url: process.env.OLLAMA_BASE_URL,
+      };
   }
 
   return new OpenAI(options);
