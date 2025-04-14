@@ -22,7 +22,7 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const IMAGE_MODELS = (config?.ai?.['image-models'] as Record<string, string>[]) ?? [];
+    const IMAGE_MODELS = config?.ai?.['image-models'] ?? [];
     const models = IMAGE_MODELS.map(({ value }) => value);
 
     if (!models.includes(model)) {

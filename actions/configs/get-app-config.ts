@@ -5,10 +5,13 @@ import { promises as fs } from 'fs';
 import { getGithubContents } from '../github/get-contents';
 
 export type GetAppConfig = {
-  ai: Record<string, string | Record<string, string>[]>;
-  auth: Record<string, boolean>;
-  features: Record<string, boolean>;
-  providers: Record<string, boolean>;
+  ai: {
+    'image-models': { value: string; label: string }[];
+    'text-models': { value: string; label: string }[];
+    provider: string;
+  };
+  auth: { isBlockedNewLogin: true; providers: Record<string, boolean> };
+  features: { christmas: boolean };
 };
 
 export const getAppConfig = async (): Promise<GetAppConfig> => {
@@ -30,18 +33,18 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
       },
       auth: {
         isBlockedNewLogin: true,
+        providers: {
+          google: false,
+          yandex: false,
+          vk: false,
+          mailru: false,
+          linkedin: false,
+          slack: false,
+          github: true,
+        },
       },
       features: {
         christmas: false,
-      },
-      providers: {
-        google: false,
-        yandex: false,
-        vk: false,
-        mailru: false,
-        linkedin: false,
-        slack: false,
-        github: true,
       },
     };
   }

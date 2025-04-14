@@ -50,8 +50,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
   const locale = useLocale();
 
   const { config } = useAppConfigStore((state) => ({ config: state.config }));
-  const providers = config?.providers ?? {};
-  const isBlockedNewLogin = config?.auth?.isBlockedNewLogin;
+  const { isBlockedNewLogin = false, providers = {} } = config?.auth ?? {};
 
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
@@ -101,7 +100,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
     }
   };
 
-  const hasCredentialsProvider = providers[Provider.CREDENTIALS];
+  const hasCredentialsProvider = providers?.[Provider.CREDENTIALS];
 
   return (
     <>

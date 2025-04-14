@@ -45,7 +45,7 @@ export const GenerateTextResponseAi = ({
   const [alreadyTranslated, setAlreadyTranslated] = useState(false);
 
   const shouldCacheResponse = isTranslateButton && cacheKey;
-  const DEFAULT_MODEL = (appConfig?.ai?.['text-models']?.[0] as Record<string, string>)?.value;
+  const DEFAULT_MODEL = appConfig?.ai?.['text-models']?.[0].value;
 
   const handleGenerate = async () => {
     try {

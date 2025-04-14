@@ -52,7 +52,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const IMAGE_MODELS = (appConfig?.ai?.['image-models'] as Record<string, string>[]) ?? [];
+  const IMAGE_MODELS = appConfig?.ai?.['image-models'] ?? [];
 
   useEffect(() => {
     if (conversations.length) {

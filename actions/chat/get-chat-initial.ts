@@ -16,7 +16,7 @@ export const getChatInitial = async () => {
 
   const provider = AIProvider(config?.ai?.provider as string);
 
-  const DEFAULT_MODEL = (config?.ai?.['text-models']?.[0] as Record<string, string>)?.value;
+  const DEFAULT_MODEL = config?.ai?.['text-models']?.[0].value;
 
   try {
     const introMessages = await fetchCachedData(

@@ -17,16 +17,16 @@
     "isBlockedNewLogin": false
   },
   "features": {
-    "christmas": false
-  },
-  "providers": {
-    "credentials": true,
-    "github": true,
-    "google": true,
-    "linkedin": true,
-    "mailru": true,
-    "slack": true,
-    "vk": true,
-    "yandex": true
+    "christmas": false,
+    "providers": {
+      "credentials": true,
+      "github": true,
+      "google": true,
+      "linkedin": true,
+      "mailru": true,
+      "slack": true,
+      "vk": true,
+      "yandex": true
+    }
   }
 }

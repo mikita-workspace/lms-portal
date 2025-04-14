@@ -29,7 +29,7 @@ export const ChatInputFooter = ({
     config: state.config,
   }));
 
-  const IMAGE_MODELS = (appConfig?.ai?.['image-models'] as Record<string, string>[]) ?? [];
+  const IMAGE_MODELS = appConfig?.ai?.['image-models'] ?? [];
 
   return (
     <div className="flex bg-background justify-between px-2 py-2 items-center">

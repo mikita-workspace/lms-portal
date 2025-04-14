@@ -22,7 +22,7 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const TEXT_MODELS = (config?.ai?.['text-models'] as Record<string, string>[]) ?? [];
+    const TEXT_MODELS = config?.ai?.['text-models'] ?? [];
     const models = (isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2)).map(
       ({ value }) => value,
     );

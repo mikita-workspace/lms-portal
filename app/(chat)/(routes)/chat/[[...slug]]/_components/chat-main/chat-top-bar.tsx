@@ -56,7 +56,7 @@ export const ChatTopBar = ({
 
   const [open, setOpen] = useState(false);
 
-  const TEXT_MODELS = (appConfig?.ai?.['text-models'] as Record<string, string>[]) ?? [];
+  const TEXT_MODELS = appConfig?.ai?.['text-models'] ?? [];
 
   const messages = chatMessages[conversationId] ?? [];
   const models = isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2);
