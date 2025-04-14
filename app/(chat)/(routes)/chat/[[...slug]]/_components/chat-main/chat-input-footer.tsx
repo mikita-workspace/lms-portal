@@ -32,7 +32,7 @@ export const ChatInputFooter = ({
   const IMAGE_MODELS = appConfig?.ai?.['image-models'] ?? [];
 
   return (
-    <div className="flex bg-background justify-between px-2 py-2 items-center">
+    <div className="flex justify-between px-2 py-2 items-center">
       <div className="text-xs text-muted-foreground flex items-center gap-x-2 pr-2">
         {isImageGeneration && (
           <Badge variant="secondary" className="rounded-sm px-1 font-normal line-clamp-2">

@@ -39,7 +39,7 @@ export const ChatInput = ({
         <div className="flex w-full h-full flex-col pb-2 px-4">
           <form
             className={cn(
-              'mx-auto flex flex-col lg:max-w-2xl xl:max-w-4xl w-full h-full border rounded-sm z-10 focus-within:border-b-indigo-500 focus-within:border-b-2 transition-colors duration-200 ease-in-out',
+              'bg-background mx-auto flex flex-col lg:max-w-2xl xl:max-w-4xl w-full h-full border rounded-sm z-10 focus-within:border-b-indigo-500 focus-within:border-b-2 transition-colors duration-200 ease-in-out',
               inputLength >= LIMIT_CHAT_INPUT && 'focus-within:border-b-red-600',
               isImageGeneration &&
                 'border-b-purple-500 border-b-2 focus-within:border-b-purple-500 ',
