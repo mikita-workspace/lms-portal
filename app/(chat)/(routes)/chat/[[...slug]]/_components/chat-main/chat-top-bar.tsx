@@ -15,8 +15,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
-import { OPEN_AI_MODELS } from '@/constants/ai';
 import { CONVERSATION_ACTION } from '@/constants/chat';
+import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { fetcher } from '@/lib/fetcher';
@@ -50,11 +50,16 @@ export const ChatTopBar = ({
     setCurrentModel,
     setIsFetching,
   } = useChatStore();
+  const { config: appConfig } = useAppConfigStore((state) => ({
+    config: state.config,
+  }));
 
   const [open, setOpen] = useState(false);
 
+  const TEXT_MODELS = (appConfig?.ai?.['text-models'] as Record<string, string>[]) ?? [];
+
   const messages = chatMessages[conversationId] ?? [];
-  const models = isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2);
+  const models = isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2);
 
   const handleDeleteMessages = async () => {
     setIsFetching(true);

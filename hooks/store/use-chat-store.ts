@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
-import { DEFAULT_MODEL } from '@/constants/ai';
 
 type ChatMessages = Record<string, Conversation['messages']>;
 
@@ -24,7 +23,7 @@ export const useChatStore = create<ChatStore, any>(
     (set) => ({
       chatMessages: {},
       conversationId: '',
-      currentModel: DEFAULT_MODEL,
+      currentModel: 'ollama',
       isFetching: false,
       isImageGeneration: false,
       setChatMessages: (messages) => set({ chatMessages: messages }),

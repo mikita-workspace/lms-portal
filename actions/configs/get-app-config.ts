@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import { getGithubContents } from '../github/get-contents';
 
 export type GetAppConfig = {
-  ai: Record<string, string>;
+  ai: Record<string, string | Record<string, string>[]>;
   auth: Record<string, boolean>;
   features: Record<string, boolean>;
   providers: Record<string, boolean>;
@@ -24,6 +24,8 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
 
     return {
       ai: {
+        'image-models': [],
+        'text-models': [],
         provider: 'ollama',
       },
       auth: {

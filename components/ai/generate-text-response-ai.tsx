@@ -6,13 +6,9 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 
 import { useToast } from '@/components/ui/use-toast';
-import {
-  ChatCompletionRole,
-  DEFAULT_MODEL,
-  SYSTEM_COURSE_PROMPT,
-  SYSTEM_TRANSLATE_PROMPT,
-} from '@/constants/ai';
+import { ChatCompletionRole, SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
+import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { getValueFromMemoryCache, setValueToMemoryCache } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
 
@@ -41,10 +37,15 @@ export const GenerateTextResponseAi = ({
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  const { config: appConfig } = useAppConfigStore((state) => ({
+    config: state.config,
+  }));
+
   const [isImproving, setIsImproving] = useState(false);
   const [alreadyTranslated, setAlreadyTranslated] = useState(false);
 
   const shouldCacheResponse = isTranslateButton && cacheKey;
+  const DEFAULT_MODEL = (appConfig?.ai?.['text-models']?.[0] as Record<string, string>)?.value;
 
   const handleGenerate = async () => {
     try {

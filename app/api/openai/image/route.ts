@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAppConfig } from '@/actions/configs/get-app-config';
 import { uploadFiles } from '@/actions/uploadthing/upload-files';
-import { OPEN_AI_IMAGE_MODELS } from '@/constants/ai';
 import { AIProvider } from '@/server/ai-provider';
 
 export const maxDuration = 60;
@@ -14,7 +13,7 @@ export const POST = async (req: NextRequest) => {
   const user = await getCurrentUser();
   const config = await getAppConfig();
 
-  const provider = AIProvider(config?.ai?.provider);
+  const provider = AIProvider(config?.ai?.provider as string);
 
   try {
     const { model, prompt } = await req.json();
@@ -23,7 +22,8 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const models = OPEN_AI_IMAGE_MODELS.map(({ value }) => value);
+    const IMAGE_MODELS = (config?.ai?.['image-models'] as Record<string, string>[]) ?? [];
+    const models = IMAGE_MODELS.map(({ value }) => value);
 
     if (!models.includes(model)) {
       console.error('[OPEN_AI_FORBIDDEN_IMAGE_MODEL]', user);

@@ -7,7 +7,8 @@ import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
-import { ChatCompletionRole, OPEN_AI_IMAGE_MODELS } from '@/constants/ai';
+import { ChatCompletionRole } from '@/constants/ai';
+import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { getChatMessages } from '@/lib/chat';
@@ -38,6 +39,9 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     setChatMessages,
     setConversationId,
   } = useChatStore();
+  const { config: appConfig } = useAppConfigStore((state) => ({
+    config: state.config,
+  }));
 
   const { isMounted } = useHydration();
 
@@ -47,6 +51,8 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
   const [assistantImage, setAssistantImage] = useState('');
 
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const IMAGE_MODELS = (appConfig?.ai?.['image-models'] as Record<string, string>[]) ?? [];
 
   useEffect(() => {
     if (conversations.length) {
@@ -112,7 +118,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
         const imageGeneration = await fetcher.post('api/openai/image', {
           responseType: 'json',
           body: {
-            model: OPEN_AI_IMAGE_MODELS[0].value,
+            model: IMAGE_MODELS[0].value,
             prompt: currentMessage,
           },
           cache: 'no-cache',
@@ -204,7 +210,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
         image: isImageGeneration
           ? {
               messageId: assistMessage.id,
-              model: OPEN_AI_IMAGE_MODELS[0].value,
+              model: IMAGE_MODELS[0].value,
               revisedPrompt: assistMessage.content,
               url: assistMessage.url,
             }

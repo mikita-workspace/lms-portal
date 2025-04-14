@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAppConfig } from '@/actions/configs/get-app-config';
-import { OPEN_AI_MODELS, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
+import { SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { isOwner } from '@/lib/owner';
 import { AIProvider } from '@/server/ai-provider';
 
@@ -14,7 +14,7 @@ export const POST = async (req: NextRequest) => {
   const user = await getCurrentUser();
   const config = await getAppConfig();
 
-  const provider = AIProvider(config?.ai?.provider);
+  const provider = AIProvider(config?.ai?.provider as string);
 
   try {
     const { messages, model, system } = await req.json();
@@ -25,7 +25,8 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const models = (isOwner(user?.userId) ? OPEN_AI_MODELS : OPEN_AI_MODELS.slice(0, 2)).map(
+    const TEXT_MODELS = (config?.ai?.['text-models'] as Record<string, string>[]) ?? [];
+    const models = (isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2)).map(
       ({ value }) => value,
     );
 

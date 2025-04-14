@@ -3,7 +3,7 @@
 import { getLocale } from 'next-intl/server';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
-import { ChatCompletionRole, DEFAULT_MODEL } from '@/constants/ai';
+import { ChatCompletionRole } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
 import { AIProvider } from '@/server/ai-provider';
@@ -14,7 +14,9 @@ export const getLoginQuote = async () => {
   const locale = await getLocale();
   const config = await getAppConfig();
 
-  const provider = AIProvider(config?.ai?.provider);
+  const provider = AIProvider(config?.ai?.provider as string);
+
+  const DEFAULT_MODEL = (config?.ai?.['text-models']?.[0] as Record<string, string>)?.value;
 
   try {
     const response = await fetchCachedData(
