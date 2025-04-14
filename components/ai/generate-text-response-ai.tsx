@@ -63,7 +63,7 @@ export const GenerateTextResponseAi = ({
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
 
-      const completionStream = await fetcher.post('/api/openai/completions', {
+      const completionStream = await fetcher.post('/api/ai/completions', {
         body: {
           messages,
           system: {

@@ -115,7 +115,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
     try {
       if (isImageGeneration) {
-        const imageGeneration = await fetcher.post('api/openai/image', {
+        const imageGeneration = await fetcher.post('api/ai/image', {
           responseType: 'json',
           body: {
             model: IMAGE_MODELS[0].value,
@@ -136,7 +136,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
         abortControllerRef.current = new AbortController();
         const signal = abortControllerRef.current.signal;
 
-        const completionStream = await fetcher.post('/api/openai/completions', {
+        const completionStream = await fetcher.post('/api/ai/completions', {
           body: {
             messages: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
               ({ content, role }) => ({

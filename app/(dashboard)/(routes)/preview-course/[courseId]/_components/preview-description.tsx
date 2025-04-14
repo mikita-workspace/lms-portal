@@ -12,6 +12,7 @@ import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
 import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
   author?: string | null;
@@ -46,6 +47,7 @@ export const PreviewDescription = ({
 }: PreviewDescriptionProps) => {
   const t = useTranslations('courses.preview.preview');
   const currentLocale = useLocale();
+  const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
 
@@ -56,7 +58,7 @@ export const PreviewDescription = ({
           <IconBadge size="sm" icon={BookOpen} />
           <span className="text-xs">{t('chapter', { amount: chaptersLength })}</span>
         </div>
-        {language !== currentLocale && (
+        {Boolean(user?.userId) && language !== currentLocale && (
           <div className="my-2">
             <GenerateTextResponseAi
               cacheKey={`course-description-[${id}]-[${currentLocale}]`}

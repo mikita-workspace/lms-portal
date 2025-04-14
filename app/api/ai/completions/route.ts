@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getAppConfig } from '@/actions/configs/get-app-config';
-import { SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { isOwner } from '@/lib/owner';
 import { AIProvider } from '@/server/ai-provider';
 
@@ -19,9 +18,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const { messages, model, system } = await req.json();
 
-    const isTranslator = system?.content === SYSTEM_TRANSLATE_PROMPT;
-
-    if (!isTranslator && !user) {
+    if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 

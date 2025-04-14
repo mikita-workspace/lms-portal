@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 import { GenerateTextResponseAi } from '../ai/generate-text-response-ai';
 
@@ -21,12 +22,13 @@ export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) 
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const currentLocale = useLocale();
+  const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
 
   return (
     <>
-      {enableTranslate && language !== currentLocale && (
+      {Boolean(user?.userId) && enableTranslate && language !== currentLocale && (
         <div className="p-4">
           <GenerateTextResponseAi
             cacheKey={`chapter-description-[${id}]-[${currentLocale}]`}
