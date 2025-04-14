@@ -14,10 +14,7 @@
     "provider": "openai"
   },
   "auth": {
-    "isBlockedNewLogin": false
-  },
-  "features": {
-    "christmas": false,
+    "isBlockedNewLogin": false,
     "providers": {
       "credentials": true,
       "github": true,
@@ -28,5 +25,8 @@
       "vk": true,
       "yandex": true
     }
+  },
+  "features": {
+    "christmas": false
   }
 }
