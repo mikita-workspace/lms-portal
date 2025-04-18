@@ -4,12 +4,10 @@
       { "value": "dall-e-3", "label": "DALL·E 3" }
     ],
     "text-models": [
-      { "value": "gpt-4o-mini", "label": "GPT-4o mini" },
+      { "value": "o4-mini", "label": "o4-mini" },
+      { "value": "o3-mini", "label": "o3-mini" },
+      { "value": "o1-mini", "label": "o1-mini" },
       { "value": "gpt-4o", "label": "GPT-4o" },
-      { "value": "o3-mini-2025-01-31", "label": "GPT-o3 mini" },
-      { "value": "gpt-4-turbo-2024-04-09", "label": "GPT-4 Turbo" },
-      { "value": "gpt-4-0125-preview", "label": "GPT-4 Turbo Preview" },
-      { "value": "gpt-3.5-turbo-0125", "label": "GPT-3.5 Turbo" }
     ],
     "provider": "openai"
   },
