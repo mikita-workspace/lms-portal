@@ -7,7 +7,7 @@
       { "value": "o4-mini", "label": "o4-mini" },
       { "value": "o3-mini", "label": "o3-mini" },
       { "value": "o1-mini", "label": "o1-mini" },
-      { "value": "gpt-4o", "label": "GPT-4o" },
+      { "value": "gpt-4o", "label": "GPT-4o" }
     ],
     "provider": "openai"
   },
