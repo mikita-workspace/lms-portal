@@ -22,7 +22,7 @@ export const generateCompletion = async ({
   const config = await getAppConfig();
 
   const aiModel = model ?? config?.ai?.['text-models']?.[0].value ?? '';
-  const provider = AIProvider(config?.ai?.provider as string);
+  const provider = AIProvider(config?.ai?.provider);
 
   const TEXT_MODELS = config?.ai?.['text-models'] ?? [];
   const models = (isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2)).map(

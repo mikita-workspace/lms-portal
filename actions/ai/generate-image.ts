@@ -14,7 +14,7 @@ export const generateImage = async ({ model, prompt }: GenerateImage) => {
   const config = await getAppConfig();
 
   const aiModel = model ?? config?.ai?.['image-models']?.[0].value ?? '';
-  const provider = AIProvider(config?.ai?.provider as string);
+  const provider = AIProvider(config?.ai?.provider);
 
   const IMAGE_MODELS = config?.ai?.['image-models'] ?? [];
   const models = IMAGE_MODELS.map(({ value }) => value);

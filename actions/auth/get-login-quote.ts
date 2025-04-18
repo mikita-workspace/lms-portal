@@ -32,7 +32,7 @@ export const getLoginQuote = async () => {
       TEN_MINUTE_SEC,
     );
 
-    const generatedQuote = JSON.parse(response.completion.output_text || '{}');
+    const generatedQuote = JSON.parse(response.completion.output_text ?? '{}');
     const model = response.model ?? '';
 
     return {
