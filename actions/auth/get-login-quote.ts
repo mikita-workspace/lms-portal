@@ -6,36 +6,25 @@ import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import { ChatCompletionRole } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
-import { AIProvider } from '@/server/ai-provider';
 
-import { getAppConfig } from '../configs/get-app-config';
+import { generateCompletion } from '../ai/generate-completion';
 
 export const getLoginQuote = async () => {
   const locale = await getLocale();
-  const config = await getAppConfig();
-
-  const provider = AIProvider(config?.ai?.provider as string);
-
-  const DEFAULT_MODEL = config?.ai?.['text-models']?.[0].value;
 
   try {
     const response = await fetchCachedData(
       `login-quote-[${locale}]`,
       async () => {
-        const response = await provider.chat.completions.create({
-          messages: [
-            {
-              role: 'system',
-              content:
-                'You are a machine that only returns JSON object format without unnecessary symbols.',
-            },
+        const response = await generateCompletion({
+          instructions:
+            'You are a machine that only returns JSON object format without unnecessary symbols.',
+          input: [
             {
               content: `Generate a quote from a famous philosopher. Language code is ${locale}. Write it down in JSON format - {"quote": "Quote", "author": "Quote the author"}`,
               role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
             },
           ],
-          model: DEFAULT_MODEL,
-          temperature: 0.8,
         });
 
         return response;
@@ -43,11 +32,12 @@ export const getLoginQuote = async () => {
       TEN_MINUTE_SEC,
     );
 
-    const generatedQuote = JSON.parse(response.choices[0].message.content || '{}');
+    const generatedQuote = JSON.parse(response.completion.output_text || '{}');
+    const model = response.model ?? '';
 
     return {
       author: generatedQuote?.author ?? '',
-      model: DEFAULT_MODEL,
+      model,
       quote: generatedQuote?.quote ?? '',
     };
   } catch (error) {
@@ -55,7 +45,7 @@ export const getLoginQuote = async () => {
 
     return {
       author: '',
-      model: DEFAULT_MODEL,
+      model: '',
       quote: '',
     };
   }

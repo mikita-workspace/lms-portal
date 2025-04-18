@@ -6,23 +6,17 @@ import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import { ChatCompletionRole } from '@/constants/ai';
 import { ONE_DAY_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
-import { AIProvider } from '@/server/ai-provider';
 
-import { getAppConfig } from '../configs/get-app-config';
+import { generateCompletion } from '../ai/generate-completion';
 
 export const getChatInitial = async () => {
   const locale = await getLocale();
-  const config = await getAppConfig();
-
-  const provider = AIProvider(config?.ai?.provider as string);
-
-  const DEFAULT_MODEL = config?.ai?.['text-models']?.[0].value;
 
   try {
     const introMessages = await fetchCachedData(
       `chat-initial-[${locale}]`,
       async () => {
-        const response = await provider.responses.create({
+        const response = await generateCompletion({
           instructions: 'You are a machine that only returns array format.',
           input: [
             {
@@ -30,10 +24,9 @@ export const getChatInitial = async () => {
               role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
             },
           ],
-          model: DEFAULT_MODEL,
         });
 
-        return response;
+        return response.completion;
       },
       ONE_DAY_SEC,
     );
