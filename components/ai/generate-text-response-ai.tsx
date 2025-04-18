@@ -68,6 +68,7 @@ export const GenerateTextResponseAi = ({
           input: messages,
           instructions: isTranslateButton ? SYSTEM_TRANSLATE_PROMPT : SYSTEM_COURSE_PROMPT,
           model: DEFAULT_MODEL,
+          stream: true,
         },
         cache: 'no-cache',
         headers: {
@@ -96,9 +97,16 @@ export const GenerateTextResponseAi = ({
         }
 
         const chunk = decoder.decode(value);
+        const lines = chunk.split('\n').filter((line) => line.trim());
 
-        text += chunk;
-        callback((prev) => prev + chunk);
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = JSON.parse(line.slice(6));
+
+            text += data.delta;
+            callback((prev) => prev + data.delta);
+          }
+        }
       }
 
       if (shouldCacheResponse) {

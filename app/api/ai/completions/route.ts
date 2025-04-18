@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
   const provider = AIProvider(config?.ai?.provider as string);
 
   try {
-    const { input, model, instructions } = await req.json();
+    const { input, instructions, model, stream } = await req.json();
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
@@ -38,10 +38,48 @@ export const POST = async (req: NextRequest) => {
       input,
       instructions,
       model,
-      stream: true,
+      stream,
     });
 
-    return completion;
+    if (stream) {
+      const encoder = new TextEncoder();
+      const stream_response = new TransformStream();
+
+      (async () => {
+        const writer = stream_response.writable.getWriter();
+
+        try {
+          for await (const event of completion as any) {
+            if (event.type === 'response.output_text.delta') {
+              const data = {
+                item_id: event.item_id,
+                output_index: event.output_index,
+                content_index: event.content_index,
+                delta: event.delta,
+              };
+              await writer.write(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+            }
+          }
+        } catch (error) {
+          console.error('Stream processing error:', error);
+          await writer.write(
+            encoder.encode(`data: ${JSON.stringify({ error: 'Stream processing error' })}\n\n`),
+          );
+        } finally {
+          await writer.close();
+        }
+      })();
+
+      return new NextResponse(stream_response.readable, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+        },
+      });
+    }
+
+    return NextResponse.json({ completion });
   } catch (error) {
     console.error('[OPEN_AI_COMPLETIONS]', error);
 

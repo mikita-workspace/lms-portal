@@ -145,6 +145,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
               }),
             ),
             model: currentModel,
+            stream: true,
           },
           cache: 'no-cache',
           headers: {
@@ -170,9 +171,16 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
           }
 
           const chunk = decoder.decode(value);
-          streamAssistMessage += chunk;
+          const lines = chunk.split('\n').filter((line) => line.trim());
 
-          setAssistantMessage((prev) => prev + chunk);
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = JSON.parse(line.slice(6));
+
+              streamAssistMessage += data.delta;
+              setAssistantMessage((prev) => prev + data.delta);
+            }
+          }
         }
       }
     } catch (error: any) {

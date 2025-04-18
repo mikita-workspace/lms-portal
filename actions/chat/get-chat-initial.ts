@@ -22,19 +22,15 @@ export const getChatInitial = async () => {
     const introMessages = await fetchCachedData(
       `chat-initial-[${locale}]`,
       async () => {
-        const response = await provider.chat.completions.create({
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a machine that only returns array format.',
-            },
+        const response = await provider.responses.create({
+          instructions: 'You are a machine that only returns array format.',
+          input: [
             {
               content: `Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat on the topic of programming. Language code is ${locale}. Write the result to an array.`,
               role: ChatCompletionRole.USER as unknown as ChatCompletionUserMessageParam['role'],
             },
           ],
           model: DEFAULT_MODEL,
-          temperature: 0.8,
         });
 
         return response;
@@ -43,7 +39,7 @@ export const getChatInitial = async () => {
     );
 
     return {
-      introMessages: JSON.parse(introMessages.choices[0].message.content || '[]'),
+      introMessages: JSON.parse(introMessages.output_text || '[]'),
     };
   } catch (error) {
     console.error('[GET_CHAT_INITIAL_ACTION]', error);
