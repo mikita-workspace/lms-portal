@@ -1,33 +1,29 @@
-import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { generateCompletion } from '@/actions/ai/generate-completion';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { getAppConfig } from '@/actions/configs/get-app-config';
-import { isOwner } from '@/lib/owner';
-import { AIProvider } from '@/server/ai-provider';
 
 export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
   const user = await getCurrentUser();
-  const config = await getAppConfig();
-
-  const provider = AIProvider(config?.ai?.provider as string);
 
   try {
-    const { messages, model, system } = await req.json();
+    const { input, instructions, model, stream } = await req.json();
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const TEXT_MODELS = config?.ai?.['text-models'] ?? [];
-    const models = (isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2)).map(
-      ({ value }) => value,
-    );
+    const response = await generateCompletion({
+      input,
+      instructions,
+      model,
+      stream,
+    });
 
-    if (!models.includes(model)) {
+    if (!response.completion) {
       console.error('[OPEN_AI_FORBIDDEN_MODEL]', user);
 
       return new NextResponse(ReasonPhrases.FORBIDDEN, {
@@ -35,16 +31,17 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const completion = await provider.chat.completions.create({
-      messages: [...(system ? [system] : []), ...messages],
-      model,
-      top_p: 0.5,
-      stream: true,
-    });
+    if (stream) {
+      return new NextResponse(response.completion as any, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+        },
+      });
+    }
 
-    const stream = OpenAIStream(completion);
-
-    return new StreamingTextResponse(stream);
+    return NextResponse.json({ completion: response.completion });
   } catch (error) {
     console.error('[OPEN_AI_COMPLETIONS]', error);
 
