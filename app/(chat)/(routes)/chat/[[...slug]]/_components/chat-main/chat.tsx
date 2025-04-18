@@ -138,7 +138,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
         const completionStream = await fetcher.post('/api/ai/completions', {
           body: {
-            messages: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
+            input: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
               ({ content, role }) => ({
                 content,
                 role,

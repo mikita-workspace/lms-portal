@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageIcon, Paperclip, SendHorizonal, StopCircle } from 'lucide-react';
+import { ImageIcon, SendHorizonal, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Badge, Button, Separator } from '@/components/ui';
@@ -54,9 +54,9 @@ export const ChatInputFooter = ({
             )}
           />
         </button>
-        <button type="button" disabled={isSubmitting}>
+        {/* <button type="button" disabled={isSubmitting}>
           <Paperclip className="w-4 h-4 text-muted-foreground" />
-        </button>
+        </button> */}
         <Separator orientation="vertical" className="mr-4 ml-2 h-6" />
         <Button
           className={cn(

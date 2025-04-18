@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 
 import { useToast } from '@/components/ui/use-toast';
-import { ChatCompletionRole, SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
+import { SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { getValueFromMemoryCache, setValueToMemoryCache } from '@/lib/cache';
@@ -65,11 +65,8 @@ export const GenerateTextResponseAi = ({
 
       const completionStream = await fetcher.post('/api/ai/completions', {
         body: {
-          messages,
-          system: {
-            role: ChatCompletionRole.SYSTEM,
-            content: isTranslateButton ? SYSTEM_TRANSLATE_PROMPT : SYSTEM_COURSE_PROMPT,
-          },
+          input: messages,
+          instructions: isTranslateButton ? SYSTEM_TRANSLATE_PROMPT : SYSTEM_COURSE_PROMPT,
           model: DEFAULT_MODEL,
         },
         cache: 'no-cache',

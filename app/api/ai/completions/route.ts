@@ -1,4 +1,3 @@
-import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,7 +15,7 @@ export const POST = async (req: NextRequest) => {
   const provider = AIProvider(config?.ai?.provider as string);
 
   try {
-    const { messages, model, system } = await req.json();
+    const { input, model, instructions } = await req.json();
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
@@ -35,16 +34,14 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const completion = await provider.chat.completions.create({
-      messages: [...(system ? [system] : []), ...messages],
+    const completion = await provider.responses.create({
+      input,
+      instructions,
       model,
-      top_p: 0.5,
       stream: true,
     });
 
-    const stream = OpenAIStream(completion);
-
-    return new StreamingTextResponse(stream);
+    return completion;
   } catch (error) {
     console.error('[OPEN_AI_COMPLETIONS]', error);
 
