@@ -299,6 +299,7 @@
   },
   "chat": {
     "body": {
+      "greeting": "Hello there!",
       "image-loading": "Creating something interesting. A moment of patience...",
       "title": "What can I assist you with today?"
     },

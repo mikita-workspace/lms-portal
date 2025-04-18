@@ -38,6 +38,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     isImageGeneration,
     setChatMessages,
     setConversationId,
+    setIsFetching,
   } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
     config: state.config,
@@ -75,6 +76,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     event.preventDefault();
 
     setIsSubmitting(true);
+    setIsFetching(true);
 
     const messages = chatMessages[conversationId];
 
@@ -199,6 +201,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       } as Message & { url: string });
 
       setIsSubmitting(false);
+      setIsFetching(false);
     }
   };
 

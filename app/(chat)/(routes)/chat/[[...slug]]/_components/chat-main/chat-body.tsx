@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
-import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { ChatCompletionRole } from '@/constants/ai';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -100,11 +100,6 @@ export const ChatBody = ({
     <ChatScrollContext.Provider value={value}>
       {!hasMessages && !isShared && (
         <div className="flex flex-col items-center justify-start gap-y-2 h-full">
-          <Avatar className="border dark:border-muted-foreground">
-            <AvatarImage className="bg-white p-2 rounded-full" src="/assets/copilot.svg" />
-            <AvatarFallback>AI</AvatarFallback>
-          </Avatar>
-          <p className="mb-5 mx-4 text-2xl font-medium text-center">{t('title')}</p>
           <ChatIntro introMessages={introMessages} onSubmit={onSubmit} />
         </div>
       )}
