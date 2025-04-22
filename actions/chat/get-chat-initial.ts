@@ -17,7 +17,8 @@ export const getChatInitial = async () => {
       `chat-initial-[${locale}]`,
       async () => {
         const response = await generateCompletion({
-          instructions: 'You are a machine that only returns array format.',
+          instructions:
+            'You are a machine that only returns array - ["question 1", "question 2", ...]',
           input: [
             {
               content: `Generate 4 questions ranging from 120 to 150 characters long for an intelligent chat on the topic of programming. Language code is ${locale}. Write the result to an array.`,

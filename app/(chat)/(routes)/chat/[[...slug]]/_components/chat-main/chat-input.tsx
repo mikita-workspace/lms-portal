@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { SyntheticEvent, useState } from 'react';
+import { memo, SyntheticEvent, useState } from 'react';
 
 import { Textarea } from '@/components/ui';
 import { LIMIT_CHAT_INPUT } from '@/constants/chat';
@@ -18,7 +18,7 @@ type ChatInputProps = {
   setCurrentMessage: (value: string) => void;
 };
 
-export const ChatInput = ({
+const ChatInputComponent = ({
   currenMessage,
   isSubmitting = false,
   onAbortGenerating,
@@ -76,3 +76,7 @@ export const ChatInput = ({
     </div>
   );
 };
+
+ChatInputComponent.displayName = 'ChatInput';
+
+export const ChatInput = memo(ChatInputComponent);

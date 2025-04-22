@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { memo, SyntheticEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,30 +49,21 @@ const ChatIntroComponent = ({ introMessages, onSubmit }: ChatIntroProps) => {
             </div>
           );
         })}
-        {introMessages.slice(2).map((message, index) => {
+        {introMessages.slice(2).map((message) => {
           const { head, tail } = mapQuestion(message);
 
           return (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ delay: 0.05 * index }}
+            <div
+              aria-hidden="true"
               key={uuidv4()}
-              className={index > 1 ? 'hidden sm:block' : 'block'}
+              className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
+              onClick={(event) => {
+                onSubmit(event, { userMessage: message });
+              }}
             >
-              <div
-                aria-hidden="true"
-                key={uuidv4()}
-                className="group hover:shadow-sm transition duration-300 border rounded-lg w-full flex-col overflow-hidden p-4 h-[70px] dark:hover:bg-neutral-900 hover:hover:bg-neutral-50 hover:cursor-pointer md:flex hidden"
-                onClick={(event) => {
-                  onSubmit(event, { userMessage: message });
-                }}
-              >
-                <div className="truncate font-semibold text-sm">{head}</div>
-                <div className="line-clamp-1 text-secondary-foreground text-xs">{tail}</div>
-              </div>
-            </motion.div>
+              <div className="truncate font-semibold text-sm">{head}</div>
+              <div className="line-clamp-1 text-secondary-foreground text-xs">{tail}</div>
+            </div>
           );
         })}
       </div>
