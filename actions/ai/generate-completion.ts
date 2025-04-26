@@ -1,7 +1,9 @@
 'use server';
 
+import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { ResponseCreateParamsBase } from 'openai/resources/responses/responses.mjs';
 
+import { AI_PROVIDER, ChatCompletionRole } from '@/constants/ai';
 import { isOwner } from '@/lib/owner';
 import { AIProvider } from '@/server/ai-provider';
 
@@ -33,12 +35,22 @@ export const generateCompletion = async ({
     return { completion: null, model: aiModel };
   }
 
-  const completion = await provider.responses.create({
-    input,
-    instructions,
-    model: aiModel,
-    stream,
-  });
+  const completion =
+    config?.ai?.provider === AI_PROVIDER.openai
+      ? await provider.responses.create({
+          input,
+          instructions,
+          model: aiModel,
+          stream,
+        })
+      : await provider.chat.completions.create({
+          messages: [
+            ...(instructions ? [{ role: ChatCompletionRole.SYSTEM, content: instructions }] : []),
+            ...input,
+          ] as ChatCompletionMessageParam[],
+          model: aiModel,
+          stream,
+        });
 
   if (stream) {
     const encoder = new TextEncoder();

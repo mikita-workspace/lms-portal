@@ -19,8 +19,8 @@ export const AIProvider = (provider: string) => {
       break;
     default:
       options = {
-        api_key: 'ollama',
-        base_url: process.env.OLLAMA_BASE_URL,
+        apiKey: 'ollama',
+        baseURL: process.env.OLLAMA_BASE_URL,
       };
   }
 

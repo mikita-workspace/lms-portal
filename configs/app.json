@@ -1,15 +1,10 @@
 {
   "ai": {
-    "image-models": [
-      { "value": "dall-e-3", "label": "DALL·E 3" }
-    ],
+    "image-models": [],
     "text-models": [
-      { "value": "gpt-4o-mini", "label": "GPT-4o mini" },
-      { "value": "gpt-4.1-mini", "label": "GPT-4.1 mini" },
-      { "value": "o4-mini", "label": "o4-mini" },
-      { "value": "o3-mini", "label": "o3-mini" }
+      { "value": "gemma3:4b", "label": "gemma3:4b" }
     ],
-    "provider": "openai"
+    "provider": "ollama"
   },
   "auth": {
     "isBlockedNewLogin": false,
