@@ -9,10 +9,11 @@ import { Categories } from '../_components/category/categories';
 import { CoursesList } from '../_components/courses/courses-list';
 
 type SearchPageProps = {
-  searchParams: { title: string; categoryId: string };
+  searchParams: Promise<{ title: string; categoryId: string }>;
 };
 
-const SearchPage = async ({ searchParams }: SearchPageProps) => {
+const SearchPage = async (props: SearchPageProps) => {
+  const searchParams = await props.searchParams;
   const user = await getCurrentUser();
 
   const categories = await db.category.findMany({ orderBy: { name: 'asc' } });

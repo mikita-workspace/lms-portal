@@ -14,10 +14,11 @@ import { ChapterVideoPlayer } from './_components/chapter-video-player';
 import { CourseProgressButton } from './_components/course-progress-button';
 
 type ChapterIdPageProps = {
-  params: { courseId: string; chapterId: string };
+  params: Promise<{ courseId: string; chapterId: string }>;
 };
 
-const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
+const ChapterIdPage = async (props: ChapterIdPageProps) => {
+  const params = await props.params;
   const t = await getTranslations('courses');
 
   const user = await getCurrentUser();

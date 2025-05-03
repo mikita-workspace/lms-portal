@@ -6,8 +6,9 @@ import { db } from '@/lib/db';
 
 export const PATCH = async (
   _: NextRequest,
-  { params }: { params: { courseId: string; chapterId: string } },
+  props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

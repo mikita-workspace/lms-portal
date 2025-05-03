@@ -8,7 +8,8 @@ import { Report, REPORT_TYPES } from '@/constants/payments';
 import { fetchCachedData } from '@/lib/cache';
 import { stripe } from '@/server/stripe';
 
-export const POST = async (req: NextRequest, { params }: { params: { accountId: string } }) => {
+export const POST = async (req: NextRequest, props: { params: Promise<{ accountId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

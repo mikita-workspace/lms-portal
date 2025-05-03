@@ -13,10 +13,11 @@ import { ChapterTitleForm } from './_components/form/chapter-title-form';
 import { ChapterVideoForm } from './_components/form/chapter-video-form';
 
 type ChapterIdPageProps = {
-  params: { courseId: string; chapterId: string };
+  params: Promise<{ courseId: string; chapterId: string }>;
 };
 
-const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
+const ChapterIdPage = async (props: ChapterIdPageProps) => {
+  const params = await props.params;
   const chapter = await db.chapter.findUnique({
     where: { id: params.chapterId, courseId: params.courseId },
     include: { muxData: true },

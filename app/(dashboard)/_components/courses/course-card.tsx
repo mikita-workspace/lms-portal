@@ -29,7 +29,7 @@ type CourseCardProps = {
   title: string;
 };
 
-export const CourseCard = async ({
+export const CourseCard = ({
   category,
   chaptersLength,
   customRates,

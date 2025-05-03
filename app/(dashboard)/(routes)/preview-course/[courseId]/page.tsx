@@ -18,10 +18,11 @@ import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
 
 type PreviewCourseIdPageProps = {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 };
 
-export const generateMetadata = async ({ params }: PreviewCourseIdPageProps): Promise<Metadata> => {
+export const generateMetadata = async (props: PreviewCourseIdPageProps): Promise<Metadata> => {
+  const params = await props.params;
   const course = await db.course.findUnique({
     where: { id: params.courseId },
   });
@@ -32,7 +33,8 @@ export const generateMetadata = async ({ params }: PreviewCourseIdPageProps): Pr
   };
 };
 
-const PreviewCourseIdPage = async ({ params }: PreviewCourseIdPageProps) => {
+const PreviewCourseIdPage = async (props: PreviewCourseIdPageProps) => {
+  const params = await props.params;
   const t = await getTranslations('courses.preview');
 
   const user = await getCurrentUser();
