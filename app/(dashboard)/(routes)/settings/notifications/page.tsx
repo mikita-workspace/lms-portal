@@ -6,10 +6,11 @@ import { getUserNotifications } from '@/actions/users/get-user-notifications';
 import { Table } from './_components/data-table/table';
 
 type NotificationsPageProps = {
-  searchParams: { pageIndex: string; pageSize: string; search?: string };
+  searchParams: Promise<{ pageIndex: string; pageSize: string; search?: string }>;
 };
 
-const NotificationsPage = async ({ searchParams }: NotificationsPageProps) => {
+const NotificationsPage = async (props: NotificationsPageProps) => {
+  const searchParams = await props.searchParams;
   const t = await getTranslations('notifications');
 
   const user = await getCurrentUser();

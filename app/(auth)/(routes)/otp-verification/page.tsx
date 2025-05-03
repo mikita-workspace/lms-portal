@@ -17,14 +17,18 @@ export const metadata: Metadata = {
 };
 
 type OtpVerificationPageProps = {
-  searchParams: { code: string };
+  searchParams: Promise<{ code: string }>;
 };
 
-const OtpVerificationPage = async ({ searchParams: { code } }: OtpVerificationPageProps) => {
+const OtpVerificationPage = async ({ searchParams }: OtpVerificationPageProps) => {
+  const { code } = await searchParams;
+
+  const cookieStore = await cookies();
+
   const t = await getTranslations('otpVerification');
 
   const otpInfo = JSON.parse(decrypt(decodeURIComponent(code), process.env.OTP_SECRET as string));
-  const callbackUrl = cookies().get(OTP_CALLBACK_URL_SECURE)?.value ?? '/';
+  const callbackUrl = cookieStore.get(OTP_CALLBACK_URL_SECURE)?.value ?? '/';
 
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">

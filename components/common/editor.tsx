@@ -1,6 +1,6 @@
 'use client';
 
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
@@ -11,7 +11,7 @@ type EditorProps = {
 };
 
 export const Editor = ({ onChange, value }: EditorProps) => {
-  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill-new'), { ssr: false }), []);
 
   const modules = {
     toolbar: [

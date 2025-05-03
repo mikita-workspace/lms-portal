@@ -8,7 +8,8 @@ import { db } from '@/lib/db';
 import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
-export const POST = async (req: NextRequest, { params }: { params: { userId: string } }) => {
+export const POST = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

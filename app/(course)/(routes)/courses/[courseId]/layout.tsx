@@ -16,7 +16,8 @@ type CourseLayoutProps = Readonly<{
   params: { courseId: string };
 }>;
 
-export async function generateMetadata({ params }: CourseLayoutProps): Promise<Metadata> {
+export async function generateMetadata(props: CourseLayoutProps): Promise<Metadata> {
+  const params = await props.params;
   const course = await db.course.findUnique({
     where: { id: params.courseId },
   });
@@ -27,7 +28,11 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
   };
 }
 
-const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
+const CourseLayout = async (props: CourseLayoutProps) => {
+  const params = await props.params;
+
+  const { children } = props;
+
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
 

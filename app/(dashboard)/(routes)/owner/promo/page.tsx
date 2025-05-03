@@ -4,10 +4,11 @@ import { DataTable } from '@/components/data-table/data-table';
 import { columns } from './_components/columns';
 
 type PromoPageProps = {
-  searchParams: { pageIndex: string; pageSize: string; search?: string };
+  searchParams: Promise<{ pageIndex: string; pageSize: string; search?: string }>;
 };
 
-const PromoPage = async ({ searchParams }: PromoPageProps) => {
+const PromoPage = async (props: PromoPageProps) => {
+  const searchParams = await props.searchParams;
   const { coupons, customers, pageCount, promos } = await getStripePromo(searchParams);
 
   return (

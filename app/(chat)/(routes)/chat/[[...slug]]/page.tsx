@@ -6,18 +6,20 @@ import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { Chat } from './_components/chat-main/chat';
 
 type ChatPageProps = Readonly<{
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
 }>;
 
 const ChatPage = async ({ params }: ChatPageProps) => {
-  const isEmbed = params.slug?.includes('embed');
-  const isShared = params.slug?.includes('shared');
+  const { slug } = await params;
+
+  const isEmbed = slug?.includes('embed');
+  const isShared = slug?.includes('shared');
 
   const initialData = await getChatInitial();
   const conversations =
     isEmbed || isShared
       ? await getChatConversations({
-          sharedConversationId: isShared ? params.slug[1] : '',
+          sharedConversationId: isShared ? slug[1] : '',
         })
       : [];
 

@@ -7,8 +7,9 @@ import { db } from '@/lib/db';
 
 export const DELETE = async (
   { nextUrl: { searchParams } }: NextRequest,
-  { params }: { params: { attachmentId: string; courseId: string } },
+  props: { params: Promise<{ attachmentId: string; courseId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

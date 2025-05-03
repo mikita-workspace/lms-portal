@@ -11,7 +11,9 @@ import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest) => {
   const body = await req.text();
-  const signature = headers().get('Stripe-Signature') as string;
+  const headersList = await headers();
+
+  const signature = headersList.get('Stripe-Signature') as string;
 
   let event: Stripe.Event;
 

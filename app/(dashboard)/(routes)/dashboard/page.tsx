@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 };
 
 type DashboardPageProps = {
-  searchParams: { filter: string | null };
+  searchParams: Promise<{ filter: string | null }>;
 };
 
-const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
+const DashboardPage = async (props: DashboardPageProps) => {
+  const searchParams = await props.searchParams;
   const user = await getCurrentUser();
 
   if (!user) {

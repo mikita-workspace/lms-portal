@@ -10,21 +10,21 @@ const nextConfig = {
   publicRuntimeConfig: {
     version: npmConfig?.version,
   },
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+  },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'utfs.io',
-      },
-      { protocol: 'https', hostname: 'https://avatars.yandex.net' },
-      { protocol: 'https', hostname: 'https://filin.mail.ru/' },
-      { protocol: 'https', hostname: 'https://media.licdn.com/' },
-      { protocol: 'https', hostname: 'https://sun23-2.userapi.com/' },
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+      { protocol: 'https', hostname: 'avatars.yandex.net' },
+      { protocol: 'https', hostname: 'filin.mail.ru/' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'media.licdn.com/' },
+      { protocol: 'https', hostname: 'sun23-2.userapi.com/' },
+      { protocol: 'https', hostname: 'utfs.io' },
     ],
   },
 };

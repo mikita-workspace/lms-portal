@@ -19,14 +19,16 @@ export const metadata: Metadata = {
 
 type ChatLayoutProps = Readonly<{
   children: React.ReactNode;
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
 }>;
 
 const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
+  const { slug } = await params;
+
   const user = await getCurrentUser();
 
-  const isEmbed = params.slug?.includes('embed');
-  const isShared = params.slug?.includes('shared');
+  const isEmbed = slug?.includes('embed');
+  const isShared = slug?.includes('shared');
 
   const globalProgress = await getGlobalProgress(user?.userId);
   const { notifications: userNotifications } = await getUserNotifications({
@@ -39,13 +41,13 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
     return redirect('/');
   }
 
-  if (params.slug?.length && !(isEmbed || isShared)) {
+  if (slug?.length && !(isEmbed || isShared)) {
     notFound();
   }
 
   if (isShared) {
     const sharedConversation = await db.chatSharedConversation.findUnique({
-      where: { id: params.slug[1] ?? '' },
+      where: { id: slug[1] ?? '' },
       select: { isActive: true, isOnlyAuth: true, expireAt: true },
     });
 

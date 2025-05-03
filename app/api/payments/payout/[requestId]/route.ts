@@ -13,8 +13,9 @@ import { stripe } from '@/server/stripe';
 
 export const POST = async (
   { nextUrl: { searchParams } }: NextRequest,
-  { params }: { params: { requestId: string } },
+  props: { params: Promise<{ requestId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

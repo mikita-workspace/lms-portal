@@ -1,13 +1,12 @@
-type FetchMethod = (
-  url: string,
-  options?: {
-    body?: Record<string, unknown>;
-    cache?: RequestCache;
-    headers?: HeadersInit;
-    responseType?: 'json' | 'stream' | 'text';
-    signal?: AbortSignal;
-  },
-) => Promise<any>;
+type Options = {
+  body?: Record<string, unknown>;
+  cache?: RequestCache;
+  headers?: HeadersInit;
+  responseType?: 'json' | 'stream' | 'text';
+  signal?: AbortSignal;
+};
+
+type FetchMethod = (url: string, options?: Options) => Promise<any>;
 
 class Fetcher {
   get: FetchMethod = async (url, options) => {
@@ -18,7 +17,10 @@ class Fetcher {
     }
 
     if (options?.responseType === 'text') {
-      const res = await fetch(url, { headers: options.headers });
+      const res = await fetch(url, {
+        cache: options?.cache || 'force-cache',
+        headers: options.headers,
+      });
 
       return await res.text();
     }
@@ -30,7 +32,7 @@ class Fetcher {
     const fetchOptions = {
       method: 'POST',
       body: JSON.stringify(options?.body),
-      cache: options?.cache,
+      cache: options?.cache || 'force-cache',
       headers: options?.headers,
       signal: options?.signal,
     };
@@ -46,9 +48,9 @@ class Fetcher {
 
   put: FetchMethod = async (url, options) => {
     const fetchOptions = {
-      method: 'PUT',
       body: JSON.stringify(options?.body),
       headers: options?.headers,
+      method: 'PUT',
       signal: options?.signal,
     };
 

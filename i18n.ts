@@ -5,7 +5,8 @@ import { DEFAULT_LANGUAGE, USER_LOCALE_COOKIE } from './constants/locale';
 import { getLocale } from './lib/locale';
 
 export default getRequestConfig(async () => {
-  const headersList = headers();
+  const headersList = await headers();
+  const cookieStore = await cookies();
   const acceptLanguage = headersList.get('accept-language');
 
   const defaultBrowserLocale = getLocale(
@@ -13,7 +14,7 @@ export default getRequestConfig(async () => {
   );
 
   const locale =
-    cookies().get(USER_LOCALE_COOKIE)?.value ?? defaultBrowserLocale ?? DEFAULT_LANGUAGE;
+    cookieStore.get(USER_LOCALE_COOKIE)?.value ?? defaultBrowserLocale ?? DEFAULT_LANGUAGE;
 
   return {
     locale,
