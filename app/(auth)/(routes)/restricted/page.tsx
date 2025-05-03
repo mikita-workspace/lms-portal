@@ -5,24 +5,14 @@ import { getTranslations } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
 import withCompanyLabel from '@/hoc/with-company-label';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { decrypt } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Restricted',
   description: 'Educational portal',
 };
 
-type RestrictedPageProps = {
-  searchParams: { code: string };
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RestrictedPage = async ({ searchParams: { code } }: RestrictedPageProps) => {
+const RestrictedPage = async () => {
   const t = await getTranslations('restricted');
-
-  // FIXME: Add blocking functionality for users
-  // const info = JSON.parse(decrypt(decodeURIComponent(code), process.env.NEXTAUTH_SECRET as string));
 
   return (
     <div className="relative h-full flex gap-y-4 items-center w-full">
