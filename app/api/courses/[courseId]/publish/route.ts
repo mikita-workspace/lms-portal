@@ -5,7 +5,8 @@ import { getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
-export const PATCH = async (_: NextRequest, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (_: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

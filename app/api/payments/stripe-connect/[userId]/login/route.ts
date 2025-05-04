@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 import { stripe } from '@/server/stripe';
 
-export const POST = async (_: NextRequest, { params }: { params: { userId: string } }) => {
+export const POST = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

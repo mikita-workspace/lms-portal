@@ -13,8 +13,10 @@ import { absoluteUrl, encrypt } from '../utils';
 
 export const callbacks: NextAuthOptions['callbacks'] = {
   async signIn({ user, account }) {
+    const cookieStore = await cookies();
+
     const email = user?.email ?? account?.email;
-    const hasOtpSecret = cookies().has(`${OTP_SECRET_SECURE}:${email}`);
+    const hasOtpSecret = cookieStore.has(`${OTP_SECRET_SECURE}:${email}`);
 
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
       const dbUser = await loginUser(email, user.name, user?.image, user?.password);

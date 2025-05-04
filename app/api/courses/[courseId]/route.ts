@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 
-export const PATCH = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (req: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 
@@ -30,7 +31,8 @@ export const PATCH = async (req: NextRequest, { params }: { params: { courseId: 
   }
 };
 
-export const DELETE = async (_: NextRequest, { params }: { params: { courseId: string } }) => {
+export const DELETE = async (_: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

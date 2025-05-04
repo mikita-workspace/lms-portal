@@ -13,12 +13,14 @@ import { CourseSideBar } from './_components/course-sidebar/course-sidebar';
 
 type CourseLayoutProps = Readonly<{
   children: React.ReactNode;
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }>;
 
 export async function generateMetadata({ params }: CourseLayoutProps): Promise<Metadata> {
+  const { courseId } = await params;
+
   const course = await db.course.findUnique({
-    where: { id: params.courseId },
+    where: { id: courseId },
   });
 
   return {
@@ -28,6 +30,8 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
 }
 
 const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
+  const { courseId } = await params;
+
   const user = await getCurrentUser();
   const globalProgress = await getGlobalProgress(user?.userId);
 
@@ -36,7 +40,7 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
   }
 
   const course = await db.course.findUnique({
-    where: { id: params.courseId },
+    where: { id: courseId },
     include: {
       chapters: {
         where: { isPublished: true },

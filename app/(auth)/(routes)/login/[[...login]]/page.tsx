@@ -10,10 +10,12 @@ import { MadeWithLove } from '@/components/common/made-with-love';
 import { ThemeSwitcher } from '@/components/common/theme-switcher';
 
 type SignInPageProps = {
-  searchParams: { callbackUrl?: string };
+  searchParams: Promise<{ callbackUrl?: string }>;
 };
 
 const SignInPage = async ({ searchParams }: SignInPageProps) => {
+  const { callbackUrl } = await searchParams;
+
   const user = await getCurrentUser();
 
   if (user?.userId) {
@@ -42,7 +44,7 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
       </div>
       <div className="lg:p-8 my-12">
         <div className="mx-auto flex w-full flex-col justify-center sm:space-y-6 space-y-4 sm:w-[350px]">
-          <AuthForm callbackUrl={searchParams.callbackUrl} />
+          <AuthForm callbackUrl={callbackUrl} />
         </div>
         <div className="hidden lg:left-auto lg:mr-6 text-muted-foreground gap-y-4 fixed right-0 left-0 bottom-0 md:flex justify-center text-xs gap-x-2 lg:mb-10 mb-14">
           <LanguageSwitcher />

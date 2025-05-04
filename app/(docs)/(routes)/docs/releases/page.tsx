@@ -13,10 +13,11 @@ export const metadata: Metadata = {
 };
 
 type ReleasesPagePageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: Promise<{ pageIndex: string; pageSize: string }>;
 };
 
-const ReleasesPage = async ({ searchParams }: ReleasesPagePageProps) => {
+const ReleasesPage = async (props: ReleasesPagePageProps) => {
+  const searchParams = await props.searchParams;
   const t = await getTranslations('releases');
 
   const releases = await getGithubReleases(searchParams);

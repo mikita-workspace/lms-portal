@@ -18,9 +18,10 @@ import { ImageForm } from './_components/form/image-form';
 import { PriceForm } from './_components/form/price-form';
 import { TitleForm } from './_components/form/title-form';
 
-type CourseIdPageProps = { params: { courseId: string } };
+type CourseIdPageProps = { params: Promise<{ courseId: string }> };
 
-const CourseIdPage = async ({ params }: CourseIdPageProps) => {
+const CourseIdPage = async (props: CourseIdPageProps) => {
+  const params = await props.params;
   const user = await getCurrentUser();
 
   const course = await db.course.findUnique({

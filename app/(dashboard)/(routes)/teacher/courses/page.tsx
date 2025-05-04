@@ -6,10 +6,14 @@ import { db } from '@/lib/db';
 import { columns } from './_components/data-table/columns';
 
 type CoursesPageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: Promise<{ pageIndex: string; pageSize: string }>;
 };
 
-const CoursesPage = async ({ searchParams: { pageIndex, pageSize } }: CoursesPageProps) => {
+const CoursesPage = async (props: CoursesPageProps) => {
+  const searchParams = await props.searchParams;
+
+  const { pageIndex, pageSize } = searchParams;
+
   const user = await getCurrentUser();
 
   const index = Number(pageIndex) || 0;

@@ -4,10 +4,11 @@ import { PayoutRequests } from './_components/payout-requests/payout-requests';
 import { StripeBalances } from './_components/stripe-balances';
 
 type OwnerPageProps = {
-  searchParams: { pageIndex: string; pageSize: string };
+  searchParams: Promise<{ pageIndex: string; pageSize: string }>;
 };
 
-const OwnerPage = async ({ searchParams }: OwnerPageProps) => {
+const OwnerPage = async (props: OwnerPageProps) => {
+  const searchParams = await props.searchParams;
   const { balances, pageCount, payoutRequests, owner } = await getStripeDetails(searchParams);
 
   return (

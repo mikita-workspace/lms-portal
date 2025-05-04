@@ -1,6 +1,6 @@
 'use client';
 
-import 'react-quill/dist/quill.bubble.css';
+import 'react-quill-new/dist/quill.bubble.css';
 
 import dynamic from 'next/dynamic';
 import { useLocale } from 'next-intl';
@@ -19,7 +19,7 @@ type PreviewProps = {
 };
 
 export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) => {
-  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill-new'), { ssr: false }), []);
 
   const currentLocale = useLocale();
   const { user } = useCurrentUser();

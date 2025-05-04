@@ -10,7 +10,7 @@ export const PATCH = async (req: NextRequest) => {
     const { email } = await req.json();
 
     await db.user.update({ where: { email }, data: { otpCreatedAt: null, otpSecret: null } });
-    cookies().delete(`${OTP_SECRET_SECURE}:${email}`);
+    (await cookies()).delete(`${OTP_SECRET_SECURE}:${email}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

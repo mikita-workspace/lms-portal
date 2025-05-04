@@ -4,10 +4,11 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
 type CourseIdPageProps = {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 };
 
-const CourseIdPage = async ({ params }: CourseIdPageProps) => {
+const CourseIdPage = async (props: CourseIdPageProps) => {
+  const params = await props.params;
   const user = await getCurrentUser();
 
   const course = await db.course.findUnique({

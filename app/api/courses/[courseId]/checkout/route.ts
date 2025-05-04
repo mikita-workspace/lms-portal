@@ -10,7 +10,8 @@ import { getLocale } from '@/lib/locale';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
-export const POST = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const POST = async (req: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

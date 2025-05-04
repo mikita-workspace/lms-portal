@@ -5,7 +5,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
-export const POST = async (_: NextRequest, { params }: { params: { conversationId: string } }) => {
+export const POST = async (
+  _: NextRequest,
+  props: { params: Promise<{ conversationId: string }> },
+) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 
@@ -38,8 +42,9 @@ export const POST = async (_: NextRequest, { params }: { params: { conversationI
 
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: { conversationId: string } },
+  props: { params: Promise<{ conversationId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 
@@ -75,8 +80,9 @@ export const PATCH = async (
 
 export const DELETE = async (
   _: NextRequest,
-  { params }: { params: { conversationId: string } },
+  props: { params: Promise<{ conversationId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 

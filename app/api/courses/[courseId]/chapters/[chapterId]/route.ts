@@ -7,8 +7,9 @@ import { db } from '@/lib/db';
 
 export const DELETE = async (
   _: NextRequest,
-  { params }: { params: { courseId: string; chapterId: string } },
+  props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 
@@ -72,8 +73,9 @@ export const DELETE = async (
 
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: { courseId: string; chapterId: string } },
+  props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
+  const params = await props.params;
   try {
     const user = await getCurrentUser();
 
