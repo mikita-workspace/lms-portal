@@ -15,7 +15,8 @@ export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  const { currentModelLabel } = useChatStore((state) => ({
+  const { currentModel, currentModelLabel } = useChatStore((state) => ({
+    currentModel: state.currentModel,
     currentModelLabel: state.currentModelLabel,
   }));
 
@@ -37,12 +38,14 @@ export const Chat = () => {
         <div className="relative h-full">
           {!isReady && <PrettyLoader isCopilot />}
           {isReady && (
-            <div className="fixed py-2 px-4 flex gap-x-1 border-b justify-between sm:max-w-md w-full items-center">
+            <div className="fixed py-2 px-4 flex gap-x-1 justify-between sm:max-w-md w-full items-center">
               <div>
                 <p className={'font-semibold text-base text-neutral-700 dark:text-neutral-300'}>
                   Nova Copilot
                 </p>
-                <p className={'text-muted-foreground text-xs'}>{currentModelLabel}</p>
+                <p className={'text-muted-foreground text-xs'}>
+                  {currentModelLabel || currentModel}
+                </p>
               </div>
               <div className="flex gap-x-2">
                 <ChatContextMenu />
