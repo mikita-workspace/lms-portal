@@ -22,9 +22,10 @@ type PreviewCourseIdPageProps = {
 };
 
 export const generateMetadata = async (props: PreviewCourseIdPageProps): Promise<Metadata> => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   const course = await db.course.findUnique({
-    where: { id: params.courseId },
+    where: { id: courseId },
   });
 
   return {
@@ -34,13 +35,14 @@ export const generateMetadata = async (props: PreviewCourseIdPageProps): Promise
 };
 
 const PreviewCourseIdPage = async (props: PreviewCourseIdPageProps) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   const t = await getTranslations('courses.preview');
 
   const user = await getCurrentUser();
 
   const { chapterImagePlaceholder, course, fees, hasPurchase } = await getPreviewCourse({
-    courseId: params.courseId,
+    courseId: courseId,
     userId: user?.userId,
   });
 
@@ -113,13 +115,13 @@ const PreviewCourseIdPage = async (props: PreviewCourseIdPageProps) => {
                 <>
                   {!hasPurchase && (
                     <CourseEnrollButton
-                      courseId={params.courseId}
+                      courseId={courseId}
                       customRates={course.customRates}
                       price={course.price}
                       variant="outline"
                     />
                   )}
-                  {hasPurchase && <ContinueButton redirectUrl={`/courses/${params.courseId}`} />}
+                  {hasPurchase && <ContinueButton redirectUrl={`/courses/${courseId}`} />}
                 </>
               ) : (
                 <AuthRedirect>

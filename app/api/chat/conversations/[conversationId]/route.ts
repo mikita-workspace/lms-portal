@@ -10,7 +10,8 @@ export const PATCH = async (
   req: NextRequest,
   props: { params: Promise<{ conversationId: string }> },
 ) => {
-  const params = await props.params;
+  const { conversationId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -18,21 +19,21 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    if (!params?.conversationId) {
+    if (!conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
     const action = req.nextUrl.searchParams.get('action');
 
     if (action === CONVERSATION_ACTION.EMPTY_MESSAGES) {
-      await db.chatMessage.deleteMany({ where: { conversationId: params.conversationId } });
+      await db.chatMessage.deleteMany({ where: { conversationId } });
     }
 
     if (action === CONVERSATION_ACTION.EDIT) {
       const { title } = await req.json();
 
       const updatedConversation = await db.chatConversation.update({
-        where: { id: params.conversationId },
+        where: { id: conversationId },
         data: { title: title || generateConversationTitle() },
         select: { id: true, title: true },
       });
@@ -54,7 +55,8 @@ export const DELETE = async (
   _: NextRequest,
   props: { params: Promise<{ conversationId: string }> },
 ) => {
-  const params = await props.params;
+  const { conversationId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -62,11 +64,11 @@ export const DELETE = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    if (!params?.conversationId) {
+    if (!conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    await db.chatConversation.delete({ where: { id: params.conversationId } });
+    await db.chatConversation.delete({ where: { id: conversationId } });
 
     return NextResponse.json({ success: true });
   } catch (error) {

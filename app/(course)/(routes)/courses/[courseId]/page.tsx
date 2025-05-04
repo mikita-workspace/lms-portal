@@ -8,11 +8,11 @@ type CourseIdPageProps = {
 };
 
 const CourseIdPage = async (props: CourseIdPageProps) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
   const user = await getCurrentUser();
 
   const course = await db.course.findUnique({
-    where: { id: params.courseId },
+    where: { id: courseId },
     include: {
       chapters: {
         where: { isPublished: true },
@@ -30,7 +30,7 @@ const CourseIdPage = async (props: CourseIdPageProps) => {
     course.chapters.find((chapter) => !chapter?.userProgress?.[0]?.isCompleted)?.id ||
     course.chapters[0].id;
 
-  return redirect(`/courses/${params.courseId}/chapters/${chapterId}`);
+  return redirect(`/courses/${courseId}/chapters/${chapterId}`);
 };
 
 export default CourseIdPage;

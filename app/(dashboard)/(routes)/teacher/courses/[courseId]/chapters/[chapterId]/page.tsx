@@ -17,9 +17,10 @@ type ChapterIdPageProps = {
 };
 
 const ChapterIdPage = async (props: ChapterIdPageProps) => {
-  const params = await props.params;
+  const { chapterId, courseId } = await props.params;
+
   const chapter = await db.chapter.findUnique({
-    where: { id: params.chapterId, courseId: params.courseId },
+    where: { id: chapterId, courseId },
     include: { muxData: true },
   });
 
@@ -36,8 +37,8 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
   const completionText = `(${completedFields}/${totalFields})`;
 
   const chapterFormProps = {
-    chapterId: params.chapterId,
-    courseId: params.courseId,
+    chapterId,
+    courseId,
     initialData: chapter,
   };
 
@@ -54,7 +55,7 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
           <div className="w-full">
             <Link
               className="flex items-center text-sm hover:opacity-75 transition duration-300 mb-6"
-              href={`/teacher/courses/${params.courseId}`}
+              href={`/teacher/courses/${courseId}`}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to course setup
@@ -67,8 +68,8 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
                 </span>
               </div>
               <ChapterActions
-                chapterId={params.chapterId}
-                courseId={params.courseId}
+                chapterId={chapterId}
+                courseId={courseId}
                 disabled={!isCompleted}
                 isPublished={chapter.isPublished}
               />

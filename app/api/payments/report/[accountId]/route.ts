@@ -9,7 +9,8 @@ import { fetchCachedData } from '@/lib/cache';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, props: { params: Promise<{ accountId: string }> }) => {
-  const params = await props.params;
+  const { accountId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -19,7 +20,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ accountI
 
     const { startDate, endDate, reportType } = await req.json();
 
-    const cacheKey = `${params.accountId}-${user.userId}-${reportType}`;
+    const cacheKey = `${accountId}-${user.userId}-${reportType}`;
 
     const cachedReportRun = await fetchCachedData(
       cacheKey,
@@ -27,7 +28,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ accountI
         const reportRun = await stripe.reporting.reportRuns.create({
           report_type: REPORT_TYPES[reportType as Report],
           parameters: {
-            ...(reportType === Report.CONNECT && { connected_account: params.accountId }),
+            ...(reportType === Report.CONNECT && { connected_account: accountId }),
             interval_end: getUnixTime(endDate),
             interval_start: getUnixTime(startDate),
           },

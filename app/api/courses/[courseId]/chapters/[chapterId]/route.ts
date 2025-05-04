@@ -9,7 +9,8 @@ export const DELETE = async (
   _: NextRequest,
   props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
-  const params = await props.params;
+  const { chapterId, courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -18,7 +19,7 @@ export const DELETE = async (
     }
 
     const courseOwner = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!courseOwner) {
@@ -26,7 +27,7 @@ export const DELETE = async (
     }
 
     const chapter = await db.chapter.findUnique({
-      where: { id: params.chapterId, courseId: params.courseId },
+      where: { id: chapterId, courseId },
     });
 
     if (!chapter) {
@@ -37,7 +38,7 @@ export const DELETE = async (
 
     if (url) {
       const existingMuxData = await db.muxData.findFirst({
-        where: { chapterId: params.chapterId },
+        where: { chapterId },
       });
 
       if (existingMuxData) {
@@ -51,14 +52,14 @@ export const DELETE = async (
       }
     }
 
-    const deletedChapter = await db.chapter.delete({ where: { id: params.chapterId } });
+    const deletedChapter = await db.chapter.delete({ where: { id: chapterId } });
 
     const publishedChaptersInCourse = await db.chapter.findMany({
-      where: { courseId: params.courseId, isPublished: true },
+      where: { courseId, isPublished: true },
     });
 
     if (!publishedChaptersInCourse.length) {
-      await db.course.update({ where: { id: params.courseId }, data: { isPublished: false } });
+      await db.course.update({ where: { id: courseId }, data: { isPublished: false } });
     }
 
     return NextResponse.json(deletedChapter);
@@ -75,7 +76,8 @@ export const PATCH = async (
   req: NextRequest,
   props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
-  const params = await props.params;
+  const { chapterId, courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -84,7 +86,7 @@ export const PATCH = async (
     }
 
     const courseOwner = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!courseOwner) {
@@ -94,7 +96,7 @@ export const PATCH = async (
     const values = await req.json();
 
     const chapter = await db.chapter.update({
-      where: { id: params.chapterId, courseId: params.courseId },
+      where: { id: chapterId, courseId },
       data: {
         ...values,
         ...(values.imageUrl && { imageUrl: values.imageUrl, videoUrl: '' }),
@@ -106,7 +108,7 @@ export const PATCH = async (
 
     if (url) {
       const existingMuxData = await db.muxData.findFirst({
-        where: { chapterId: params.chapterId },
+        where: { chapterId },
       });
 
       if (existingMuxData) {
@@ -121,7 +123,7 @@ export const PATCH = async (
 
       await db.muxData.create({
         data: {
-          chapterId: params.chapterId,
+          chapterId,
           videoUrl: url,
         },
       });

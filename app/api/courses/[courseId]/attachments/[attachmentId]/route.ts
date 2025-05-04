@@ -9,7 +9,8 @@ export const DELETE = async (
   { nextUrl: { searchParams } }: NextRequest,
   props: { params: Promise<{ attachmentId: string; courseId: string }> },
 ) => {
-  const params = await props.params;
+  const { attachmentId, courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -18,7 +19,7 @@ export const DELETE = async (
     }
 
     const courseOwner = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!courseOwner) {
@@ -28,7 +29,7 @@ export const DELETE = async (
     const attachmentName = searchParams.get('name');
 
     const attachment = await db.attachment.delete({
-      where: { courseId: params.courseId, id: params.attachmentId },
+      where: { courseId, id: attachmentId },
     });
 
     if (attachmentName) {

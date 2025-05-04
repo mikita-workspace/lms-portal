@@ -8,7 +8,8 @@ import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -17,7 +18,7 @@ export const POST = async (_: NextRequest, props: { params: Promise<{ userId: st
     }
 
     const existingConnectAccount = await db.stripeConnectAccount.findUnique({
-      where: { userId: params.userId },
+      where: { userId },
     });
 
     let connectAccountId = existingConnectAccount?.stripeAccountId;
@@ -26,7 +27,7 @@ export const POST = async (_: NextRequest, props: { params: Promise<{ userId: st
       const connectAccount = await stripe.accounts.create({
         metadata: {
           name: user.name!,
-          userId: params.userId,
+          userId,
         },
         type: 'express',
         country: DEFAULT_COUNTRY_CODE,
@@ -43,7 +44,7 @@ export const POST = async (_: NextRequest, props: { params: Promise<{ userId: st
       });
 
       await db.stripeConnectAccount.create({
-        data: { userId: params.userId, stripeAccountId: connectAccount.id },
+        data: { userId, stripeAccountId: connectAccount.id },
       });
 
       connectAccountId = connectAccount.id;

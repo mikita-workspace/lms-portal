@@ -9,7 +9,8 @@ import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -20,7 +21,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ userId: 
     const { amount, currency } = await req.json();
 
     const connectAccount = await db.stripeConnectAccount.findUnique({
-      where: { userId: params.userId },
+      where: { userId },
     });
 
     if (!connectAccount) {

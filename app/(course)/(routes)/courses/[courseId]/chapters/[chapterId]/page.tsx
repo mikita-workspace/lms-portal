@@ -18,7 +18,7 @@ type ChapterIdPageProps = {
 };
 
 const ChapterIdPage = async (props: ChapterIdPageProps) => {
-  const params = await props.params;
+  const { chapterId, courseId } = await props.params;
   const t = await getTranslations('courses');
 
   const user = await getCurrentUser();
@@ -34,8 +34,8 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
     purchase,
     userProgress,
   } = await getChapter({
-    chapterId: params.chapterId,
-    courseId: params.courseId,
+    chapterId,
+    courseId,
     userId: user!.userId,
   });
 
@@ -54,9 +54,9 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
         <div className="p-4">
           {chapter?.videoUrl && (
             <ChapterVideoPlayer
-              chapterId={params.chapterId}
+              chapterId={chapterId}
               completeOnEnd={completeOnEnd}
-              courseId={params.courseId}
+              courseId={courseId}
               isLocked={isLocked}
               nextChapterId={nextChapter?.id}
               videoUrl={muxData?.videoUrl}
@@ -77,15 +77,15 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
           <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
           {purchase ? (
             <CourseProgressButton
-              chapterId={params.chapterId}
-              courseId={params.courseId}
+              chapterId={chapterId}
+              courseId={courseId}
               isCompleted={Boolean(userProgress?.isCompleted)}
               nextChapterId={nextChapter?.id}
             />
           ) : (
             <div className="w-full md:w-auto">
               <CourseEnrollButton
-                courseId={params.courseId}
+                courseId={courseId}
                 customRates={course.customRates}
                 price={course.price}
               />
