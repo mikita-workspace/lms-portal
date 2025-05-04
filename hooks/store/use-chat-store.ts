@@ -25,8 +25,8 @@ export const useChatStore = create<ChatStore, any>(
     (set) => ({
       chatMessages: {},
       conversationId: '',
-      currentModel: 'ollama',
-      currentModelLabel: 'Ollama',
+      currentModel: '',
+      currentModelLabel: '',
       isFetching: false,
       isImageGeneration: false,
       setChatMessages: (messages) => set({ chatMessages: messages }),

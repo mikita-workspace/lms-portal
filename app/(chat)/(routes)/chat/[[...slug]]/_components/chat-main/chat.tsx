@@ -38,6 +38,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     isImageGeneration,
     setChatMessages,
     setConversationId,
+    setCurrentModel,
     setIsFetching,
   } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
@@ -54,12 +55,14 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const IMAGE_MODELS = appConfig?.ai?.['image-models'] ?? [];
+  const TEXT_MODELS = appConfig?.ai?.['text-models'] ?? [];
 
   useEffect(() => {
     if (conversations.length) {
       const chatMessages = getChatMessages(conversations);
 
       setConversationId(conversations[0].id);
+      setCurrentModel(currentModel || TEXT_MODELS?.[0]?.value || '');
       setChatMessages(chatMessages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
