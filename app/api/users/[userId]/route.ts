@@ -7,7 +7,8 @@ import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
 export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -18,18 +19,18 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
     const { notification, ...values } = await req.json();
 
     const updatedUser = await db.user.update({
-      where: { id: params.userId },
+      where: { id: userId },
       data: { ...values },
     });
 
     if (notification) {
       await createWebSocketNotification({
-        channel: `notification_channel_${params.userId}`,
+        channel: `notification_channel_${userId}`,
         data: {
-          userId: params.userId,
+          userId,
           ...notification,
         },
-        event: `private_event_${params.userId}`,
+        event: `private_event_${userId}`,
       });
     }
 
@@ -44,7 +45,8 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
 };
 
 export const DELETE = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -53,12 +55,12 @@ export const DELETE = async (_: NextRequest, props: { params: Promise<{ userId: 
     }
 
     const stripeCustomer = await db.stripeCustomer.findUnique({
-      where: { userId: params.userId },
+      where: { userId },
       select: { stripeCustomerId: true },
     });
 
     const stripeSubscription = await db.stripeSubscription.findUnique({
-      where: { userId: params.userId },
+      where: { userId },
     });
 
     if (stripeSubscription?.stripeSubscriptionId) {
@@ -67,11 +69,11 @@ export const DELETE = async (_: NextRequest, props: { params: Promise<{ userId: 
 
     if (stripeCustomer) {
       await stripe.customers.del(stripeCustomer.stripeCustomerId);
-      await db.stripeCustomer.delete({ where: { userId: params.userId } });
+      await db.stripeCustomer.delete({ where: { userId } });
     }
 
     const deletedUser = await db.user.delete({
-      where: { id: params.userId },
+      where: { id: userId },
     });
 
     return NextResponse.json(deletedUser);

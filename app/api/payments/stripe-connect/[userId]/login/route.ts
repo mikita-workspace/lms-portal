@@ -6,7 +6,8 @@ import { db } from '@/lib/db';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -15,7 +16,7 @@ export const POST = async (_: NextRequest, props: { params: Promise<{ userId: st
     }
 
     const existingConnectAccount = await db.stripeConnectAccount.findUnique({
-      where: { userId: params.userId },
+      where: { userId },
     });
 
     const connectAccountId = existingConnectAccount?.stripeAccountId;

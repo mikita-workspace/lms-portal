@@ -33,7 +33,9 @@ export const getChatInitial = async () => {
     );
 
     return {
-      introMessages: JSON.parse(introMessages.output_text ?? '[]'),
+      introMessages: JSON.parse(
+        introMessages.output_text ?? introMessages.choices[0].message.content ?? '[]',
+      ),
     };
   } catch (error) {
     console.error('[GET_CHAT_INITIAL_ACTION]', error);

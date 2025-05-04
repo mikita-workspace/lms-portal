@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
 export const PUT = async (req: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -14,7 +15,7 @@ export const PUT = async (req: NextRequest, props: { params: Promise<{ courseId:
     }
 
     const courseOwner = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!courseOwner) {

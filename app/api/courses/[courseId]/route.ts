@@ -6,7 +6,8 @@ import { deleteFiles } from '@/actions/uploadthing/delete-files';
 import { db } from '@/lib/db';
 
 export const PATCH = async (req: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -17,7 +18,7 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ courseI
     const values = await req.json();
 
     const course = await db.course.update({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
       data: { ...values },
     });
 
@@ -32,7 +33,8 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ courseI
 };
 
 export const DELETE = async (_: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -41,7 +43,7 @@ export const DELETE = async (_: NextRequest, props: { params: Promise<{ courseId
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
       include: { chapters: { include: { muxData: true } }, attachments: true },
     });
 
@@ -73,7 +75,7 @@ export const DELETE = async (_: NextRequest, props: { params: Promise<{ courseId
       ...(course?.imageUrl ? [course.imageUrl.split('/').pop()!] : []),
     ]);
 
-    const deletedCourse = await db.course.delete({ where: { id: params.courseId } });
+    const deletedCourse = await db.course.delete({ where: { id: courseId } });
 
     return NextResponse.json(deletedCourse);
   } catch (error) {

@@ -15,7 +15,8 @@ export const POST = async (
   { nextUrl: { searchParams } }: NextRequest,
   props: { params: Promise<{ requestId: string }> },
 ) => {
-  const params = await props.params;
+  const { requestId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -29,7 +30,7 @@ export const POST = async (
 
     if (action === PayoutRequestStatus.DECLINED) {
       const payoutRequest = await db.payoutRequest.update({
-        where: { id: params.requestId },
+        where: { id: requestId },
         data: {
           status: action,
         },
@@ -51,7 +52,7 @@ export const POST = async (
 
     if (action === PayoutRequestStatus.PAID) {
       const payoutRequest = await db.payoutRequest.findUnique({
-        where: { id: params.requestId },
+        where: { id: requestId },
         include: { connectAccount: true },
       });
 
@@ -66,7 +67,7 @@ export const POST = async (
       });
 
       const updatedPayoutRequest = await db.payoutRequest.update({
-        where: { id: params.requestId },
+        where: { id: requestId },
         data: {
           destinationPaymentId: transfer.destination_payment?.toString(),
           status: action,

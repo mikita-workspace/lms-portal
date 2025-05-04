@@ -8,7 +8,8 @@ export const PATCH = async (
   _: NextRequest,
   props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
-  const params = await props.params;
+  const { chapterId, courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -17,7 +18,7 @@ export const PATCH = async (
     }
 
     const courseOwner = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!courseOwner) {
@@ -25,16 +26,16 @@ export const PATCH = async (
     }
 
     const unpublishedChapter = await db.chapter.update({
-      where: { id: params.chapterId, courseId: params.courseId },
+      where: { id: chapterId, courseId },
       data: { isPublished: false },
     });
 
     const publishedChapterInCourse = await db.chapter.findMany({
-      where: { courseId: params.courseId, isPublished: true },
+      where: { courseId, isPublished: true },
     });
 
     if (!publishedChapterInCourse.length) {
-      await db.course.update({ where: { id: params.courseId }, data: { isPublished: false } });
+      await db.course.update({ where: { id: courseId }, data: { isPublished: false } });
     }
 
     return NextResponse.json(unpublishedChapter);

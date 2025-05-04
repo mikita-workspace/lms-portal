@@ -21,12 +21,13 @@ import { TitleForm } from './_components/form/title-form';
 type CourseIdPageProps = { params: Promise<{ courseId: string }> };
 
 const CourseIdPage = async (props: CourseIdPageProps) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   const user = await getCurrentUser();
 
   const course = await db.course.findUnique({
     where: {
-      id: params.courseId,
+      id: courseId,
       userId: user!.userId,
     },
     include: {
@@ -88,7 +89,7 @@ const CourseIdPage = async (props: CourseIdPageProps) => {
                 </span>
               </div>
               <Actions
-                courseId={params.courseId}
+                courseId={courseId}
                 disabled={!isCompleted}
                 hasPurchases={Boolean(course?._count?.purchases)}
                 isPublished={course.isPublished}

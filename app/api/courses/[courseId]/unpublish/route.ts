@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
 export const PATCH = async (_: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -14,7 +15,7 @@ export const PATCH = async (_: NextRequest, props: { params: Promise<{ courseId:
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
     });
 
     if (!course) {
@@ -22,7 +23,7 @@ export const PATCH = async (_: NextRequest, props: { params: Promise<{ courseId:
     }
 
     const unpublishedCourse = await db.course.update({
-      where: { id: params.courseId, userId: user.userId },
+      where: { id: courseId, userId: user.userId },
       data: { isPublished: false },
     });
 

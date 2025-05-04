@@ -9,7 +9,8 @@ export const POST = async (
   _: NextRequest,
   props: { params: Promise<{ conversationId: string }> },
 ) => {
-  const params = await props.params;
+  const { conversationId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -17,13 +18,13 @@ export const POST = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    if (!params.conversationId) {
+    if (!conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
     const newSharedConversation = await db.chatSharedConversation.create({
       data: {
-        conversationId: params.conversationId,
+        conversationId,
         expireAt: addMonths(Date.now(), 1),
         userId: user.userId,
       },
@@ -44,7 +45,8 @@ export const PATCH = async (
   req: NextRequest,
   props: { params: Promise<{ conversationId: string }> },
 ) => {
-  const params = await props.params;
+  const { conversationId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -52,14 +54,14 @@ export const PATCH = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    if (!params?.conversationId) {
+    if (!conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
     const { isActive, isOnlyAuth } = await req.json();
 
     const updatedSharedConversation = await db.chatSharedConversation.update({
-      where: { conversationId: params.conversationId },
+      where: { conversationId },
       data: {
         expireAt: addMonths(Date.now(), 1),
         isActive: isActive ?? false,
@@ -82,7 +84,8 @@ export const DELETE = async (
   _: NextRequest,
   props: { params: Promise<{ conversationId: string }> },
 ) => {
-  const params = await props.params;
+  const { conversationId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -90,11 +93,11 @@ export const DELETE = async (
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    if (!params?.conversationId) {
+    if (!conversationId) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
-    await db.chatSharedConversation.delete({ where: { conversationId: params.conversationId } });
+    await db.chatSharedConversation.delete({ where: { conversationId } });
 
     return NextResponse.json({ success: true });
   } catch (error) {

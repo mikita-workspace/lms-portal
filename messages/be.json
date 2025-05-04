@@ -305,13 +305,15 @@
     },
     "conversation": {
       "add": "Новы дыялог",
+      "clear": "Ачысціць дыялог",
       "conversations": "Дыялогі",
       "delete-all": "Выдаліць усе дыялогі",
       "edit": "Рэдагаваць",
       "remove": "Выдаліць",
       "removed-conversation": "Дыялог \"{ conversation }\" быў паспяхова выдалены.",
       "share": "Падзяліцца",
-      "title": "Новы дыялог { order }"
+      "title": "Новы дыялог { order }",
+      "view": "Прагледзець усе дыялогі"
     },
     "input": {
       "ask": "Спытайце",

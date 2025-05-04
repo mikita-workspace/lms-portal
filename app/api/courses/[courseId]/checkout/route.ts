@@ -11,7 +11,8 @@ import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (req: NextRequest, props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+  const { courseId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -20,7 +21,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, isPublished: true },
+      where: { id: courseId, isPublished: true },
     });
 
     const { locale, details, rate } = await req.json();
@@ -32,7 +33,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
     const t = await getTranslations('courses.checkout');
 
     const purchase = await db.purchase.findUnique({
-      where: { userId_courseId: { userId: user.userId, courseId: params.courseId } },
+      where: { userId_courseId: { userId: user.userId, courseId } },
     });
 
     if (purchase) {

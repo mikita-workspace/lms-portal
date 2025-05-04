@@ -8,7 +8,8 @@ export const PUT = async (
   req: NextRequest,
   props: { params: Promise<{ courseId: string; chapterId: string }> },
 ) => {
-  const params = await props.params;
+  const { chapterId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -22,13 +23,13 @@ export const PUT = async (
       where: {
         userId_chapterId: {
           userId: user.userId,
-          chapterId: params.chapterId,
+          chapterId,
         },
       },
       update: {
         isCompleted,
       },
-      create: { userId: user.userId, chapterId: params.chapterId, isCompleted },
+      create: { userId: user.userId, chapterId, isCompleted },
     });
 
     return NextResponse.json(userProgress);

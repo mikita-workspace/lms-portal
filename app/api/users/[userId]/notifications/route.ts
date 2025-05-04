@@ -5,7 +5,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { db } from '@/lib/db';
 
 export const GET = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -14,7 +15,7 @@ export const GET = async (_: NextRequest, props: { params: Promise<{ userId: str
     }
 
     const userNotifications = await db.notification.findMany({
-      where: { userId: params.userId },
+      where: { userId },
       orderBy: { createdAt: 'desc' },
       select: {
         body: true,
@@ -37,7 +38,8 @@ export const GET = async (_: NextRequest, props: { params: Promise<{ userId: str
 };
 
 export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
+
   try {
     const user = await getCurrentUser();
 
@@ -53,7 +55,7 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
       const updatedAllUserNotification = await db.notification.updateMany({
         where: {
           id: { in: ids.map((notification: { id: string }) => notification.id) },
-          userId: params.userId,
+          userId,
         },
         data: { isRead: other.isRead },
       });
@@ -62,7 +64,7 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
     }
 
     const updatedUserNotification = await db.notification.update({
-      where: { id, userId: params.userId },
+      where: { id, userId },
       data: { ...other },
       select: {
         body: true,
@@ -85,7 +87,7 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
 };
 
 export const DELETE = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
-  const params = await props.params;
+  const { userId } = await props.params;
   try {
     const user = await getCurrentUser();
 
@@ -97,7 +99,7 @@ export const DELETE = async (req: NextRequest, props: { params: Promise<{ userId
 
     if (id) {
       const deletedUserNotification = await db.notification.delete({
-        where: { id, userId: params.userId },
+        where: { id, userId },
         select: {
           id: true,
         },
