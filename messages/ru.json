@@ -304,13 +304,15 @@
     },
     "conversation": {
       "add": "Новый диалог",
+      "clear": "Очистить диалог",
       "conversations": "Диалоги",
       "delete-all": "Удалить все диалоги",
       "edit": "Редактировать",
       "remove": "Удалить",
       "removed-conversation": "Диалог \"{ conversation }\" был успешно удален.",
       "share": "Поделиться",
-      "title": "Новый диалог { order }"
+      "title": "Новый диалог { order }",
+      "view": "Просмотреть все диалоги"
     },
     "input": {
       "ask": "Спросить",

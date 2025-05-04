@@ -1,18 +1,23 @@
 'use client';
 
-import { SquareArrowOutUpRight, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { absoluteUrl, cn } from '@/lib/utils';
 
 import { PrettyLoader } from '../loaders/pretty-loader';
 import { Button, Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui';
+import { ChatContextMenu } from './chat-context-menu';
 
 export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  const { currentModelLabel } = useChatStore((state) => ({
+    currentModelLabel: state.currentModelLabel,
+  }));
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -32,17 +37,21 @@ export const Chat = () => {
         <div className="relative h-full">
           {!isReady && <PrettyLoader isCopilot />}
           {isReady && (
-            <div className="fixed pt-4 px-4 flex gap-x-1">
-              <SheetClose asChild>
-                <Button className="w-full" variant="outline">
-                  <X className="h-4 w-4" />
-                </Button>
-              </SheetClose>
-              <Link href={absoluteUrl('/chat')} target="_blank">
-                <Button className="w-full" variant="outline">
-                  <SquareArrowOutUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
+            <div className="fixed py-2 px-4 flex gap-x-1 border-b justify-between sm:max-w-md w-full items-center">
+              <div>
+                <p className={'font-semibold text-base text-neutral-700 dark:text-neutral-300'}>
+                  Nova Copilot
+                </p>
+                <p className={'text-muted-foreground text-xs'}>{currentModelLabel}</p>
+              </div>
+              <div className="flex gap-x-2">
+                <ChatContextMenu />
+                <SheetClose asChild>
+                  <Button className="w-full" variant="outline">
+                    <X className="h-4 w-4" />
+                  </Button>
+                </SheetClose>
+              </div>
             </div>
           )}
           <iframe

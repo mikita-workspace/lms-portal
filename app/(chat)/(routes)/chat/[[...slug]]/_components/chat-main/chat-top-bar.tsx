@@ -48,6 +48,7 @@ export const ChatTopBar = ({
     isFetching,
     setChatMessages,
     setCurrentModel,
+    setCurrentModelLabel,
     setIsFetching,
   } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
@@ -87,48 +88,50 @@ export const ChatTopBar = ({
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
       <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl pt-4 px-4">
         <div className="flex items-center justify-between w-full gap-x-2">
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger className={cn(isEmbed && 'flex-1')} asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="w-[180px] justify-between truncate"
-              >
-                {currentModel
-                  ? models.find((model) => model.value === currentModel)?.label
-                  : 'Select model...'}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
-              <Command>
-                <CommandGroup>
-                  {models.map((model) => (
-                    <CommandItem
-                      key={model.value}
-                      value={model.value}
-                      onSelect={(currentValue) => {
-                        const value = currentValue === currentModel ? '' : currentValue;
+          {!isEmbed && (
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger className={cn(isEmbed && 'flex-1')} asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-[180px] justify-between truncate"
+                >
+                  {currentModel
+                    ? models.find((model) => model.value === currentModel)?.label
+                    : models[0]?.label}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandGroup>
+                    {models.map((model) => (
+                      <CommandItem
+                        key={model.value}
+                        value={model.value}
+                        onSelect={(currentValue) => {
+                          const value = currentValue === currentModel ? '' : currentValue;
 
-                        setCurrentModel(value);
-                        setOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          'mr-2 h-4 w-4',
-                          currentModel === model.value ? 'opacity-100' : 'opacity-0',
-                        )}
-                      />
-                      {model.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
-          {isEmbed && <ChatConversationSwitch conversations={conversations} />}
+                          setCurrentModel(value);
+                          setCurrentModelLabel(model.label);
+                          setOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            currentModel === model.value ? 'opacity-100' : 'opacity-0',
+                          )}
+                        />
+                        {model.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          )}
           {!isEmbed && (
             <div className="flex gap-1">
               <Button
