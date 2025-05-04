@@ -6,7 +6,6 @@ import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import { ChatCompletionRole } from '@/constants/ai';
 import { ONE_DAY_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
-import { validateJson } from '@/lib/utils';
 
 import { generateCompletion } from '../ai/generate-completion';
 
@@ -35,7 +34,7 @@ export const getChatInitial = async () => {
 
     return {
       introMessages: JSON.parse(
-        validateJson(introMessages.output_text ?? introMessages.choices[0].message.content) ?? '[]',
+        introMessages.output_text ?? introMessages.choices[0].message.content ?? '[]',
       ),
     };
   } catch (error) {
