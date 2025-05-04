@@ -4,7 +4,6 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 
-import { Conversation } from '@/actions/chat/get-chat-conversations';
 import {
   Button,
   Command,
