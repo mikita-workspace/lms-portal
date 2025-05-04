@@ -35,10 +35,12 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     chatMessages,
     conversationId,
     currentModel,
+    currentModelLabel,
     isImageGeneration,
     setChatMessages,
     setConversationId,
     setCurrentModel,
+    setCurrentModelLabel,
     setIsFetching,
   } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
@@ -63,6 +65,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
       setConversationId(conversations[0].id);
       setCurrentModel(currentModel || TEXT_MODELS?.[0]?.value || '');
+      setCurrentModelLabel(currentModelLabel || TEXT_MODELS?.[0]?.label || '');
       setChatMessages(chatMessages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
