@@ -23,17 +23,13 @@ import { fetcher } from '@/lib/fetcher';
 import { isOwner } from '@/lib/owner';
 import { cn } from '@/lib/utils';
 
-import { ChatConversationSwitch } from './chat-conversation-switch';
-
 type ChatTopBarProps = {
-  conversations?: Conversation[];
   isEmbed?: boolean;
   isSubmitting?: boolean;
   setAssistantMessage: (value: string) => void;
 };
 
 export const ChatTopBar = ({
-  conversations = [],
   isEmbed = false,
   isSubmitting = false,
   setAssistantMessage,

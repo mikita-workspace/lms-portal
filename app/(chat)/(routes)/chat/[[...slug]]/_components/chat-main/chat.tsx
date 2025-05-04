@@ -256,7 +256,6 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
           )}
           {!isShared && (
             <ChatTopBar
-              conversations={conversations}
               isEmbed={isEmbed}
               isSubmitting={isSubmitting}
               setAssistantMessage={setAssistantMessage}
