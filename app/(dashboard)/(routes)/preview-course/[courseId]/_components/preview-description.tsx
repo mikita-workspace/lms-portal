@@ -61,7 +61,7 @@ export const PreviewDescription = ({
         {Boolean(user?.userId) && language !== currentLocale && (
           <div className="my-2">
             <GenerateTextResponseAi
-              cacheKey={`course-description-[${id}]-[${currentLocale}]`}
+              cacheKey={`preview-course-description-[${id}]::user-[${user?.userId}]-[${currentLocale}]`}
               isTranslateButton
               callback={setTranslatedDescription}
               messages={[

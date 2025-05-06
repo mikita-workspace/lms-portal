@@ -31,7 +31,7 @@ export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) 
       {Boolean(user?.userId) && enableTranslate && language !== currentLocale && (
         <div className="p-4">
           <GenerateTextResponseAi
-            cacheKey={`chapter-description-[${id}]-[${currentLocale}]`}
+            cacheKey={`preview-chapter-description-[${id}]::user-[${user?.userId}]-[${currentLocale}]`}
             isTranslateButton
             callback={setTranslatedDescription}
             messages={[

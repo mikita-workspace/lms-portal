@@ -1,6 +1,7 @@
 'use client';
 
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { GrClearOption } from 'react-icons/gr';
 
@@ -14,6 +15,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
+import { AI_PROVIDER_LABEL } from '@/constants/ai';
 import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
@@ -33,6 +35,8 @@ export const ChatTopBar = ({
   isSubmitting = false,
   setAssistantMessage,
 }: ChatTopBarProps) => {
+  const t = useTranslations('chat.top-bar');
+
   const { toast } = useToast();
 
   const { user } = useCurrentUser();
@@ -85,22 +89,22 @@ export const ChatTopBar = ({
         <div className="flex items-center justify-between w-full gap-x-2">
           {!isEmbed && (
             <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger className={cn(isEmbed && 'flex-1')} asChild>
+              <PopoverTrigger asChild>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-[180px] justify-between truncate"
+                  className="w-[140px] justify-between truncate"
                 >
                   {currentModel
                     ? models.find((model) => model.value === currentModel)?.label
                     : models[0]?.label}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
+              <PopoverContent className="w-[160px] p-0">
                 <Command>
-                  <CommandGroup>
+                  <CommandGroup heading={t('models')}>
                     {models.map((model) => (
                       <CommandItem
                         key={model.value}
@@ -113,13 +117,24 @@ export const ChatTopBar = ({
                           setOpen(false);
                         }}
                       >
-                        <Check
-                          className={cn(
-                            'mr-2 h-4 w-4',
-                            currentModel === model.value ? 'opacity-100' : 'opacity-0',
-                          )}
-                        />
-                        {model.label}
+                        <div className="flex">
+                          <Check
+                            className={cn(
+                              'mr-2 mt-1 h-4 w-4',
+                              currentModel === model.value ? 'opacity-100' : 'opacity-0',
+                            )}
+                          />
+                          <div className="flex flex-col">
+                            <p className="font-semibold">{model.label}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {
+                                AI_PROVIDER_LABEL[
+                                  appConfig?.ai.provider as keyof typeof AI_PROVIDER_LABEL
+                                ]
+                              }
+                            </p>
+                          </div>
+                        </div>
                       </CommandItem>
                     ))}
                   </CommandGroup>

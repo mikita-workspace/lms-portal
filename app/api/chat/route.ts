@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const user = await getCurrentUser();
 
-    if (!user?.hasSubscription) {
+    if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
       ),
     });
 
-    if (image) {
+    if (image?.url) {
       await db.chatImageGenerationMessage.create({
         data: {
           messageId: image.messageId,

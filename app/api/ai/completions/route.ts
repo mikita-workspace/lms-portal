@@ -2,7 +2,9 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { generateCompletion } from '@/actions/ai/generate-completion';
+import { getRequestsLimit } from '@/actions/ai/get-requests-imit';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { REQUEST_STATUS } from '@/constants/ai';
 
 export const maxDuration = 60;
 
@@ -14,6 +16,12 @@ export const POST = async (req: NextRequest) => {
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
+    const requestsLimit = await getRequestsLimit(user);
+
+    if (requestsLimit.status === REQUEST_STATUS.FORBIDDEN) {
+      return new NextResponse(requestsLimit.message, { status: StatusCodes.FORBIDDEN });
     }
 
     const response = await generateCompletion({

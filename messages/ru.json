@@ -323,6 +323,9 @@
     },
     "shared": {
       "expiredAt": "Доступно до { date }"
+    },
+    "top-bar": {
+      "models": "Модели"
     }
   },
   "ai-generate": {
@@ -330,6 +333,9 @@
     "original": "Вернуть оригинал",
     "stop": "Стоп",
     "translate": "Перевести с Nova\u00a0Copilot"
+  },
+  "ai-limit": {
+    "title": "У вас закончились Nova\u00a0Copilot запросы. Перейдите на Nova\u00a0Plus, или поробуйте еще раз после { date }."
   },
   "cookie-consent": {
     "accept": "Принять",
@@ -352,11 +358,11 @@
     "searchFor": "Искать курс..."
   },
   "subscription": {
-    "bannerBody": "Разблокируйте премиум-курсы, получите доступ к Nova\u00a0Copilot и многое другое.",
+    "bannerBody": "Премиум-курсы, неограниченный доступ к Nova\u00a0Copilot и многое другое.",
     "bannerTitle": "Обновитесь до Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Отмените в любое время",
-      "get-access-nova-ai": "Получите доступ к Nova Copilot",
+      "get-access-nova-ai": "Получите неограниченный доступ к Nova Copilot",
       "unlock-premium-courses": "Разблокируйте премиум курсы"
     },
     "bestChoice": "Лучший выбор!",

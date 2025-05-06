@@ -324,6 +324,9 @@
     },
     "shared": {
       "expiredAt": "Available until { date }"
+    },
+    "top-bar": {
+      "models": "Models"
     }
   },
   "ai-generate": {
@@ -331,6 +334,9 @@
     "original": "Return the original",
     "stop": "Stop",
     "translate": "Translate with Nova\u00aCopilot"
+  },
+  "ai-limit": {
+    "title": "You have run out of Nova\u00a0Copilot requests. Switch to Nova\u00a0Plus, or try again after {date}."
   },
   "cookie-consent": {
     "accept": "Accept",
@@ -353,11 +359,11 @@
     "searchFor": "Search for a course..."
   },
   "subscription": {
-    "bannerBody": "Unlock premium courses, get access to Nova\u00a0Copilot, and more.",
+    "bannerBody": "Premium courses, unlimited access to Nova\u00a0Copilot, and more.",
     "bannerTitle": "Upgrade to Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Cancel anytime",
-      "get-access-nova-ai": "Get access to Nova Copilot",
+      "get-access-nova-ai": "Get unlimited access to Nova Copilot",
       "unlock-premium-courses": "Unlock premium courses"
     },
     "bestChoice": "The best choice!",

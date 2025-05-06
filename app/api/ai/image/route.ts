@@ -3,8 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
 import { generateImage } from '@/actions/ai/generate-image';
+import { getRequestsLimit } from '@/actions/ai/get-requests-imit';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { uploadFiles } from '@/actions/uploadthing/upload-files';
+import { REQUEST_STATUS } from '@/constants/ai';
 
 export const maxDuration = 60;
 
@@ -16,6 +18,15 @@ export const POST = async (req: NextRequest) => {
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
+    const requestsLimit = await getRequestsLimit(user);
+
+    if (requestsLimit.status === REQUEST_STATUS.FORBIDDEN) {
+      return NextResponse.json(
+        { revisedPrompt: requestsLimit.message },
+        { status: StatusCodes.FORBIDDEN },
+      );
     }
 
     const response = await generateImage({

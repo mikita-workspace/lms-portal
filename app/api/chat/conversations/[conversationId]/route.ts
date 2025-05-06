@@ -15,7 +15,7 @@ export const PATCH = async (
   try {
     const user = await getCurrentUser();
 
-    if (!user?.hasSubscription) {
+    if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 

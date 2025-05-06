@@ -324,6 +324,9 @@
     },
     "shared": {
       "expiredAt": "Даступна да { date }"
+    },
+    "top-bar": {
+      "models": "Мадэль"
     }
   },
   "ai-generate": {
@@ -331,6 +334,9 @@
     "original": "Вярнуць арыгінал",
     "stop": "Спыніць",
     "translate": "Перакласці з Nova\u00a0Copilot"
+  },
+  "ai-limit": {
+    "title": "У вас скончыліся Nova\u00a0Copilot запыты. Перайдзіце на Nova\u00a0Plus, або паспрабуйце яшчэ раз пасля { date }."
   },
   "cookie-consent": {
     "accept": "Прыняць",
@@ -353,11 +359,11 @@
     "searchFor": "Шукаць курс..."
   },
   "subscription": {
-    "bannerBody": "Разблакаваць прэміум-курсы, атрымаць доступ да Nova\u00a0Copilot і многае іншае.",
+    "bannerBody": "Прэміум-курсы, неабмежаваны доступ да Nova\u00a0Copilot і многае іншае.",
     "bannerTitle": "Абнавіць да Nova\u00a0Plus",
     "benefits": {
       "cancel-anytime": "Ануляваць у любы час",
-      "get-access-nova-ai": "Атрымаць доступ да Nova Copilot",
+      "get-access-nova-ai": "Атрымаць неабмежаваны доступ да Nova Copilot",
       "unlock-premium-courses": "Разблакаваць прэміум-курсы"
     },
     "bestChoice": "Лепшы выбар!",

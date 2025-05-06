@@ -6,7 +6,7 @@ export const ChatGreeting = () => {
   const t = useTranslations('chat.body');
 
   return (
-    <div className="mx-auto px-8 size-full flex flex-col justify-center mb-2">
+    <div className="mx-auto px-8 size-full flex flex-col justify-center mb-4">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

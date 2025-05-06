@@ -26,3 +26,14 @@ export const switchLanguage = (language: string) => {
       break;
   }
 };
+
+export const getFormatLocale = (language: string) => {
+  switch (language) {
+    case LOCALE.RU:
+      return ru;
+    case LOCALE.BE:
+      return be;
+    default:
+      return enUS;
+  }
+};

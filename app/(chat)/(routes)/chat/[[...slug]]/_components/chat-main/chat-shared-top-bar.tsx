@@ -19,7 +19,9 @@ export const ChatSharedTopBar = ({ expiredAt, title }: ChatSharedTopBarProps) =>
         <div className="font-medium">{title}</div>
         {expiredAt && (
           <div className="text-xs text-muted-foreground">
-            {t('expiredAt', { date: format(expiredAt, TIMESTAMP_PREVIEW_TEMPLATE) })}
+            {t('expiredAt', {
+              date: format(expiredAt, TIMESTAMP_PREVIEW_TEMPLATE),
+            })}
           </div>
         )}
       </div>

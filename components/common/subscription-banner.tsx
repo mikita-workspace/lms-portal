@@ -6,11 +6,16 @@ import { useState } from 'react';
 
 import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
+import { cn } from '@/lib/utils';
 
 import { SubscriptionModal } from '../modals/subscription-modal';
 import { Button } from '../ui';
 
-export const SubscriptionBanner = () => {
+type SubscriptionBannerProps = {
+  className?: string;
+};
+
+export const SubscriptionBanner = ({ className }: SubscriptionBannerProps) => {
   const t = useTranslations('subscription');
 
   const { toast } = useToast();
@@ -47,7 +52,7 @@ export const SubscriptionBanner = () => {
       {open && (
         <SubscriptionModal description={subscriptionDescription} open={open} setOpen={setOpen} />
       )}
-      <div className="border rounded-lg flex flex-col p-4 gap-y-2">
+      <div className={cn('border rounded-lg flex flex-col p-4 gap-y-2', className)}>
         <h2 className="font-semibold tracking-tight text-base">{t('bannerTitle')}</h2>
         <p className="text-muted-foreground text-sm mb-2">{t('bannerBody')}</p>
         <Button

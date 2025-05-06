@@ -12,4 +12,5 @@ export const TIMESTAMP_TEMPLATE = 'HH:mm, dd MMM yyyy';
 export const TIMESTAMP_SUBSCRIPTION_TEMPLATE = 'dd MMM yyyy';
 export const TIMESTAMP_PREVIEW_TEMPLATE = 'dd MMMM, yyyy';
 export const TIMESTAMP_USER_PROFILE_TEMPLATE = 'dd MMM yyyy, HH:mm';
+export const TIMESTAMP_REQUESTS_LIMIT_TEMPLATE = 'dd MMMM, yyyy HH:mm';
 export const DATE_RANGE_TEMPLATE = 'LLL dd, y';

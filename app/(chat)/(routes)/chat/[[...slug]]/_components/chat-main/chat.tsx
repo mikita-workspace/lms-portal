@@ -187,6 +187,9 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
               streamAssistMessage += data.delta;
               setAssistantMessage((prev) => prev + data.delta);
+            } else {
+              streamAssistMessage += chunk;
+              setAssistantMessage((prev) => prev + chunk);
             }
           }
         }

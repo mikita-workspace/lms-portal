@@ -105,6 +105,9 @@ export const GenerateTextResponseAi = ({
 
             text += data.delta;
             callback((prev) => prev + data.delta);
+          } else {
+            text += chunk;
+            callback((prev) => prev + chunk);
           }
         }
       }

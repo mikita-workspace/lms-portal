@@ -1,4 +1,4 @@
-import { compareAsc } from 'date-fns';
+import { compareAsc } from 'date-fns/compareAsc';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -30,16 +30,16 @@ const ChatLayout = async ({ children, params }: ChatLayoutProps) => {
   const isEmbed = slug?.includes('embed');
   const isShared = slug?.includes('shared');
 
+  if (!user?.userId && !isShared) {
+    return redirect('/');
+  }
+
   const globalProgress = await getGlobalProgress(user?.userId);
   const { notifications: userNotifications } = await getUserNotifications({
     userId: user?.userId,
     take: 5,
   });
   const conversations = isEmbed || isShared ? [] : await getChatConversations({});
-
-  if (!user?.hasSubscription && !isShared) {
-    return redirect('/');
-  }
 
   if (slug?.length && !(isEmbed || isShared)) {
     notFound();
