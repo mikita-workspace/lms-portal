@@ -13,7 +13,7 @@ type GenerateImage = Omit<ImageGenerateParams, 'model'> & {
 export const generateImage = async ({ model, prompt }: GenerateImage) => {
   const config = await getAppConfig();
 
-  const aiModel = model ?? config?.ai?.['image-models']?.[0].value ?? '';
+  const aiModel = model || config?.ai?.['image-models']?.[0].value || '';
   const provider = AIProvider(config?.ai?.provider);
 
   const IMAGE_MODELS = config?.ai?.['image-models'] ?? [];

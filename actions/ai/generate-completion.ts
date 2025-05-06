@@ -23,7 +23,7 @@ export const generateCompletion = async ({
   const user = await getCurrentUser();
   const config = await getAppConfig();
 
-  const aiModel = model ?? config?.ai?.['text-models']?.[0].value ?? '';
+  const aiModel = model || config?.ai?.['text-models']?.[0].value || '';
   const provider = AIProvider(config?.ai?.provider);
 
   const TEXT_MODELS = config?.ai?.['text-models'] ?? [];
