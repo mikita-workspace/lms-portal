@@ -8,13 +8,13 @@ export const AIProvider = (provider: string) => {
   switch (provider) {
     case AI_PROVIDER.deepseek:
       options = {
-        apiKey: process.env.DEEP_SEEK_TOKEN,
+        apiKey: process.env.DEEPSEEK_API_KEY,
         baseURL: 'https://api.deepseek.com',
       };
       break;
     case AI_PROVIDER.openai:
       options = {
-        apiKey: process.env.OPEN_AI_TOKEN,
+        apiKey: process.env.OPENAI_API_KEY,
       };
       break;
     default:

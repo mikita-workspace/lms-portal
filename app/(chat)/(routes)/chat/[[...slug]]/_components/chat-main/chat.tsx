@@ -56,8 +56,8 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const IMAGE_MODELS = appConfig?.ai?.['image-models'] ?? [];
-  const TEXT_MODELS = appConfig?.ai?.['text-models'] ?? [];
+  const IMAGE_MODELS = appConfig?.ai.flatMap((ai) => ai['image-models']) ?? [];
+  const TEXT_MODELS = appConfig?.ai.flatMap((ai) => ai['text-models']) ?? [];
 
   useEffect(() => {
     if (conversations.length) {
@@ -263,13 +263,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
               title={conversations?.[0]?.title}
             />
           )}
-          {!isShared && (
-            <ChatTopBar
-              isEmbed={isEmbed}
-              isSubmitting={isSubmitting}
-              setAssistantMessage={setAssistantMessage}
-            />
-          )}
+          {!isShared && <ChatTopBar isEmbed={isEmbed} />}
           <ChatBody
             assistantImage={assistantImage}
             assistantMessage={assistantMessage}

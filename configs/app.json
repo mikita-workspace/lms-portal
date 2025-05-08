@@ -1,31 +1,55 @@
 {
-  "ai": {
-    "image-models": [
-      {
-        "value": "dall-e-3",
-        "label": "DALL·E 3"
-      }
-    ],
-    "text-models": [
-      {
-        "value": "gpt-4o-mini",
-        "label": "GPT-4o mini"
-      },
-      {
-        "value": "gpt-4.1-mini",
-        "label": "GPT-4.1 mini"
-      },
-      {
-        "value": "o4-mini",
-        "label": "o4-mini"
-      },
-      {
-        "value": "o3-mini",
-        "label": "o3-mini"
-      }
-    ],
-    "provider": "openai"
-  },
+  "ai": [
+    {
+      "image-models": [
+        {
+          "label": "DALL·E 3",
+          "owner": "OpenAI",
+          "value": "dall-e-3",
+          "isSubscription": false
+        }
+      ],
+      "text-models": [
+        {
+          "value": "gpt-4o-mini",
+          "label": "GPT-4o mini",
+          "owner": "OpenAI",
+          "isSubscription": false
+        },
+        {
+          "value": "gpt-4.1-mini",
+          "label": "GPT-4.1 mini",
+          "owner": "OpenAI",
+          "isSubscription": false
+        },
+        {
+          "value": "o4-mini",
+          "label": "o4-mini",
+          "owner": "OpenAI",
+          "isSubscription": true
+        },
+        {
+          "value": "o3-mini",
+          "label": "o3-mini",
+          "owner": "OpenAI",
+          "isSubscription": true
+        }
+      ],
+      "provider": "openai"
+    },
+    {
+      "image-models": [],
+      "text-models": [
+        {
+          "value": "deepseek-chat",
+          "label": "DeepSeek-V3",
+          "owner": "DeepSeek",
+          "isSubscription": false
+        }
+      ],
+      "provider": "deepseek"
+    }
+  ],
   "auth": {
     "isBlockedNewLogin": false,
     "providers": {

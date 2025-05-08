@@ -4,11 +4,9 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { ResponseCreateParamsBase } from 'openai/resources/responses/responses.mjs';
 
 import { AI_PROVIDER, ChatCompletionRole } from '@/constants/ai';
-import { isOwner } from '@/lib/owner';
-import { AIProvider } from '@/server/ai-provider';
 
 import { getCurrentUser } from '../auth/get-current-user';
-import { getAppConfig } from '../configs/get-app-config';
+import { getTargetProvider } from './get-target-provider';
 
 type GenerateCompletion = Omit<ResponseCreateParamsBase, 'model'> & {
   model?: string;
@@ -21,26 +19,19 @@ export const generateCompletion = async ({
   stream = false,
 }: GenerateCompletion) => {
   const user = await getCurrentUser();
-  const config = await getAppConfig();
 
-  const aiModel = model || config?.ai?.['text-models']?.[0].value || '';
-  const provider = AIProvider(config?.ai?.provider);
+  const { provider, providerName, targetTextModel } = await getTargetProvider(model);
 
-  const TEXT_MODELS = config?.ai?.['text-models'] ?? [];
-  const models = (isOwner(user?.userId) ? TEXT_MODELS : TEXT_MODELS.slice(0, 2)).map(
-    ({ value }) => value,
-  );
-
-  if (!models.includes(aiModel)) {
-    return { completion: null, model: aiModel };
+  if (!user?.hasSubscription && targetTextModel.isSubscription) {
+    return { completion: null, model: targetTextModel.value };
   }
 
   const completion =
-    config?.ai?.provider === AI_PROVIDER.openai
+    providerName === AI_PROVIDER.openai
       ? await provider.responses.create({
           input,
           instructions,
-          model: aiModel,
+          model: targetTextModel.value,
           stream,
         })
       : await provider.chat.completions.create({
@@ -48,7 +39,7 @@ export const generateCompletion = async ({
             ...(instructions ? [{ role: ChatCompletionRole.SYSTEM, content: instructions }] : []),
             ...input,
           ] as ChatCompletionMessageParam[],
-          model: aiModel,
+          model: targetTextModel.value,
           stream,
         });
 
@@ -68,11 +59,15 @@ export const generateCompletion = async ({
               content_index: event.content_index,
               delta: event.delta,
             };
+
             await writer.write(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+          } else if (event.choices[0].finish_reason !== 'stop') {
+            await writer.write(encoder.encode(event.choices[0].delta.content ?? ''));
           }
         }
       } catch (error) {
         console.error('Stream processing error:', error);
+
         await writer.write(
           encoder.encode(`data: ${JSON.stringify({ error: 'Stream processing error' })}\n\n`),
         );
@@ -81,8 +76,8 @@ export const generateCompletion = async ({
       }
     })();
 
-    return { completion: stream_response.readable, model: aiModel };
+    return { completion: stream_response.readable, model: targetTextModel.value };
   }
 
-  return { completion, model: aiModel };
+  return { completion, model: targetTextModel.value };
 };
