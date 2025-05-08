@@ -54,8 +54,8 @@
       "text-models": [
         {
           "value": "gemma3:4b",
-          "label": "Gemma 3 (Local)",
-          "owner": "Google",
+          "label": "Gemma 3",
+          "owner": "Google (Local)",
           "isSubscription": false
         }
       ],
