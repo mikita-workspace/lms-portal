@@ -48,6 +48,18 @@
         }
       ],
       "provider": "deepseek"
+    },
+    {
+      "image-models": [],
+      "text-models": [
+        {
+          "value": "gemma3:4b",
+          "label": "Gemma 3 (Local)",
+          "owner": "Google",
+          "isSubscription": false
+        }
+      ],
+      "provider": "ollama"
     }
   ],
   "auth": {

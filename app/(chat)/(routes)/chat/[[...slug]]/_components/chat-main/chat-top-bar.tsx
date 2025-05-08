@@ -21,23 +21,53 @@ import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { cn } from '@/lib/utils';
 
+type Model = GetAppConfig['ai'][0]['text-models'][0];
+
+type CommandItemsProps = {
+  callback: (value: { currentModel: string; currentModelLabel: string; isOpen: boolean }) => void;
+  currentModel: string;
+  models: Model[];
+};
+
 type ChatTopBarProps = {
   isEmbed?: boolean;
 };
 
-export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
+const CommandItems = ({ callback, currentModel, models }: CommandItemsProps) => {
   const { user } = useCurrentUser();
 
+  return models.map((model) => (
+    <CommandItem
+      disabled={!user?.hasSubscription}
+      key={model.value}
+      value={model.value}
+      onSelect={(currentValue) => {
+        const value = currentValue === currentModel ? '' : currentValue;
+
+        callback({ currentModel: value, currentModelLabel: model.label, isOpen: false });
+      }}
+    >
+      <div className="flex">
+        <Check
+          className={cn(
+            'mr-2 mt-1 h-4 w-4',
+            currentModel === model.value ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+        <div className="flex flex-col">
+          <p className="font-semibold">{model.label}</p>
+          <p className="text-xs text-muted-foreground">{model.owner}</p>
+        </div>
+      </div>
+    </CommandItem>
+  ));
+};
+
+export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
   const t = useTranslations('chat.top-bar');
 
-  const {
-    chatMessages,
-    conversationId,
-    currentModel,
-
-    setCurrentModel,
-    setCurrentModelLabel,
-  } = useChatStore();
+  const { chatMessages, conversationId, currentModel, setCurrentModel, setCurrentModelLabel } =
+    useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
     config: state.config,
   }));
@@ -45,7 +75,7 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
   const [open, setOpen] = useState(false);
 
   const [paidModels, freeModels] = (appConfig?.ai.flatMap((ai) => ai['text-models']) ?? []).reduce<
-    [GetAppConfig['ai'][0]['text-models'], GetAppConfig['ai'][0]['text-models']]
+    [Model[], Model[], Model[]]
   >(
     (acc, model) => {
       if (model.isSubscription) {
@@ -55,10 +85,24 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
       }
       return acc;
     },
-    [[], []],
+    [[], [], []],
   );
 
   const messages = chatMessages[conversationId] ?? [];
+
+  const handleCommandItemsCallback = ({
+    currentModel,
+    currentModelLabel,
+    isOpen,
+  }: {
+    currentModel: string;
+    currentModelLabel: string;
+    isOpen: boolean;
+  }) => {
+    setCurrentModel(currentModel);
+    setCurrentModelLabel(currentModelLabel);
+    setOpen(isOpen);
+  };
 
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
@@ -83,62 +127,19 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
                 <Command>
                   <CommandList>
                     <CommandGroup heading={t('models')}>
-                      {freeModels.map((model) => (
-                        <CommandItem
-                          key={model.value}
-                          value={model.value}
-                          onSelect={(currentValue) => {
-                            const value = currentValue === currentModel ? '' : currentValue;
-
-                            setCurrentModel(value);
-                            setCurrentModelLabel(model.label);
-                            setOpen(false);
-                          }}
-                        >
-                          <div className="flex">
-                            <Check
-                              className={cn(
-                                'mr-2 mt-1 h-4 w-4',
-                                currentModel === model.value ? 'opacity-100' : 'opacity-0',
-                              )}
-                            />
-                            <div className="flex flex-col">
-                              <p className="font-semibold">{model.label}</p>
-                              <p className="text-xs text-muted-foreground">{model.owner}</p>
-                            </div>
-                          </div>
-                        </CommandItem>
-                      ))}
+                      <CommandItems
+                        callback={handleCommandItemsCallback}
+                        currentModel={currentModel}
+                        models={freeModels}
+                      />
                     </CommandGroup>
                     <CommandSeparator />
                     <CommandGroup heading={'Preview'}>
-                      {paidModels.map((model) => (
-                        <CommandItem
-                          key={model.value}
-                          value={model.value}
-                          disabled={!user?.hasSubscription}
-                          onSelect={(currentValue) => {
-                            const value = currentValue === currentModel ? '' : currentValue;
-
-                            setCurrentModel(value);
-                            setCurrentModelLabel(model.label);
-                            setOpen(false);
-                          }}
-                        >
-                          <div className="flex">
-                            <Check
-                              className={cn(
-                                'mr-2 mt-1 h-4 w-4',
-                                currentModel === model.value ? 'opacity-100' : 'opacity-0',
-                              )}
-                            />
-                            <div className="flex flex-col">
-                              <p className="font-semibold">{model.label}</p>
-                              <p className="text-xs text-muted-foreground">{model.owner}</p>
-                            </div>
-                          </div>
-                        </CommandItem>
-                      ))}
+                      <CommandItems
+                        callback={handleCommandItemsCallback}
+                        currentModel={currentModel}
+                        models={paidModels}
+                      />
                     </CommandGroup>
                   </CommandList>
                 </Command>

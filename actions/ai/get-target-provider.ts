@@ -1,8 +1,35 @@
 'use server';
 
-import { AIProvider } from '@/server/ai-provider';
+import OpenAI from 'openai';
+
+import { AI_PROVIDER } from '@/constants/ai';
 
 import { getAppConfig } from '../configs/get-app-config';
+
+const AIProvider = (provider: string) => {
+  let options = {};
+
+  switch (provider) {
+    case AI_PROVIDER.deepseek:
+      options = {
+        apiKey: process.env.DEEPSEEK_API_KEY,
+        baseURL: 'https://api.deepseek.com',
+      };
+      break;
+    case AI_PROVIDER.openai:
+      options = {
+        apiKey: process.env.OPENAI_API_KEY,
+      };
+      break;
+    default:
+      options = {
+        apiKey: 'ollama',
+        baseURL: process.env.OLLAMA_BASE_URL,
+      };
+  }
+
+  return new OpenAI(options);
+};
 
 export const getTargetProvider = async (model: string | undefined) => {
   const config = await getAppConfig();
