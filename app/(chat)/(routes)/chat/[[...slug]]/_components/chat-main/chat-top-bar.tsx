@@ -74,7 +74,7 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
 
   const [open, setOpen] = useState(false);
 
-  const [paidModels, freeModels] = (appConfig?.ai.flatMap((ai) => ai['text-models']) ?? []).reduce<
+  const [paidModels, freeModels] = (appConfig?.ai?.flatMap((ai) => ai['text-models']) ?? []).reduce<
     [Model[], Model[], Model[]]
   >(
     (acc, model) => {
