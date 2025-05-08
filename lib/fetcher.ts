@@ -18,7 +18,7 @@ class Fetcher {
 
     if (options?.responseType === 'text') {
       const res = await fetch(url, {
-        cache: options?.cache || 'force-cache',
+        cache: options?.cache ?? 'force-cache',
         headers: options.headers,
       });
 
@@ -32,7 +32,7 @@ class Fetcher {
     const fetchOptions = {
       method: 'POST',
       body: JSON.stringify(options?.body),
-      cache: options?.cache || 'force-cache',
+      cache: options?.cache ?? 'force-cache',
       headers: options?.headers,
       signal: options?.signal,
     };

@@ -28,6 +28,7 @@ export const getGithubContents = async ({
               Accept: 'application/vnd.github.raw',
               Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
             },
+            cache: 'no-cache',
           },
         );
 
