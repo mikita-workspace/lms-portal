@@ -52,16 +52,21 @@ export const generateCompletion = async ({
 
       try {
         for await (const event of completion as any) {
-          if (event.type === 'response.output_text.delta') {
-            const data = {
-              item_id: event.item_id,
-              output_index: event.output_index,
-              content_index: event.content_index,
-              delta: event.delta,
-            };
-
-            await writer.write(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
-          } else if (event.choices[0].finish_reason !== 'stop') {
+          if (providerName === AI_PROVIDER.openai && event.type === 'response.output_text.delta') {
+            await writer.write(
+              encoder.encode(
+                `data: ${JSON.stringify({
+                  item_id: event.item_id,
+                  output_index: event.output_index,
+                  content_index: event.content_index,
+                  delta: event.delta,
+                })}\n\n`,
+              ),
+            );
+          } else if (
+            [AI_PROVIDER.deepseek, AI_PROVIDER.ollama].includes(providerName as AI_PROVIDER) &&
+            event.choices[0].finish_reason !== 'stop'
+          ) {
             await writer.write(encoder.encode(event.choices[0].delta.content ?? ''));
           }
         }
