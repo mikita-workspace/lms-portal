@@ -6,10 +6,10 @@ import { getGithubContents } from '../github/get-contents';
 
 export type GetAppConfig = {
   ai: {
-    'image-models': { value: string; label: string }[];
-    'text-models': { value: string; label: string }[];
+    'image-models': { value: string; label: string; owner: string; isSubscription: boolean }[];
+    'text-models': { value: string; label: string; owner: string; isSubscription: boolean }[];
     provider: string;
-  };
+  }[];
   auth: { isBlockedNewLogin: true; providers: Record<string, boolean> };
   features: { christmas: boolean };
 };
@@ -26,11 +26,13 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
     console.error('[GET_APP_CONFIG_ACTION]', error);
 
     return {
-      ai: {
-        'image-models': [],
-        'text-models': [],
-        provider: 'ollama',
-      },
+      ai: [
+        {
+          'image-models': [],
+          'text-models': [],
+          provider: 'ollama',
+        },
+      ],
       auth: {
         isBlockedNewLogin: true,
         providers: {

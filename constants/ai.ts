@@ -23,12 +23,6 @@ export const enum AI_PROVIDER {
   openai = 'openai',
 }
 
-export const AI_PROVIDER_LABEL = {
-  deepseek: 'DeepSeek',
-  ollama: 'Ollama',
-  openai: 'OpenAI',
-};
-
 export const LIMIT_REQUESTS_PER_MONTH = 5;
 export const enum REQUEST_STATUS {
   ALLOW = 'allow',

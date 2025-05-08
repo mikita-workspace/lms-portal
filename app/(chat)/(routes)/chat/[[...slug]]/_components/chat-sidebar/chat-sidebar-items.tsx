@@ -5,6 +5,7 @@ import { EllipsisVertical, Globe, GlobeLock, GripVertical, Pencil, Trash2 } from
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
+import { GrClearOption } from 'react-icons/gr';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
 import { ChatConversationModal } from '@/components/modals/chat-conversation-modal';
@@ -16,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
+import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { getChatMessages } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
@@ -27,6 +29,7 @@ type ChatSideBarItemsProps = {
 
 export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
   const { toast } = useToast();
+
   const t = useTranslations('chat.conversation');
 
   const router = useRouter();
@@ -76,6 +79,29 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
     }
   };
 
+  const handleDeleteMessages = async (id: string) => {
+    setIsFetching(true);
+
+    try {
+      const updatedChatMessages = {
+        ...chatMessages,
+        [id]: [],
+      };
+
+      await fetcher.patch(
+        `/api/chat/conversations/${id}?action=${CONVERSATION_ACTION.EMPTY_MESSAGES}`,
+      );
+
+      setChatMessages(updatedChatMessages);
+    } catch (error) {
+      console.error('[CHAT-SIDEBAR-ITEMS]', error);
+
+      toast({ isError: true });
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   const handleRemoveConversation = async (id: string) => {
     setIsFetching(true);
 
@@ -90,6 +116,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
       router.refresh();
     } catch (error) {
+      console.error('[CHAT-SIDEBAR-ITEMS]', error);
+
       toast({ isError: true });
     } finally {
       setIsFetching(false);
@@ -108,6 +136,8 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
       router.refresh();
     } catch (error) {
+      console.error('[CHAT-SIDEBAR-ITEMS]', error);
+
       toast({ isError: true });
     } finally {
       setIsFetching(false);
@@ -150,7 +180,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
         />
       )}
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="conversations">
+        <Droppable droppableId="conversations" isDropDisabled={isFetching}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {clientConversations.map((conversation, index) => {
@@ -207,16 +237,24 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem
                                   className="hover:cursor-pointer"
-                                  onClick={() => setOpen(true)}
                                   disabled={isFetching}
+                                  onClick={() => setOpen(true)}
                                 >
                                   <Pencil className="h-4 w-4 mr-2" />
                                   {t('edit')}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
+                                  className="hover:cursor-pointer"
+                                  disabled={isFetching}
+                                  onClick={() => handleDeleteMessages(conversation.id)}
+                                >
+                                  <GrClearOption className="h-4 w-4 mr-2" />
+                                  {t('clear')}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
                                   className="hover:cursor-pointer text-red-500"
-                                  onClick={() => handleRemoveConversation(conversation.id)}
                                   disabled={isFetching || conversations.length === 1}
+                                  onClick={() => handleRemoveConversation(conversation.id)}
                                 >
                                   <Trash2 className="h-4 w-4 mr-2" />
                                   {t('remove')}
