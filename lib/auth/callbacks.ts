@@ -19,7 +19,7 @@ export const callbacks: NextAuthOptions['callbacks'] = {
     const hasOtpSecret = cookieStore.has(`${OTP_SECRET_SECURE}:${email}`);
 
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
-      const dbUser = await loginUser(email, user.name, user?.image, user?.password);
+      const dbUser = await loginUser(email.toLowerCase(), user.name, user?.image, user?.password);
 
       if (!dbUser) {
         return `/restricted?code=${encodeURIComponent(encrypt({ email }, process.env.NEXTAUTH_SECRET as string))}`;

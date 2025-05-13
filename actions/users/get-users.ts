@@ -1,6 +1,13 @@
 'use server';
 
-import { StripeSubscription, User } from '@prisma/client';
+import {
+  ChatSharedConversation,
+  CopilotRequestLimit,
+  Course,
+  CsmIssue,
+  StripeSubscription,
+  User,
+} from '@prisma/client';
 
 import { PAGE_SIZES } from '@/constants/paginations';
 import { db } from '@/lib/db';
@@ -11,7 +18,13 @@ type GetUsers = {
   search?: string;
 };
 
-type UserWithSubscription = User & { stripeSubscription: StripeSubscription | null };
+type UserWithSubscription = User & {
+  copilotRequestLimit: CopilotRequestLimit | null;
+  courses: Course[];
+  csmIssues: CsmIssue[];
+  sharedConversations: ChatSharedConversation[];
+  stripeSubscription: StripeSubscription | null;
+};
 
 export const getUsers = async ({
   pageIndex = 0,
@@ -24,7 +37,13 @@ export const getUsers = async ({
   try {
     const users = await db.user.findMany({
       where: { email: { contains: search, mode: 'insensitive' } },
-      include: { stripeSubscription: true },
+      include: {
+        copilotRequestLimit: true,
+        courses: true,
+        csmIssues: true,
+        sharedConversations: true,
+        stripeSubscription: true,
+      },
       orderBy: { createdAt: 'desc' },
       skip: index * size,
       take: size,

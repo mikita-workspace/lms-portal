@@ -6,7 +6,15 @@ import { ArrowUpDown } from 'lucide-react';
 
 import { TextBadge } from '@/components/common/text-badge';
 import { DateColumn } from '@/components/data-table/columns/date-column';
-import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui';
 import { getFallbackName } from '@/lib/utils';
 
 import { ColumnActions } from './column-actions';
@@ -94,6 +102,22 @@ export const columns: ColumnDef<UserWithSubscription>[] = [
       const { id, role } = row.original;
 
       return <ColumnActions userId={id} role={role} />;
+    },
+  },
+  {
+    id: 'extraInfo',
+    header: () => <span>Info</span>,
+    cell: ({ row }) => {
+      return (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Get</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <pre className="text-sm">{JSON.stringify(row.original, undefined, 2)}</pre>
+          </DialogContent>
+        </Dialog>
+      );
     },
   },
 ];

@@ -1,11 +1,10 @@
 'use server';
 
-import { addMonths, compareAsc, format } from 'date-fns';
+import { addWeeks, compareAsc, format } from 'date-fns';
 import { ReasonPhrases } from 'http-status-codes';
-import { getTranslations } from 'next-intl/server';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
-import { LIMIT_REQUESTS_PER_MONTH, REQUEST_STATUS } from '@/constants/ai';
+import { LIMIT_REQUESTS_PER_WEEK, REQUEST_STATUS } from '@/constants/ai';
 import { TIMESTAMP_REQUESTS_LIMIT_TEMPLATE } from '@/constants/common';
 import { db } from '@/lib/db';
 import { getFormatLocale } from '@/lib/locale';
@@ -16,7 +15,7 @@ const handleRequestLimitExceeded = async (copilotRequests: any, userId: string) 
   if (!copilotRequests.expiredAt) {
     return await db.copilotRequestLimit.update({
       where: { userId },
-      data: { expiredAt: addMonths(Date.now(), 1) },
+      data: { expiredAt: addWeeks(Date.now(), 1) },
     });
   }
   return copilotRequests;
@@ -46,7 +45,7 @@ export const getRequestsLimit = async (user: Awaited<ReturnType<typeof getCurren
     create: { requests: 0, userId },
   });
 
-  if (copilotRequests.requests >= LIMIT_REQUESTS_PER_MONTH) {
+  if (copilotRequests.requests >= LIMIT_REQUESTS_PER_WEEK) {
     copilotRequests = await handleRequestLimitExceeded(copilotRequests, userId);
   }
 
