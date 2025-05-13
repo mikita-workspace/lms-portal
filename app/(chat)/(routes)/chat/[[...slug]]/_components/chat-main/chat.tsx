@@ -1,6 +1,6 @@
 'use client';
 
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Conversation } from '@/actions/chat/get-chat-conversations';
@@ -56,8 +56,14 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const IMAGE_MODELS = appConfig?.ai.flatMap((ai) => ai['image-models']) ?? [];
-  const TEXT_MODELS = appConfig?.ai.flatMap((ai) => ai['text-models']) ?? [];
+  const IMAGE_MODELS = useMemo(
+    () => appConfig?.ai.flatMap((ai) => ai['image-models']) ?? [],
+    [appConfig?.ai],
+  );
+  const TEXT_MODELS = useMemo(
+    () => appConfig?.ai.flatMap((ai) => ai['text-models']) ?? [],
+    [appConfig?.ai],
+  );
 
   useEffect(() => {
     if (conversations.length) {
@@ -68,190 +74,219 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       setCurrentModelLabel(currentModelLabel || TEXT_MODELS?.[0]?.label || '');
       setChatMessages(chatMessages);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    conversations,
+    currentModel,
+    currentModelLabel,
+    TEXT_MODELS,
+    setConversationId,
+    setCurrentModel,
+    setCurrentModelLabel,
+    setChatMessages,
+  ]);
+
+  const saveLastMessages = useCallback(
+    async (userMessage: Message, assistMessage: Message & { url: string }) => {
+      const response = await fetcher.post('/api/chat', {
+        body: {
+          conversationId,
+          image: isImageGeneration
+            ? {
+                messageId: assistMessage.id,
+                model: IMAGE_MODELS[0].value,
+                revisedPrompt: assistMessage.content,
+                url: assistMessage.url,
+              }
+            : null,
+          messages: [userMessage, assistMessage],
+          model: currentModel,
+        },
+        responseType: 'json',
+      });
+
+      if (response?.messages) {
+        const updatedChatMessages = {
+          ...chatMessages,
+          [conversationId]: [...chatMessages[conversationId], ...response.messages],
+        };
+
+        setAssistantMessage('');
+        setAssistantImage('');
+        setChatMessages(updatedChatMessages);
+      }
+    },
+    [
+      chatMessages,
+      conversationId,
+      currentModel,
+      isImageGeneration,
+      IMAGE_MODELS,
+      setAssistantMessage,
+      setAssistantImage,
+      setChatMessages,
+    ],
+  );
+
+  const handleSubmit = useCallback(
+    async (event: SyntheticEvent, options?: { userMessage?: string; regenerate?: boolean }) => {
+      event.preventDefault();
+
+      setIsSubmitting(true);
+      setIsFetching(true);
+
+      const messages = chatMessages[conversationId];
+
+      const currentUserMessage = {
+        content: currentMessage || options?.userMessage || '',
+        id: uuidv4(),
+        role: ChatCompletionRole.USER,
+      } as Message;
+
+      const currentAssistantMessage = {
+        content: options?.userMessage ? '' : assistantMessage,
+        id: uuidv4(),
+        role: ChatCompletionRole.ASSISTANT,
+      } as Message;
+
+      const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
+        (message) => message.content.length,
+      );
+
+      if (!messagesForApi.length) {
+        return;
+      }
+
+      if (!options?.regenerate) {
+        const updatedChatMessages = {
+          ...chatMessages,
+          [conversationId]: [...messages, ...messagesForApi],
+        };
+
+        setChatMessages(updatedChatMessages);
+      }
+
+      setAssistantMessage('');
+      setCurrentMessage('');
+
+      let streamAssistMessage = '';
+      let streamAssistImage = '';
+
+      try {
+        if (isImageGeneration) {
+          const imageGeneration = await fetcher.post('api/ai/image', {
+            responseType: 'json',
+            body: {
+              model: IMAGE_MODELS[0].value,
+              prompt: currentMessage,
+            },
+            cache: 'no-cache',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          streamAssistMessage = imageGeneration.revisedPrompt;
+          streamAssistImage = imageGeneration.url;
+
+          setAssistantMessage(imageGeneration.revisedPrompt);
+          setAssistantImage(imageGeneration.url);
+        } else {
+          abortControllerRef.current = new AbortController();
+          const signal = abortControllerRef.current.signal;
+
+          const completionStream = await fetcher.post('/api/ai/completions', {
+            body: {
+              input: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
+                ({ content, role }) => ({
+                  content,
+                  role,
+                }),
+              ),
+              model: currentModel,
+              stream: true,
+            },
+            cache: 'no-cache',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            signal,
+          });
+
+          const reader = completionStream.body?.getReader();
+          const decoder = new TextDecoder('utf-8');
+
+          while (true) {
+            const rawChunk = await reader?.read();
+
+            if (!rawChunk) {
+              throw new Error('Unable to process chunk');
+            }
+
+            const { done, value } = rawChunk;
+
+            if (done) {
+              break;
+            }
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n').filter((line) => line.trim());
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = JSON.parse(line.slice(6));
+
+                streamAssistMessage += data.delta;
+                setAssistantMessage((prev) => prev + data.delta);
+              } else {
+                streamAssistMessage += chunk;
+                setAssistantMessage((prev) => prev + chunk);
+              }
+            }
+          }
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError') {
+          toast({
+            description: String(error?.message),
+            isError: true,
+          });
+        }
+      } finally {
+        saveLastMessages(currentUserMessage, {
+          content: streamAssistMessage,
+          id: uuidv4(),
+          role: ChatCompletionRole.ASSISTANT,
+          url: streamAssistImage,
+        } as Message & { url: string });
+
+        setIsSubmitting(false);
+        setIsFetching(false);
+      }
+    },
+    [
+      setIsFetching,
+      chatMessages,
+      conversationId,
+      currentMessage,
+      assistantMessage,
+      setChatMessages,
+      isImageGeneration,
+      IMAGE_MODELS,
+      currentModel,
+      toast,
+      saveLastMessages,
+    ],
+  );
+
+  const handleAbortGenerating = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
   }, []);
 
   if (!isMounted) {
     return <ChatSkeleton />;
   }
-
-  const handleSubmit = async (
-    event: SyntheticEvent,
-    options?: { userMessage?: string; regenerate?: boolean },
-  ) => {
-    event.preventDefault();
-
-    setIsSubmitting(true);
-    setIsFetching(true);
-
-    const messages = chatMessages[conversationId];
-
-    const currentUserMessage = {
-      content: currentMessage || options?.userMessage || '',
-      id: uuidv4(),
-      role: ChatCompletionRole.USER,
-    } as Message;
-
-    const currentAssistantMessage = {
-      content: options?.userMessage ? '' : assistantMessage,
-      id: uuidv4(),
-      role: ChatCompletionRole.ASSISTANT,
-    } as Message;
-
-    const messagesForApi = [currentAssistantMessage, currentUserMessage].filter(
-      (message) => message.content.length,
-    );
-
-    if (!messagesForApi.length) {
-      return;
-    }
-
-    if (!options?.regenerate) {
-      const updatedChatMessages = {
-        ...chatMessages,
-        [conversationId]: [...messages, ...messagesForApi],
-      };
-
-      setChatMessages(updatedChatMessages);
-    }
-
-    setAssistantMessage('');
-    setCurrentMessage('');
-
-    let streamAssistMessage = '';
-    let streamAssistImage = '';
-
-    try {
-      if (isImageGeneration) {
-        const imageGeneration = await fetcher.post('api/ai/image', {
-          responseType: 'json',
-          body: {
-            model: IMAGE_MODELS[0].value,
-            prompt: currentMessage,
-          },
-          cache: 'no-cache',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        streamAssistMessage = imageGeneration.revisedPrompt;
-        streamAssistImage = imageGeneration.url;
-
-        setAssistantMessage(imageGeneration.revisedPrompt);
-        setAssistantImage(imageGeneration.url);
-      } else {
-        abortControllerRef.current = new AbortController();
-        const signal = abortControllerRef.current.signal;
-
-        const completionStream = await fetcher.post('/api/ai/completions', {
-          body: {
-            input: [...messages, ...(options?.regenerate ? [] : messagesForApi)].map(
-              ({ content, role }) => ({
-                content,
-                role,
-              }),
-            ),
-            model: currentModel,
-            stream: true,
-          },
-          cache: 'no-cache',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          signal,
-        });
-
-        const reader = completionStream.body?.getReader();
-        const decoder = new TextDecoder('utf-8');
-
-        while (true) {
-          const rawChunk = await reader?.read();
-
-          if (!rawChunk) {
-            throw new Error('Unable to process chunk');
-          }
-
-          const { done, value } = rawChunk;
-
-          if (done) {
-            break;
-          }
-
-          const chunk = decoder.decode(value);
-          const lines = chunk.split('\n').filter((line) => line.trim());
-
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = JSON.parse(line.slice(6));
-
-              streamAssistMessage += data.delta;
-              setAssistantMessage((prev) => prev + data.delta);
-            } else {
-              streamAssistMessage += chunk;
-              setAssistantMessage((prev) => prev + chunk);
-            }
-          }
-        }
-      }
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
-        toast({
-          description: String(error?.message),
-          isError: true,
-        });
-      }
-    } finally {
-      saveLastMessages(currentUserMessage, {
-        content: streamAssistMessage,
-        id: uuidv4(),
-        role: ChatCompletionRole.ASSISTANT,
-        url: streamAssistImage,
-      } as Message & { url: string });
-
-      setIsSubmitting(false);
-      setIsFetching(false);
-    }
-  };
-
-  const handleAbortGenerating = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-  };
-
-  const saveLastMessages = async (
-    userMessage: Message,
-    assistMessage: Message & { url: string },
-  ) => {
-    const response = await fetcher.post('/api/chat', {
-      body: {
-        conversationId,
-        image: isImageGeneration
-          ? {
-              messageId: assistMessage.id,
-              model: IMAGE_MODELS[0].value,
-              revisedPrompt: assistMessage.content,
-              url: assistMessage.url,
-            }
-          : null,
-        messages: [userMessage, assistMessage],
-        model: currentModel,
-      },
-      responseType: 'json',
-    });
-
-    if (response?.messages) {
-      const updatedChatMessages = {
-        ...chatMessages,
-        [conversationId]: [...chatMessages[conversationId], ...response.messages],
-      };
-
-      setAssistantMessage('');
-      setAssistantImage('');
-      setChatMessages(updatedChatMessages);
-    }
-  };
 
   return (
     <div className="flex h-full w-full">

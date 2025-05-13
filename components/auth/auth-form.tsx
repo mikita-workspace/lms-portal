@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -56,8 +56,13 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
   const [captchaToken, setCaptchaToken] = useState('');
 
+  const validationSchema = useMemo(
+    () => (isSignUpFlow ? signUpSchema : signInSchema),
+    [isSignUpFlow],
+  );
+
   const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(isSignUpFlow ? signUpSchema : signInSchema),
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       ...(isSignUpFlow && { name: '' }),
       email: '',
@@ -67,38 +72,43 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
 
   const { isSubmitting, errors } = form.formState;
 
+  const handleSubmit = useCallback(
+    async (data: z.infer<typeof signUpSchema>) => {
+      try {
+        setIsDisabledButtons(true);
+        const response = await signIn('credentials', {
+          ...data,
+          callbackUrl,
+          isSignUpFlow,
+          redirect: false,
+        });
+
+        switch (true) {
+          case !response?.error:
+            router.push('/');
+            router.refresh();
+            break;
+          case isValidUrl(response?.error ?? ''):
+            router.push(response.error);
+            break;
+          default:
+            toast({
+              description: response.error,
+              isError: true,
+            });
+        }
+      } catch (error) {
+        toast({ isError: true });
+      } finally {
+        setIsDisabledButtons(false);
+      }
+    },
+    [toast, setIsDisabledButtons, callbackUrl, router, isSignUpFlow],
+  );
+
   if (!isMounted) {
     return <AuthFormSkeleton />;
   }
-
-  const handleSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    try {
-      const response = await signIn('credentials', {
-        ...values,
-        callbackUrl,
-        isSignUpFlow,
-        redirect: false,
-      });
-
-      switch (true) {
-        case !response?.error:
-          router.push('/');
-          router.refresh();
-          break;
-        case isValidUrl(response?.error ?? ''):
-          router.push(response.error);
-          break;
-        default:
-          setIsDisabledButtons(false);
-          toast({
-            description: response.error,
-            isError: true,
-          });
-      }
-    } catch (error) {
-      toast({ isError: true });
-    }
-  };
 
   const hasCredentialsProvider = providers?.[Provider.CREDENTIALS];
 

@@ -2,7 +2,7 @@
 
 import { Check, ChevronDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 import { GetAppConfig } from '@/actions/configs/get-app-config';
 import {
@@ -33,7 +33,7 @@ type ChatTopBarProps = {
   isEmbed?: boolean;
 };
 
-const CommandItems = ({ callback, currentModel, models }: CommandItemsProps) => {
+const CommandItems = memo(({ callback, currentModel, models }: CommandItemsProps) => {
   const { user } = useCurrentUser();
 
   return models.map((model) => (
@@ -43,7 +43,6 @@ const CommandItems = ({ callback, currentModel, models }: CommandItemsProps) => 
       value={model.value}
       onSelect={(currentValue) => {
         const value = currentValue === currentModel ? '' : currentValue;
-
         callback({ currentModel: value, currentModelLabel: model.label, isOpen: false });
       }}
     >
@@ -61,9 +60,9 @@ const CommandItems = ({ callback, currentModel, models }: CommandItemsProps) => 
       </div>
     </CommandItem>
   ));
-};
+});
 
-export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
+const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
   const t = useTranslations('chat.top-bar');
 
   const { chatMessages, conversationId, currentModel, setCurrentModel, setCurrentModelLabel } =
@@ -74,42 +73,51 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
 
   const [open, setOpen] = useState(false);
 
-  const [paidModels, freeModels] = (appConfig?.ai?.flatMap((ai) => ai['text-models']) ?? []).reduce<
-    [Model[], Model[], Model[]]
-  >(
-    (acc, model) => {
-      if (model.isSubscription) {
-        acc[0].push(model);
-      } else {
-        acc[1].push(model);
-      }
-      return acc;
-    },
-    [[], [], []],
+  const [paidModels, freeModels] = useMemo(
+    () =>
+      (appConfig?.ai?.flatMap((ai) => ai['text-models']) ?? []).reduce<[Model[], Model[]]>(
+        (acc, model) => {
+          if (model.isSubscription) {
+            acc[0].push(model);
+          } else {
+            acc[1].push(model);
+          }
+          return acc;
+        },
+        [[], []],
+      ),
+    [appConfig?.ai],
   );
 
   const messages = chatMessages[conversationId] ?? [];
 
-  const handleCommandItemsCallback = ({
-    currentModel,
-    currentModelLabel,
-    isOpen,
-  }: {
-    currentModel: string;
-    currentModelLabel: string;
-    isOpen: boolean;
-  }) => {
-    setCurrentModel(currentModel);
-    setCurrentModelLabel(currentModelLabel);
-    setOpen(isOpen);
-  };
+  const handleCommandItemsCallback = useCallback(
+    ({
+      currentModel,
+      currentModelLabel,
+      isOpen,
+    }: {
+      currentModel: string;
+      currentModelLabel: string;
+      isOpen: boolean;
+    }) => {
+      setCurrentModel(currentModel);
+      setCurrentModelLabel(currentModelLabel);
+      setOpen(isOpen);
+    },
+    [setCurrentModel, setCurrentModelLabel],
+  );
+
+  const handleOpenChange = useCallback((value: boolean) => {
+    setOpen(value);
+  }, []);
 
   return (
     <div className={cn('w-full h-[75px]', !messages.length && 'h-full')}>
       <div className="flex flex-1 flex-col text-base md:px-5 lg:px-1 xl:px-5 mx-auto gap-3 md:max-w-3xl lg:max-w-[40rem] xl:max-w-4xl pt-4 px-4">
         <div className="flex items-center justify-center w-full gap-x-2">
           {!isEmbed && (
-            <Popover open={open} onOpenChange={setOpen}>
+            <Popover open={open} onOpenChange={handleOpenChange}>
               <PopoverTrigger asChild>
                 <Button
                   variant="ghost"
@@ -151,3 +159,8 @@ export const ChatTopBar = ({ isEmbed = false }: ChatTopBarProps) => {
     </div>
   );
 };
+
+CommandItems.displayName = 'CommandItems';
+ChatTopBarComponent.displayName = 'ChatTopBar';
+
+export const ChatTopBar = memo(ChatTopBarComponent);

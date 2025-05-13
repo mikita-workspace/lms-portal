@@ -4,7 +4,7 @@ import { Notification } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useState, useTransition } from 'react';
+import { memo, useState, useTransition } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 import { useToast } from '@/components/ui/use-toast';
@@ -44,6 +44,8 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
 
       startTransition(() => router.refresh());
     } catch (error) {
+      console.log('[NOTIFICATION-CARDS]', error);
+
       toast({ isError: true });
     } finally {
       setIsLoading(false);
@@ -82,7 +84,7 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
   );
 };
 
-export const NotificationCards = ({
+const NotificationCardsComponent = ({
   isFetching = false,
   notifications,
 }: NotificationCardsProps) => {
@@ -97,3 +99,7 @@ export const NotificationCards = ({
     />
   ));
 };
+
+NotificationCardsComponent.displayName = 'NotificationCards';
+
+export const NotificationCards = memo(NotificationCardsComponent);

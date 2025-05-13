@@ -2,6 +2,7 @@
 
 import { Fee } from '@prisma/client';
 import { useTranslations } from 'next-intl';
+import { memo, useMemo } from 'react';
 
 import { useHydration } from '@/hooks/use-hydration';
 import { useLocaleAmount } from '@/hooks/use-locale-amount';
@@ -19,7 +20,20 @@ type PriceProps = {
   useDefaultLocale?: boolean;
 };
 
-export const Price = ({
+const AccordionContentComponent = memo(
+  ({ formattedCalculatedFees }: { formattedCalculatedFees: any[] }) => (
+    <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
+      {formattedCalculatedFees.map((fee) => (
+        <div key={fee.id} className="flex gap-2 items-center justify-between">
+          <div>{fee.name}&nbsp;</div>
+          <div>{fee.amount}</div>
+        </div>
+      ))}
+    </AccordionContent>
+  ),
+);
+
+const PriceComponent = ({
   currency,
   customRates,
   fees = [],
@@ -48,6 +62,11 @@ export const Price = ({
 
   const { isMounted } = useHydration();
 
+  const shouldShowFees = useMemo(
+    () => Boolean(fees.length) && formattedNet && formattedTotalFees,
+    [fees.length, formattedNet, formattedTotalFees],
+  );
+
   if (!isMounted) {
     return <Skeleton className="h-[20px] w-[100px]" />;
   }
@@ -58,9 +77,9 @@ export const Price = ({
       {!isLoading && (amount ?? 0) > 0 && (
         <div className="flex flex-col gap-1">
           <span>{formattedPrice}</span>
-          {Boolean(fees.length) && formattedNet && formattedTotalFees && (
+          {shouldShowFees && (
             <>
-              {showFeesAccordion && (
+              {showFeesAccordion ? (
                 <Accordion type="single" collapsible>
                   <AccordionItem value="fees" className="border-none">
                     <AccordionTrigger className="pt-0 pb-2 hover:no-underline">
@@ -70,18 +89,10 @@ export const Price = ({
                         <span className="">{t('fees')}</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="flex flex-col gap-1 text-xs font-normal text-muted-foreground">
-                      {formattedCalculatedFees.map((fee) => (
-                        <div key={fee.id} className="flex gap-2 items-center justify-between">
-                          <div>{fee.name}&nbsp;</div>
-                          <div>{fee.amount}</div>
-                        </div>
-                      ))}
-                    </AccordionContent>
+                    <AccordionContentComponent formattedCalculatedFees={formattedCalculatedFees} />
                   </AccordionItem>
                 </Accordion>
-              )}
-              {!showFeesAccordion && (
+              ) : (
                 <div className="flex gap-1 text-xs font-normal text-muted-foreground">
                   <span>{formattedNet}</span>
                   <span>+&nbsp;{formattedTotalFees}</span>
@@ -96,3 +107,8 @@ export const Price = ({
     </p>
   );
 };
+
+AccordionContentComponent.displayName = 'AccordionContentComponent';
+PriceComponent.displayName = 'Price';
+
+export const Price = memo(PriceComponent);

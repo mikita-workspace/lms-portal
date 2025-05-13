@@ -2,6 +2,7 @@
 
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
+import { memo } from 'react';
 
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 
@@ -10,7 +11,7 @@ type ChatSharedTopBarProps = {
   title: string;
 };
 
-export const ChatSharedTopBar = ({ expiredAt, title }: ChatSharedTopBarProps) => {
+const ChatSharedTopBarComponent = ({ expiredAt, title }: ChatSharedTopBarProps) => {
   const t = useTranslations('chat.shared');
 
   return (
@@ -28,3 +29,7 @@ export const ChatSharedTopBar = ({ expiredAt, title }: ChatSharedTopBarProps) =>
     </div>
   );
 };
+
+ChatSharedTopBarComponent.displayName = 'ChatSharedTopBar';
+
+export const ChatSharedTopBar = memo(ChatSharedTopBarComponent);

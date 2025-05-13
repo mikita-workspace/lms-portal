@@ -4,6 +4,7 @@ import { ArrowDown, LoaderPinwheel } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, {
   createContext,
+  memo,
   SyntheticEvent,
   useContext,
   useEffect,
@@ -67,7 +68,7 @@ type ChatBodyProps = {
   ) => void;
 };
 
-export const ChatBody = ({
+const ChatBodyComponent = ({
   assistantImage,
   assistantMessage,
   introMessages,
@@ -170,3 +171,7 @@ export const ChatBody = ({
     </ChatScrollContext.Provider>
   );
 };
+
+ChatBodyComponent.displayName = 'ChatBody';
+
+export const ChatBody = memo(ChatBodyComponent);
