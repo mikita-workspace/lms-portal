@@ -307,6 +307,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
             isSubmitting={isSubmitting}
             onSubmit={handleSubmit}
             sharedName={conversations?.[0]?.shared?.username}
+            sharedPicture={conversations?.[0]?.shared?.pictureUrl}
           />
           {!isShared && (
             <ChatInput

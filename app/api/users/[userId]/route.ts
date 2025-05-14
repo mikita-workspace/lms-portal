@@ -2,16 +2,49 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { createCsmIssue } from '@/actions/csm/create-csm-issue';
 import { db } from '@/lib/db';
 import { createWebSocketNotification } from '@/lib/notifications';
 import { stripe } from '@/server/stripe';
 
-export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId: string }> }) => {
+type RequestProps = { params: Promise<{ userId: string }> };
+
+export const GET = async (_: NextRequest, props: RequestProps) => {
   const { userId } = await props.params;
 
   try {
-    const user = await getCurrentUser();
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      include: { stripeSubscription: true },
+    });
 
+    if (!user || !user?.isPublic) {
+      return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
+    }
+
+    return NextResponse.json({
+      createdAt: user.createdAt,
+      email: user.email,
+      hasSubscription: Boolean(user.stripeSubscription),
+      name: user.name,
+      pictureUrl: user.pictureUrl,
+      role: user.role,
+    });
+  } catch (error) {
+    console.error('[GET_USER_ID]', error);
+
+    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const PATCH = async (req: NextRequest, props: RequestProps) => {
+  const { userId } = await props.params;
+
+  const user = await getCurrentUser();
+
+  try {
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
@@ -44,12 +77,12 @@ export const PATCH = async (req: NextRequest, props: { params: Promise<{ userId:
   }
 };
 
-export const DELETE = async (_: NextRequest, props: { params: Promise<{ userId: string }> }) => {
+export const DELETE = async (_: NextRequest, props: RequestProps) => {
   const { userId } = await props.params;
 
-  try {
-    const user = await getCurrentUser();
+  const user = await getCurrentUser();
 
+  try {
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
@@ -79,6 +112,13 @@ export const DELETE = async (_: NextRequest, props: { params: Promise<{ userId: 
     return NextResponse.json(deletedUser);
   } catch (error) {
     console.error('[DELETE_USER_ID]', error);
+
+    await createCsmIssue({
+      categoryId: '807f46f7-7a39-4b96-9e36-c928fd218c5c',
+      description: JSON.stringify(error),
+      email: user?.email,
+      userId,
+    });
 
     return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
       status: StatusCodes.INTERNAL_SERVER_ERROR,

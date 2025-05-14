@@ -51,6 +51,8 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
 
       signOut({ callbackUrl: '/' });
     } catch (error) {
+      console.error('[DELETE-ACCOUNT-MODAL]', error);
+
       toast({ isError: true });
     } finally {
       setIsFetching(false);

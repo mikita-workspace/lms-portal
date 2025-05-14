@@ -89,6 +89,8 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
       toast({ description: t('success'), title: `${issue.issueNumber}`.toUpperCase() });
       router.refresh();
     } catch (error) {
+      console.error('[CSM_MODAL]', error);
+
       toast({ isError: true });
     } finally {
       setIsEditing(false);

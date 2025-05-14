@@ -59,13 +59,14 @@ type ChatBodyProps = {
   introMessages: string[];
   isShared?: boolean;
   isSubmitting?: boolean;
-  sharedName?: string | null;
   onSubmit: (
     event: SyntheticEvent,
     options?: {
       userMessage?: string;
     },
   ) => void;
+  sharedName?: string | null;
+  sharedPicture?: string | null;
 };
 
 const ChatBodyComponent = ({
@@ -74,8 +75,9 @@ const ChatBodyComponent = ({
   introMessages,
   isShared,
   isSubmitting,
-  sharedName,
   onSubmit,
+  sharedName,
+  sharedPicture,
 }: ChatBodyProps) => {
   const t = useTranslations('chat.body');
 
@@ -114,14 +116,17 @@ const ChatBodyComponent = ({
               {messages.map((message) => {
                 const isAssistant = message.role === ChatCompletionRole.ASSISTANT;
 
-                const name = (() => {
+                const [name, picture] = (() => {
                   if (isShared && !isAssistant) {
-                    return sharedName ?? 'Current User';
+                    return [sharedName ?? 'Current User', sharedPicture];
                   }
 
-                  return isAssistant ? 'Nova Copilot' : user?.name || 'Current User';
+                  if (isAssistant) {
+                    return ['Nova Copilot', null];
+                  }
+
+                  return [user?.name || 'Current User', user?.image];
                 })();
-                const picture = isAssistant ? null : user?.image;
 
                 return (
                   <div

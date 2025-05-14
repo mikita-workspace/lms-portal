@@ -45,6 +45,7 @@ export const getGithubReleases = async ({
       },
       TEN_MINUTE_SEC,
     );
+
     return githubReleases;
   } catch (error) {
     console.error('[GET_GITHUB_RELEASES]', error);

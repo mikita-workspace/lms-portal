@@ -173,6 +173,7 @@
   "profileButton": {
     "admin": "Админ",
     "chat": "Чат",
+    "joined": "Присоединился { date }",
     "logOut": "Выйти",
     "login": "Войти",
     "owner": "Владелец",

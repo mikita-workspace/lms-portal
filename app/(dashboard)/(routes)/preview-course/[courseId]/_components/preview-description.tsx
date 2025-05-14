@@ -10,12 +10,15 @@ import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-a
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
+import { UserHoverCard } from '@/components/common/user-hover-card';
+import { Button } from '@/components/ui';
 import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
   author?: string | null;
+  authorUserId?: string | null;
   categories: string[];
   chaptersLength: number;
   customRates: string | null;
@@ -32,6 +35,7 @@ type PreviewDescriptionProps = {
 
 export const PreviewDescription = ({
   author,
+  authorUserId,
   categories,
   chaptersLength,
   customRates,
@@ -89,11 +93,16 @@ export const PreviewDescription = ({
         </div>
       )}
       <div className="mt-4 gap-y-1">
-        {author && (
-          <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
-            <BookA className="h-4 w-4" />
-            <span className="text-xs">{t('author', { author })}</span>
-          </div>
+        {author && authorUserId && (
+          <UserHoverCard userId={authorUserId}>
+            <Button
+              className="flex items-center gap-x-1 text-neutral-500 p-0 font-normal"
+              variant="link"
+            >
+              <BookA className="h-4 w-4" />
+              <span className="text-xs">{t('author', { author })}</span>
+            </Button>
+          </UserHoverCard>
         )}
         <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
           <CalendarDays className="h-4 w-4" />
