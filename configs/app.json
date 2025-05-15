@@ -55,8 +55,8 @@
         {
           "value": "gemma3:4b",
           "label": "Gemma 3",
-          "owner": "Google (Local)",
-          "isSubscription": false
+          "owner": "Ollama",
+          "isSubscription": true
         }
       ],
       "provider": "ollama"
