@@ -5,11 +5,8 @@ import { Skeleton } from '../ui/skeleton';
 export const ChatSkeleton = () => (
   <div className="mx-auto flex flex-row gap-3 lg:max-w-2xl xl:max-w-4xl w-full h-full px-4">
     <div className="w-full h-full px-2 pt-6 pb-4 flex flex-col mx-auto justify-between">
-      <div className="flex mb-10 justify-between space-x-2">
+      <div className="flex mb-10 justify-center space-x-2">
         <Skeleton className="h-8 w-[140px]" />
-        <div className="flex space-x-2">
-          <Skeleton className="h-8 w-10" />
-        </div>
       </div>
       <div className="flex flex-col gap-y-6 justify-start h-full">
         <div className="flex gap-4">

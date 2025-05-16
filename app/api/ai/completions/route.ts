@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 
 import { generateCompletion } from '@/actions/ai/generate-completion';
 import { getRequestsLimit } from '@/actions/ai/get-requests-imit';
@@ -10,6 +11,7 @@ export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
   const user = await getCurrentUser();
+  const t = await getTranslations('error');
 
   try {
     const { input, instructions, model, stream } = await req.json();
@@ -53,7 +55,7 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     console.error('[OPEN_AI_COMPLETIONS]', error);
 
-    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
+    return new NextResponse(t('body'), {
       status: StatusCodes.INTERNAL_SERVER_ERROR,
     });
   }

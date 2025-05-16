@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import { v4 as uuidv4 } from 'uuid';
 
 import { generateImage } from '@/actions/ai/generate-image';
@@ -12,6 +13,7 @@ export const maxDuration = 60;
 
 export const POST = async (req: NextRequest) => {
   const user = await getCurrentUser();
+  const t = await getTranslations('error');
 
   try {
     const { model, prompt } = await req.json();
@@ -61,8 +63,11 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     console.error('[OPEN_AI_IMAGE]', error);
 
-    return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-    });
+    return NextResponse.json(
+      { revisedPrompt: t('body') },
+      {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+      },
+    );
   }
 };
