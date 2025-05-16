@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
+import { StreamText } from '@/components/ai/stream-text';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -80,7 +80,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
         Description
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <GenerateTextResponseAi
+            <StreamText
               callback={setNewDescription}
               isSubmitting={isSubmitting}
               isValid={isValid}

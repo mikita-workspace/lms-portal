@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react';
 import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
-import { GenerateTextResponseAi } from '../ai/generate-text-response-ai';
+import { StreamText } from '../ai/stream-text';
 
 type PreviewProps = {
   enableTranslate?: boolean;
@@ -30,7 +30,7 @@ export const Preview = ({ enableTranslate, id, language, value }: PreviewProps) 
     <>
       {Boolean(user?.userId) && enableTranslate && language !== currentLocale && (
         <div className="p-4">
-          <GenerateTextResponseAi
+          <StreamText
             cacheKey={`preview-chapter-description-[${id}]::user-[${user?.userId}]-[${currentLocale}]`}
             isTranslateButton
             callback={setTranslatedDescription}

@@ -13,7 +13,7 @@ import { fetcher } from '@/lib/fetcher';
 
 import { Button } from '../ui';
 
-type GenerateTextResponseAiProps = {
+type StreamTextProps = {
   cacheKey?: string;
   callback: Dispatch<SetStateAction<string>>;
   isSubmitting?: boolean;
@@ -22,14 +22,14 @@ type GenerateTextResponseAiProps = {
   messages: { role: string; content: string }[];
 };
 
-export const GenerateTextResponseAi = ({
+export const StreamText = ({
   cacheKey,
   callback,
   isSubmitting,
   isTranslateButton,
   isValid,
   messages,
-}: GenerateTextResponseAiProps) => {
+}: StreamTextProps) => {
   const t = useTranslations('ai-generate');
 
   const { toast } = useToast();

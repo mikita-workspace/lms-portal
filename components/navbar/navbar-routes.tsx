@@ -12,6 +12,8 @@ import { SearchInput } from '@/components/common/search-input';
 import { Button, Skeleton } from '@/components/ui';
 import { AuthStatus } from '@/constants/auth';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { fetcher } from '@/lib/fetcher';
+import { isOwner } from '@/lib/owner';
 
 import { Chat } from '../chat/chat';
 import { Notifications } from '../notifications/notifications';
@@ -83,6 +85,15 @@ export const NavBarRoutes = ({ globalProgress, userNotifications }: NavBarRoutes
               {!isChatPage && <Chat />}
               <Notifications userNotifications={userNotifications} />
             </>
+          )}
+          {isOwner(user?.userId) && (
+            <button
+              onClick={async () => {
+                await fetcher.get('/api/users/network');
+              }}
+            >
+              IP
+            </button>
           )}
           <UserProfileButton globalProgress={globalProgress} />
         </div>

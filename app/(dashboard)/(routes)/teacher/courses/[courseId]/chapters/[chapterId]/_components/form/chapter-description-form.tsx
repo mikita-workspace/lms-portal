@@ -10,7 +10,7 @@ import Markdown from 'react-markdown';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import * as z from 'zod';
 
-import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
+import { StreamText } from '@/components/ai/stream-text';
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { Editor } from '@/components/common/editor';
 import { Preview } from '@/components/common/preview';
@@ -80,7 +80,7 @@ export const ChapterDescriptionForm = ({
         Description
         <div className="flex items-center gap-x-2">
           {isEditing && (
-            <GenerateTextResponseAi
+            <StreamText
               callback={setNewDescription}
               isSubmitting={isSubmitting}
               isValid={isValid}

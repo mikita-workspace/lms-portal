@@ -6,7 +6,7 @@ import { BookA, BookOpen, CalendarDays } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { GenerateTextResponseAi } from '@/components/ai/generate-text-response-ai';
+import { StreamText } from '@/components/ai/stream-text';
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { TextBadge } from '@/components/common/text-badge';
@@ -64,7 +64,7 @@ export const PreviewDescription = ({
         </div>
         {Boolean(user?.userId) && language !== currentLocale && (
           <div className="my-2">
-            <GenerateTextResponseAi
+            <StreamText
               cacheKey={`preview-course-description-[${id}]::user-[${user?.userId}]-[${currentLocale}]`}
               isTranslateButton
               callback={setTranslatedDescription}
