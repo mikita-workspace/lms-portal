@@ -5,7 +5,19 @@ export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_LANGUAGE = 'en';
 export const DEFAULT_TIMEZONE = 'Etc/UTC';
 
-export const ALLOWED_CURRENCY = ['USD', 'EUR', 'BYN', 'RUB', 'GBP'];
+export const ALLOWED_CURRENCY = ['USD', 'EUR', 'BYN', 'RUB', 'GBP', 'PLN'];
+export const CURRENCY_BY_COUNTRY = {
+  BY: 'BYN',
+  DE: 'EUR',
+  ES: 'EUR',
+  FR: 'EUR',
+  IT: 'EUR',
+  NL: 'EUR',
+  PL: 'PLN',
+  RU: 'RUB',
+  UK: 'GBP',
+  US: 'USD',
+};
 
 export const USER_LOCALE_COOKIE = 'NEXT_LOCALE';
 export enum LOCALE {

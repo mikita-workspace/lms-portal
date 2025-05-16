@@ -11,7 +11,6 @@ import { GetAppConfig } from '@/actions/configs/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
 import { useChristmasStore } from '@/hooks/store/use-christmas-store';
 import { useConfettiStore } from '@/hooks/store/use-confetti-store';
-import { ExchangeRates } from '@/hooks/store/use-locale-store';
 import { useAppConfig } from '@/hooks/use-app-config';
 import { useUserLocation } from '@/hooks/use-user-location';
 import { switchLanguage } from '@/lib/locale';
@@ -66,23 +65,15 @@ const ChristmasProvider = () => {
 type ProvidersProps = Readonly<{
   appConfig: GetAppConfig;
   children: React.ReactNode;
-  exchangeRates: ExchangeRates;
   locale: string;
   messages: AbstractIntlMessages;
   timeZone: string;
 }>;
 
-export const Providers = ({
-  appConfig,
-  children,
-  exchangeRates,
-  locale,
-  messages,
-  timeZone,
-}: ProvidersProps) => {
+export const Providers = ({ appConfig, children, locale, messages, timeZone }: ProvidersProps) => {
   const { config } = useAppConfig(appConfig);
 
-  useUserLocation(exchangeRates);
+  useUserLocation();
 
   useEffect(() => {
     switchLanguage(locale);

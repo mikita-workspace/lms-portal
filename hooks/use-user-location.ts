@@ -10,7 +10,7 @@ import {
 } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
 
-import { ExchangeRates, useLocaleStore } from './store/use-locale-store';
+import { useLocaleStore } from './store/use-locale-store';
 
 const defaultLocaleInfo = {
   locale: { currency: DEFAULT_CURRENCY, locale: DEFAULT_LOCALE },
@@ -25,7 +25,7 @@ const defaultLocaleInfo = {
   rate: DEFAULT_EXCHANGE_RATE,
 };
 
-export const useUserLocation = (exchangeRates: ExchangeRates) => {
+export const useUserLocation = () => {
   const { handleExchangeRates, handleLocaleInfo } = useLocaleStore((state) => ({
     handleExchangeRates: state.setExchangeRates,
     handleLocaleInfo: state.setLocaleInfo,
@@ -34,11 +34,9 @@ export const useUserLocation = (exchangeRates: ExchangeRates) => {
   useEffect(() => {
     const getUserLocation = async () => {
       try {
-        const userIp = await fetcher.get('https://ipapi.co/json/', { responseType: 'json' });
-
-        const currency = ALLOWED_CURRENCY.includes(userIp?.currency)
-          ? userIp.currency
-          : DEFAULT_CURRENCY;
+        const { details, exchangeRates, locale } = await fetcher.get('/api/users/network', {
+          responseType: 'json',
+        });
 
         if (exchangeRates) {
           handleExchangeRates({
@@ -53,18 +51,13 @@ export const useUserLocation = (exchangeRates: ExchangeRates) => {
         }
 
         handleLocaleInfo({
-          locale: { currency, locale: DEFAULT_LOCALE },
-          details: {
-            city: userIp.city,
-            country: userIp.country_name,
-            countryCode: userIp.country_code,
-            latitude: userIp.latitude,
-            longitude: userIp.longitude,
-            timezone: userIp.timezone,
-          },
-          rate: exchangeRates?.rates?.[currency] ?? DEFAULT_EXCHANGE_RATE,
+          details,
+          locale,
+          rate: exchangeRates?.rates?.[locale.currency] ?? DEFAULT_EXCHANGE_RATE,
         });
       } catch (error) {
+        console.log('[USE_USER_LOCATION]', error);
+
         handleLocaleInfo(defaultLocaleInfo);
       }
     };
@@ -74,7 +67,6 @@ export const useUserLocation = (exchangeRates: ExchangeRates) => {
     } else {
       getUserLocation();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

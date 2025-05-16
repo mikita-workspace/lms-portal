@@ -7,7 +7,6 @@ import { Noto_Sans } from 'next/font/google';
 import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 
 import { getAppConfig } from '@/actions/configs/get-app-config';
-import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
 import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +32,6 @@ type RootLayoutProps = Readonly<{
 const notoSans = Noto_Sans({ subsets: ['latin'] });
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
-  const { exchangeRates } = await getExchangeRates();
   const appConfig = await getAppConfig();
   const locale = await getLocale();
   const messages = await getMessages();
@@ -42,13 +40,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', notoSans.className)}>
-        <Providers
-          appConfig={appConfig}
-          exchangeRates={exchangeRates}
-          locale={locale}
-          messages={messages}
-          timeZone={timeZone}
-        >
+        <Providers appConfig={appConfig} locale={locale} messages={messages} timeZone={timeZone}>
           {children}
           <CookieConsent />
         </Providers>
