@@ -231,16 +231,20 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
             const chunk = decoder.decode(value);
             const lines = chunk.split('\n').filter((line) => line.trim());
 
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = JSON.parse(line.slice(6));
+            const isDataDelta = lines.some((line) => line.startsWith('data: '));
 
-                streamAssistMessage += data.delta;
-                setAssistantMessage((prev) => prev + data.delta);
-              } else {
-                streamAssistMessage += chunk;
-                setAssistantMessage((prev) => prev + chunk);
+            if (isDataDelta) {
+              for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                  const data = JSON.parse(line.slice(6));
+
+                  streamAssistMessage += data.delta;
+                  setAssistantMessage((prev) => prev + data.delta);
+                }
               }
+            } else {
+              streamAssistMessage += chunk;
+              setAssistantMessage((prev) => prev + chunk);
             }
           }
         }

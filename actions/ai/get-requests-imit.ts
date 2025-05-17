@@ -29,13 +29,12 @@ const resetRequestLimit = async (id: string) => {
 };
 
 export const getRequestsLimit = async (user: Awaited<ReturnType<typeof getCurrentUser>>) => {
-  const locale = await getLocale();
-
-  const t = await getTranslations('ai-limit');
-
   if (user?.hasSubscription) {
     return { message: ReasonPhrases.OK, status: REQUEST_STATUS.ALLOW };
   }
+
+  const locale = await getLocale();
+  const t = await getTranslations('ai-limit');
 
   const userId = user!.userId;
 
