@@ -1,6 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { User, UserSettings } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -14,37 +16,50 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { useChristmasStore } from '@/hooks/store/use-christmas-store';
+import { useToast } from '@/components/ui/use-toast';
+import { fetcher } from '@/lib/fetcher';
+
+type ChristmasFormFormProps = {
+  initialData: User & { settings: UserSettings | null };
+};
 
 const formSchema = z.object({
-  isChristmas: z.boolean().default(false),
+  isChristmasMode: z.boolean().default(false),
 });
 
-export const ChristmasForm = () => {
+export const ChristmasForm = ({ initialData }: ChristmasFormFormProps) => {
   const t = useTranslations('settings.christmas');
 
-  const { isEnabled, onEnable } = useChristmasStore((state) => ({
-    isEnabled: state.isEnabled,
-    onEnable: state.onEnable,
-  }));
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isChristmas: isEnabled,
+      isChristmasMode: Boolean(initialData?.settings?.isChristmasMode),
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => onEnable(values.isChristmas);
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await fetcher.patch(`/api/users/${initialData.id}`, { body: { settings: values } });
+
+      router.refresh();
+    } catch (error) {
+      console.error('[CHRISTMAS_FORM]', error);
+
+      toast({ isError: true });
+    }
+  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           control={form.control}
-          name="isChristmas"
+          name="isChristmasMode"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
               <div className="space-y-0.5">

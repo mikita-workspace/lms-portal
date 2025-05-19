@@ -15,10 +15,10 @@ export const GET = async (_: NextRequest, props: RequestProps) => {
   try {
     const user = await db.user.findUnique({
       where: { id: userId },
-      include: { stripeSubscription: true },
+      include: { stripeSubscription: true, settings: true },
     });
 
-    if (!user || !user?.isPublic) {
+    if (!user || !user?.settings?.isPublicProfile) {
       return new NextResponse(ReasonPhrases.BAD_REQUEST, { status: StatusCodes.BAD_REQUEST });
     }
 
@@ -49,12 +49,22 @@ export const PATCH = async (req: NextRequest, props: RequestProps) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const { notification, ...values } = await req.json();
+    const { notification, settings, ...values } = await req.json();
 
     const updatedUser = await db.user.update({
       where: { id: userId },
       data: { ...values },
     });
+
+    console.log({ ...settings });
+
+    if (settings) {
+      await db.userSettings.upsert({
+        where: { userId },
+        update: { ...settings },
+        create: { ...settings, userId },
+      });
+    }
 
     if (notification) {
       await createWebSocketNotification({

@@ -7,6 +7,7 @@ import { Noto_Sans } from 'next/font/google';
 import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 
 import { getAppConfig } from '@/actions/configs/get-app-config';
+import { getUserSettings } from '@/actions/users/get-user-settings';
 import { CookieConsent } from '@/components/common/cookie-consent';
 import { cn } from '@/lib/utils';
 
@@ -36,11 +37,18 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const locale = await getLocale();
   const messages = await getMessages();
   const timeZone = await getTimeZone();
+  const userSettings = appConfig?.features?.christmas ? await getUserSettings() : null;
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={cn('min-h-full bg-background font-sans antialiased', notoSans.className)}>
-        <Providers appConfig={appConfig} locale={locale} messages={messages} timeZone={timeZone}>
+        <Providers
+          appConfig={appConfig}
+          locale={locale}
+          messages={messages}
+          timeZone={timeZone}
+          userSettings={userSettings}
+        >
           {children}
           <CookieConsent />
         </Providers>

@@ -1,6 +1,6 @@
 'use client';
 
-import { StripeSubscription, User } from '@prisma/client';
+import { StripeSubscription, User, UserSettings } from '@prisma/client';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 
@@ -19,7 +19,10 @@ import { getFallbackName } from '@/lib/utils';
 
 import { ColumnActions } from './column-actions';
 
-type UserWithSubscription = User & { stripeSubscription: StripeSubscription | null };
+type UserWithSubscription = User & {
+  settings: UserSettings | null;
+  stripeSubscription: StripeSubscription | null;
+};
 
 const handleSortingHeader = <T extends Column<UserWithSubscription, unknown>>(
   column: T,
@@ -71,7 +74,8 @@ export const columns: ColumnDef<UserWithSubscription>[] = [
     accessorKey: 'isPublic',
     header: ({ column }) => handleSortingHeader(column, 'Profile status'),
     cell: ({ row }) => {
-      const { isPublic } = row.original;
+      const { settings } = row.original;
+      const isPublic = settings?.isPublicProfile;
 
       return (
         <TextBadge

@@ -1,5 +1,6 @@
 'use client';
 
+import { UserSettings } from '@prisma/client';
 import { SessionProvider } from 'next-auth/react';
 import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
@@ -9,7 +10,6 @@ import Snowfall from 'react-snowfall';
 
 import { GetAppConfig } from '@/actions/configs/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
-import { useChristmasStore } from '@/hooks/store/use-christmas-store';
 import { useConfettiStore } from '@/hooks/store/use-confetti-store';
 import { useAppConfig } from '@/hooks/use-app-config';
 import { useUserLocation } from '@/hooks/use-user-location';
@@ -39,8 +39,8 @@ const ConfettiProvider = () => {
   );
 };
 
-const ChristmasProvider = () => {
-  const isEnabled = useChristmasStore((state) => state.isEnabled);
+const ChristmasProvider = ({ userSettings }: { userSettings: UserSettings | null }) => {
+  const isEnabled = userSettings?.isChristmasMode;
 
   if (!isEnabled) {
     return null;
@@ -68,9 +68,17 @@ type ProvidersProps = Readonly<{
   locale: string;
   messages: AbstractIntlMessages;
   timeZone: string;
+  userSettings: UserSettings | null;
 }>;
 
-export const Providers = ({ appConfig, children, locale, messages, timeZone }: ProvidersProps) => {
+export const Providers = ({
+  appConfig,
+  children,
+  locale,
+  messages,
+  timeZone,
+  userSettings,
+}: ProvidersProps) => {
   const { config } = useAppConfig(appConfig);
 
   useUserLocation();
@@ -84,7 +92,7 @@ export const Providers = ({ appConfig, children, locale, messages, timeZone }: P
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <NextIntlClientProvider messages={messages} locale={locale} timeZone={timeZone}>
         <AuthProvider>
-          {config?.features?.christmas && <ChristmasProvider />}
+          {config?.features?.christmas && <ChristmasProvider userSettings={userSettings} />}
           <ConfettiProvider />
           <ToastProvider />
           {children}

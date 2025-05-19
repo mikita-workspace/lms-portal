@@ -35,10 +35,12 @@ export const getLeaders = async () => {
     .filter(({ course }) => course.isPublished)
     .map(({ id }) => id);
 
-  const users = await db.user.findMany({
-    where: { id: { in: userIds }, isPublic: true },
-    select: { id: true, name: true, pictureUrl: true },
-  });
+  const users = (
+    await db.user.findMany({
+      where: { id: { in: userIds } },
+      include: { settings: true },
+    })
+  ).filter((user) => user?.settings?.isPublicProfile);
 
   const userSubscriptions = await Promise.all(
     users.map(async (user) => {
@@ -68,7 +70,7 @@ export const getLeaders = async () => {
           acc.push({
             isOwner,
             hasSubscription,
-            name: userInfo.name || '',
+            name: userInfo.name ?? '',
             picture: userInfo.pictureUrl,
             userId,
             xp,

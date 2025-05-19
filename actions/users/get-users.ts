@@ -7,6 +7,7 @@ import {
   CsmIssue,
   StripeSubscription,
   User,
+  UserSettings,
 } from '@prisma/client';
 
 import { PAGE_SIZES } from '@/constants/paginations';
@@ -22,6 +23,7 @@ type UserWithSubscription = User & {
   copilotRequestLimit: CopilotRequestLimit | null;
   courses: Course[];
   csmIssues: CsmIssue[];
+  settings: UserSettings | null;
   sharedConversations: ChatSharedConversation[];
   stripeSubscription: StripeSubscription | null;
 };
@@ -41,6 +43,7 @@ export const getUsers = async ({
         copilotRequestLimit: true,
         courses: true,
         csmIssues: true,
+        settings: true,
         sharedConversations: true,
         stripeSubscription: true,
       },

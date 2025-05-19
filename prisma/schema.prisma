@@ -16,7 +16,6 @@ model User {
   createdAt           DateTime                 @default(now())
   csmIssues           CsmIssue[]
   email               String                   @unique
-  isPublic            Boolean?                 @default(false)
   name                String?
   notifications       Notification[]
   otpCreatedAt        DateTime?
@@ -24,6 +23,7 @@ model User {
   password            String?
   pictureUrl          String?
   role                String                   @default("student")
+  settings            UserSettings?
   sharedConversations ChatSharedConversation[]
   stripeSubscription  StripeSubscription?
   updatedAt           DateTime                 @updatedAt
@@ -40,6 +40,19 @@ model UserProgress {
 
   @@unique([userId, chapterId])
   @@index([chapterId])
+}
+
+model UserSettings {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  isChristmasMode   Boolean? @default(false)
+  isCopilotInNewTab Boolean? @default(false)
+  isPublicProfile   Boolean? @default(false)
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String   @unique
+
+  @@index([userId])
 }
 
 // Courses

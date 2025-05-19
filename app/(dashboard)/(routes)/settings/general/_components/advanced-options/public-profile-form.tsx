@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '@prisma/client';
+import { User, UserSettings } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -20,11 +20,11 @@ import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
 type PublicProfileFormProps = {
-  initialData: User;
+  initialData: User & { settings: UserSettings | null };
 };
 
 const formSchema = z.object({
-  isPublic: z.boolean().default(false),
+  isPublicProfile: z.boolean().default(false),
 });
 
 export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
@@ -36,7 +36,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isPublic: Boolean(initialData.isPublic),
+      isPublicProfile: Boolean(initialData.settings?.isPublicProfile),
     },
   });
 
@@ -44,10 +44,12 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await fetcher.patch(`/api/users/${initialData.id}`, { body: values });
+      await fetcher.patch(`/api/users/${initialData.id}`, { body: { settings: values } });
       toast({ title: t('visibilityUpdated') });
       router.refresh();
     } catch (error) {
+      console.error('[PUBLIC_PROFILE_FORM]', error);
+
       toast({ isError: true });
     }
   };
@@ -57,7 +59,7 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           control={form.control}
-          name="isPublic"
+          name="isPublicProfile"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
               <div className="space-y-0.5">

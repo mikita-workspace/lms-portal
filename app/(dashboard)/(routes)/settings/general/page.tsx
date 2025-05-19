@@ -13,7 +13,10 @@ const SettingsPage = async () => {
   const t = await getTranslations('settings');
 
   const user = await getCurrentUser();
-  const userInfo = await db.user.findUnique({ where: { id: user?.userId } });
+  const userInfo = await db.user.findUnique({
+    where: { id: user?.userId },
+    include: { settings: true },
+  });
 
   return (
     <div className="p-6 flex flex-col mb-6 md:max-w-[868px]">

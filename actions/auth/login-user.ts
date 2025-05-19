@@ -19,7 +19,7 @@ export const loginUser = async (
 
   const existingUser = await db.user.findUnique({
     where: { email },
-    include: { stripeSubscription: true },
+    include: { stripeSubscription: true, settings: true },
   });
 
   if (existingUser) {
@@ -27,7 +27,7 @@ export const loginUser = async (
       hasSubscription: Boolean(existingUser.stripeSubscription),
       id: existingUser.id,
       image: existingUser.pictureUrl,
-      isPublic: existingUser.isPublic,
+      isPublic: existingUser.settings?.isPublicProfile,
       name: existingUser.name,
       otpSecret: existingUser.otpSecret,
       role: existingUser.role,
@@ -61,7 +61,7 @@ export const loginUser = async (
   if (!stripeCustomer) {
     const customer = await stripe.customers.create({
       email: user.email,
-      name: user?.name || undefined,
+      name: user?.name ?? undefined,
     });
 
     stripeCustomer = await db.stripeCustomer.create({
@@ -99,7 +99,7 @@ export const loginUser = async (
     hasSubscription: false,
     id: user.id,
     image: user.pictureUrl,
-    isPublic: user.isPublic,
+    isPublic: false,
     name: user.name,
     otpSecret: user.otpSecret,
     role: user.role,
