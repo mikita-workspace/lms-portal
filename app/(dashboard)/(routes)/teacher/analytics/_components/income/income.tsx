@@ -8,6 +8,8 @@ import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
 import { DataCard } from './data-card';
+import { TotalProfitCard } from './total-profit-card';
+import { TotalRevenueCard } from './total-revenue-card';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
@@ -49,8 +51,8 @@ export const Income = ({ mapData, totalProfit, totalRevenue }: IncomeProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <div className="flex flex-col gap-4 mb-4 md:mb-0">
-          <DataCard label="Total Revenue" totalRevenue={totalRevenue} />
-          <DataCard label="Total Profit" totalProfit={totalProfit} />
+          <TotalRevenueCard totalRevenue={totalRevenue} />
+          <TotalProfitCard totalProfit={totalProfit} />
         </div>
         <Map
           className="w-full h-[400px] border rounded-lg col-span-2"
