@@ -11,8 +11,10 @@ import Snowfall from 'react-snowfall';
 import { GetAppConfig } from '@/actions/configs/get-app-config';
 import { Toaster as ToastProvider } from '@/components/ui/toaster';
 import { useConfettiStore } from '@/hooks/store/use-confetti-store';
+import { useUserSettingsStore } from '@/hooks/store/use-user-settings.store';
 import { useAppConfig } from '@/hooks/use-app-config';
 import { useUserLocation } from '@/hooks/use-user-location';
+import { useUserSettings } from '@/hooks/use-user-settings';
 import { switchLanguage } from '@/lib/locale';
 
 const AuthProvider = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -39,10 +41,12 @@ const ConfettiProvider = () => {
   );
 };
 
-const ChristmasProvider = ({ userSettings }: { userSettings: UserSettings | null }) => {
-  const isEnabled = userSettings?.isChristmasMode;
+const ChristmasProvider = () => {
+  const { isChristmasMode } = useUserSettingsStore((state) => ({
+    isChristmasMode: state.isChristmasMode,
+  }));
 
-  if (!isEnabled) {
+  if (!isChristmasMode) {
     return null;
   }
 
@@ -82,6 +86,7 @@ export const Providers = ({
   const { config } = useAppConfig(appConfig);
 
   useUserLocation();
+  useUserSettings(userSettings);
 
   useEffect(() => {
     switchLanguage(locale);
@@ -92,7 +97,7 @@ export const Providers = ({
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <NextIntlClientProvider messages={messages} locale={locale} timeZone={timeZone}>
         <AuthProvider>
-          {config?.features?.christmas && <ChristmasProvider userSettings={userSettings} />}
+          {config?.features?.christmas && <ChristmasProvider />}
           <ConfettiProvider />
           <ToastProvider />
           {children}

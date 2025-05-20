@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { useChatStore } from '@/hooks/store/use-chat-store';
+import { useUserSettingsStore } from '@/hooks/store/use-user-settings.store';
 import { absoluteUrl, cn } from '@/lib/utils';
 
 import { PrettyLoader } from '../loaders/pretty-loader';
@@ -19,8 +20,16 @@ export const Chat = () => {
     currentModelLabel: state.currentModelLabel,
   }));
 
+  const { isCopilotInNewTab } = useUserSettingsStore((state) => ({
+    isCopilotInNewTab: state.isCopilotInNewTab,
+  }));
+
+  const handleOpenChange = isCopilotInNewTab
+    ? () => window.open(absoluteUrl('/chat'), '_blank')
+    : setOpen;
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetTrigger className="hover:opacity-75 transition duration-300">
         <button
           className={cn(

@@ -2,6 +2,7 @@
 
 import { StripeSubscriptionPeriod } from '@prisma/client';
 import { compareAsc, fromUnixTime } from 'date-fns';
+import { StatusCodes } from 'http-status-codes';
 
 import { ONE_DAY_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
@@ -62,8 +63,10 @@ export const getUserSubscription = async (userId = '', noCache = false) => {
       : await fetchCachedData(`user-subscription-[${userId}]`, callback, ONE_DAY_SEC);
 
     return subscription;
-  } catch (error) {
-    console.error('[GET_USER_SUBSCRIPTION]', error);
+  } catch (error: any) {
+    if (error?.statusCode !== StatusCodes.NOT_FOUND) {
+      console.error('[GET_USER_SUBSCRIPTION]', error);
+    }
 
     return null;
   }

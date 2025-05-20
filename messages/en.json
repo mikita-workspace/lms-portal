@@ -472,6 +472,10 @@
     "christmas": {
       "title": "Turn on the Christmas mood 🎄🎁",
       "body": "The Christmas theme adds a little magic."
+    },
+    "new-tab-copilot": {
+      "title": "Nova Copilot in a new tab",
+      "body": "Open the chat always in a new tab."
     }
   },
   "file-upload": {

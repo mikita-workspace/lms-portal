@@ -79,7 +79,7 @@ export const POST = async (req: NextRequest) => {
           return null;
         })();
 
-        const transaction = await db.purchaseDetails.create({
+        const transaction = await prisma.purchaseDetails.create({
           data: {
             city: session?.metadata?.city,
             country: session?.metadata?.country,

@@ -20,28 +20,28 @@ import { useToast } from '@/components/ui/use-toast';
 import { useUserSettingsStore } from '@/hooks/store/use-user-settings.store';
 import { fetcher } from '@/lib/fetcher';
 
-type ChristmasFormFormProps = {
+type NewTabCopilotFormProps = {
   initialData: User & { settings: UserSettings | null };
 };
 
 const formSchema = z.object({
-  isChristmasMode: z.boolean().default(false),
+  isCopilotInNewTab: z.boolean().default(false),
 });
 
-export const ChristmasForm = ({ initialData }: ChristmasFormFormProps) => {
-  const t = useTranslations('settings.christmas');
+export const NewTabCopilotForm = ({ initialData }: NewTabCopilotFormProps) => {
+  const t = useTranslations('settings.new-tab-copilot');
 
   const { toast } = useToast();
   const router = useRouter();
 
-  const { setIsChristmasMode } = useUserSettingsStore((state) => ({
-    setIsChristmasMode: state.setIsChristmasMode,
+  const { setIsCopilotInNewTab } = useUserSettingsStore((state) => ({
+    setIsCopilotInNewTab: state.setIsCopilotInNewTab,
   }));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isChristmasMode: Boolean(initialData?.settings?.isChristmasMode),
+      isCopilotInNewTab: Boolean(initialData?.settings?.isCopilotInNewTab),
     },
   });
 
@@ -51,11 +51,11 @@ export const ChristmasForm = ({ initialData }: ChristmasFormFormProps) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: { settings: values } });
 
-      setIsChristmasMode(values.isChristmasMode);
+      setIsCopilotInNewTab(values.isCopilotInNewTab);
 
       router.refresh();
     } catch (error) {
-      console.error('[CHRISTMAS_FORM]', error);
+      console.error('[NEW_TAB_COPILOT_FORM]', error);
 
       toast({ isError: true });
     }
@@ -66,7 +66,7 @@ export const ChristmasForm = ({ initialData }: ChristmasFormFormProps) => {
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           control={form.control}
-          name="isChristmasMode"
+          name="isCopilotInNewTab"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
               <div className="space-y-0.5">

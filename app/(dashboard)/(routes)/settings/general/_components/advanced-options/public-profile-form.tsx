@@ -17,6 +17,7 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { useUserSettingsStore } from '@/hooks/store/use-user-settings.store';
 import { fetcher } from '@/lib/fetcher';
 
 type PublicProfileFormProps = {
@@ -33,6 +34,10 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
 
+  const { setIsPublicProfile } = useUserSettingsStore((state) => ({
+    setIsPublicProfile: state.setIsPublicProfile,
+  }));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +50,9 @@ export const PublicProfileForm = ({ initialData }: PublicProfileFormProps) => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await fetcher.patch(`/api/users/${initialData.id}`, { body: { settings: values } });
-      toast({ title: t('visibilityUpdated') });
+
+      setIsPublicProfile(values.isPublicProfile);
+
       router.refresh();
     } catch (error) {
       console.error('[PUBLIC_PROFILE_FORM]', error);

@@ -34,10 +34,11 @@ const notoSans = Noto_Sans({ subsets: ['latin'] });
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
   const appConfig = await getAppConfig();
-  const locale = await getLocale();
+  const userSettings = await getUserSettings();
   const messages = await getMessages();
+
+  const locale = await getLocale();
   const timeZone = await getTimeZone();
-  const userSettings = appConfig?.features?.christmas ? await getUserSettings() : null;
 
   return (
     <html lang={locale} suppressHydrationWarning>

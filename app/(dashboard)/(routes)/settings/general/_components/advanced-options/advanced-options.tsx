@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 
 import { ChristmasForm } from './christmas-form';
+import { NewTabCopilotForm } from './new-tab-copilot-form';
 import { OtpForm } from './otp-form';
 import { PublicProfileForm } from './public-profile-form';
 
@@ -23,6 +24,7 @@ export const AdvancedOptions = ({ initialData }: AdvancedOptionsProps) => {
       <p className="font-medium text-xl">{t('advancedOptions')}</p>
       <OtpForm initialData={initialData} />
       <PublicProfileForm initialData={initialData} />
+      <NewTabCopilotForm initialData={initialData} />
       {config?.features?.christmas && <ChristmasForm initialData={initialData} />}
     </div>
   );

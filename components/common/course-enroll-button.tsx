@@ -49,8 +49,11 @@ export const CourseEnrollButton = ({
       });
 
       toast({ title: t('redirect') });
+
       window.location.assign(response.url);
     } catch (error) {
+      console.error('[COURSE_ENROLL_BUTTON]', error);
+
       toast({ isError: true });
     } finally {
       setIsFetching(false);
@@ -79,13 +82,17 @@ export const CourseEnrollButton = ({
       variant={variant}
     >
       {isLoading && <MoreHorizontal className="w-6 h-6 animate-pulse" />}
-      {!isLoading && (amount ?? 0) > 0 && <ShoppingCart className="w-4 h-4 mr-2" />}
-      {!isLoading && <span>{t('enrollFor')}</span>}
-      {!isLoading && (amount ?? 0) > 0 && formattedPrice}
-      {!isLoading && amount === 0 && (
+      {!isLoading && (
         <>
-          {t('free')}
-          <ArrowRight className="w-4 h-4 ml-2" />
+          {(amount ?? 0) > 0 && <ShoppingCart className="hidden md:block w-4 h-4 mr-2" />}
+          <span>{t('enrollFor')}</span>
+          {(amount ?? 0) > 0 && formattedPrice}
+          {amount === 0 && (
+            <>
+              {t('free')}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </>
+          )}
         </>
       )}
     </Button>
