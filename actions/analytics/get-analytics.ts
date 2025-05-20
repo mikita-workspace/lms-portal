@@ -112,7 +112,7 @@ export const getAnalytics = async (userId: string) => {
     }));
     const map = getMap(sales);
     const totalRevenue = balanceTransactions.reduce(
-      (revenue, current) => revenue + current.amount,
+      (revenue: number, current: { amount: number }) => revenue + current.amount,
       0,
     );
 
