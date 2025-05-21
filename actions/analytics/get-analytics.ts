@@ -9,6 +9,7 @@ import { db } from '@/lib/db';
 import { getStripeConnect, getStripeConnectPayouts } from './get-stripe-connect';
 import { getStripeData } from './get-stripe-data';
 import { getTotalProfit } from './get-total-profit';
+import { getTotalRevenueData } from './get-total-revenue-data';
 import { getTransactions, PurchaseWithCourse, Transaction } from './get-transactions';
 
 type Sales = (ReturnType<typeof groupByCourse>[number][number]['details'] & { title: string })[];
@@ -115,6 +116,7 @@ export const getAnalytics = async (userId: string) => {
       (revenue: number, current: { amount: number }) => revenue + current.amount,
       0,
     );
+    const totalRevenueData = await getTotalRevenueData(balanceTransactions);
 
     const totalProfit = await getTotalProfit(
       balanceTransactions,
@@ -138,6 +140,7 @@ export const getAnalytics = async (userId: string) => {
       stripeConnectPayouts,
       totalProfit,
       totalRevenue,
+      totalRevenueData,
       transactions,
     };
   } catch (error) {
@@ -152,6 +155,7 @@ export const getAnalytics = async (userId: string) => {
       stripeConnectPayouts: [] as StripeConnectPayouts,
       totalProfit: null,
       totalRevenue: 0,
+      totalRevenueData: [],
       transactions: [] as Transaction[],
     };
   }

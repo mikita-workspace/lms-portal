@@ -22,6 +22,7 @@ const AnalyticsPage = async () => {
     stripeConnectPayouts,
     totalProfit,
     totalRevenue,
+    totalRevenueData,
     transactions,
   } = await getAnalytics(user!.userId);
 
@@ -50,7 +51,12 @@ const AnalyticsPage = async () => {
           stripeConnectPayout={stripeConnectPayouts}
           totalProfit={totalProfit}
         />
-        <Income mapData={mapData} totalProfit={totalProfit} totalRevenue={totalRevenue} />
+        <Income
+          mapData={mapData}
+          totalProfit={totalProfit}
+          totalRevenue={totalRevenue}
+          totalRevenueData={totalRevenueData}
+        />
         <SalesChart data={chart} />
         <ClientTransactions transactions={transactions} />
       </div>

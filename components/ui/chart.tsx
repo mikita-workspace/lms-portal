@@ -3,6 +3,8 @@
 import * as React from 'react';
 import * as RechartsPrimitive from 'recharts';
 
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
+import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -98,28 +100,30 @@ const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
     React.ComponentProps<'div'> & {
-      hideLabel?: boolean;
       hideIndicator?: boolean;
+      hideLabel?: boolean;
       indicator?: 'line' | 'dot' | 'dashed';
-      nameKey?: string;
+      isPriceFormat?: boolean;
       labelKey?: string;
+      nameKey?: string;
     }
 >(
   (
     {
       active,
-      payload,
       className,
-      indicator = 'dot',
-      hideLabel = false,
-      hideIndicator = false,
-      label,
-      labelFormatter,
-      labelClassName,
-      formatter,
       color,
-      nameKey,
+      formatter,
+      hideIndicator = false,
+      hideLabel = false,
+      indicator = 'dot',
+      isPriceFormat = false,
+      label,
+      labelClassName,
+      labelFormatter,
       labelKey,
+      nameKey,
+      payload,
     },
     ref,
   ) => {
@@ -222,7 +226,12 @@ const ChartTooltipContent = React.forwardRef<
                       </div>
                       {item.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {isPriceFormat &&
+                            formatPrice(getConvertedPrice(Number(item.value)), {
+                              locale: DEFAULT_LOCALE,
+                              currency: DEFAULT_CURRENCY,
+                            })}
+                          {!isPriceFormat && item.value.toLocaleString()}
                         </span>
                       )}
                     </div>
