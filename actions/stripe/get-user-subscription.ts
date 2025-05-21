@@ -47,14 +47,14 @@ export const getUserSubscription = async (userId = '', noCache = false) => {
 
       return {
         cancelAt: stripeSubscription.cancel_at ? fromUnixTime(stripeSubscription.cancel_at) : null,
-        endPeriod: fromUnixTime(stripeSubscription.current_period_end),
+        endPeriod: fromUnixTime(stripeSubscription.items.data[0].current_period_end),
         price: {
           currency: stripeSubscription.items.data[0].price.currency,
           unitAmount: stripeSubscription.items.data[0].price.unit_amount,
         },
         plan: stripeSubscription.items.data[0].plan,
         planName: planDescription?.name ?? 'Nova Plus',
-        startPeriod: fromUnixTime(stripeSubscription.current_period_start),
+        startPeriod: fromUnixTime(stripeSubscription.items.data[0].current_period_start),
       };
     };
 
