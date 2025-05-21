@@ -3276,7 +3276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=8.1.0, @types/node@npm:^20":
+"@types/node@npm:*, @types/node@npm:^20":
   version: 20.11.17
   resolution: "@types/node@npm:20.11.17"
   dependencies:
@@ -7923,7 +7923,7 @@ __metadata:
     leaflet-defaulticon-compatibility: "npm:^0.1.2"
     lint-staged: "npm:^15.2.2"
     lodash.groupby: "npm:^4.6.0"
-    lucide-react: "npm:^0.447.0"
+    lucide-react: "npm:^0.511.0"
     next: "npm:15.3.1"
     next-auth: "npm:^4.24.11"
     next-intl: "npm:^3.17.6"
@@ -7960,7 +7960,7 @@ __metadata:
     recharts: "npm:^2.15.3"
     remark-gfm: "npm:^4.0.0"
     sharp: "npm:^0.32.6"
-    stripe: "npm:^16.7.0"
+    stripe: "npm:^18.1.1"
     tailwind-merge: "npm:^2.2.1"
     tailwindcss: "npm:^3.3.0"
     tailwindcss-animate: "npm:^1.0.7"
@@ -8118,12 +8118,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.447.0":
-  version: 0.447.0
-  resolution: "lucide-react@npm:0.447.0"
+"lucide-react@npm:^0.511.0":
+  version: 0.511.0
+  resolution: "lucide-react@npm:0.511.0"
   peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-  checksum: 10c0/c8831795a4b4429d0cad28f33baf924d285eb64a0ecbce013a3307e7fab998cd5a48e3dce3607bbfa88fa383b8c603947965453acb60c94e2ef39956afe1eb67
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/bf09dd73cf2233abea90506ad31a91739555d761062722acbe045cb73e274f035b196472de0971a8a8f0645b2b54e3f21b8c1980fe87c909ca93171a9c28428a
   languageName: node
   linkType: hard
 
@@ -11653,13 +11653,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:^16.7.0":
-  version: 16.7.0
-  resolution: "stripe@npm:16.7.0"
+"stripe@npm:^18.1.1":
+  version: 18.1.1
+  resolution: "stripe@npm:18.1.1"
   dependencies:
-    "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10c0/2604c58cffd939315385e34ed4b69f19f6e1dc14960c95e8294b235d2dcb2b60653e09efa16385246921abf3c55bcacb0067a10ab2148ad884bfb2dcd5a8e20a
+  peerDependencies:
+    "@types/node": ">=12.x.x"
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: 10c0/6e68894121f9ab6cbf9bac0578e8791845098dfd7a7ab39169fe5cab3e879eb5fb2b59bfdbf13e6260e655ec85d378d55874edf3b41deb09a4c646913b17874f
   languageName: node
   linkType: hard
 

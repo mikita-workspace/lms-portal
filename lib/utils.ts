@@ -82,3 +82,5 @@ export const base64ToBlob = (base64: string, contentType: string = '') => {
 
   return new Blob([byteArray], { type: contentType });
 };
+
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

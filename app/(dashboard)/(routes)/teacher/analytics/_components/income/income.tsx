@@ -7,15 +7,16 @@ import Map from '@/components/map';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
-import { DataCard } from './data-card';
+import { TotalProfitCard } from './total-profit-card';
+import { TotalRevenueCard } from './total-revenue-card';
 
 type Analytics = Awaited<ReturnType<typeof getAnalytics>>;
 
 type IncomeProps = {
   mapData: Analytics['map'];
-} & Pick<Analytics, 'totalProfit' | 'totalRevenue'>;
+} & Pick<Analytics, 'totalProfit' | 'totalRevenue' | 'totalRevenueData'>;
 
-export const Income = ({ mapData, totalProfit, totalRevenue }: IncomeProps) => {
+export const Income = ({ mapData, totalProfit, totalRevenue, totalRevenueData }: IncomeProps) => {
   const mapMarkers = mapData.map((mp) => {
     return {
       position: mp.position,
@@ -49,11 +50,11 @@ export const Income = ({ mapData, totalProfit, totalRevenue }: IncomeProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <div className="flex flex-col gap-4 mb-4 md:mb-0">
-          <DataCard label="Total Revenue" totalRevenue={totalRevenue} />
-          <DataCard label="Total Profit" totalProfit={totalProfit} />
+          <TotalRevenueCard totalRevenue={totalRevenue} totalRevenueData={totalRevenueData} />
+          <TotalProfitCard totalProfit={totalProfit} />
         </div>
         <Map
-          className="w-full h-[400px] border rounded-lg col-span-2"
+          className="w-full h-[445px] border rounded-lg col-span-2"
           mapStyles={{ width: '100%', height: '100%', borderRadius: '8px', zIndex: 1 }}
           markers={mapMarkers}
         />

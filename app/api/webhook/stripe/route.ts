@@ -46,9 +46,9 @@ export const POST = async (req: NextRequest) => {
 
       const response = await db.stripeSubscription.create({
         data: {
-          endDate: new Date(subscription.current_period_end * 1000),
+          endDate: new Date(subscription.items.data[0].current_period_end * 1000),
           name: session?.metadata?.subscriptionName ?? '',
-          startDate: new Date(subscription.current_period_start * 1000),
+          startDate: new Date(subscription.items.data[0].current_period_start * 1000),
           stripeCustomerId: subscription.customer as string,
           stripePriceId: subscription.items.data[0].price.id,
           stripeSubscriptionId: subscription.id,

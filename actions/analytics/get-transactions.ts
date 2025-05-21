@@ -66,10 +66,11 @@ export const getTransactions = async (
       userFreePurchases.push({
         amount: 0,
         billingDetails: {
-          name: user?.name ?? null,
           address: null,
           email: user?.email ?? null,
+          name: user?.name ?? null,
           phone: null,
+          tax_id: null,
         },
         currency: DEFAULT_CURRENCY,
         id: pc.id,
