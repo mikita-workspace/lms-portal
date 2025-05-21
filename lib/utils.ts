@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { AES, enc } from 'crypto-js';
 import { twMerge } from 'tailwind-merge';
 
+import { BATCH_SIZE } from '@/constants/paginations';
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
@@ -84,3 +86,19 @@ export const base64ToBlob = (base64: string, contentType: string = '') => {
 };
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const getBatchedItems = <T>(items: T[]) =>
+  items.reduce(
+    (batches, item, index) => {
+      const batchIndex = Math.floor(index / BATCH_SIZE);
+
+      batches[batchIndex] ??= [];
+
+      if (item) {
+        batches[batchIndex].push(item);
+      }
+
+      return batches;
+    },
+    [] as (typeof items)[],
+  );

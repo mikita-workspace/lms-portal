@@ -46,14 +46,13 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
   const handleSettings = () => router.push('/settings/general');
 
   const isAdmin = user?.role === UserRole.ADMIN;
-  const isStudent = user?.role === UserRole.STUDENT;
   const isTeacher = user?.role === UserRole.TEACHER;
 
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="relative block hover:cursor-pointer">
         <Avatar className="w-[40px] h-[40px] border dark:border-muted-foreground">
-          <AvatarImage src={user.image || ''} />
+          <AvatarImage src={user.image ?? ''} />
           <AvatarFallback>{getFallbackName(user.name as string)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -66,11 +65,7 @@ export const UserProfileButton = ({ globalProgress }: UserProfileButtonProps) =>
                 {user.hasSubscription && <TextBadge label={t('premium')} variant="lime" />}
               </div>
             </div>
-            <p className="text-xs leading-none text-muted-foreground">
-              {(isOwner(user.userId) || isAdmin) && t('admin')}
-              {isTeacher && t('teacher')}
-              {isStudent && t('student')}
-            </p>
+            <p className="text-xs leading-none text-muted-foreground">{t(user.role)}</p>
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>

@@ -4,10 +4,11 @@ import Stripe from 'stripe';
 
 import { ONE_MINUTE_SEC } from '@/constants/common';
 import { DEFAULT_LOCALE } from '@/constants/locale';
-import { PAGE_SIZES } from '@/constants/paginations';
+import { DELAY_MS, PAGE_SIZES } from '@/constants/paginations';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { getBatchedItems, sleep } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 type StripePromotionCodes = Stripe.Response<Stripe.ApiList<Stripe.PromotionCode>>['data'];
@@ -110,36 +111,65 @@ export const getStripePromo = async ({
 
     const coupons = await stripe.coupons.list({ limit: 10 });
 
-    const stripePromos = await Promise.all(
-      promos.map(async (code) => {
-        const data = await fetchCachedData(
-          `${code.id}-${code.stripePromoId}`,
-          async () => {
-            const res = await stripe.promotionCodes.retrieve(code.stripePromoId);
+    const batchedStripePromos = getBatchedItems(promos);
+    const batchedStripeCustomers = getBatchedItems(customers);
 
-            return res;
-          },
-          ONE_MINUTE_SEC,
+    const stripePromos = await batchedStripePromos.reduce(
+      async (previousStripePromosPromise: Promise<any[]>, batch: any[], batchIndex: number) => {
+        const previousStripePromos = await previousStripePromosPromise;
+
+        if (batchIndex > 0) {
+          await sleep(DELAY_MS);
+        }
+
+        const currentBatchStripePromos = await Promise.all(
+          batch.map(async (code) => {
+            const data = await fetchCachedData(
+              `${code.id}-${code.stripePromoId}`,
+              async () => {
+                const res = await stripe.promotionCodes.retrieve(code.stripePromoId);
+
+                return res;
+              },
+              ONE_MINUTE_SEC,
+            );
+
+            return data;
+          }),
         );
 
-        return data;
-      }),
+        return previousStripePromos.concat(currentBatchStripePromos);
+      },
+      Promise.resolve([] as any[]),
     );
 
-    const stripeCustomers = await Promise.all(
-      customers.map(async (cs) => {
-        const data = await fetchCachedData(
-          `${cs.stripeCustomerId}`,
-          async () => {
-            const res = await stripe.customers.retrieve(cs.stripeCustomerId);
+    const stripeCustomers = await batchedStripeCustomers.reduce(
+      async (previousStripeCustomersPromise: Promise<any[]>, batch: any[], batchIndex: number) => {
+        const previousStripeCustomers = await previousStripeCustomersPromise;
 
-            return res;
-          },
-          ONE_MINUTE_SEC,
+        if (batchIndex > 0) {
+          await sleep(DELAY_MS);
+        }
+
+        const currentBatchStripeCustomers = await Promise.all(
+          batch.map(async (cs) => {
+            const data = await fetchCachedData(
+              `${cs.stripeCustomerId}`,
+              async () => {
+                const res = await stripe.customers.retrieve(cs.stripeCustomerId);
+
+                return res;
+              },
+              ONE_MINUTE_SEC,
+            );
+
+            return data;
+          }),
         );
 
-        return data;
-      }),
+        return previousStripeCustomers.concat(currentBatchStripeCustomers);
+      },
+      Promise.resolve([] as any[]),
     );
 
     return {

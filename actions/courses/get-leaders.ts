@@ -3,8 +3,10 @@
 import groupBy from 'lodash.groupby';
 
 import { CHAPTER_XP } from '@/constants/courses';
+import { DELAY_MS } from '@/constants/paginations';
 import { db } from '@/lib/db';
 import { isOwner as isOwnerFunc } from '@/lib/owner';
+import { getBatchedItems, sleep } from '@/lib/utils';
 
 import { getUserSubscription } from '../stripe/get-user-subscription';
 
@@ -42,17 +44,32 @@ export const getLeaders = async () => {
     })
   ).filter((user) => user?.settings?.isPublicProfile);
 
-  const userSubscriptions = await Promise.all(
-    users.map(async (user) => {
-      const userSubscription = await getUserSubscription(user.id);
-      const isOwner = isOwnerFunc(user.id);
+  const batchedUsers = getBatchedItems(users);
 
-      return {
-        hasSubscription: isOwner ?? Boolean(userSubscription),
-        isOwner,
-        userId: user.id,
-      };
-    }),
+  const userSubscriptions = await batchedUsers.reduce(
+    async (previousUserSubscriptionsPromise: Promise<any[]>, batch: any[], batchIndex: number) => {
+      const previousUserSubscriptions = await previousUserSubscriptionsPromise;
+
+      if (batchIndex > 0) {
+        await sleep(DELAY_MS);
+      }
+
+      const currentBatchUserSubscription = await Promise.all(
+        batch.map(async (user) => {
+          const userSubscription = await getUserSubscription(user.id);
+          const isOwner = isOwnerFunc(user.id);
+
+          return {
+            hasSubscription: isOwner || Boolean(userSubscription),
+            isOwner,
+            userId: user.id,
+          };
+        }),
+      );
+
+      return previousUserSubscriptions.concat(currentBatchUserSubscription);
+    },
+    Promise.resolve([] as any[]),
   );
 
   return Object.entries(groupedByUser)

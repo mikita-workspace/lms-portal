@@ -3,13 +3,11 @@
 import { Course, Purchase, PurchaseDetails } from '@prisma/client';
 
 import { TEN_MINUTE_SEC } from '@/constants/common';
+import { DELAY_MS } from '@/constants/paginations';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
-import { sleep } from '@/lib/utils';
+import { getBatchedItems, sleep } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
-
-const BATCH_SIZE = 10;
-const DELAY_MS = 500;
 
 type PurchaseType = Purchase & { course: Course | null; details: PurchaseDetails | null };
 
@@ -17,22 +15,6 @@ type GetStripeData = {
   purchases: PurchaseType[];
   userId: string;
 };
-
-const getBatchedItems = <T>(items: T[]) =>
-  items.reduce(
-    (batches, item, index) => {
-      const batchIndex = Math.floor(index / BATCH_SIZE);
-
-      batches[batchIndex] ??= [];
-
-      if (item) {
-        batches[batchIndex].push(item);
-      }
-
-      return batches;
-    },
-    [] as (typeof items)[],
-  );
 
 export const getStripeData = async ({ purchases, userId }: GetStripeData) => {
   const accountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
