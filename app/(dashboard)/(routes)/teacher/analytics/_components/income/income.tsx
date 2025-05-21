@@ -7,7 +7,6 @@ import Map from '@/components/map';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/constants/locale';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
-import { DataCard } from './data-card';
 import { TotalProfitCard } from './total-profit-card';
 import { TotalRevenueCard } from './total-revenue-card';
 

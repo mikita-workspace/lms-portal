@@ -18,24 +18,23 @@ type GetStripeData = {
   userId: string;
 };
 
-export const getStripeData = async ({ purchases, userId }: GetStripeData) => {
-  const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))].filter(
-    (pi) => pi,
+const getBatchedItems = <T>(items: T[]) =>
+  items.reduce(
+    (batches, item, index) => {
+      const batchIndex = Math.floor(index / BATCH_SIZE);
+
+      batches[batchIndex] ??= [];
+
+      if (item) {
+        batches[batchIndex].push(item);
+      }
+
+      return batches;
+    },
+    [] as (typeof items)[],
   );
 
-  const batchedPaymentIntents = paymentIntents.reduce((batches, pi, index) => {
-    const batchIndex = Math.floor(index / BATCH_SIZE);
-    if (!batches[batchIndex]) {
-      batches[batchIndex] = [];
-    }
-
-    if (pi) {
-      batches[batchIndex].push(pi);
-    }
-
-    return batches;
-  }, [] as string[][]);
-
+export const getStripeData = async ({ purchases, userId }: GetStripeData) => {
   const accountId = await db.stripeConnectAccount.findUnique({ where: { userId } });
   const account = accountId?.stripeAccountId
     ? await stripe.accounts.retrieve(accountId.stripeAccountId)
@@ -48,6 +47,12 @@ export const getStripeData = async ({ purchases, userId }: GetStripeData) => {
   const accountBalanceTransactions = account?.id
     ? await stripe.balanceTransactions.list({ limit: 5 }, { stripeAccount: account.id })
     : null;
+
+  const paymentIntents = [...new Set(purchases.map((ps) => ps.details?.paymentIntent))].filter(
+    (pi) => pi,
+  );
+
+  const batchedPaymentIntents = getBatchedItems(paymentIntents);
 
   const charges = (
     await batchedPaymentIntents.reduce(
@@ -82,17 +87,7 @@ export const getStripeData = async ({ purchases, userId }: GetStripeData) => {
     )
   ).filter((sc) => sc?.balance_transaction);
 
-  const batchedCharges = charges.reduce(
-    (batches, sc, index) => {
-      const batchIndex = Math.floor(index / BATCH_SIZE);
-
-      batches[batchIndex] ??= [];
-      batches[batchIndex].push(sc);
-
-      return batches;
-    },
-    [] as (typeof charges)[],
-  );
+  const batchedCharges = getBatchedItems(charges);
 
   const balanceTransactions = await batchedCharges.reduce(
     async (previousTransactionsPromise: Promise<any[]>, batch: any[], batchIndex: number) => {
