@@ -8,7 +8,7 @@ import { FcCollaboration, FcGraduationCap } from 'react-icons/fc';
 import { CategoryItem } from './category-item';
 
 const iconMap: Record<Category['name'], IconType> = {
-  'Self-placed': FcGraduationCap,
+  'Self-paced': FcGraduationCap,
   Workshop: FcCollaboration,
 };
 
