@@ -54,9 +54,13 @@ export const TotalRevenueCard = ({ totalRevenue, totalRevenueData }: TotalRevenu
           />
         </div>
         {isNumber(diff) && (
-          <p className={cn('text-xs font-medium', diff >= 0 ? 'text-green-500' : 'text-red-500')}>
-            {diff >= 0 ? '+' : '-'}
-            {diff}% from last month
+          <p className="text-xs">
+            <span className={cn('font-bold', diff >= 0 ? 'text-green-500' : 'text-red-500')}>
+              {diff >= 0 ? '+' : '-'}
+              {diff}
+              {'% '}
+            </span>
+            <span>compared to previous month</span>
           </p>
         )}
         <ChartContainer config={chartConfig} className="h-[80px] w-full pt-4">
