@@ -71,8 +71,7 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
               <span>
-                {localeInfo.details.city}, {localeInfo.details.country} (
-                {localeInfo.details.countryCode})
+                {localeInfo.details.city}, {localeInfo.details.country}
               </span>
             </p>
             <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
