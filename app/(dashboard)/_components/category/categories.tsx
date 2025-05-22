@@ -3,26 +3,13 @@
 import { Category } from '@prisma/client';
 import { useTranslations } from 'next-intl';
 import { IconType } from 'react-icons';
-import {
-  FcEngineering,
-  FcFilmReel,
-  FcMultipleDevices,
-  FcMusic,
-  FcOldTimeCamera,
-  FcSalesPerformance,
-  FcSportsMode,
-} from 'react-icons/fc';
+import { FcCollaboration, FcGraduationCap } from 'react-icons/fc';
 
 import { CategoryItem } from './category-item';
 
 const iconMap: Record<Category['name'], IconType> = {
-  'Computer Science': FcMultipleDevices,
-  Accounting: FcSalesPerformance,
-  Engineering: FcEngineering,
-  Filming: FcFilmReel,
-  Fitness: FcSportsMode,
-  Music: FcMusic,
-  Photography: FcOldTimeCamera,
+  'Self-placed': FcGraduationCap,
+  Workshop: FcCollaboration,
 };
 
 type CategoryProps = { items: Category[] };
