@@ -5,6 +5,7 @@ import { getLocale as getAppLocale, getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { db } from '@/lib/db';
 import { getLocale } from '@/lib/locale';
 import { absoluteUrl } from '@/lib/utils';
@@ -107,8 +108,10 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
       });
     }
 
+    const discounts = await getWelcomeDiscounts(user.userId);
+
     const session = await stripe.checkout.sessions.create({
-      allow_promotion_codes: true,
+      ...(discounts.length ? { discounts } : { allow_promotion_codes: true }),
       cancel_url: absoluteUrl(`/preview-course/${course.id}?canceled=true`),
       customer: stripeCustomer.stripeCustomerId,
       expires_at: getUnixTime(addSeconds(Date.now(), 3600)),

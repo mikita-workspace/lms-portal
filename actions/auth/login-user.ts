@@ -4,7 +4,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { db } from '@/lib/db';
 import { createWebSocketNotification } from '@/lib/notifications';
-import { generatePromotionCode } from '@/lib/promo';
 import { stripe } from '@/server/stripe';
 
 import { getAppConfig } from '../configs/get-app-config';
@@ -53,7 +52,7 @@ export const loginUser = async (
     },
   });
 
-  let stripeCustomer = await db.stripeCustomer.findUnique({
+  const stripeCustomer = await db.stripeCustomer.findUnique({
     where: { userId: user.id },
     select: { stripeCustomerId: true },
   });
@@ -64,31 +63,15 @@ export const loginUser = async (
       name: user?.name ?? undefined,
     });
 
-    stripeCustomer = await db.stripeCustomer.create({
+    await db.stripeCustomer.create({
       data: { userId: user.id, stripeCustomerId: customer.id },
     });
   }
 
-  const stripePromotion = await stripe.promotionCodes.create({
-    code: generatePromotionCode(),
-    coupon: process.env.STRIPE_COUPON_ID as string,
-    customer: stripeCustomer.stripeCustomerId,
-    max_redemptions: 1,
-    restrictions: { first_time_transaction: true },
-  });
-
-  const promotionCode = await db.stripePromo.create({
-    data: {
-      code: stripePromotion.code,
-      stripeCouponId: stripePromotion.coupon.id,
-      stripePromoId: stripePromotion.id,
-    },
-  });
-
   await createWebSocketNotification({
     channel: `notification_channel_${user.id}`,
     data: {
-      body: t('welcomeBonus.body', { promotionCode: promotionCode.code }),
+      body: t('welcomeBonus.body'),
       title: t('welcomeBonus.title'),
       userId: user.id,
     },

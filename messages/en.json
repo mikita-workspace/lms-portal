@@ -7,7 +7,7 @@
   },
   "auth": {
     "welcomeBonus": {
-      "body": "Hi! Thank you for registering on our platform. Catch the promotion code - { promotionCode } for your first purchase 🤩",
+      "body": "Hi! Thank you for registering on our platform. A 5% promo code has already been applied for the first purchase.",
       "title": "Welcome bonus"
     }
   },

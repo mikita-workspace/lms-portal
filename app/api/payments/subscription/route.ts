@@ -5,6 +5,7 @@ import { getLocale as getAppLocale } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
@@ -50,12 +51,12 @@ export const POST = async (req: NextRequest) => {
     });
 
     if (userSubscription?.stripeCustomerId) {
-      const stripeSession = await stripe.billingPortal.sessions.create({
+      const session = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: absoluteUrl(returnUrl),
       });
 
-      return NextResponse.json({ url: stripeSession.url });
+      return NextResponse.json({ url: session.url });
     }
 
     const appLocale = await getAppLocale();
@@ -67,8 +68,8 @@ export const POST = async (req: NextRequest) => {
 
     if (!stripeCustomer) {
       const customer = await stripe.customers.create({
-        email: user?.email || '',
-        name: user?.name || undefined,
+        email: user?.email ?? '',
+        name: user?.name ?? undefined,
       });
 
       stripeCustomer = await db.stripeCustomer.create({
@@ -76,8 +77,10 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const stripeSession = await stripe.checkout.sessions.create({
-      allow_promotion_codes: true,
+    const discounts = await getWelcomeDiscounts(user.userId);
+
+    const session = await stripe.checkout.sessions.create({
+      ...(discounts.length ? { discounts } : { allow_promotion_codes: true }),
       customer: stripeCustomer.stripeCustomerId,
       expires_at: getUnixTime(addSeconds(Date.now(), 3600)),
       mode: 'subscription',
@@ -104,7 +107,7 @@ export const POST = async (req: NextRequest) => {
       cancel_url: absoluteUrl(returnUrl),
     });
 
-    return NextResponse.json({ url: stripeSession.url });
+    return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error('[PAYMENTS_SUBSCRIPTION_[USER_ID]]', error);
 
