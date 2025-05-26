@@ -3,9 +3,10 @@
 import { db } from '@/lib/db';
 
 export const getWelcomeDiscounts = async (userId: string) => {
-  const hasPurchases = await db.purchase.count({ where: { userId } });
+  const purchases = await db.purchase.count({ where: { userId } });
+  const subscription = await db.stripeSubscription.count({ where: { userId } });
 
-  if (hasPurchases > 0) {
+  if (purchases > 0 || subscription > 0) {
     return [];
   }
 
