@@ -38,7 +38,7 @@ const CommandItems = memo(({ callback, currentModel, models }: CommandItemsProps
 
   return models.map((model) => (
     <CommandItem
-      disabled={!user?.hasSubscription}
+      disabled={!user?.hasSubscription && model.isSubscription}
       key={model.value}
       value={model.value}
       onSelect={(currentValue) => {
@@ -82,6 +82,7 @@ const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
           } else {
             acc[1].push(model);
           }
+
           return acc;
         },
         [[], []],
