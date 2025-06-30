@@ -1,18 +1,6 @@
 {
   "ai": [
     {
-      "image-models": [],
-      "text-models": [
-        {
-          "value": "deepseek-chat",
-          "label": "DeepSeek-V3",
-          "owner": "DeepSeek",
-          "isSubscription": false
-        }
-      ],
-      "provider": "deepseek"
-    },
-    {
       "image-models": [
         {
           "label": "DALL·E 3",
@@ -48,6 +36,18 @@
         }
       ],
       "provider": "openai"
+    },
+    {
+      "image-models": [],
+      "text-models": [
+        {
+          "value": "deepseek-chat",
+          "label": "DeepSeek-V3",
+          "owner": "DeepSeek",
+          "isSubscription": false
+        }
+      ],
+      "provider": "deepseek"
     },
     {
       "image-models": [],
