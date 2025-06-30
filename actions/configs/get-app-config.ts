@@ -11,7 +11,7 @@ export type GetAppConfig = {
     provider: string;
   }[];
   auth: { isBlockedNewLogin: true; providers: Record<string, boolean> };
-  features: { christmas: boolean };
+  features: { christmas: boolean; testMode: boolean };
 };
 
 export const getAppConfig = async (): Promise<GetAppConfig> => {
@@ -47,6 +47,7 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
       },
       features: {
         christmas: false,
+        testMode: false,
       },
     };
   }

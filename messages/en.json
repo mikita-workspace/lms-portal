@@ -334,7 +334,7 @@
     "improve": "Improve",
     "original": "Return the original",
     "stop": "Stop",
-    "translate": "Translate with Nova\u00aCopilot"
+    "translate": "Translate with Nova\u00a0Copilot"
   },
   "ai-limit": {
     "title": "You have run out of Nova\u00a0Copilot requests. Switch to Nova\u00a0Plus, or try again after {date}."

@@ -9,6 +9,7 @@ import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 import { getAppConfig } from '@/actions/configs/get-app-config';
 import { getUserSettings } from '@/actions/users/get-user-settings';
 import { CookieConsent } from '@/components/common/cookie-consent';
+import { TestModeDeclaimer } from '@/components/common/test-mode-declaimer';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -50,6 +51,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           timeZone={timeZone}
           userSettings={userSettings}
         >
+          {appConfig.features.testMode && <TestModeDeclaimer />}
           {children}
           <CookieConsent />
         </Providers>

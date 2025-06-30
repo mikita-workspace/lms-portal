@@ -41,7 +41,6 @@ export const Footer = ({ categories }: FooterProps) => {
             <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
             <span>{t('copyright')}</span>
           </div>
-          <div className="items-end">{t('testModeDeclaimer')}</div>
           <MadeWithLove className="mt-2" />
         </div>
         <div className="gap-1 md:gap-3 font-semibold flex flex-col md:flex-row">
