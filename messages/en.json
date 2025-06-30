@@ -159,7 +159,8 @@
     "promo": "Promo",
     "releases": "Releases notes",
     "terms": "Terms and Conditions",
-    "users": "Users"
+    "users": "Users",
+    "workshop": "Workshops"
   },
   "error": {
     "body": "An unexpected application error has occurred.",
