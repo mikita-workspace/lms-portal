@@ -35,10 +35,10 @@ export const TestModeDeclaimer = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
       transition={{ delay: 0.5 }}
-      className="fixed flex items-center justify-center w-full p-2 bg-orange-500 text-white font-semibold text-xs z-[100]"
+      className="fixed flex items-center justify-between w-full p-2 bg-orange-500 text-white font-semibold text-xs z-[100]"
     >
-      <p>{t('testModeDeclaimer')}</p>
-      <button onClick={handleAcceptDeclaimer} className="absolute right-2">
+      <p className="flex-grow text-center">{t('testModeDeclaimer')}</p>
+      <button onClick={handleAcceptDeclaimer} className="ml-auto px-2">
         <X className="h-4 w-4" />
       </button>
     </motion.div>
