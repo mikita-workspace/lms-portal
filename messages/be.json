@@ -263,6 +263,7 @@
       "preview": {
         "author": "Аўтар курсу { author }",
         "chapter": "{ amount, plural, one {# частка} few {# часткі} many {# частак} other {# частак}}",
+        "lang": "{ language } + AI Пераклад",
         "lastUpdated": "Апошняе абнаўленне ад",
         "loading": "Загрузка відэа...",
         "lock": "Гэтае папяреджанне заблакавана"

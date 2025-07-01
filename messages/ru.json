@@ -262,6 +262,7 @@
       "preview": {
         "author": "Автор курса { author }",
         "chapter": "{ amount, plural, one {# часть} few {# части} many {# частей} other {# частей}}",
+        "lang": "{ language } + AI Перевод",
         "lastUpdated": "Последнее обновление от",
         "loading": "Загрузка видео...",
         "lock": "Этот превью заблокирован"

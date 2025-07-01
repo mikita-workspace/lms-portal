@@ -263,6 +263,7 @@
       "preview": {
         "author": "Course author { author }",
         "chapter": "{ amount, plural, =1 {# chapter} other {# chapters}}",
+        "lang": "{ language } + AI Translation",
         "lastUpdated": "Last Updated",
         "loading": "Loading a video...",
         "lock": "This preview is locked"

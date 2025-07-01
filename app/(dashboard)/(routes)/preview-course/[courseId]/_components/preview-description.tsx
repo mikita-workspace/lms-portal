@@ -2,7 +2,7 @@
 
 import { Fee } from '@prisma/client';
 import { format } from 'date-fns';
-import { BookA, BookOpen, CalendarDays } from 'lucide-react';
+import { BookA, BookOpen, CalendarDays, Languages } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -14,6 +14,7 @@ import { UserHoverCard } from '@/components/common/user-hover-card';
 import { Button } from '@/components/ui';
 import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
+import { SUPPORTED_LOCALES } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
 type PreviewDescriptionProps = {
@@ -54,6 +55,8 @@ export const PreviewDescription = ({
   const { user } = useCurrentUser();
 
   const [translatedDescription, setTranslatedDescription] = useState('');
+
+  const languageTitle = SUPPORTED_LOCALES.find(({ key }) => key === language)?.title;
 
   return (
     <div className="border rounded-lg p-6">
@@ -103,6 +106,16 @@ export const PreviewDescription = ({
               <span className="text-xs">{t('author', { author })}</span>
             </Button>
           </UserHoverCard>
+        )}
+        {languageTitle && (
+          <div className="flex items-center gap-x-1 text-neutral-500 mb-4">
+            <Languages className="h-4 w-4" />
+            <span className="text-xs">
+              {t('lang', {
+                language: languageTitle,
+              })}
+            </span>
+          </div>
         )}
         <div className="flex items-center gap-x-1 text-neutral-500 mb-1">
           <CalendarDays className="h-4 w-4" />

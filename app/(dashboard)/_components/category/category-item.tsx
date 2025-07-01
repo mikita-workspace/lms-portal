@@ -2,18 +2,16 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
-import { IconType } from 'react-icons';
 
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
 
 type CategoryItemProps = {
-  icon?: IconType;
   label: string;
   value?: string;
 };
 
-export const CategoryItem = ({ icon: Icon, label, value = 'all' }: CategoryItemProps) => {
+export const CategoryItem = ({ label, value = 'all' }: CategoryItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +43,6 @@ export const CategoryItem = ({ icon: Icon, label, value = 'all' }: CategoryItemP
       variant="outline"
       onClick={handleClick}
     >
-      {Icon && <Icon size={20} />}
       <div className="truncate">{label}</div>
     </Button>
   );
