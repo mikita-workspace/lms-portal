@@ -66,7 +66,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "lodash.groupby": "^4.6.0",
     "lucide-react": "^0.511.0",
-    "next": "15.3.1",
+    "next": "15.3.3",
     "next-auth": "^4.24.11",
     "next-intl": "^3.17.6",
     "next-themes": "^0.2.1",
