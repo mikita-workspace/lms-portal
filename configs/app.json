@@ -17,6 +17,12 @@
           "isSubscription": false
         },
         {
+          "value": "gpt-4o-mini-search-preview-2025-03-11",
+          "label": "GPT-4o mini Search",
+          "owner": "OpenAI",
+          "isSubscription": false
+        },
+        {
           "value": "gpt-4.1-mini",
           "label": "GPT-4.1 mini",
           "owner": "OpenAI",
