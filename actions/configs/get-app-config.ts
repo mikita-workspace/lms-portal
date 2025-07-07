@@ -7,7 +7,13 @@ import { getGithubContents } from '../github/get-contents';
 export type GetAppConfig = {
   ai: {
     'image-models': { value: string; label: string; owner: string; isSubscription: boolean }[];
-    'text-models': { value: string; label: string; owner: string; isSubscription: boolean }[];
+    'text-models': {
+      hasSearch?: boolean;
+      isSubscription: boolean;
+      label: string;
+      owner: string;
+      value: string;
+    }[];
     provider: string;
   }[];
   auth: { isBlockedNewLogin: true; providers: Record<string, boolean> };

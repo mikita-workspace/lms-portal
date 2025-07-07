@@ -322,7 +322,8 @@
       "enterImageMessage": "Введите ваш запрос...",
       "enterMessage": "Введите ваше сообщение...",
       "footer": "Nova Copilot может совершать ошибки. Будьте внимательны.",
-      "image-generation-mode": "Режим генерации изображения ({model})"
+      "image-generation-mode": "Режим генерации изображения ({model})",
+      "search": "Режим веб-поиска"
     },
     "shared": {
       "expiredAt": "Доступно до { date }"

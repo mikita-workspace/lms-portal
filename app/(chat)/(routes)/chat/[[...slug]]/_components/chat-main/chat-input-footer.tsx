@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageIcon, SendHorizonal, StopCircle } from 'lucide-react';
+import { Globe, ImageIcon, SendHorizonal, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -22,10 +22,14 @@ export const ChatInputFooter = ({
 }: ChatInputFooterProps) => {
   const t = useTranslations('chat.input');
 
-  const { isImageGeneration, setIsImageGeneration } = useChatStore((state) => ({
-    isImageGeneration: state.isImageGeneration,
-    setIsImageGeneration: state.setIsImageGeneration,
-  }));
+  const { hasSearch, isImageGeneration, isSearchMode, setIsImageGeneration, setIsSearchMode } =
+    useChatStore((state) => ({
+      hasSearch: state.hasSearch,
+      isImageGeneration: state.isImageGeneration,
+      isSearchMode: state.isSearchMode,
+      setIsImageGeneration: state.setIsImageGeneration,
+      setIsSearchMode: state.setIsSearchMode,
+    }));
   const { config: appConfig } = useAppConfigStore((state) => ({
     config: state.config,
   }));
@@ -43,13 +47,39 @@ export const ChatInputFooter = ({
             {t('image-generation-mode', { model: IMAGE_MODELS[0].label })}
           </Badge>
         )}
+        {isSearchMode && (
+          <Badge variant="secondary" className="rounded-sm px-1 font-normal line-clamp-2">
+            {t('search')}
+          </Badge>
+        )}
       </div>
       <div className="flex items-center">
+        {hasSearch && (
+          <button
+            type="button"
+            className="mr-3"
+            disabled={isSubmitting}
+            onClick={() => {
+              setIsSearchMode(!isSearchMode);
+              setIsImageGeneration(false);
+            }}
+          >
+            <Globe
+              className={cn(
+                'w-4 h-4 text-muted-foreground transition-colors duration-300',
+                isSearchMode && 'text-blue-500',
+              )}
+            />
+          </button>
+        )}
         <button
           type="button"
           className="mr-3"
           disabled={isSubmitting}
-          onClick={() => setIsImageGeneration(!isImageGeneration)}
+          onClick={() => {
+            setIsImageGeneration(!isImageGeneration);
+            setIsSearchMode(false);
+          }}
         >
           <ImageIcon
             className={cn(

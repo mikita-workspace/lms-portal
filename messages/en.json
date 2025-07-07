@@ -323,7 +323,8 @@
       "enterImageMessage": "Enter your request...",
       "enterMessage": "Enter your message...",
       "footer": "Nova Copilot can make mistakes. Consider checking important information.",
-      "image-generation-mode": "Image generation mode ({model})"
+      "image-generation-mode": "Image generation mode ({model})",
+      "search": "Web search mode"
     },
     "shared": {
       "expiredAt": "Available until { date }"

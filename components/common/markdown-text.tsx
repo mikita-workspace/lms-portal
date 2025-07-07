@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
@@ -40,6 +41,13 @@ export const MarkdownText = ({ className, text }: MarkdownTextProps) => {
               <code {...props} className={className || ''}>
                 {children}
               </code>
+            );
+          },
+          a: ({ children, href }) => {
+            return (
+              <Link href={href} target="_blank">
+                {children}
+              </Link>
             );
           },
         }}

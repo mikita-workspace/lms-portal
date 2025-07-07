@@ -24,7 +24,12 @@ import { cn } from '@/lib/utils';
 type Model = GetAppConfig['ai'][0]['text-models'][0];
 
 type CommandItemsProps = {
-  callback: (value: { currentModel: string; currentModelLabel: string; isOpen: boolean }) => void;
+  callback: (value: {
+    currentModel: string;
+    currentModelLabel: string;
+    hasSearch?: boolean;
+    isOpen: boolean;
+  }) => void;
   currentModel: string;
   models: Model[];
 };
@@ -43,7 +48,12 @@ const CommandItems = memo(({ callback, currentModel, models }: CommandItemsProps
       value={model.value}
       onSelect={(currentValue) => {
         const value = currentValue === currentModel ? '' : currentValue;
-        callback({ currentModel: value, currentModelLabel: model.label, isOpen: false });
+        callback({
+          currentModel: value,
+          currentModelLabel: model.label,
+          hasSearch: model.hasSearch,
+          isOpen: false,
+        });
       }}
     >
       <div className="flex">
@@ -65,8 +75,14 @@ const CommandItems = memo(({ callback, currentModel, models }: CommandItemsProps
 const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
   const t = useTranslations('chat.top-bar');
 
-  const { chatMessages, conversationId, currentModel, setCurrentModel, setCurrentModelLabel } =
-    useChatStore();
+  const {
+    chatMessages,
+    conversationId,
+    currentModel,
+    setCurrentModel,
+    setCurrentModelLabel,
+    setHasSearch,
+  } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
     config: state.config,
   }));
@@ -96,17 +112,20 @@ const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
     ({
       currentModel,
       currentModelLabel,
+      hasSearch,
       isOpen,
     }: {
       currentModel: string;
       currentModelLabel: string;
+      hasSearch?: boolean;
       isOpen: boolean;
     }) => {
       setCurrentModel(currentModel);
       setCurrentModelLabel(currentModelLabel);
       setOpen(isOpen);
+      setHasSearch(Boolean(hasSearch));
     },
-    [setCurrentModel, setCurrentModelLabel],
+    [setCurrentModel, setCurrentModelLabel, setHasSearch],
   );
 
   const handleOpenChange = useCallback((value: boolean) => {

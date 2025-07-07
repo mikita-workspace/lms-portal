@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/ai';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
+import { useLocaleStore } from '@/hooks/store/use-locale-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { getChatMessages } from '@/lib/chat';
 import { fetcher } from '@/lib/fetcher';
@@ -36,16 +37,20 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     conversationId,
     currentModel,
     currentModelLabel,
+    hasSearch,
     isImageGeneration,
+    isSearchMode,
     setChatMessages,
     setConversationId,
     setCurrentModel,
     setCurrentModelLabel,
+    setHasSearch,
     setIsFetching,
   } = useChatStore();
   const { config: appConfig } = useAppConfigStore((state) => ({
     config: state.config,
   }));
+  const localeInfo = useLocaleStore((state) => state.localeInfo);
 
   const { isMounted } = useHydration();
 
@@ -73,6 +78,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       setCurrentModel(currentModel || TEXT_MODELS?.[0]?.value || '');
       setCurrentModelLabel(currentModelLabel || TEXT_MODELS?.[0]?.label || '');
       setChatMessages(chatMessages);
+      setHasSearch(hasSearch || TEXT_MODELS?.[0]?.hasSearch || false);
     }
   }, [
     conversations,
@@ -83,6 +89,8 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     setCurrentModel,
     setCurrentModelLabel,
     setChatMessages,
+    setHasSearch,
+    hasSearch,
   ]);
 
   const saveLastMessages = useCallback(
@@ -202,6 +210,8 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
                   role,
                 }),
               ),
+              isSearch: isSearchMode,
+              localeInfo,
               model: currentModel,
               stream: true,
             },
@@ -268,17 +278,18 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       }
     },
     [
-      setIsFetching,
+      IMAGE_MODELS,
+      assistantMessage,
       chatMessages,
       conversationId,
       currentMessage,
-      assistantMessage,
-      setChatMessages,
-      isImageGeneration,
-      IMAGE_MODELS,
       currentModel,
-      toast,
+      isImageGeneration,
+      isSearchMode,
       saveLastMessages,
+      setChatMessages,
+      setIsFetching,
+      toast,
     ],
   );
 

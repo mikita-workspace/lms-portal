@@ -4,17 +4,22 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 import { ResponseCreateParamsBase } from 'openai/resources/responses/responses.mjs';
 
 import { AI_PROVIDER, ChatCompletionRole } from '@/constants/ai';
+import { LocaleInfo } from '@/hooks/store/use-locale-store';
 
 import { getCurrentUser } from '../auth/get-current-user';
 import { getTargetProvider } from './get-target-provider';
 
 type GenerateCompletion = Omit<ResponseCreateParamsBase, 'model'> & {
+  isSearch?: boolean;
+  localeInfo?: LocaleInfo;
   model?: string;
 };
 
 export const generateCompletion = async ({
   input,
   instructions,
+  isSearch = false,
+  localeInfo,
   model,
   stream = false,
 }: GenerateCompletion) => {
@@ -33,6 +38,23 @@ export const generateCompletion = async ({
           instructions,
           model: targetTextModel.value,
           stream,
+          tools: [
+            ...(isSearch
+              ? [
+                  {
+                    type: 'web_search_preview' as const,
+                    user_location: localeInfo
+                      ? {
+                          type: 'approximate' as const,
+                          country: localeInfo.details.countryCode,
+                          city: localeInfo.details.city,
+                          region: localeInfo.details.country,
+                        }
+                      : null,
+                  },
+                ]
+              : []),
+          ],
         })
       : await provider.chat.completions.create({
           messages: [
