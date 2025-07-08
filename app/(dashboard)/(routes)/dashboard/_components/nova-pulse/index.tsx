@@ -2,6 +2,7 @@
 
 import { Info } from 'lucide-react';
 
+import { getNovaPulse } from '@/actions/nova-pulse/get-nova-pulse';
 import { TextBadge } from '@/components/common/text-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -9,7 +10,11 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { TimeMetric } from './time-metric';
 import { TotalCard } from './total-card';
 
-export const NovaPulse = () => {
+type NovaPulseProps = {
+  info: Awaited<ReturnType<typeof getNovaPulse>>;
+};
+
+export const NovaPulse = ({ info }: NovaPulseProps) => {
   const { user } = useCurrentUser();
 
   return (
@@ -32,7 +37,7 @@ export const NovaPulse = () => {
           </TooltipProvider>
         </div>
         <div className="flex gap-x-2">
-          <TextBadge label={String(2000) + ' Points'} variant="yellow" />
+          <TextBadge label={String(info.xp) + ' Points'} variant="yellow" />
           {user?.hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
         </div>
       </div>
