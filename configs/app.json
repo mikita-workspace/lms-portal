@@ -18,7 +18,7 @@
         },
         {
           "value": "gpt-4.1-mini",
-          "label": "GPT-4.1 mini + Web Search",
+          "label": "GPT-4.1 mini",
           "owner": "OpenAI",
           "isSubscription": false,
           "hasSearch": true
