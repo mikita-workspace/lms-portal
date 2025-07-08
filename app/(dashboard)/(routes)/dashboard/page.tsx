@@ -7,6 +7,7 @@ import { FilterStatus } from '@/constants/courses';
 
 import { CoursesList } from '../../_components/courses/courses-list';
 import { InfoCard } from './_components/info-card';
+import { NovaPulse } from './_components/nova-pulse';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -32,6 +33,7 @@ const DashboardPage = async (props: DashboardPageProps) => {
 
   return (
     <div className="p-6 space-y-4">
+      <NovaPulse />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <InfoCard courseStatus={FilterStatus.PROGRESS} numberOfItems={coursesInProgress.length} />
         <InfoCard courseStatus={FilterStatus.COMPLETED} numberOfItems={completedCourses.length} />
