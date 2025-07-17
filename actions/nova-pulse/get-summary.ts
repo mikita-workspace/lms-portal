@@ -29,6 +29,7 @@ export const getSummary = async <T>(data: T) => {
 
     return {
       body: generatedSummary?.body ?? '',
+      color: generatedSummary?.color ?? '',
       model,
       title: generatedSummary?.title ?? '',
     };
@@ -37,6 +38,7 @@ export const getSummary = async <T>(data: T) => {
 
     return {
       body: '',
+      color: '',
       model: '',
       title: '',
     };

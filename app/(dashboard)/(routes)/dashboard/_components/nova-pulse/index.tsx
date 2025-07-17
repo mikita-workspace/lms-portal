@@ -3,7 +3,7 @@
 import { Info } from 'lucide-react';
 
 import { getNovaPulse } from '@/actions/nova-pulse/get-nova-pulse';
-import { TextBadge } from '@/components/common/text-badge';
+import { TextBadge, TextVariantsProps } from '@/components/common/text-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
@@ -37,7 +37,14 @@ export const NovaPulse = ({ info }: NovaPulseProps) => {
           </TooltipProvider>
         </div>
         <div className="flex gap-x-2">
-          <TextBadge label={info.summary.title} variant="indigo" />
+          <TextBadge
+            label={info.summary.title}
+            variant={
+              ['green', 'indigo', 'lime', 'red', 'yellow'].includes(info.summary.color as string)
+                ? (info.summary.color as TextVariantsProps['variant'])
+                : 'default'
+            }
+          />
           <TextBadge label={String(info.xp) + ' Points'} variant="yellow" />
         </div>
       </div>

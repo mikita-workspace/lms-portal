@@ -15,6 +15,7 @@ export const getNovaPulse = async (
 ): Promise<{
   summary: {
     body: string;
+    color: string;
     model: string;
     title: string;
   };
@@ -53,6 +54,7 @@ export const getNovaPulse = async (
       heatMap: {},
       summary: {
         body: '',
+        color: '',
         model: '',
         title: '',
       },
