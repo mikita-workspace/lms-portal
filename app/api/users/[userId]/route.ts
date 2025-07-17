@@ -56,8 +56,6 @@ export const PATCH = async (req: NextRequest, props: RequestProps) => {
       data: { ...values },
     });
 
-    console.log({ ...settings });
-
     if (settings) {
       await db.userSettings.upsert({
         where: { userId },

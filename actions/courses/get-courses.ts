@@ -54,7 +54,7 @@ export const getCourses = async ({ categoryId, hasSubscription, title, userId }:
         };
       }
 
-      const progressPercentage = await getProgress({ userId, courseId: course.id });
+      const { progressPercentage } = await getProgress({ userId, courseId: course.id });
 
       return { ...course, imagePlaceholder: imagePlaceholder.base64, progress: progressPercentage };
     }),

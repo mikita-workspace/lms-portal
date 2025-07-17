@@ -35,6 +35,11 @@ export const getPreviewCourse = async ({ courseId, userId }: GetPreviewCourse) =
     },
   });
 
+  const chapters = await db.chapter.findMany({
+    where: { courseId: course?.id },
+    select: { durationSec: true },
+  });
+
   const fees = await db.fee.findMany({ orderBy: { name: 'asc' } });
 
   const chapterImage = course?.chapters[0]?.imageUrl;
@@ -47,6 +52,7 @@ export const getPreviewCourse = async ({ courseId, userId }: GetPreviewCourse) =
   return {
     chapterImagePlaceholder: chapterImagePlaceholder?.base64 ?? '',
     course,
+    durationInSec: chapters.reduce((acc, current) => acc + (current.durationSec ?? 0), 0),
     fees,
     hasPurchase: Boolean(purchase?.id),
   };

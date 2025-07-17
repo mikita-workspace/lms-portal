@@ -54,7 +54,11 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
     redirect('/');
   }
 
-  const progressCount = await getProgress({ userId: user.userId, courseId: course.id });
+  const { progressPercentage: progressCount } = await getProgress({
+    userId: user.userId,
+    courseId: course.id,
+  });
+
   const { notifications: userNotifications } = await getUserNotifications({
     userId: user?.userId,
     take: 5,

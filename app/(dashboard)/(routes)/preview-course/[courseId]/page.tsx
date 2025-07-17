@@ -41,10 +41,11 @@ const PreviewCourseIdPage = async (props: PreviewCourseIdPageProps) => {
 
   const user = await getCurrentUser();
 
-  const { chapterImagePlaceholder, course, fees, hasPurchase } = await getPreviewCourse({
-    courseId: courseId,
-    userId: user?.userId,
-  });
+  const { chapterImagePlaceholder, course, fees, hasPurchase, durationInSec } =
+    await getPreviewCourse({
+      courseId: courseId,
+      userId: user?.userId,
+    });
 
   if (!course || (course?.isPremium && !user?.hasSubscription)) {
     redirect('/');
@@ -89,6 +90,7 @@ const PreviewCourseIdPage = async (props: PreviewCourseIdPageProps) => {
             customRates={course.customRates}
             customTags={course.customTags}
             description={course.description!}
+            durationInSec={durationInSec}
             fees={fees}
             hasPurchase={hasPurchase}
             id={course.id}

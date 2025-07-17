@@ -1,4 +1,4 @@
-import { ArrowLeft, Film, LayoutDashboard, ScanEye } from 'lucide-react';
+import { ArrowLeft, CircleEllipsis, Film, LayoutDashboard, ScanEye } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -9,6 +9,7 @@ import { db } from '@/lib/db';
 import { ChapterActions } from './_components/chapter-actions';
 import { ChapterAccessForm } from './_components/form/chapter-access-form';
 import { ChapterDescriptionForm } from './_components/form/chapter-description-form';
+import { ChapterExtraSettingsForm } from './_components/form/chapter-extra-settings-form';
 import { ChapterTitleForm } from './_components/form/chapter-title-form';
 import { ChapterVideoForm } from './_components/form/chapter-video-form';
 
@@ -92,6 +93,13 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
                 <h2 className="text-xl">Access settings</h2>
               </div>
               <ChapterAccessForm {...chapterFormProps} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={CircleEllipsis} />
+                <h2 className="text-xl">Additional settings</h2>
+              </div>
+              <ChapterExtraSettingsForm {...chapterFormProps} />
             </div>
           </div>
           <div>

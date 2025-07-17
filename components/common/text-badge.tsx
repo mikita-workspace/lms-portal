@@ -37,7 +37,7 @@ const textVariants = cva('', {
 });
 
 type BackgroundVariantsProps = VariantProps<typeof backgroundVariants>;
-type TextVariantsProps = VariantProps<typeof textVariants>;
+export type TextVariantsProps = VariantProps<typeof textVariants>;
 
 interface IconBadgeProps extends BackgroundVariantsProps, TextVariantsProps {
   className?: string;

@@ -101,6 +101,7 @@ export const PATCH = async (
         ...values,
         ...(values.imageUrl && { imageUrl: values.imageUrl, videoUrl: '' }),
         ...(values.videoUrl && { videoUrl: values.videoUrl, imageUrl: '' }),
+        ...(Number(values.durationSec) > 0 && { durationSec: Number(values.durationSec) }),
       },
     });
 

@@ -1,6 +1,6 @@
 'use server';
 
-import { Category, Course } from '@prisma/client';
+import { Category, Chapter, Course, UserProgress } from '@prisma/client';
 
 import { FilterStatus } from '@/constants/courses';
 import { db } from '@/lib/db';
@@ -11,12 +11,24 @@ import { getProgress } from './get-progress';
 type CourseWithProgressAndCategory = Course & {
   _count: { chapters: number };
   category: Category;
+  chapters: Chapter[];
   imagePlaceholder: string;
   price: number | null;
   progress: number | null;
+  validChapters: UserProgress[];
 };
 
-export const getDashboardCourses = async (userId: string, filter: string | null) => {
+type GetDashboardCourses = {
+  filter?: string | null;
+  includeChapter?: boolean;
+  userId: string;
+};
+
+export const getDashboardCourses = async ({
+  filter,
+  userId,
+  includeChapter,
+}: GetDashboardCourses) => {
   const purchasedCourses = await db.purchase.findMany({
     where: { userId },
     select: {
@@ -24,6 +36,7 @@ export const getDashboardCourses = async (userId: string, filter: string | null)
         include: {
           _count: { select: { chapters: { where: { isPublished: true } } } },
           category: true,
+          chapters: includeChapter,
         },
       },
     },
@@ -42,11 +55,16 @@ export const getDashboardCourses = async (userId: string, filter: string | null)
     .filter((course) => course.isPublished) as CourseWithProgressAndCategory[];
 
   for (const course of courses) {
-    const progress = await getProgress({ userId, courseId: course.id });
+    const { progressPercentage: progress, validChapters } = await getProgress({
+      userId,
+      courseId: course.id,
+      includeValidChapters: includeChapter,
+    });
     const imagePlaceholder = await getImagePlaceHolder(course.imageUrl!);
 
-    course['progress'] = progress;
     course['imagePlaceholder'] = imagePlaceholder.base64;
+    course['progress'] = progress;
+    course['validChapters'] = validChapters;
   }
 
   const completedCourses = courses.filter((course) => course.progress === 100);

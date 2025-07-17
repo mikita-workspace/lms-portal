@@ -5,13 +5,12 @@ import { getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getChapter } from '@/actions/courses/get-chapter';
 import { Banner } from '@/components/common/banner';
-import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { FileDownload } from '@/components/common/file-download';
 import { Preview } from '@/components/common/preview';
 import { Separator } from '@/components/ui/separator';
 
+import { ChapterTitle } from './_components/chapter-title';
 import { ChapterVideoPlayer } from './_components/chapter-video-player';
-import { CourseProgressButton } from './_components/course-progress-button';
 
 type ChapterIdPageProps = {
   params: Promise<{ courseId: string; chapterId: string }>;
@@ -45,6 +44,7 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
 
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = Boolean(purchase) && !userProgress?.isCompleted;
+  const durationInSec = chapter.durationSec ?? 0;
 
   return (
     <div>
@@ -73,25 +73,16 @@ const ChapterIdPage = async (props: ChapterIdPageProps) => {
             </div>
           )}
         </div>
-        <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-          <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
-          {purchase ? (
-            <CourseProgressButton
-              chapterId={chapterId}
-              courseId={courseId}
-              isCompleted={Boolean(userProgress?.isCompleted)}
-              nextChapterId={nextChapter?.id}
-            />
-          ) : (
-            <div className="w-full md:w-auto">
-              <CourseEnrollButton
-                courseId={courseId}
-                customRates={course.customRates}
-                price={course.price}
-              />
-            </div>
-          )}
-        </div>
+        <ChapterTitle
+          chapter={chapter}
+          chapterId={chapterId}
+          course={course}
+          courseId={courseId}
+          durationInSec={durationInSec}
+          hasPurchase={Boolean(purchase)}
+          isCompleted={Boolean(userProgress?.isCompleted)}
+          nextChapterId={nextChapter?.id}
+        />
         {!isLocked && chapter.description && (
           <>
             <Separator />

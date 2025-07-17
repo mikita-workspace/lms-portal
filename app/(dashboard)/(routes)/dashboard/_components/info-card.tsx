@@ -65,7 +65,7 @@ export const InfoCard = ({ courseStatus, numberOfItems }: InfoCardProps) => {
         <IconBadge icon={filterInfo.icon} variant={filterInfo.variant as 'default' | 'success'} />
         <div>
           <p className="font-medium">{t(filterInfo.key)}</p>
-          <p className="text-secondary-foreground text-sm text-left">
+          <p className="text-muted-foreground text-xs text-left">
             {t('course', { amount: numberOfItems })}
           </p>
         </div>
