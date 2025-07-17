@@ -500,7 +500,11 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Створана з дапамогай Nova Copilot ({ model })"
+      "generated": "Створана з дапамогай Nova Copilot ({ model })",
+      "tooltip": {
+        "xp": "Gained { xp } XP",
+        "time": "Spent { time }"
+      }
     }
   }
 }
