@@ -1,9 +1,9 @@
 {
   "app": {
-    "description": "Адукацыйны\u00a0портал",
+    "description": "Адукацыйны портал",
     "loading": "Загрузка...",
-    "name": "Nova\u00a0Academy",
-    "poweredBy": "На\u00a0платформе"
+    "name": "Nova Academy",
+    "poweredBy": "На платформе"
   },
   "auth": {
     "welcomeBonus": {
@@ -179,7 +179,7 @@
     "logOut": "Выйсці",
     "login": "Увайсці",
     "owner": "Уладальнік",
-    "premium": "Nova\u00a0Plus",
+    "premium": "Nova Plus",
     "progress": "Прагрэс",
     "settings": "Налады",
     "student": "Студэнт",
@@ -337,10 +337,10 @@
     "improve": "Паляпшыць",
     "original": "Вярнуць арыгінал",
     "stop": "Спыніць",
-    "translate": "Перакласці з Nova\u00a0Copilot"
+    "translate": "Перакласці з Nova Copilot"
   },
   "ai-limit": {
-    "title": "У вас скончыліся Nova\u00a0Copilot запыты. Перайдзіце на Nova\u00a0Plus, або паспрабуйце яшчэ раз пасля { date }."
+    "title": "У вас скончыліся Nova Copilot запыты. Перайдзіце на Nova Plus, або паспрабуйце яшчэ раз пасля { date }."
   },
   "cookie-consent": {
     "accept": "Прыняць",
@@ -348,7 +348,7 @@
     "policy": "Палітыка файлаў cookie"
   },
   "course-enroll": {
-    "enrollFor": "Далучыцца\u00a0",
+    "enrollFor": "Далучыцца ",
     "free": "Бясплатна",
     "redirect": "Вы будзеце перанакіраваны на старонку афармлення замовы."
   },
@@ -363,8 +363,8 @@
     "searchFor": "Шукаць курс..."
   },
   "subscription": {
-    "bannerBody": "Прэміум-курсы, неабмежаваны доступ да Nova\u00a0Copilot і многае іншае.",
-    "bannerTitle": "Абнавіць да Nova\u00a0Plus",
+    "bannerBody": "Прэміум-курсы, неабмежаваны доступ да Nova Copilot і многае іншае.",
+    "bannerTitle": "Абнавіць да Nova Plus",
     "benefits": {
       "cancel-anytime": "Ануляваць у любы час",
       "get-access-nova-ai": "Атрымаць неабмежаваны доступ да Nova Copilot",
@@ -488,5 +488,19 @@
   },
   "docs": {
     "backNav": "Назад да курсаў"
+  },
+  "nova-pulse": {
+    "money": {
+      "title": "Выдаткі",
+      "body": "Усяго патрачана грошай"
+    },
+    "time": {
+      "title": "Час",
+      "body": "Усяго патрачана часу"
+    },
+    "heatmap": {
+      "title": "Heat Map",
+      "generated": "Створана з дапамогай Nova Copilot ({ model })"
+    }
   }
 }

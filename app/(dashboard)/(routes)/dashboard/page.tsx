@@ -27,10 +27,10 @@ const DashboardPage = async (props: DashboardPageProps) => {
     return redirect('/');
   }
 
-  const { completedCourses, coursesInProgress, filterCourses } = await getDashboardCourses(
-    user.userId,
-    searchParams?.filter ?? null,
-  );
+  const { completedCourses, coursesInProgress, filterCourses } = await getDashboardCourses({
+    filter: searchParams?.filter,
+    userId: user.userId,
+  });
 
   const novaPulseInfo = await getNovaPulse(user.userId);
 

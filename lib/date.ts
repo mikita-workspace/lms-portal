@@ -11,7 +11,9 @@ export const roundDate = (date: Date) => {
 export const formatTimeInSeconds = (seconds: number): string => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
 
-  const formattedDuration = formatDuration(duration);
+  const formattedDuration = formatDuration(duration, {
+    format: ['months', 'weeks', 'days', 'hours', 'minutes'],
+  });
 
   return formattedDuration ?? '0 minutes';
 };

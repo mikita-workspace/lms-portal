@@ -11,6 +11,9 @@ export const USER_CHAPTER_DESCRIPTION_PROMPT = (originalDescription: string) =>
 export const USER_TRANSLATE_PROMPT = (originalText: string, targetLanguage: string) =>
   `You have the following text: "${originalText}". Translate it in ${targetLanguage}. Provide only answer without quotation marks`;
 
+export const NOVA_PULSE_SUMMARY = <T>(data: T, locale: string) =>
+  `Based on this data - ${JSON.stringify(data)}, make a conclusion about my academic performance. Return the response in JSON format - {title: "Short title", body: "Conclusion on academic performance in 2-3 sentences"}. Translate it in ${locale}.`;
+
 export const ChatCompletionRole = {
   ASSISTANT: 'assistant',
   SYSTEM: 'system',

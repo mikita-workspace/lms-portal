@@ -7,7 +7,7 @@ import { TextBadge } from '@/components/common/text-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
-import { TimeMetric } from './time-metric';
+import { Heatmap } from './heat-map';
 import { TotalCard } from './total-card';
 
 type NovaPulseProps = {
@@ -37,16 +37,16 @@ export const NovaPulse = ({ info }: NovaPulseProps) => {
           </TooltipProvider>
         </div>
         <div className="flex gap-x-2">
+          <TextBadge label={info.summary.title} variant="indigo" />
           <TextBadge label={String(info.xp) + ' Points'} variant="yellow" />
-          {user?.hasSubscription && <TextBadge label="Nova&nbsp;Plus" variant="lime" />}
         </div>
       </div>
-      <div className="flex gap-4 md:flex-row flex-col">
-        <div className="flex flex-col gap-y-4">
-          <TotalCard type="time" />
-          <TotalCard type="money" />
+      <div className="flex gap-4 flex-col">
+        <Heatmap data={info.heatMap} summary={info.summary} />
+        <div className="flex gap-4 flex-col md:flex-row">
+          <TotalCard info={info} type="time" />
+          <TotalCard info={info} type="money" />
         </div>
-        <TimeMetric />
       </div>
     </div>
   );

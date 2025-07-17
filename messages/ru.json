@@ -1,9 +1,9 @@
 {
   "app": {
-    "description": "Образовательный\u00a0портал",
+    "description": "Образовательный портал",
     "loading": "Загрузка...",
-    "name": "Nova\u00a0Academy",
-    "poweredBy": "На\u00a0платформе"
+    "name": "Nova Academy",
+    "poweredBy": "На платформе"
   },
   "auth": {
     "welcomeBonus": {
@@ -178,7 +178,7 @@
     "logOut": "Выйти",
     "login": "Войти",
     "owner": "Владелец",
-    "premium": "Nova\u00a0Plus",
+    "premium": "Nova Plus",
     "progress": "Прогресс",
     "settings": "Настройки",
     "student": "Студент",
@@ -193,7 +193,7 @@
   },
   "payments": {
     "payout": {
-      "decline":{
+      "decline": {
         "body": "Ваш запрос на выплату отклонен.",
         "title": "Запрос на выплату { payoutRequestId }"
       },
@@ -336,10 +336,10 @@
     "improve": "Улучшить",
     "original": "Вернуть оригинал",
     "stop": "Стоп",
-    "translate": "Перевести с Nova\u00a0Copilot"
+    "translate": "Перевести с Nova Copilot"
   },
   "ai-limit": {
-    "title": "У вас закончились Nova\u00a0Copilot запросы. Перейдите на Nova\u00a0Plus, или поробуйте еще раз после { date }."
+    "title": "У вас закончились Nova Copilot запросы. Перейдите на Nova Plus, или поробуйте еще раз после { date }."
   },
   "cookie-consent": {
     "accept": "Принять",
@@ -347,7 +347,7 @@
     "policy": "Политикой использования файлов cookie"
   },
   "course-enroll": {
-    "enrollFor": "Присоединиться\u00a0",
+    "enrollFor": "Присоединиться ",
     "free": "Бесплатно",
     "redirect": "Вы будете перенаправлены на страницу оформления заказа."
   },
@@ -362,8 +362,8 @@
     "searchFor": "Искать курс..."
   },
   "subscription": {
-    "bannerBody": "Премиум-курсы, неограниченный доступ к Nova\u00a0Copilot и многое другое.",
-    "bannerTitle": "Обновитесь до Nova\u00a0Plus",
+    "bannerBody": "Премиум-курсы, неограниченный доступ к Nova Copilot и многое другое.",
+    "bannerTitle": "Обновитесь до Nova Plus",
     "benefits": {
       "cancel-anytime": "Отмените в любое время",
       "get-access-nova-ai": "Получите неограниченный доступ к Nova Copilot",
@@ -487,5 +487,19 @@
   },
   "docs": {
     "backNav": "Назад к курсам"
+  },
+  "nova-pulse": {
+    "money": {
+      "title": "Расходы",
+      "body": "Всего потрачено денег"
+    },
+    "time": {
+      "title": "Время",
+      "body": "Всего потрачено времени"
+    },
+    "heatmap": {
+      "title": "Heat Map",
+      "generated": "Создано с помощью Nova Copilot ({ model })"
+    }
   }
 }

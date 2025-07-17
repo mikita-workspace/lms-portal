@@ -56,7 +56,7 @@ export const useUserLocation = () => {
           rate: exchangeRates?.rates?.[locale.currency] ?? DEFAULT_EXCHANGE_RATE,
         });
       } catch (error) {
-        console.log('[USE_USER_LOCATION]', error);
+        console.error('[USE_USER_LOCATION]', error);
 
         handleLocaleInfo(defaultLocaleInfo);
       }

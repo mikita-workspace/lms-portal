@@ -1,9 +1,9 @@
 {
   "app": {
-    "description": "Educational\u00a0portal",
+    "description": "Educational portal",
     "loading": "Loading...",
-    "name": "Nova\u00a0Academy",
-    "poweredBy": "Powered\u00a0by"
+    "name": "Nova Academy",
+    "poweredBy": "Powered by"
   },
   "auth": {
     "welcomeBonus": {
@@ -64,7 +64,7 @@
     "code": "Code",
     "coupon": "Coupon",
     "created": "Promotion code has been created",
-    "firstTimePurchaseBody":" Eligible for first-time order only",
+    "firstTimePurchaseBody": " Eligible for first-time order only",
     "limitNumberOfRedeemedBody": "Limit the number of times this code can be redeemed",
     "limitToSpecificCustomersBody": "Limit to a specific customer",
     "requireMinimumAmount": "Require minimum order value",
@@ -107,7 +107,7 @@
   "chat-conversation-modal": {
     "copied": "The link has been copied",
     "copyLink": "Copy the link",
-    "description":"Click \"Submit\" when you are done.",
+    "description": "Click \"Submit\" when you are done.",
     "onlyAuth": "Only for authorized users",
     "openAccess": "Open access to the conversation via the link",
     "sharedAccess": "Shared access",
@@ -179,7 +179,7 @@
     "logOut": "Log out",
     "login": "Login",
     "owner": "Owner",
-    "premium": "Nova\u00a0Plus",
+    "premium": "Nova Plus",
     "progress": "Progress",
     "settings": "Settings",
     "student": "Student",
@@ -194,7 +194,7 @@
   },
   "payments": {
     "payout": {
-      "decline":{
+      "decline": {
         "body": "Your payout request has been declined.",
         "title": "Payout Request { payoutRequestId }"
       },
@@ -337,10 +337,10 @@
     "improve": "Improve",
     "original": "Return the original",
     "stop": "Stop",
-    "translate": "Translate with Nova\u00a0Copilot"
+    "translate": "Translate with Nova Copilot"
   },
   "ai-limit": {
-    "title": "You have run out of Nova\u00a0Copilot requests. Switch to Nova\u00a0Plus, or try again after {date}."
+    "title": "You have run out of Nova Copilot requests. Switch to Nova Plus, or try again after {date}."
   },
   "cookie-consent": {
     "accept": "Accept",
@@ -348,7 +348,7 @@
     "policy": "Cookie Policy"
   },
   "course-enroll": {
-    "enrollFor": "Enroll\u00a0for\u00a0",
+    "enrollFor": "Enroll for ",
     "free": "Free",
     "redirect": "You will be redirected to the checkout page."
   },
@@ -363,8 +363,8 @@
     "searchFor": "Search for a course..."
   },
   "subscription": {
-    "bannerBody": "Premium courses, unlimited access to Nova\u00a0Copilot, and more.",
-    "bannerTitle": "Upgrade to Nova\u00a0Plus",
+    "bannerBody": "Premium courses, unlimited access to Nova Copilot, and more.",
+    "bannerTitle": "Upgrade to Nova Plus",
     "benefits": {
       "cancel-anytime": "Cancel anytime",
       "get-access-nova-ai": "Get unlimited access to Nova Copilot",
@@ -488,5 +488,19 @@
   },
   "docs": {
     "backNav": "Back to courses"
+  },
+  "nova-pulse": {
+    "money": {
+      "title": "Expenses",
+      "body": "Total money spent"
+    },
+    "time": {
+      "title": "Time",
+      "body": "Total time spent"
+    },
+    "heatmap": {
+      "title": "Heat Map",
+      "generated": "Generated using Nova Copilot ({ model })"
+    }
   }
 }

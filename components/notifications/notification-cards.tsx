@@ -44,7 +44,7 @@ const NotificationCard = ({ isFetching = false, notification, userId }: Notifica
 
       startTransition(() => router.refresh());
     } catch (error) {
-      console.log('[NOTIFICATION-CARDS]', error);
+      console.error('[NOTIFICATION-CARDS]', error);
 
       toast({ isError: true });
     } finally {

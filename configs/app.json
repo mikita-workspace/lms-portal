@@ -11,17 +11,17 @@
       ],
       "text-models": [
         {
-          "value": "gpt-4o-mini",
-          "label": "GPT-4o mini",
-          "owner": "OpenAI",
-          "isSubscription": false
-        },
-        {
           "value": "gpt-4.1-mini",
           "label": "GPT-4.1 mini",
           "owner": "OpenAI",
           "isSubscription": false,
           "hasSearch": true
+        },
+        {
+          "value": "gpt-4o-mini",
+          "label": "GPT-4o mini",
+          "owner": "OpenAI",
+          "isSubscription": false
         },
         {
           "value": "o4-mini",
