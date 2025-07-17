@@ -2,7 +2,7 @@
 
 import { Fee } from '@prisma/client';
 import { format } from 'date-fns';
-import { BookA, BookOpen, CalendarDays, Languages } from 'lucide-react';
+import { BookA, BookOpen, CalendarDays, Clock, Clock9, Languages } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -16,6 +16,7 @@ import { ChatCompletionRole, USER_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TIMESTAMP_PREVIEW_TEMPLATE } from '@/constants/common';
 import { SUPPORTED_LOCALES } from '@/constants/locale';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { formatTimeInSeconds } from '@/lib/date';
 
 type PreviewDescriptionProps = {
   author?: string | null;
@@ -25,6 +26,7 @@ type PreviewDescriptionProps = {
   customRates: string | null;
   customTags?: string[];
   description: string;
+  durationInSec: number;
   fees?: Fee[];
   hasPurchase?: boolean;
   id: string;
@@ -42,6 +44,7 @@ export const PreviewDescription = ({
   customRates,
   customTags,
   description,
+  durationInSec,
   fees,
   hasPurchase,
   id,
@@ -106,6 +109,12 @@ export const PreviewDescription = ({
               <span className="text-xs">{t('author', { author })}</span>
             </Button>
           </UserHoverCard>
+        )}
+        {durationInSec > 0 && (
+          <div className="flex items-center gap-x-1 text-neutral-500 my-1">
+            <Clock9 className="h-4 w-4" />
+            <span className="text-xs">{formatTimeInSeconds(durationInSec)}</span>
+          </div>
         )}
         {languageTitle && (
           <div className="flex items-center gap-x-1 text-neutral-500 mb-4">
