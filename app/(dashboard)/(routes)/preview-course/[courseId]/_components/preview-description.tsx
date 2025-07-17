@@ -2,7 +2,7 @@
 
 import { Fee } from '@prisma/client';
 import { format } from 'date-fns';
-import { BookA, BookOpen, CalendarDays, Clock, Clock9, Languages } from 'lucide-react';
+import { BookA, BookOpen, CalendarDays, Clock9, Languages } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
