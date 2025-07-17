@@ -112,13 +112,12 @@ export const Heatmap = ({ data, summary }: HeatmapProps) => {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">
-                      <p>
-                        Набрано <strong>{value} </strong> XP
-                      </p>
+                      <p>{t('tooltip.xp', { xp: targetInfo.xp })}</p>
                       {targetInfo.totalSpentTimeInSec > 0 && (
                         <p>
-                          Потрачено{' '}
-                          <strong>{formatTimeInSeconds(targetInfo.totalSpentTimeInSec)}</strong>
+                          {t('tooltip.time', {
+                            time: formatTimeInSeconds(targetInfo.totalSpentTimeInSec),
+                          })}
                         </p>
                       )}
                     </TooltipContent>

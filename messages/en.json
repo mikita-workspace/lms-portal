@@ -500,7 +500,11 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Generated using Nova Copilot ({ model })"
+      "generated": "Generated using Nova Copilot ({ model })",
+      "tooltip": {
+        "xp": "Gained { xp } XP",
+        "time": "Spent { time }"
+      }
     }
   }
 }

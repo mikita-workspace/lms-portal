@@ -499,7 +499,11 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Создано с помощью Nova Copilot ({ model })"
+      "generated": "Создано с помощью Nova Copilot ({ model })",
+      "tooltip": {
+        "xp": "Набрано { xp } XP",
+        "time": "Потрачено { time }"
+      }
     }
   }
 }
