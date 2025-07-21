@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
 import { TEXTAREA_MAX_LENGTH } from '@/constants/courses';
+import { formatTimeInSeconds } from '@/lib/date';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
 
@@ -38,6 +39,11 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       title: '',
     },
   });
+
+  const totalDuration = initialData.chapters.reduce(
+    (acc, current) => acc + (current.durationSec ?? 0),
+    0,
+  );
 
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -87,7 +93,12 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </div>
       )}
       <div className="font-medium flex items-center justify-between">
-        Chapters
+        <div className="flex flex-col justify-center">
+          <p>Chapters</p>
+          <span className="text-xs text-muted-foreground">
+            {formatTimeInSeconds(totalDuration)}
+          </span>
+        </div>
         <Button onClick={handleToggleCreating} variant="outline" size="sm">
           {isCreating ? (
             <>Cancel</>

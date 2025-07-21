@@ -107,6 +107,7 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
               name="language"
               render={({ field }) => (
                 <FormItem className="shadow-none">
+                  <p className="text-sm">General course language</p>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>

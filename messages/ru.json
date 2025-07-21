@@ -281,7 +281,7 @@
     "body": "Чтобы просмотреть, авторизуйтесь.",
     "quoteAuthor": "Сократ",
     "quoteBody": "Чем больше я учусь, тем больше я понимаю, как мало я знаю.",
-    "generated": "Сгенерировано с использованием Nova Copilot ({ model })",
+    "generated": "Сгенерировано с использованием Nova Copilot",
     "login": "Войти",
     "title": "Эта страница защищена."
   },
@@ -499,7 +499,7 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Создано с помощью Nova Copilot ({ model })",
+      "generated": "Создано с помощью Nova Copilot",
       "tooltip": {
         "xp": "Набрано { xp } XP",
         "time": "Потрачено { time }"

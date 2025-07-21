@@ -1,4 +1,6 @@
-import { addSeconds, formatDuration, intervalToDuration } from 'date-fns';
+import { addSeconds, Duration, formatDuration, intervalToDuration } from 'date-fns';
+
+const durationFormat: (keyof Duration)[] = ['months', 'weeks', 'days', 'hours', 'minutes'];
 
 export const roundDate = (date: Date) => {
   date.setHours(0);
@@ -12,7 +14,7 @@ export const formatTimeInSeconds = (seconds: number): string => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
 
   const formattedDuration = formatDuration(duration, {
-    format: ['months', 'weeks', 'days', 'hours', 'minutes'],
+    format: seconds < 60 ? [...durationFormat, 'seconds' as keyof Duration] : durationFormat,
   });
 
   return formattedDuration ?? '0 minutes';

@@ -45,8 +45,11 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
     },
   });
 
+  const defaultPrompt = USER_COURSE_SHORT_DESCRIPTION_PROMPT(form.getValues().description);
+
   const [isEditing, setIsEditing] = useState(false);
   const [newDescription, setNewDescription] = useState('');
+  const [promptMessage, setPromptMessage] = useState(defaultPrompt);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -87,7 +90,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
               messages={[
                 {
                   role: ChatCompletionRole.USER,
-                  content: USER_COURSE_SHORT_DESCRIPTION_PROMPT(form.getValues().description),
+                  content: promptMessage,
                 },
               ]}
             />
@@ -110,6 +113,19 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
         >
           {initialData.description || 'No description'}
         </p>
+      )}
+      {isEditing && (
+        <div className="flex flex-col gap-y-2 mt-2">
+          <p className="text-sm text-muted-foreground">Input prompt</p>
+          <Textarea
+            disabled={isSubmitting}
+            placeholder="e.g. 'Please, add emoji for...'"
+            value={promptMessage}
+            onChange={(event) => {
+              setPromptMessage(event.target.value);
+            }}
+          />
+        </div>
       )}
       {isEditing && (
         <Form {...form}>

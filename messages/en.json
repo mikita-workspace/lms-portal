@@ -282,7 +282,7 @@
     "body": "To view, please login.",
     "quoteAuthor": "Socrates",
     "quoteBody": "The more I study, the more I realize how little I know.",
-    "generated": "Generated using Nova Copilot ({ model })",
+    "generated": "Generated using Nova Copilot",
     "login": "Login",
     "title": "This content is protected."
   },
@@ -500,7 +500,7 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Generated using Nova Copilot ({ model })",
+      "generated": "Generated using Nova Copilot",
       "tooltip": {
         "xp": "Gained { xp } XP",
         "time": "Spent { time }"

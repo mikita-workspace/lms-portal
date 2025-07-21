@@ -22,7 +22,7 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
     return redirect('/');
   }
 
-  const { author, model, quote } = await getLoginQuote();
+  const { author, quote } = await getLoginQuote();
 
   const t = await getTranslations('signIn');
 
@@ -38,7 +38,7 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
             <p className="text-lg">&ldquo;{quote ?? t('quoteBody')}&rdquo;</p>
             <footer className="text-sm">{author ?? t('quoteAuthor')}</footer>
           </blockquote>
-          <p className="text-xs mt-2 text-muted-foreground">{t('generated', { model })}</p>
+          <p className="text-xs mt-2 text-muted-foreground">{t('generated')}</p>
           <MadeWithLove className="mt-2 text-xs" />
         </div>
       </div>

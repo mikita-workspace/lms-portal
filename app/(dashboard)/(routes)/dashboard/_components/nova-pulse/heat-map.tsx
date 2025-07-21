@@ -147,9 +147,7 @@ export const Heatmap = ({ data, summary }: HeatmapProps) => {
             xLabelsPos="bottom"
           />
         </div>
-        <p className="text-xs mt-2 text-muted-foreground text-right">
-          {t('generated', { model: summary.model })}
-        </p>
+        <p className="text-xs mt-2 text-muted-foreground text-right">{t('generated')}</p>
       </CardContent>
     </Card>
   );

@@ -282,7 +282,7 @@
     "body": "Каб праглядзець, калі ласка, увайдзеце.",
     "quoteAuthor": "Сакрат",
     "quoteBody": "Чым больш я вучуся, тым больш я разумею, як мала я ведаю.",
-    "generated": "Згенеравана з выкарыстаннем Nova Copilot ({ model })",
+    "generated": "Згенеравана з выкарыстаннем Nova Copilot",
     "login": "Увайсці",
     "title": "Гэтае змест абаронены."
   },
@@ -500,7 +500,7 @@
     },
     "heatmap": {
       "title": "Heat Map",
-      "generated": "Створана з дапамогай Nova Copilot ({ model })",
+      "generated": "Створана з дапамогай Nova Copilot",
       "tooltip": {
         "xp": "Gained { xp } XP",
         "time": "Spent { time }"
