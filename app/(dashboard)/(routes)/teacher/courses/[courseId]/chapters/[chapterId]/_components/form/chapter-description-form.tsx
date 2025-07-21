@@ -14,6 +14,7 @@ import { StreamText } from '@/components/ai/stream-text';
 import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { Editor } from '@/components/common/editor';
 import { Preview } from '@/components/common/preview';
+import { Textarea } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
@@ -46,8 +47,13 @@ export const ChapterDescriptionForm = ({
     },
   });
 
+  const defaultPrompt = USER_CHAPTER_DESCRIPTION_PROMPT(
+    form.getValues().description.replace(/\n$/, ''),
+  );
+
   const [isEditing, setIsEditing] = useState(false);
   const [newDescription, setNewDescription] = useState('');
+  const [promptMessage, setPromptMessage] = useState(defaultPrompt);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -87,9 +93,7 @@ export const ChapterDescriptionForm = ({
               messages={[
                 {
                   role: ChatCompletionRole.USER,
-                  content: USER_CHAPTER_DESCRIPTION_PROMPT(
-                    form.getValues().description.replace(/\n$/, ''),
-                  ),
+                  content: promptMessage,
                 },
               ]}
             />
@@ -120,6 +124,19 @@ export const ChapterDescriptionForm = ({
           ) : (
             'No description'
           )}
+        </div>
+      )}
+      {isEditing && (
+        <div className="flex flex-col gap-y-2 mt-2">
+          <p className="text-sm text-muted-foreground">Input prompt</p>
+          <Textarea
+            disabled={isSubmitting}
+            placeholder="e.g. 'Please, add emoji for...'"
+            value={promptMessage}
+            onChange={(event) => {
+              setPromptMessage(event.target.value);
+            }}
+          />
         </div>
       )}
       {isEditing && newDescription && (

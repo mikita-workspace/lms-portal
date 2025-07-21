@@ -8,9 +8,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { CopyClipboard } from '@/components/common/copy-clipboard';
-import { Input } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { TextBadge } from '@/components/common/text-badge';
+import { Button, Input } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
 import { useVideoStore } from '@/hooks/store/use-video-store';
@@ -40,6 +39,8 @@ export const ChapterExtraSettingsForm = ({
   const videoDuration =
     video.find((vd) => vd.id === `${chapterId}-${initialData.videoUrl}`)?.duration ?? 0;
 
+  const isValidationNeeded = initialData.durationSec !== videoDuration;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,10 +67,29 @@ export const ChapterExtraSettingsForm = ({
     }
   };
 
+  const handleApplyDuration = async () => {
+    try {
+      await fetcher.patch(`/api/courses/${courseId}/chapters/${chapterId}`, {
+        body: { durationSec: videoDuration },
+      });
+
+      toast({ title: 'Duration has been updated' });
+      handleToggleEdit();
+
+      router.refresh();
+    } catch (error) {
+      toast({ isError: true });
+    }
+  };
+
   return (
     <div className="mt-6 border  bg-neutral-100 dark:bg-neutral-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Extra options
+        <div className="flex items-center gap-x-2">
+          <span>Extra options</span>
+          {isValidationNeeded && <TextBadge label="Need validation" variant="yellow" />}
+        </div>
+
         <Button onClick={handleToggleEdit} variant="outline" size="sm">
           {isEditing ? (
             <>Cancel</>
@@ -101,14 +121,23 @@ export const ChapterExtraSettingsForm = ({
               name="durationSec"
               render={({ field }) => (
                 <FormItem>
-                  <div className="text-sm flex items-center gap-x-1">
-                    <p>Custom chapter duration (seconds).</p>
+                  <div className="text-sm flex flex-col justify-center gap-x-1">
+                    <p>Custom chapter duration (seconds)</p>
                     {videoDuration > 0 && (
-                      <p>
-                        Duration for loaded video is <strong>{videoDuration}</strong> sec.
-                      </p>
+                      <div className="flex items-center gap-x-1 text-muted-foreground">
+                        <span>Duration for uploaded video is </span>
+                        <strong>{formatTimeInSeconds(videoDuration)}</strong>
+                        <Button
+                          className="ml-2"
+                          onClick={handleApplyDuration}
+                          size="sm"
+                          type="button"
+                          variant="outline"
+                        >
+                          Apply
+                        </Button>
+                      </div>
                     )}
-                    <CopyClipboard textToCopy={videoDuration.toString()} />
                   </div>
                   <FormControl>
                     <Input
