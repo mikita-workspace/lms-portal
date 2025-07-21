@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { TextBadge } from '@/components/common/text-badge';
 import { useHydration } from '@/hooks/use-hydration';
+import { formatTimeInSeconds } from '@/lib/date';
 import { cn } from '@/lib/utils';
 
 type ChaptersListProps = {
@@ -79,7 +80,14 @@ export const ChaptersList = ({ items, onEdit, onReorder }: ChaptersListProps) =>
                     >
                       <GripVertical className="h-5 w-5" />
                     </div>
-                    {chapter.title}
+                    <div className="flex flex-col">
+                      <strong>{chapter.title}</strong>
+                      {chapter?.durationSec && (
+                        <p className="text-xs font-light">
+                          {formatTimeInSeconds(chapter.durationSec)}
+                        </p>
+                      )}
+                    </div>
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       {chapter.isFree && <TextBadge variant="lime" label="Free" />}
                       <TextBadge

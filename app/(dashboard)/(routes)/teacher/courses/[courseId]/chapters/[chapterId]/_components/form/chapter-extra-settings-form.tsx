@@ -8,10 +8,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { CopyClipboard } from '@/components/common/copy-clipboard';
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { useVideoStore } from '@/hooks/store/use-video-store';
 import { formatTimeInSeconds } from '@/lib/date';
 import { fetcher } from '@/lib/fetcher';
 import { cn } from '@/lib/utils';
@@ -34,10 +36,14 @@ export const ChapterExtraSettingsForm = ({
   const { toast } = useToast();
   const router = useRouter();
 
+  const { video } = useVideoStore((state) => ({ video: state.video }));
+  const videoDuration =
+    video.find((vd) => vd.id === `${chapterId}-${initialData.videoUrl}`)?.duration ?? 0;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      durationSec: String(initialData.durationSec ?? 0),
+      durationSec: String(initialData.durationSec ?? videoDuration),
     },
   });
 
@@ -95,7 +101,15 @@ export const ChapterExtraSettingsForm = ({
               name="durationSec"
               render={({ field }) => (
                 <FormItem>
-                  <p className="text-sm">Chapter duration (seconds)</p>
+                  <div className="text-sm flex items-center gap-x-1">
+                    <p>Custom chapter duration (seconds).</p>
+                    {videoDuration > 0 && (
+                      <p>
+                        Duration for loaded video is <strong>{videoDuration}</strong> sec.
+                      </p>
+                    )}
+                    <CopyClipboard textToCopy={videoDuration.toString()} />
+                  </div>
                   <FormControl>
                     <Input
                       {...field}

@@ -109,7 +109,11 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
           )}
           {initialData?.videoUrl && (
             <div className="relative mt-4">
-              <VideoPlayer videoUrl={initialData.videoUrl} onReady={() => setIsVideoReady(true)} />
+              <VideoPlayer
+                id={initialData.id}
+                onReady={() => setIsVideoReady(true)}
+                videoUrl={initialData.videoUrl}
+              />
               {!isVideoReady && (
                 <div className="absolute h-full w-full bg-muted border top-0 right-0 rounded-md flex items-center justify-center">
                   <BiLoader className="h-6 w-6 animate-spin text-primary" />

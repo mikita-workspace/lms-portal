@@ -24,7 +24,7 @@ export const CopyClipboard = ({ className, disabled = false, textToCopy }: CopyC
   };
 
   return (
-    <button onClick={handleCopyToClipboard} disabled={disabled}>
+    <button onClick={handleCopyToClipboard} disabled={disabled} type="button">
       <Copy className={cn('h-4 w-4', copied ? 'animate-spin-once' : '', className)} />
     </button>
   );
