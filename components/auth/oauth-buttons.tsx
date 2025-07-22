@@ -106,7 +106,7 @@ export const OAuthButtons = ({
       {Boolean(tailProviders.length) && (
         <SmartDropDownMenu body={body}>
           <Button
-            className={cn('flex font-[400] space-x-0 justify-center items-center flex-1')}
+            className="flex font-[400] space-x-0 justify-center items-center flex-1"
             disabled={isDisabledButtons}
             variant="outline"
           >

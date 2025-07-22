@@ -17,7 +17,7 @@ import { isValidUrl } from '@/lib/utils';
 
 import { Captcha } from '../common/captcha';
 import { AuthFormSkeleton } from '../loaders/auth-form-skeleton';
-import { Button, Input, Separator } from '../ui';
+import { Button, Input } from '../ui';
 import { useToast } from '../ui/use-toast';
 import { OAuthButtons } from './oauth-buttons';
 import { TermsAndPrivacy } from './terms-and-privacy';
@@ -194,7 +194,6 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
               </div>
             </form>
           </Form>
-          {!isBlockedNewLogin && <Separator />}
         </>
       )}
       <OAuthButtons
