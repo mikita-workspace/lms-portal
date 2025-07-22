@@ -286,6 +286,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       currentModel,
       isImageGeneration,
       isSearchMode,
+      localeInfo,
       saveLastMessages,
       setChatMessages,
       setIsFetching,

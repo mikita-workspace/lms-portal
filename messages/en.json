@@ -323,7 +323,7 @@
       "enterImageMessage": "Enter your request...",
       "enterMessage": "Enter your message...",
       "footer": "Nova Copilot can make mistakes. Consider checking important information.",
-      "image-generation-mode": "Image generation mode ({model})",
+      "image-generation-mode": "Image generation mode",
       "search": "Web search mode"
     },
     "shared": {
@@ -505,6 +505,15 @@
         "xp": "Gained { xp } XP",
         "time": "Spent { time }"
       }
+    },
+    "about": {
+      "title": "Nova Pulse",
+      "body": "The information is updated every hour"
+    },
+    "greeting": {
+      "afternoon": "Good afternoon, { name } 👋",
+      "evening": "Good evening, { name } 👋",
+      "morning": "Good morning, { name } 👋"
     }
   }
 }
