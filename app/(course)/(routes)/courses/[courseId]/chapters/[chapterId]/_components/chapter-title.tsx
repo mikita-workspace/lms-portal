@@ -5,6 +5,7 @@ import { Clock9 } from 'lucide-react';
 
 import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { formatTimeInSeconds } from '@/lib/date';
+import { cn } from '@/lib/utils';
 
 import { CourseProgressButton } from './course-progress-button';
 
@@ -32,9 +33,11 @@ export const ChapterTitle = ({
   return (
     <div className="p-4 flex flex-col md:flex-row items-center justify-between">
       <div className="flex flex-col justify-center">
-        <h2 className="text-2xl font-semibold mb-4 md:mb-0">{chapter.title}</h2>
+        <h2 className={cn('text-2xl font-semibold md:mb-0', durationInSec > 0 ? 'mb-2' : 'mb-4')}>
+          {chapter.title}
+        </h2>
         {durationInSec > 0 && (
-          <div className="flex items-center gap-x-1 text-neutral-500 my-1">
+          <div className="flex items-center gap-x-1 text-neutral-500 md:my-1 mb-6 justify-center md:justify-start">
             <Clock9 className="h-4 w-4" />
             <span className="text-xs">{formatTimeInSeconds(durationInSec)}</span>
           </div>
