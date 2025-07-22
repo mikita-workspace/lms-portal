@@ -2,10 +2,8 @@
 
 import { Globe, ImageIcon, SendHorizonal, StopCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
 
 import { Badge, Button, Separator } from '@/components/ui';
-import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { cn } from '@/lib/utils';
 
@@ -30,21 +28,13 @@ export const ChatInputFooter = ({
       setIsImageGeneration: state.setIsImageGeneration,
       setIsSearchMode: state.setIsSearchMode,
     }));
-  const { config: appConfig } = useAppConfigStore((state) => ({
-    config: state.config,
-  }));
-
-  const IMAGE_MODELS = useMemo(
-    () => appConfig?.ai.flatMap((ai) => ai['image-models']) ?? [],
-    [appConfig?.ai],
-  );
 
   return (
     <div className="flex justify-between px-2 py-2 items-center">
       <div className="text-xs text-muted-foreground flex items-center gap-x-2 pr-2">
         {isImageGeneration && (
           <Badge variant="secondary" className="rounded-sm px-1 font-normal line-clamp-2">
-            {t('image-generation-mode', { model: IMAGE_MODELS[0].label })}
+            {t('image-generation-mode')}
           </Badge>
         )}
         {isSearchMode && (

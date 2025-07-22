@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { AI_PROVIDER } from '@/constants/ai';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useCurrentUser } from '@/hooks/use-current-user';
@@ -91,7 +92,15 @@ const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
 
   const [paidModels, freeModels] = useMemo(
     () =>
-      (appConfig?.ai?.flatMap((ai) => ai['text-models']) ?? []).reduce<[Model[], Model[]]>(
+      (
+        appConfig?.ai?.flatMap((ai) => {
+          if (process.env.NODE_ENV === 'production' && ai.provider === AI_PROVIDER.ollama) {
+            return [];
+          }
+
+          return ai['text-models'];
+        }) ?? []
+      ).reduce<[Model[], Model[]]>(
         (acc, model) => {
           if (model.isSubscription) {
             acc[0].push(model);

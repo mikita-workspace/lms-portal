@@ -108,7 +108,7 @@ export const Heatmap = ({ data, summary }: HeatmapProps) => {
                         className="w-full h-full dark:text-muted border bg-muted hover:cursor-pointer"
                         style={style}
                       >
-                        {value}
+                        <span className="invisible sm:visible">{value}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">

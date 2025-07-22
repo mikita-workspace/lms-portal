@@ -19,3 +19,17 @@ export const formatTimeInSeconds = (seconds: number): string => {
 
   return formattedDuration ?? '0 minutes';
 };
+
+export const getTimeGreeting = () => {
+  const currentTime = new Date().getHours();
+
+  if (currentTime >= 5 && currentTime < 12) {
+    return 'morning';
+  }
+
+  if (currentTime >= 12 && currentTime < 18) {
+    return 'afternoon';
+  }
+
+  return 'evening';
+};

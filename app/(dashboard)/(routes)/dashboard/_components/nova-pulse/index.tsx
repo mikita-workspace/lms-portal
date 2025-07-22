@@ -1,11 +1,13 @@
 'use client';
 
 import { Info } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { getNovaPulse } from '@/actions/nova-pulse/get-nova-pulse';
 import { TextBadge, TextVariantsProps } from '@/components/common/text-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { getTimeGreeting } from '@/lib/date';
 
 import { Heatmap } from './heat-map';
 import { TotalCard } from './total-card';
@@ -15,24 +17,26 @@ type NovaPulseProps = {
 };
 
 export const NovaPulse = ({ info }: NovaPulseProps) => {
+  const t = useTranslations('nova-pulse');
+
   const { user } = useCurrentUser();
+
+  const greeting = getTimeGreeting();
 
   return (
     <div className="flex flex-col gap-y-2">
       <div className="mb-4 px-2">
         <div className="flex justify-between items-center">
-          <h2 className="font-medium mb-2">Welcome back, {user?.name} 👋</h2>
+          <h2 className="font-medium mb-2">{t(`greeting.${greeting}`, { name: user?.name })}</h2>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger className="invisible sm:visible">
                 <p className="flex gap-x-2 text-muted-foreground items-center text-xs">
-                  Nova Pulse
+                  {t('about.title')}
                   <Info className="h-4 w-4" />
                 </p>
               </TooltipTrigger>
-              <TooltipContent>
-                <p>The information is updated every hour</p>
-              </TooltipContent>
+              <TooltipContent>{t('about.body')}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
