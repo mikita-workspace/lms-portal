@@ -1,6 +1,6 @@
 'use client';
 
-import { CodeXml, Globe } from 'lucide-react';
+import { CodeXml, LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -62,7 +62,7 @@ export const MarkdownText = ({ className, text }: MarkdownTextProps) => {
             return (
               <Link href={href} target="_blank">
                 <div className="text-xs py-0.5 px-2 rounded-full inline-flex justify-center items-center gap-x-1 text-muted-foreground font-light bg-muted">
-                  <Globe className="h-3 w-3" />
+                  <LinkIcon className="h-3 w-3" />
                   {children}
                 </div>
               </Link>
