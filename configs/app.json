@@ -34,6 +34,18 @@
           "label": "o3-mini",
           "owner": "OpenAI",
           "isSubscription": true
+        },
+        {
+          "value": "gpt-5-nano-2025-08-07",
+          "label": "GPT-5 nano",
+          "owner": "OpenAI",
+          "isSubscription": true
+        },
+        {
+          "value": "gpt-5-mini-2025-08-07",
+          "label": "GPT-5 mini",
+          "owner": "OpenAI",
+          "isSubscription": true
         }
       ],
       "provider": "openai"
