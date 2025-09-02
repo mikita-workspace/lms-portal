@@ -29,7 +29,11 @@ export const CourseEnrollButton = ({
   const { toast } = useToast();
 
   const localeInfo = useLocaleStore((state) => state.localeInfo);
-  const { amount, formattedPrice, isLoading } = useLocaleAmount({ price, customRates });
+  const { amount, formattedPrice, isLoading } = useLocaleAmount({
+    customRates,
+    price,
+    roundToNearestFive: true,
+  });
 
   const { isMounted } = useHydration();
 
