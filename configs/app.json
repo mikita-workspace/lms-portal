@@ -1,5 +1,24 @@
 {
   "ai": [
+        {
+      "image-models": [
+        {
+          "label": "DALL·E 3",
+          "owner": "OpenAI",
+          "value": "dall-e-3",
+          "isSubscription": false
+        }
+      ],
+      "text-models": [
+        {
+          "value": "deepseek-chat",
+          "label": "DeepSeek-V3",
+          "owner": "DeepSeek",
+          "isSubscription": false
+        }
+      ],
+      "provider": "deepseek"
+    },
     {
       "image-models": [
         {
@@ -44,30 +63,6 @@
         }
       ],
       "provider": "openai"
-    },
-    {
-      "image-models": [],
-      "text-models": [
-        {
-          "value": "deepseek-chat",
-          "label": "DeepSeek-V3",
-          "owner": "DeepSeek",
-          "isSubscription": false
-        }
-      ],
-      "provider": "deepseek"
-    },
-    {
-      "image-models": [],
-      "text-models": [
-        {
-          "value": "gemma3:4b",
-          "label": "Gemma 3",
-          "owner": "Ollama",
-          "isSubscription": true
-        }
-      ],
-      "provider": "ollama"
     }
   ],
   "auth": {
