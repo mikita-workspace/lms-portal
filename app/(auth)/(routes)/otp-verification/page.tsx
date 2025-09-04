@@ -6,7 +6,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
 import { OTP_CALLBACK_URL_SECURE } from '@/constants/otp';
-import withCompanyLabel from '@/hoc/with-company-label';
 import { decrypt } from '@/lib/utils';
 
 import { OtpVerify } from './_components/otp-verify';
@@ -53,4 +52,4 @@ const OtpVerificationPage = async ({ searchParams }: OtpVerificationPageProps) =
   );
 };
 
-export default withCompanyLabel(OtpVerificationPage);
+export default OtpVerificationPage;

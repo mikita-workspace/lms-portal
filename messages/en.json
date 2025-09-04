@@ -296,7 +296,7 @@
     }
   },
   "restricted": {
-    "title": "Restricted",
+    "title": "403",
     "body": "Registration of new users is closed. We apologize 🥺",
     "goBackHome": "Go back home"
   },
