@@ -6,6 +6,7 @@ import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 import { ChatCompletionRole } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
+import { extractValidJson } from '@/lib/utils';
 
 import { generateCompletion } from '../ai/generate-completion';
 
@@ -33,7 +34,9 @@ export const getLoginQuote = async () => {
     );
 
     const generatedQuote = JSON.parse(
-      response.completion.output_text ?? response.completion.choices[0].message.content ?? '{}',
+      extractValidJson(
+        response.completion.output_text ?? response.completion.choices[0].message.content,
+      ) ?? '{}',
     );
     const model = response.model ?? '';
 
