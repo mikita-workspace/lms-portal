@@ -158,8 +158,7 @@
     "promo": "Промо",
     "releases": "Выпуски платформы",
     "terms": "Условия и положения",
-    "users": "Пользователи",
-    "workshop": "Воркшопы"
+    "users": "Пользователи"
   },
   "error": {
     "body": "Произошла неожиданная ошибка приложения.",
@@ -336,7 +335,7 @@
     "improve": "Улучшить",
     "original": "Вернуть оригинал",
     "stop": "Стоп",
-    "translate": "Перевести с Nova Copilot"
+    "translate": "Перевести"
   },
   "ai-limit": {
     "title": "У вас закончились Nova Copilot запросы. Перейдите на Nova Plus, или поробуйте еще раз после { date }."
@@ -365,9 +364,10 @@
     "bannerBody": "Премиум-курсы, неограниченный доступ к Nova Copilot и многое другое.",
     "bannerTitle": "Обновитесь до Nova Plus",
     "benefits": {
-      "cancel-anytime": "Отмените в любое время",
-      "get-access-nova-ai": "Получите неограниченный доступ к Nova Copilot",
-      "unlock-premium-courses": "Разблокируйте премиум курсы"
+      "cancel-anytime": "Можно отменить в любое время",
+      "get-access-nova-ai": "Неограниченный доступ к Nova Copilot",
+      "unlock-premium-courses": "Премиум курсы",
+      "teacher-functionality": "Расширенный функционал для Teacher режим"
     },
     "bestChoice": "Лучший выбор!",
     "loginToContinue": "Войдите, чтобы продолжить",

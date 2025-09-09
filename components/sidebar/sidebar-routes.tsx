@@ -39,12 +39,6 @@ const studentRoutes = [
     label: 'browse',
   },
   {
-    href: '/workshop',
-    icon: PencilRuler,
-    isProtected: false,
-    label: 'workshop',
-  },
-  {
     href: '/dashboard',
     icon: Layout,
     isProtected: true,

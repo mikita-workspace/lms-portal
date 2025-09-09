@@ -159,8 +159,7 @@
     "promo": "Прома",
     "releases": "Заўвагі аб выпусках",
     "terms": "Умовы і палажэнні",
-    "users": "Карыстальнікі",
-    "workshop": "Воркшопы"
+    "users": "Карыстальнікі"
   },
   "error": {
     "body": "Адбылася нечаканая памылка прыкладання.",
@@ -337,7 +336,7 @@
     "improve": "Паляпшыць",
     "original": "Вярнуць арыгінал",
     "stop": "Спыніць",
-    "translate": "Перакласці з Nova Copilot"
+    "translate": "Перакласці"
   },
   "ai-limit": {
     "title": "У вас скончыліся Nova Copilot запыты. Перайдзіце на Nova Plus, або паспрабуйце яшчэ раз пасля { date }."
@@ -366,9 +365,10 @@
     "bannerBody": "Прэміум-курсы, неабмежаваны доступ да Nova Copilot і многае іншае.",
     "bannerTitle": "Абнавіць да Nova Plus",
     "benefits": {
-      "cancel-anytime": "Ануляваць у любы час",
-      "get-access-nova-ai": "Атрымаць неабмежаваны доступ да Nova Copilot",
-      "unlock-premium-courses": "Разблакаваць прэміум-курсы"
+      "cancel-anytime": "Можна адмяніць у любы час",
+      "get-access-nova-ai": "Неабмежаваны доступ да Nova Copilot",
+      "unlock-premium-courses": "Прэміум курсы",
+      "teacher-functionality": "Пашыраны функцыянал для рэжыму настаўніка"
     },
     "bestChoice": "Лепшы выбар!",
     "loginToContinue": "Увайдзеце, каб працягнуць",
