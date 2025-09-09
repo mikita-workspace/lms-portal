@@ -12,9 +12,15 @@
       "text-models": [
         {
           "value": "deepseek-chat",
-          "label": "DeepSeek-V3",
+          "label": "DeepSeek Chat",
           "owner": "DeepSeek",
           "isSubscription": false
+        },
+        {
+          "value": "deepseek-reasoner",
+          "label": "DeepSeek Reasoner",
+          "owner": "DeepSeek",
+          "isSubscription": true
         }
       ],
       "provider": "deepseek"
