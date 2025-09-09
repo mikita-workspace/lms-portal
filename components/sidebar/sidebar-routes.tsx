@@ -8,7 +8,6 @@ import {
   Layout,
   List,
   LucideIcon,
-  PencilRuler,
   Rss,
   Settings2,
   Tags,
