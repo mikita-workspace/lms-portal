@@ -15,6 +15,7 @@ type UseLocaleAmount = {
   fees?: Fee[];
   ignoreExchangeRate?: boolean;
   price: number | null;
+  roundToNearestFive?: boolean;
   useDefaultLocale?: boolean;
 };
 
@@ -24,6 +25,7 @@ export const useLocaleAmount = ({
   fees = [],
   ignoreExchangeRate = false,
   price,
+  roundToNearestFive = false,
   useDefaultLocale = false,
 }: UseLocaleAmount) => {
   const localeInfo = useLocaleStore((state) => state.localeInfo);
@@ -48,18 +50,25 @@ export const useLocaleAmount = ({
 
   const { net, calculatedFees } = useFeesAmount({ exchangeRate, fees, price: amount });
 
-  const formattedPrice = locale ? formatPrice(getConvertedPrice(amount), locale) : null;
+  const formattedPrice = locale
+    ? formatPrice(getConvertedPrice(amount, roundToNearestFive), locale)
+    : null;
 
-  const formattedNet = locale ? formatPrice(getConvertedPrice(net), locale) : null;
+  const formattedNet = locale
+    ? formatPrice(getConvertedPrice(net, roundToNearestFive), locale)
+    : null;
 
   const formattedCalculatedFees = calculatedFees.map((fee) => ({
     ...fee,
-    amount: locale ? formatPrice(getConvertedPrice(fee.amount), locale) : null,
+    amount: locale ? formatPrice(getConvertedPrice(fee.amount, roundToNearestFive), locale) : null,
   }));
 
   const formattedTotalFees = locale
     ? formatPrice(
-        getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
+        getConvertedPrice(
+          calculatedFees.reduce((total, fee) => total + fee.amount, 0),
+          roundToNearestFive,
+        ),
         locale,
       )
     : null;
@@ -70,14 +79,20 @@ export const useLocaleAmount = ({
     ...(useDefaultLocale
       ? {
           amount: price,
-          formattedNet: formatPrice(getConvertedPrice(net), defaultLocale),
-          formattedPrice: formatPrice(getConvertedPrice(price ?? 0), defaultLocale),
+          formattedNet: formatPrice(getConvertedPrice(net, roundToNearestFive), defaultLocale),
+          formattedPrice: formatPrice(
+            getConvertedPrice(price ?? 0, roundToNearestFive),
+            defaultLocale,
+          ),
           formattedCalculatedFees: calculatedFees.map((fee) => ({
             ...fee,
-            amount: formatPrice(getConvertedPrice(fee.amount), defaultLocale),
+            amount: formatPrice(getConvertedPrice(fee.amount, roundToNearestFive), defaultLocale),
           })),
           formattedTotalFees: formatPrice(
-            getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
+            getConvertedPrice(
+              calculatedFees.reduce((total, fee) => total + fee.amount, 0),
+              roundToNearestFive,
+            ),
             defaultLocale,
           ),
         }

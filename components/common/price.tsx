@@ -57,6 +57,7 @@ const PriceComponent = ({
     fees,
     ignoreExchangeRate,
     price,
+    roundToNearestFive: true,
     useDefaultLocale,
   });
 

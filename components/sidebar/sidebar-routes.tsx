@@ -8,7 +8,6 @@ import {
   Layout,
   List,
   LucideIcon,
-  PencilRuler,
   Rss,
   Settings2,
   Tags,
@@ -37,12 +36,6 @@ const studentRoutes = [
     icon: Compass,
     isProtected: false,
     label: 'browse',
-  },
-  {
-    href: '/workshop',
-    icon: PencilRuler,
-    isProtected: false,
-    label: 'workshop',
   },
   {
     href: '/dashboard',

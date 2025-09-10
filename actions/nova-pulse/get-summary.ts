@@ -4,6 +4,7 @@ import { getLocale } from 'next-intl/server';
 import { ChatCompletionUserMessageParam } from 'openai/resources/index.mjs';
 
 import { ChatCompletionRole, NOVA_PULSE_SUMMARY } from '@/constants/ai';
+import { extractValidJson } from '@/lib/utils';
 
 import { generateCompletion } from '../ai/generate-completion';
 
@@ -23,7 +24,9 @@ export const getSummary = async <T>(data: T) => {
     });
 
     const generatedSummary = JSON.parse(
-      response.completion.output_text ?? response.completion.choices[0].message.content ?? '{}',
+      extractValidJson(
+        response.completion.output_text ?? response.completion.choices[0].message.content,
+      ) ?? '{}',
     );
     const model = response.model ?? '';
 

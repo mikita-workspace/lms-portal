@@ -102,3 +102,13 @@ export const getBatchedItems = <T>(items: T[]) =>
     },
     [] as (typeof items)[],
   );
+
+export const extractValidJson = (input: string) => {
+  const jsonRegex = /{(?:[^{}]|(?:{(?:[^{}]|(?:{[^{}]*}))*}))*}/;
+
+  const match = input.match(jsonRegex);
+  if (match) {
+    return match[0];
+  }
+  return null;
+};

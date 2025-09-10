@@ -159,8 +159,7 @@
     "promo": "Promo",
     "releases": "Releases notes",
     "terms": "Terms and Conditions",
-    "users": "Users",
-    "workshop": "Workshops"
+    "users": "Users"
   },
   "error": {
     "body": "An unexpected application error has occurred.",
@@ -296,7 +295,7 @@
     }
   },
   "restricted": {
-    "title": "Restricted",
+    "title": "403",
     "body": "Registration of new users is closed. We apologize 🥺",
     "goBackHome": "Go back home"
   },
@@ -337,7 +336,7 @@
     "improve": "Improve",
     "original": "Return the original",
     "stop": "Stop",
-    "translate": "Translate with Nova Copilot"
+    "translate": "Translate"
   },
   "ai-limit": {
     "title": "You have run out of Nova Copilot requests. Switch to Nova Plus, or try again after {date}."
@@ -367,8 +366,9 @@
     "bannerTitle": "Upgrade to Nova Plus",
     "benefits": {
       "cancel-anytime": "Cancel anytime",
-      "get-access-nova-ai": "Get unlimited access to Nova Copilot",
-      "unlock-premium-courses": "Unlock premium courses"
+      "get-access-nova-ai": "Unlimited access to Nova Copilot",
+      "unlock-premium-courses": "Premium courses",
+      "teacher-functionality": "Advanced functionality for Teacher mode"
     },
     "bestChoice": "The best choice!",
     "loginToContinue": "Login to continue",
