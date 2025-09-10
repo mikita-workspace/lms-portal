@@ -1,14 +1,7 @@
 {
   "ai": [
         {
-      "image-models": [
-        {
-          "label": "DALL·E 3",
-          "owner": "OpenAI",
-          "value": "dall-e-3",
-          "isSubscription": false
-        }
-      ],
+      "image-models": [],
       "text-models": [
         {
           "value": "deepseek-chat",
