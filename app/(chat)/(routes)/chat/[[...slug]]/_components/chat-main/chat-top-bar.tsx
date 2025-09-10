@@ -148,11 +148,7 @@ const ChatTopBarComponent = ({ isEmbed = false }: ChatTopBarProps) => {
           {!isEmbed && (
             <Popover open={open} onOpenChange={handleOpenChange}>
               <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  aria-expanded={open}
-                  className="w-[140px] justify-between truncate"
-                >
+                <Button variant="ghost" aria-expanded={open} className="justify-between truncate">
                   {currentModel
                     ? [...freeModels, ...paidModels].find((model) => model.value === currentModel)
                         ?.label

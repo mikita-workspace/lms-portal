@@ -16,7 +16,7 @@ const RestrictedPage = async () => {
     <div className="relative h-full flex gap-y-4 items-center w-full">
       <div className="flex items-center gap-y-4 flex-col w-full text-muted-foreground">
         <h1 className="text-xl md:text-3xl font-semibold">{t('title')}</h1>
-        <p className="text-sm md:text-lg">{t('body')}</p>
+        <p className="text-sm md:text-lg text-center">{t('body')}</p>
         <Link href="/">
           <Button variant="secondary">{t('goBackHome')}</Button>
         </Link>
