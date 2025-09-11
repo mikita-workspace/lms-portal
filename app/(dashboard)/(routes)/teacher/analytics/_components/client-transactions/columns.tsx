@@ -39,19 +39,23 @@ export const columns: ColumnDef<ClientTransactions>[] = [
 
       return (
         <div className="flex flex-col text-sm">
-          <p className="font-medium">{billingDetails.name}</p>
-          <p>{billingDetails.email}</p>
-
-          {paymentMethod && (
-            <div className="mt-2">
-              <CreditCardInfo
-                brand={paymentMethod.brand}
-                expMonth={paymentMethod.expMonth}
-                expYear={paymentMethod.expYear}
-                last4={paymentMethod.last4}
-              />
-            </div>
+          {billingDetails.email && (
+            <>
+              <p className="font-medium">{billingDetails.name}</p>
+              <p>{billingDetails.email}</p>
+              {paymentMethod && (
+                <div className="mt-2">
+                  <CreditCardInfo
+                    brand={paymentMethod.brand}
+                    expMonth={paymentMethod.expMonth}
+                    expYear={paymentMethod.expYear}
+                    last4={paymentMethod.last4}
+                  />
+                </div>
+              )}
+            </>
           )}
+          {!billingDetails.email && <p className="text-sm text-muted-foreground">User deleted</p>}
         </div>
       );
     },
@@ -85,12 +89,14 @@ export const columns: ColumnDef<ClientTransactions>[] = [
 
       return receiptUrl ? (
         <Link href={receiptUrl} target="_blank" className="hover:underline">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center justify-center">
             <ReceiptText className="h-4 w-4" />
             Receipt
           </div>
         </Link>
-      ) : null;
+      ) : (
+        <p className="text-center">&mdash;</p>
+      );
     },
   },
 ];
