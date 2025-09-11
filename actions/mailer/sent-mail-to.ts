@@ -8,9 +8,9 @@ type SentMailTo = { emails: string[]; subject: string; html: string };
 export const sentMailTo = async ({ emails, subject, html }: SentMailTo) => {
   try {
     const mail = await transporter.sendMail({
-      from: `"Nova Academy" <${OWNER_EMAIL}>`,
+      from: `"${process.env.NODE_ENV === 'development' ? '[DEV] ' : ''}Nova Academy" <${OWNER_EMAIL}>`,
       html,
-      subject,
+      subject: subject,
       to: emails,
     });
 

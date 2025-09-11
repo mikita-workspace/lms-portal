@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { TextBadge } from '@/components/common/text-badge';
+import { TextBadge, TextVariantsProps } from '@/components/common/text-badge';
 import { UpdateProfileImageModal } from '@/components/modals/update-profile-image-modal';
 import { Avatar, AvatarFallback, AvatarImage, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
@@ -19,10 +19,14 @@ import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
 
 type GeneralSettingsFormProps = {
+  emailVerification: { label: string; variant: string };
   initialData: User;
 };
 
-export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
+export const GeneralSettingsForm = ({
+  emailVerification,
+  initialData,
+}: GeneralSettingsFormProps) => {
   const t = useTranslations('settings.generalForm');
 
   const localeInfo = useLocaleStore((state) => state.localeInfo);
@@ -45,6 +49,21 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
       await update(values);
 
       toast({ title: t('accInfoUpdated') });
+      router.refresh();
+    } catch (error) {
+      toast({ isError: true });
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const handleVerifyEmail = async () => {
+    setIsFetching(true);
+
+    try {
+      await fetcher.post(`/api/users/${initialData.id}/email-confirmation`);
+
+      toast({ title: t('emailVerifyStatus.sentMessage') });
       router.refresh();
     } catch (error) {
       toast({ isError: true });
@@ -108,7 +127,15 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center gap-x-2">
               <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
-              <TextBadge label={'Pending'} variant="default" />
+              <button
+                onClick={handleVerifyEmail}
+                disabled={isFetching || emailVerification.label !== 'failed'}
+              >
+                <TextBadge
+                  label={t(`emailVerifyStatus.${emailVerification.label}`)}
+                  variant={emailVerification.variant as TextVariantsProps['variant']}
+                />
+              </button>
             </div>
             <Input disabled placeholder={t('enterEmail')} value={initialData.email} />
           </div>

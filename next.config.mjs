@@ -2,7 +2,8 @@ import withPlaiceholder from '@plaiceholder/next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 /** @type {import('next').NextConfig} */
-import npmConfig from './package.json' assert { type: 'json' };
+// import npmConfig from './package.json' assert { type: 'json' };
+import npmConfig from './package.json' with { type: 'json' };
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
