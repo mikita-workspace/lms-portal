@@ -5,6 +5,7 @@ import { sentEmailTo } from './sent-email-to';
 
 type SentEmailByTemplate = {
   emails: string[];
+  locale?: string;
   params: Record<string, string>;
   subject: string;
   template: string;
@@ -12,12 +13,13 @@ type SentEmailByTemplate = {
 
 export const sentEmailByTemplate = async ({
   emails,
+  locale,
   params,
   subject,
   template,
 }: SentEmailByTemplate) => {
   try {
-    const htmlTemplate = await getEmailTemplate(template);
+    const htmlTemplate = await getEmailTemplate(template, locale);
     let html = htmlTemplate;
 
     for (const [key, value] of Object.entries(params)) {

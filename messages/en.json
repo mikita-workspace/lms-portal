@@ -525,6 +525,9 @@
   "email-notification": {
     "confirmation": {
       "subject": "Email Confirmation"
+    },
+    "course-purchase": {
+      "subject": "Thank you for your purchase! Access to your course is now open 🔑"
     }
   }
 }

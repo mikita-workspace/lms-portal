@@ -31,6 +31,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
       return new NextResponse(ReasonPhrases.NOT_FOUND, { status: StatusCodes.NOT_FOUND });
     }
 
+    const appLocale = await getAppLocale();
     const t = await getTranslations('courses.checkout');
 
     const purchase = await db.purchase.findUnique({
@@ -44,7 +45,11 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
     const metadata = {
       ...details,
       courseId: course.id,
+      courseName: course.title,
+      email: user.email,
+      locale: appLocale,
       userId: user.userId,
+      username: user.name,
     };
 
     if (!course.price) {
@@ -76,8 +81,6 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
         url: absoluteUrl(`/courses/${metadata.courseId}`),
       });
     }
-
-    const appLocale = await getAppLocale();
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {

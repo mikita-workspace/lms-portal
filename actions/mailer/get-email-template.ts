@@ -5,8 +5,8 @@ import { getLocale } from 'next-intl/server';
 
 import { getGithubContents } from '../github/get-contents';
 
-export const getEmailTemplate = async (template: string) => {
-  const locale = await getLocale();
+export const getEmailTemplate = async (template: string, customLocale?: string) => {
+  const locale = customLocale ?? (await getLocale());
 
   try {
     const content =
