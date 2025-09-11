@@ -2,12 +2,13 @@
 
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
-import { BadgeDollarSign, MapPin } from 'lucide-react';
+import { BadgeDollarSign, IdCard, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { TextBadge } from '@/components/common/text-badge';
 import { UpdateProfileImageModal } from '@/components/modals/update-profile-image-modal';
 import { Avatar, AvatarFallback, AvatarImage, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
@@ -69,6 +70,10 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
         {localeInfo && (
           <div className="flex flex-col gap-y-1">
             <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
+              <IdCard className="h-3 w-3" />
+              <span>{initialData.id}</span>
+            </p>
+            <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
               <span>
                 {localeInfo.details.city}, {localeInfo.details.country}
@@ -101,7 +106,10 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             />
           </div>
           <div className="flex flex-col gap-y-2">
-            <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
+            <div className="flex items-center gap-x-2">
+              <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
+              <TextBadge label={'Pending'} variant="default" />
+            </div>
             <Input disabled placeholder={t('enterEmail')} value={initialData.email} />
           </div>
         </div>

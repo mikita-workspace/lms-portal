@@ -1,4 +1,4 @@
-export const OWNER_EMAIL = 'mkandratsyeu@gmail.com';
+export const OWNER_EMAIL = 'nova-academy@mail.ru';
 
 export const ONE_DAY_SEC = 60 * 60 * 24;
 export const ONE_HOUR_SEC = 60 * 60;

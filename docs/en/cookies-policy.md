@@ -77,4 +77,4 @@ You can learn more about cookies here: [All About Cookies by TermsFeed](https://
 If you have any questions about this Cookies Policy, You can contact us:
 
 
-- By email: mkandratsyeu@gmail.com
+- By email: nova-academy@mail.ru
