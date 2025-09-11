@@ -2,10 +2,10 @@ import { fromUnixTime } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { sentEmailByTemplate } from '@/actions/mailer/sent-email-by-template';
+import { EMAIL_COURSE_PURCHASE_SUBJECT } from '@/constants/email-subject';
 import { DEFAULT_LANGUAGE } from '@/constants/locale';
 import { removeValueFromMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
@@ -64,11 +64,6 @@ export const POST = async (req: NextRequest) => {
 
       return new NextResponse(JSON.stringify(response));
     } else {
-      const t = await getTranslations({
-        locale,
-        namespace: 'email-notification.course-purchase',
-      });
-
       const response = await db.$transaction(async (prisma) => {
         const purchase = await prisma.purchase.create({
           data: {
@@ -113,7 +108,8 @@ export const POST = async (req: NextRequest) => {
           emails: [session?.metadata?.email ?? ''],
           locale,
           params: emailParams,
-          subject: t('subject'),
+          subject:
+            EMAIL_COURSE_PURCHASE_SUBJECT[locale as keyof typeof EMAIL_COURSE_PURCHASE_SUBJECT],
           template: 'course-purchase',
         });
 
