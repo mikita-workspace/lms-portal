@@ -57,33 +57,3 @@ export const verifyEmail = async ({
 
   return { label: 'failed', variant: 'red' };
 };
-
-// export const verifyEmail = async ({ user, code }: VerifyEmail) => {
-//   if (user?.isEmailConfirmed) {
-//     return { label: 'success', variant: 'green' };
-//   }
-
-//   const key = `${user?.id}-email_confirmation_token`;
-//   const cachedToken = await getValueFromMemoryCache(key);
-
-//   if (cachedToken && !code) {
-//     return { label: 'pending', variant: 'default' };
-//   }
-
-//   if (code) {
-//     const decrypted = JSON.parse(
-//       decrypt(decodeURIComponent(code), process.env.EMAIl_CONFIRMATION_SECRET as string),
-//     );
-
-//     if (decrypted?.secret !== cachedToken) {
-//       return { label: 'pending', variant: 'default' };
-//     }
-
-//     await db.user.update({ where: { id: user?.id }, data: { isEmailConfirmed: true } });
-//     await removeValueFromMemoryCache(key);
-
-//     return { label: 'success', variant: 'green' };
-//   }
-
-//   return { label: 'failed', variant: 'red' };
-// };
