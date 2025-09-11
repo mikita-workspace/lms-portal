@@ -3,9 +3,9 @@
 import { OWNER_EMAIL } from '@/constants/common';
 import { transporter } from '@/server/mailer';
 
-type SentMailTo = { emails: string[]; subject: string; html: string };
+type SentEmailTo = { emails: string[]; subject: string; html: string };
 
-export const sentMailTo = async ({ emails, subject, html }: SentMailTo) => {
+export const sentEmailTo = async ({ emails, subject, html }: SentEmailTo) => {
   try {
     const mail = await transporter.sendMail({
       from: `"${process.env.NODE_ENV === 'development' ? '[DEV] ' : ''}Nova Academy" <${OWNER_EMAIL}>`,
@@ -16,7 +16,7 @@ export const sentMailTo = async ({ emails, subject, html }: SentMailTo) => {
 
     return { messageId: mail.messageId };
   } catch (error) {
-    console.error('[SENT_MAIL_TO]', error);
+    console.error('[SENT_MAIL_TO_ACTION]', error);
 
     return { messageId: null };
   }

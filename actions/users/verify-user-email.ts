@@ -6,15 +6,15 @@ import { getValueFromMemoryCache, removeValueFromMemoryCache } from '@/lib/cache
 import { db } from '@/lib/db';
 import { decrypt } from '@/lib/utils';
 
-type VerifyEmail = {
+type VerifyUserEmail = {
   user: (User & { settings: UserSettings | null }) | null;
   code?: string;
 };
 
-export const verifyEmail = async ({
+export const verifyUserEmail = async ({
   user,
   code,
-}: VerifyEmail): Promise<{ label: string; variant: string }> => {
+}: VerifyUserEmail): Promise<{ label: string; variant: string }> => {
   if (!user || !user.id) {
     return { label: 'failed', variant: 'red' };
   }
@@ -49,7 +49,7 @@ export const verifyEmail = async ({
 
       return { label: 'success', variant: 'green' };
     } catch (error) {
-      console.error('Error verifying email code:', error);
+      console.error('[VERIFY_USER_EMAIL_ACTION]', error);
 
       return { label: 'failed', variant: 'red' };
     }

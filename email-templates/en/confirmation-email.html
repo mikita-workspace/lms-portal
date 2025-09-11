@@ -21,14 +21,10 @@
       overflow: hidden;
     }
     .email-header {
-      background-color: #6a0dad;
-      color: #ffffff !important;
+      color: #333333 !important;
+      padding-top: 20px;
+      margin-top: 28px;
       text-align: center;
-      padding: 20px;
-    }
-    .email-header h2 {
-      margin: 0;
-      font-size: 24px;
     }
     .email-body {
       padding: 30px 20px;
@@ -76,7 +72,8 @@
   <body>
     <div class="email-container">
       <div class="email-header">
-        <h2>Nova Academy</h2>
+        <img alt="Nova&nbsp;Academy Logo" loading="lazy" width="50" height="50" decoding="async" data-nimg="1"
+          style="color:transparent" src="https://nova-lms-portal.vercel.app/assets/logo.svg">
       </div>
       <div class="email-body">
         <h1>Hello, {{username}}!</h1>

@@ -2,7 +2,7 @@ import { Flame } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { verifyEmail } from '@/actions/mailer/verify-email';
+import { verifyUserEmail } from '@/actions/users/verify-user-email';
 import { DeleteAccountModal } from '@/components/modals/delete-account-modal';
 import { Button } from '@/components/ui';
 import { db } from '@/lib/db';
@@ -24,7 +24,7 @@ const SettingsPage = async ({ searchParams }: SettingsPagePageProps) => {
     where: { id: user?.userId },
     include: { settings: true },
   });
-  const emailVerification = await verifyEmail({ user: userInfo, code });
+  const emailVerification = await verifyUserEmail({ user: userInfo, code });
 
   return (
     <div className="p-6 flex flex-col mb-6 md:max-w-[868px]">
