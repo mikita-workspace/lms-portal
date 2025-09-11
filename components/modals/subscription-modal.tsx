@@ -122,10 +122,10 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
           >
             <TabsList className="w-full">
               <TabsTrigger className="w-full" value={StripeSubscriptionPeriod.yearly}>
-                {t(yearly?.period)}
+                {t(yearly?.period ?? '')}
               </TabsTrigger>
               <TabsTrigger className="w-full" value={StripeSubscriptionPeriod.monthly}>
-                {t(monthly?.period)}
+                {t(monthly?.period ?? '')}
               </TabsTrigger>
             </TabsList>
             {currentTab === StripeSubscriptionPeriod.yearly && (

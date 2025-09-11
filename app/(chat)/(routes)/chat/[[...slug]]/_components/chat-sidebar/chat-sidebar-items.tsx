@@ -110,7 +110,7 @@ export const ChatSideBarItems = ({ conversations }: ChatSideBarItemsProps) => {
 
       toast({
         title: t('removed-conversation', {
-          conversation: conversations.find((conversation) => conversation.id === id)?.title,
+          conversation: conversations.find((conversation) => conversation.id === id)?.title ?? '',
         }),
       });
 

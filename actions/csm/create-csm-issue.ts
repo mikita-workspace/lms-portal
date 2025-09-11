@@ -60,7 +60,7 @@ export const createCsmIssue = async ({
   await createWebSocketNotification({
     channel: `notification_channel_${ownerId}`,
     data: {
-      body: t('ownerSuccess', { user: email }),
+      body: t('ownerSuccess', { user: email ?? '' }),
       title: `${issue.name}`.toUpperCase(),
       userId: ownerId,
     },

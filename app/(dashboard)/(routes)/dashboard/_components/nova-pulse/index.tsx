@@ -27,7 +27,9 @@ export const NovaPulse = ({ info }: NovaPulseProps) => {
     <div className="flex flex-col gap-y-2">
       <div className="mb-4 px-2">
         <div className="flex justify-between items-center">
-          <h2 className="font-medium mb-2">{t(`greeting.${greeting}`, { name: user?.name })}</h2>
+          <h2 className="font-medium mb-2">
+            {t(`greeting.${greeting}`, { name: user?.name ?? '' })}
+          </h2>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="invisible sm:visible">
