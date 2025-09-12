@@ -100,7 +100,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
           product_data: {
             name: course.title,
           },
-          unit_amount: roundToNearestFive((course.price ?? 0) * rate),
+          unit_amount: Math.floor(roundToNearestFive((course.price ?? 0) * rate)),
         },
       },
     ];

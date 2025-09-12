@@ -106,7 +106,7 @@ export const POST = async (req: NextRequest) => {
           price_data: {
             currency: locale.currency,
             product_data: { name: subscriptionName },
-            unit_amount: roundToNearestFive((price ?? 0) * rate),
+            unit_amount: Math.floor(roundToNearestFive((price ?? 0) * rate)),
             recurring: { interval: recurringInterval },
           },
         },
