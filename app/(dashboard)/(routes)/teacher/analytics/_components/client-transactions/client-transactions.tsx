@@ -10,7 +10,6 @@ type ClientTransactionsProps = {
 };
 
 export const ClientTransactions = ({ transactions }: ClientTransactionsProps) => {
-  console.log({ transactions });
   return (
     <div className="flex flex-col gap-4 mt-4">
       <div className="flex flex-col gap-1">
