@@ -524,7 +524,8 @@
   },
   "email-notification": {
     "confirmation": {
-      "subject": "Email Confirmation"
+      "subject": "Email Confirmation",
+      "warning": "Confirm your email in the settings to enable the ability to make purchases."
     },
     "course-purchase": {
       "subject": "Thank you for your purchase! Access to your course is now open 🔑"

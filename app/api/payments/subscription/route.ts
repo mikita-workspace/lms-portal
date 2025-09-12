@@ -5,6 +5,7 @@ import { getLocale as getAppLocale } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
@@ -41,6 +42,12 @@ export const POST = async (req: NextRequest) => {
 
     if (!user) {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+    }
+
+    const { success, message } = await getIsEmailConfirmed(user.userId);
+
+    if (!success) {
+      return NextResponse.json({ message }, { status: StatusCodes.FORBIDDEN });
     }
 
     const { details, locale, price, rate, recurringInterval, returnUrl, subscriptionName } =

@@ -52,9 +52,12 @@ export const CourseEnrollButton = ({
         responseType: 'json',
       });
 
-      toast({ title: t('redirect') });
-
-      window.location.assign(response.url);
+      if (response?.message) {
+        toast({ title: response?.message });
+      } else {
+        toast({ title: t('redirect') });
+        window.location.assign(response.url);
+      }
     } catch (error) {
       console.error('[COURSE_ENROLL_BUTTON]', error);
 

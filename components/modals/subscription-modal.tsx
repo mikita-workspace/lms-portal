@@ -81,8 +81,12 @@ export const SubscriptionModal = ({ description = [], open, setOpen }: Subscript
         responseType: 'json',
       });
 
-      toast({ title: t('redirect') });
-      window.location.assign(response.url);
+      if (response?.message) {
+        toast({ title: response?.message });
+      } else {
+        toast({ title: t('redirect') });
+        window.location.assign(response.url);
+      }
     } catch (error) {
       toast({ isError: true });
     } finally {

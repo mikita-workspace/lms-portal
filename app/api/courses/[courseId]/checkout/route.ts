@@ -5,6 +5,7 @@ import { getLocale as getAppLocale, getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { db } from '@/lib/db';
 import { getLocale } from '@/lib/locale';
@@ -18,7 +19,15 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
     const user = await getCurrentUser();
 
     if (!user || !user.email || !user.userId) {
-      return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
+      return new NextResponse(ReasonPhrases.UNAUTHORIZED, {
+        status: StatusCodes.UNAUTHORIZED,
+      });
+    }
+
+    const { success, message } = await getIsEmailConfirmed(user.userId);
+
+    if (!success) {
+      return NextResponse.json({ message }, { status: StatusCodes.FORBIDDEN });
     }
 
     const course = await db.course.findUnique({
