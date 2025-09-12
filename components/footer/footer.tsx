@@ -38,7 +38,7 @@ export const Footer = ({ categories }: FooterProps) => {
         <div className="flex flex-col mb-4 md:items-end">
           <div className="flex items-center">
             <Copyright className="h-3 w-3" />
-            <span> &nbsp;{new Date().getFullYear()}&nbsp;</span>
+            <span>&nbsp;{new Date().getFullYear()}&nbsp;</span>
             <span>{t('copyright')}</span>
           </div>
           <MadeWithLove className="mt-2" />

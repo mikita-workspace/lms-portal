@@ -5,6 +5,7 @@ import { getLocale as getAppLocale } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
@@ -43,6 +44,12 @@ export const POST = async (req: NextRequest) => {
       return new NextResponse(ReasonPhrases.UNAUTHORIZED, { status: StatusCodes.UNAUTHORIZED });
     }
 
+    const { success, message } = await getIsEmailConfirmed(user.userId);
+
+    if (!success) {
+      return NextResponse.json({ message }, { status: StatusCodes.FORBIDDEN });
+    }
+
     const { details, locale, price, rate, recurringInterval, returnUrl, subscriptionName } =
       await req.json();
 
@@ -79,6 +86,12 @@ export const POST = async (req: NextRequest) => {
 
     const discounts = await getWelcomeDiscounts(user.userId);
 
+    const existingSubscriptions = await stripe.subscriptions.list({
+      customer: stripeCustomer.stripeCustomerId,
+      status: 'all',
+    });
+    const trialPeriodDays = existingSubscriptions.data.length === 0 ? 14 : null;
+
     const session = await stripe.checkout.sessions.create({
       ...(discounts.length ? { discounts } : { allow_promotion_codes: true }),
       customer: stripeCustomer.stripeCustomerId,
@@ -105,6 +118,7 @@ export const POST = async (req: NextRequest) => {
       },
       success_url: absoluteUrl(`${returnUrl}?success=true`),
       cancel_url: absoluteUrl(returnUrl),
+      subscription_data: trialPeriodDays ? { trial_period_days: trialPeriodDays } : {},
     });
 
     return NextResponse.json({ url: session.url });

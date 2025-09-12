@@ -365,7 +365,7 @@
     "bannerBody": "Premium courses, unlimited access to Nova Copilot, and more.",
     "bannerTitle": "Upgrade to Nova Plus",
     "benefits": {
-      "cancel-anytime": "Cancel anytime",
+      "cancel-anytime": "The first 14 days are free",
       "get-access-nova-ai": "Unlimited access to Nova Copilot",
       "unlock-premium-courses": "Premium courses",
       "teacher-functionality": "Advanced functionality for Teacher mode"
@@ -424,7 +424,7 @@
     "general": "General Settings",
     "generalForm": {
       "accInfo": "Account Information",
-      "accInfoUpdated": "Account information updated",
+      "accInfoUpdated": "Account information updated.",
       "avatar": "Avatar URL",
       "email": "Email",
       "enterAvatar": "Enter your Avatar URL",
@@ -432,7 +432,13 @@
       "enterName": "Enter your name",
       "lastUpdated": "Last Updated",
       "name": "Username",
-      "update": "Update"
+      "update": "Update",
+      "emailVerifyStatus": {
+        "failed": "Requires confirmation",
+        "pending": "Awaiting confirmation",
+        "success": "Confirmed",
+        "sentMessage": "A confirmation email has been sent to your email address."
+      }
     },
     "publicProfileForm": {
       "body": "Change the visibility of your profile",
@@ -478,7 +484,7 @@
     },
     "new-tab-copilot": {
       "title": "Nova Copilot in a new tab",
-      "body": "Open the chat always in a new tab."
+      "body": "Open the chat always in a new tab"
     }
   },
   "file-upload": {
@@ -514,6 +520,18 @@
       "afternoon": "Good afternoon, { name } 👋",
       "evening": "Good evening, { name } 👋",
       "morning": "Good morning, { name } 👋"
+    }
+  },
+  "email-notification": {
+    "confirmation": {
+      "subject": "Email Confirmation",
+      "warning": "Confirm your email in the settings to enable the ability to make purchases."
+    },
+    "course-purchase": {
+      "subject": "Thank you for your purchase! Access to your course is now open 🔑"
+    },
+    "payout": {
+      "subject": "The payment has been confirmed 💸"
     }
   }
 }

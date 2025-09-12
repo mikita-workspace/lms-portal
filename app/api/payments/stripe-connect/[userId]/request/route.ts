@@ -53,7 +53,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ userId: 
     await createWebSocketNotification({
       channel: `notification_channel_${process.env.NEXT_PUBLIC_OWNER_ID}`,
       data: {
-        body: t('request.body', { username: user.name }),
+        body: t('request.body', { username: user.name ?? '' }),
         title: t('request.title', { payoutRequestId: payoutRequest.id }),
         userId: process.env.NEXT_PUBLIC_OWNER_ID as string,
       },

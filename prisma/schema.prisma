@@ -16,6 +16,7 @@ model User {
   createdAt           DateTime                 @default(now())
   csmIssues           CsmIssue[]
   email               String                   @unique
+  isEmailConfirmed    Boolean?                 @default(false)
   name                String?
   notifications       Notification[]
   otpCreatedAt        DateTime?

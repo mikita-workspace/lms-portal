@@ -36,7 +36,7 @@ export const TotalRevenueCard = ({ totalRevenue, totalRevenueData }: TotalRevenu
     },
   } satisfies ChartConfig;
 
-  const diff = totalRevenueData[totalRevenueData.length - 1].diff;
+  const diff = totalRevenueData[totalRevenueData.length - 1]?.diff ?? 0;
 
   return (
     <Card className="shadow-none h-full">

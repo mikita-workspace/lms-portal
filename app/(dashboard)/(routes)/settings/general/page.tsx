@@ -2,6 +2,7 @@ import { Flame } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { verifyUserEmail } from '@/actions/users/verify-user-email';
 import { DeleteAccountModal } from '@/components/modals/delete-account-modal';
 import { Button } from '@/components/ui';
 import { db } from '@/lib/db';
@@ -9,7 +10,13 @@ import { db } from '@/lib/db';
 import { AdvancedOptions } from './_components/advanced-options/advanced-options';
 import { GeneralSettingsForm } from './_components/general-settings-form';
 
-const SettingsPage = async () => {
+type SettingsPagePageProps = {
+  searchParams: Promise<{ code: string }>;
+};
+
+const SettingsPage = async ({ searchParams }: SettingsPagePageProps) => {
+  const { code } = await searchParams;
+
   const t = await getTranslations('settings');
 
   const user = await getCurrentUser();
@@ -17,13 +24,14 @@ const SettingsPage = async () => {
     where: { id: user?.userId },
     include: { settings: true },
   });
+  const emailVerification = await verifyUserEmail({ user: userInfo, code });
 
   return (
     <div className="p-6 flex flex-col mb-6 md:max-w-[868px]">
       <h1 className="text-2xl font-medium">{t('general')}</h1>
       {userInfo && (
         <div className="mt-12">
-          <GeneralSettingsForm initialData={userInfo} />
+          <GeneralSettingsForm emailVerification={emailVerification} initialData={userInfo} />
           <AdvancedOptions initialData={userInfo} />
         </div>
       )}

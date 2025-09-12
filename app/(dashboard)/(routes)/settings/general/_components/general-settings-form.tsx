@@ -2,12 +2,13 @@
 
 import { User } from '@prisma/client';
 import { format } from 'date-fns';
-import { BadgeDollarSign, MapPin } from 'lucide-react';
+import { BadgeDollarSign, IdCard, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { TextBadge, TextVariantsProps } from '@/components/common/text-badge';
 import { UpdateProfileImageModal } from '@/components/modals/update-profile-image-modal';
 import { Avatar, AvatarFallback, AvatarImage, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/use-toast';
@@ -18,10 +19,14 @@ import { fetcher } from '@/lib/fetcher';
 import { getFallbackName } from '@/lib/utils';
 
 type GeneralSettingsFormProps = {
+  emailVerification: { label: string; variant: string };
   initialData: User;
 };
 
-export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) => {
+export const GeneralSettingsForm = ({
+  emailVerification,
+  initialData,
+}: GeneralSettingsFormProps) => {
   const t = useTranslations('settings.generalForm');
 
   const localeInfo = useLocaleStore((state) => state.localeInfo);
@@ -52,6 +57,21 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
     }
   };
 
+  const handleVerifyEmail = async () => {
+    setIsFetching(true);
+
+    try {
+      await fetcher.post(`/api/users/${initialData.id}/email-confirmation`);
+
+      toast({ title: t('emailVerifyStatus.sentMessage') });
+      router.refresh();
+    } catch (error) {
+      toast({ isError: true });
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   useEffect(() => {
     if (debouncedValue.length > 0 && debouncedValue !== initialData.name) {
       handleSubmit({ name: debouncedValue, pictureUrl: initialData?.pictureUrl ?? '' });
@@ -68,6 +88,10 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
         </p>
         {localeInfo && (
           <div className="flex flex-col gap-y-1">
+            <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
+              <IdCard className="h-3 w-3" />
+              <span>{initialData.id}</span>
+            </p>
             <p className="flex items-center gap-x-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
               <span>
@@ -101,7 +125,18 @@ export const GeneralSettingsForm = ({ initialData }: GeneralSettingsFormProps) =
             />
           </div>
           <div className="flex flex-col gap-y-2">
-            <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
+            <div className="flex items-center gap-x-2">
+              <div className="text-xs text-muted-foreground font-medium">{t('email')}</div>
+              <button
+                onClick={handleVerifyEmail}
+                disabled={isFetching || emailVerification.label !== 'failed'}
+              >
+                <TextBadge
+                  label={t(`emailVerifyStatus.${emailVerification.label}`)}
+                  variant={emailVerification.variant as TextVariantsProps['variant']}
+                />
+              </button>
+            </div>
             <Input disabled placeholder={t('enterEmail')} value={initialData.email} />
           </div>
         </div>

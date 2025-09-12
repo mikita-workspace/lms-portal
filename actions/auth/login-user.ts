@@ -1,12 +1,18 @@
 'use server';
 
+import { differenceInMilliseconds } from 'date-fns/differenceInMilliseconds';
 import { getTranslations } from 'next-intl/server';
+import { v4 as uuidv4 } from 'uuid';
 
+import { ONE_HOUR_SEC, ONE_MIN_MS } from '@/constants/common';
+import { setValueToMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { createWebSocketNotification } from '@/lib/notifications';
+import { absoluteUrl, encrypt } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 import { getAppConfig } from '../configs/get-app-config';
+import { sentEmailByTemplate } from '../mailer/sent-email-by-template';
 
 export const loginUser = async (
   email: string,
@@ -38,6 +44,7 @@ export const loginUser = async (
   }
 
   const t = await getTranslations('auth');
+  const emailT = await getTranslations('email-notification.confirmation');
 
   const user = await db.user.upsert({
     where: {
@@ -78,6 +85,29 @@ export const loginUser = async (
     event: `private_event_${user.id}`,
   });
 
+  if (
+    !user.isEmailConfirmed &&
+    differenceInMilliseconds(new Date(), new Date(user.createdAt)) <= ONE_MIN_MS
+  ) {
+    const secret = uuidv4();
+    const key = `${user.id}-email_confirmation_token`;
+
+    await setValueToMemoryCache(key, secret, ONE_HOUR_SEC);
+
+    const emailParams = {
+      username: user?.name ?? '',
+      verificationLink: absoluteUrl(
+        `/settings/general?code=${encodeURIComponent(encrypt({ secret, key }, process.env.EMAIl_CONFIRMATION_SECRET as string))}`,
+      ),
+    };
+
+    await sentEmailByTemplate({
+      emails: [user?.email ?? ''],
+      params: emailParams,
+      subject: emailT('subject'),
+      template: 'confirmation-email',
+    });
+  }
   return {
     hasSubscription: false,
     id: user.id,

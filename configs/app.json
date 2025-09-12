@@ -65,13 +65,13 @@
     }
   ],
   "auth": {
-    "isBlockedNewLogin": true,
+    "isBlockedNewLogin": false,
     "providers": {
       "credentials": true,
       "github": true,
       "google": true,
-      "linkedin": true,
-      "mailru": true,
+      "linkedin": false,
+      "mailru": false,
       "slack": true,
       "vk": true,
       "yandex": true

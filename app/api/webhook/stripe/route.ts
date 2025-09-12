@@ -4,6 +4,9 @@ import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+import { sentEmailByTemplate } from '@/actions/mailer/sent-email-by-template';
+import { EMAIL_COURSE_PURCHASE_SUBJECT } from '@/constants/email-subject';
+import { DEFAULT_LANGUAGE } from '@/constants/locale';
 import { removeValueFromMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { isObject, isString } from '@/lib/guard';
@@ -33,6 +36,7 @@ export const POST = async (req: NextRequest) => {
   const userId = session?.metadata?.userId;
   const courseId = session?.metadata?.courseId;
   const isSubscription = session.metadata?.isSubscription;
+  const locale = session?.metadata?.locale ?? DEFAULT_LANGUAGE;
 
   if (event.type === 'checkout.session.completed') {
     if (!userId || (!isSubscription && !courseId)) {
@@ -79,6 +83,12 @@ export const POST = async (req: NextRequest) => {
           return null;
         })();
 
+        const emailParams = {
+          courseLink: session.success_url ?? '',
+          courseName: session?.metadata?.courseName ?? '',
+          username: session?.metadata?.username ?? '',
+        };
+
         const transaction = await prisma.purchaseDetails.create({
           data: {
             city: session?.metadata?.city,
@@ -92,6 +102,15 @@ export const POST = async (req: NextRequest) => {
             price: session.amount_total ?? 0,
             purchaseId: purchase.id,
           },
+        });
+
+        await sentEmailByTemplate({
+          emails: [session?.metadata?.email ?? ''],
+          locale,
+          params: emailParams,
+          subject:
+            EMAIL_COURSE_PURCHASE_SUBJECT[locale as keyof typeof EMAIL_COURSE_PURCHASE_SUBJECT],
+          template: 'course-purchase',
         });
 
         return transaction;

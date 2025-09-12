@@ -118,6 +118,7 @@ export const CsmModal = ({ categories, children }: CsmModalProps) => {
                 <FormItem className="w-full">
                   <Input
                     {...field}
+                    {...(user?.email && { value: user.email })}
                     disabled={isSubmitting || Boolean(user?.userId)}
                     placeholder={t('enterEmail')}
                   />
