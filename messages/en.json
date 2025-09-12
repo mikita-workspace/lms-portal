@@ -529,6 +529,9 @@
     },
     "course-purchase": {
       "subject": "Thank you for your purchase! Access to your course is now open 🔑"
+    },
+    "payout": {
+      "subject": "The payment has been confirmed 💸"
     }
   }
 }

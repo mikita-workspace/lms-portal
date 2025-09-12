@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { sentEmailByTemplate } from '@/actions/mailer/sent-email-by-template';
 import { DEFAULT_LOCALE } from '@/constants/locale';
 import { PayoutRequestStatus } from '@/constants/payments';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 import { createWebSocketNotification } from '@/lib/notifications';
 import { isOwner } from '@/lib/owner';
+import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
 export const POST = async (
@@ -27,6 +29,7 @@ export const POST = async (
     const action = searchParams.get('action');
 
     const t = await getTranslations('payments.payout');
+    const emailT = await getTranslations('email-notification.payout');
 
     if (action === PayoutRequestStatus.DECLINED) {
       const payoutRequest = await db.payoutRequest.update({
@@ -54,6 +57,11 @@ export const POST = async (
       const payoutRequest = await db.payoutRequest.findUnique({
         where: { id: requestId },
         include: { connectAccount: true },
+      });
+
+      const connectAccountInfo = await db.user.findUnique({
+        where: { id: payoutRequest?.connectAccount.userId },
+        select: { email: true, isEmailConfirmed: true },
       });
 
       if (!payoutRequest) {
@@ -89,6 +97,21 @@ export const POST = async (
         },
         event: `private_event_${payoutRequest.connectAccount.userId}`,
       });
+
+      if (connectAccountInfo?.isEmailConfirmed) {
+        const emailParams = {
+          teacherName: user?.name ?? '',
+          payoutId: payoutRequest.id,
+          analyticsLink: absoluteUrl('/teacher/analytics'),
+        };
+
+        await sentEmailByTemplate({
+          emails: [connectAccountInfo?.email ?? ''],
+          params: emailParams,
+          subject: emailT('subject'),
+          template: 'teacher-payout',
+        });
+      }
 
       return NextResponse.json(updatedPayoutRequest);
     }
