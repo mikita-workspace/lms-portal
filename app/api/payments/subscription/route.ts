@@ -11,6 +11,7 @@ import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
 import { getLocale } from '@/lib/locale';
+import { roundToNearestFive } from '@/lib/price';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
@@ -105,7 +106,7 @@ export const POST = async (req: NextRequest) => {
           price_data: {
             currency: locale.currency,
             product_data: { name: subscriptionName },
-            unit_amount: Math.round((price ?? 0) * rate),
+            unit_amount: roundToNearestFive((price ?? 0) * rate),
             recurring: { interval: recurringInterval },
           },
         },

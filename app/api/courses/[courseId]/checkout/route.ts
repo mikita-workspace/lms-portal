@@ -9,6 +9,7 @@ import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { db } from '@/lib/db';
 import { getLocale } from '@/lib/locale';
+import { roundToNearestFive } from '@/lib/price';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
@@ -99,7 +100,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
           product_data: {
             name: course.title,
           },
-          unit_amount: Math.round((course.price ?? 0) * rate),
+          unit_amount: roundToNearestFive((course.price ?? 0) * rate),
         },
       },
     ];
