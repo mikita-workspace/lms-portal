@@ -86,6 +86,12 @@ export const POST = async (req: NextRequest) => {
 
     const discounts = await getWelcomeDiscounts(user.userId);
 
+    const existingSubscriptions = await stripe.subscriptions.list({
+      customer: stripeCustomer.stripeCustomerId,
+      status: 'all',
+    });
+    const trialPeriodDays = existingSubscriptions.data.length === 0 ? 14 : null;
+
     const session = await stripe.checkout.sessions.create({
       ...(discounts.length ? { discounts } : { allow_promotion_codes: true }),
       customer: stripeCustomer.stripeCustomerId,
@@ -112,6 +118,7 @@ export const POST = async (req: NextRequest) => {
       },
       success_url: absoluteUrl(`${returnUrl}?success=true`),
       cancel_url: absoluteUrl(returnUrl),
+      subscription_data: trialPeriodDays ? { trial_period_days: trialPeriodDays } : {},
     });
 
     return NextResponse.json({ url: session.url });

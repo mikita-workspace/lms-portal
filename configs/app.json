@@ -65,7 +65,7 @@
     }
   ],
   "auth": {
-    "isBlockedNewLogin": true,
+    "isBlockedNewLogin": false,
     "providers": {
       "credentials": true,
       "github": true,
