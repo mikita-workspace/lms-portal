@@ -1,17 +1,18 @@
 import { addSeconds, getUnixTime } from 'date-fns';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
-import { getLocale as getAppLocale } from 'next-intl/server';
+import { getLocale as getAppLocale, getTranslations } from 'next-intl/server';
 import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
+import { getAppConfig } from '@/actions/configs/get-app-config';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { TEN_MINUTE_SEC } from '@/constants/common';
 import { fetchCachedData } from '@/lib/cache';
 import { db } from '@/lib/db';
+import { getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { getLocale } from '@/lib/locale';
-import { roundToNearestFive } from '@/lib/price';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
@@ -49,6 +50,13 @@ export const POST = async (req: NextRequest) => {
 
     if (!success) {
       return NextResponse.json({ message }, { status: StatusCodes.FORBIDDEN });
+    }
+
+    const config = await getAppConfig();
+    const t = await getTranslations('subscription');
+
+    if (config?.auth?.isBlockingNewSubscriptions) {
+      return NextResponse.json({ message: t('block') }, { status: StatusCodes.FORBIDDEN });
     }
 
     const { details, locale, price, rate, recurringInterval, returnUrl, subscriptionName } =
@@ -106,7 +114,8 @@ export const POST = async (req: NextRequest) => {
           price_data: {
             currency: locale.currency,
             product_data: { name: subscriptionName },
-            unit_amount: Math.floor(roundToNearestFive((price ?? 0) * rate)),
+            unit_amount:
+              Math.round(getScaledPrice(getConvertedPrice((price / 12) * rate, true))) * 12,
             recurring: { interval: recurringInterval },
           },
         },

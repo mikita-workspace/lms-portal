@@ -16,7 +16,11 @@ export type GetAppConfig = {
     }[];
     provider: string;
   }[];
-  auth: { isBlockedNewLogin: true; providers: Record<string, boolean> };
+  auth: {
+    isBlockedNewLogin: boolean;
+    isBlockingNewSubscriptions: boolean;
+    providers: Record<string, boolean>;
+  };
   features: { christmas: boolean; testMode: boolean };
 };
 
@@ -41,6 +45,7 @@ export const getAppConfig = async (): Promise<GetAppConfig> => {
       ],
       auth: {
         isBlockedNewLogin: true,
+        isBlockingNewSubscriptions: true,
         providers: {
           google: false,
           yandex: false,

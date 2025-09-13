@@ -8,8 +8,8 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
 import { db } from '@/lib/db';
+import { getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { getLocale } from '@/lib/locale';
-import { roundToNearestFive } from '@/lib/price';
 import { absoluteUrl } from '@/lib/utils';
 import { stripe } from '@/server/stripe';
 
@@ -100,7 +100,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
           product_data: {
             name: course.title,
           },
-          unit_amount: Math.floor(roundToNearestFive((course.price ?? 0) * rate)),
+          unit_amount: Math.round(getScaledPrice(getConvertedPrice(course.price * rate, true))),
         },
       },
     ];

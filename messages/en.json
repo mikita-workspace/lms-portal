@@ -376,7 +376,8 @@
     "monthly": "Monthly",
     "redirect": "You will be redirected to the checkout page.",
     "upgrade": "Upgrade",
-    "yearly": "Yearly"
+    "yearly": "Yearly",
+    "block": "The subscription is not available at the moment."
   },
   "toast": {
     "error": {
