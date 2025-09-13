@@ -1,13 +1,11 @@
-import { Flame } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { verifyUserEmail } from '@/actions/users/verify-user-email';
-import { DeleteAccountModal } from '@/components/modals/delete-account-modal';
-import { Button } from '@/components/ui';
 import { db } from '@/lib/db';
 
 import { AdvancedOptions } from './_components/advanced-options/advanced-options';
+import { DeleteAccount } from './_components/delete-account';
 import { GeneralSettingsForm } from './_components/general-settings-form';
 
 type SettingsPagePageProps = {
@@ -35,14 +33,7 @@ const SettingsPage = async ({ searchParams }: SettingsPagePageProps) => {
           <AdvancedOptions initialData={userInfo} />
         </div>
       )}
-      <DeleteAccountModal userId={user?.userId} email={user?.email}>
-        <div className="flex items-center gap-x-2 mt-8">
-          <Button variant="destructive">
-            <Flame className="h-4 w-4 mr-2" />
-            {t('deleteAcc')}
-          </Button>
-        </div>
-      </DeleteAccountModal>
+      <DeleteAccount userId={user?.userId} email={user?.email} />
     </div>
   );
 };

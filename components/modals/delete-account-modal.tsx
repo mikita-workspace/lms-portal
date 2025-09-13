@@ -1,7 +1,7 @@
 'use client';
 
 import { signOut } from 'next-auth/react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { SyntheticEvent, useEffect, useState } from 'react';
 
 import {
@@ -12,30 +12,27 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { fetcher } from '@/lib/fetcher';
 
-import { Captcha } from '../common/captcha';
 import { Button, Input } from '../ui';
 
 type DeleteAccountModalProps = {
-  children: React.ReactNode;
   email?: string | null;
+  open: boolean;
+  setOpen: (value: boolean) => void;
   userId?: string;
 };
 
-export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountModalProps) => {
+export const DeleteAccountModal = ({ email, open, setOpen, userId }: DeleteAccountModalProps) => {
   const t = useTranslations('delete-acc-modal');
-  const locale = useLocale();
 
   const { toast } = useToast();
 
   const [input, setInput] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState('');
 
   useEffect(() => {
     setIsValid(input === email);
@@ -60,8 +57,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleDelete}>
           <DialogHeader>
@@ -83,16 +79,6 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
                 onChange={(event) => setInput(event.target.value)}
               />
             </div>
-            <div className="mt-6 z-10">
-              <Captcha
-                locale={locale}
-                callback={(token) => {
-                  if (token) {
-                    setCaptchaToken(token);
-                  }
-                }}
-              />
-            </div>
           </div>
           <DialogFooter className="mt-4">
             <DialogClose asChild>
@@ -102,7 +88,7 @@ export const DeleteAccountModal = ({ children, email, userId }: DeleteAccountMod
             </DialogClose>
             <Button
               className="mt-2"
-              disabled={isFetching || !isValid || !captchaToken}
+              disabled={isFetching || !isValid}
               isLoading={isFetching}
               type="submit"
               variant="destructive"

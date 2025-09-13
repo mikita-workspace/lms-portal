@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,7 +15,7 @@ import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useHydration } from '@/hooks/use-hydration';
 import { isValidUrl } from '@/lib/utils';
 
-import { Captcha } from '../common/captcha';
+import { CaptchaInvisible } from '../common/captcha-invisible';
 import { AuthFormSkeleton } from '../loaders/auth-form-skeleton';
 import { Button, Input } from '../ui';
 import { useToast } from '../ui/use-toast';
@@ -54,7 +54,11 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
 
   const [isDisabledButtons, setIsDisabledButtons] = useState(false);
   const [isSignUpFlow, setIsSignUpFlow] = useState(false);
+
   const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaVisible, setCaptchaVisible] = useState(false);
+
+  const [data, setData] = useState<z.infer<typeof signUpSchema> | null>(null);
 
   const validationSchema = useMemo(
     () => (isSignUpFlow ? signUpSchema : signInSchema),
@@ -72,8 +76,13 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
 
   const { isSubmitting, errors } = form.formState;
 
-  const handleSubmit = useCallback(
-    async (data: z.infer<typeof signUpSchema>) => {
+  const handleSubmit = useCallback(async (data: z.infer<typeof signUpSchema>) => {
+    setCaptchaVisible(true);
+    setData(data);
+  }, []);
+
+  useEffect(() => {
+    const handleSubmitCallback = async () => {
       try {
         setIsDisabledButtons(true);
         const response = await signIn('credentials', {
@@ -82,7 +91,6 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
           isSignUpFlow,
           redirect: false,
         });
-
         switch (true) {
           case !response?.error:
             router.push('/');
@@ -102,9 +110,13 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
       } finally {
         setIsDisabledButtons(false);
       }
-    },
-    [toast, setIsDisabledButtons, callbackUrl, router, isSignUpFlow],
-  );
+    };
+
+    if (captchaToken && data) {
+      handleSubmitCallback();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [captchaToken]);
 
   if (!isMounted) {
     return <AuthFormSkeleton />;
@@ -185,7 +197,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
               <div className="flex items-center gap-x-2">
                 <Button
                   className="w-full"
-                  disabled={isSubmitting || isDisabledButtons || !captchaToken}
+                  disabled={isSubmitting || isDisabledButtons}
                   isLoading={isSubmitting}
                   type="submit"
                 >
@@ -198,17 +210,19 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
       )}
       <OAuthButtons
         hasCredentialsProvider={hasCredentialsProvider}
-        isDisabledButtons={isDisabledButtons || !captchaToken}
+        isDisabledButtons={isDisabledButtons}
         providers={providers}
         setIsDisabledButtons={setIsDisabledButtons}
       />
-      <Captcha
+      <CaptchaInvisible
         callback={(token) => {
           if (token) {
             setCaptchaToken(token);
           }
         }}
         locale={locale}
+        setVisible={setCaptchaVisible}
+        visible={captchaVisible}
       />
       {hasCredentialsProvider && !isBlockedNewLogin && (
         <p className="text-sm text-muted-foreground text-center mt-4">

@@ -2,9 +2,9 @@
 
 import { SmartCaptcha, SmartCaptchaProps } from '@yandex/smart-captcha';
 
-type CaptchaProps = { callback: (token: string | null) => void; locale: string };
+type CaptchaVisibleProps = { callback: (token: string | null) => void; locale: string };
 
-export const Captcha = ({ callback, locale }: CaptchaProps) => {
+export const CaptchaVisible = ({ callback, locale }: CaptchaVisibleProps) => {
   return (
     <SmartCaptcha
       language={locale as SmartCaptchaProps['language']}
