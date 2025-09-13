@@ -6,7 +6,9 @@ import Stripe from 'stripe';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getIsEmailConfirmed } from '@/actions/auth/get-is-email-confirmed';
+import { sentEmailByTemplate } from '@/actions/mailer/sent-email-by-template';
 import { getWelcomeDiscounts } from '@/actions/stripe/get-welcome-discounts';
+import { EMAIL_COURSE_PURCHASE_SUBJECT } from '@/constants/email-subject';
 import { db } from '@/lib/db';
 import { getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { getLocale } from '@/lib/locale';
@@ -71,6 +73,12 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
           },
         });
 
+        const emailParams = {
+          courseLink: absoluteUrl(`/preview-course/${course.id}?success=true`),
+          courseName: course?.title ?? '',
+          username: user?.name ?? '',
+        };
+
         const transaction = await prisma.purchaseDetails.create({
           data: {
             city: metadata?.city,
@@ -82,6 +90,15 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
             price: 0,
             purchaseId: purchase.id,
           },
+        });
+
+        await sentEmailByTemplate({
+          emails: [user?.email ?? ''],
+          locale: appLocale,
+          params: emailParams,
+          subject:
+            EMAIL_COURSE_PURCHASE_SUBJECT[appLocale as keyof typeof EMAIL_COURSE_PURCHASE_SUBJECT],
+          template: 'course-purchase',
         });
 
         return transaction;
