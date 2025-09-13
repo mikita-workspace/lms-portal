@@ -116,7 +116,7 @@ export const AuthForm = ({ callbackUrl }: AuthFormProps) => {
       handleSubmitCallback();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [captchaToken]);
+  }, [captchaToken, data]);
 
   if (!isMounted) {
     return <AuthFormSkeleton />;
