@@ -56,14 +56,14 @@ export const columns: ColumnDef<Course>[] = [
   },
   {
     accessorKey: 'isPremium',
-    header: ({ column }) => handleSortingHeader(column, 'Type'),
+    header: ({ column }) => handleSortingHeader(column, 'Level'),
     cell: ({ row }) => {
       const isPremium = row.getValue('isPremium') || false;
 
       return (
         <TextBadge
           variant={isPremium ? 'indigo' : 'default'}
-          label={isPremium ? 'Premium' : 'Public'}
+          label={isPremium ? 'Premium' : 'Basic'}
         />
       );
     },

@@ -2,7 +2,7 @@ import { Fee } from '@prisma/client';
 import { useMemo } from 'react';
 
 import { DEFAULT_CURRENCY, DEFAULT_EXCHANGE_RATE, DEFAULT_LOCALE } from '@/constants/locale';
-import { formatPrice, getConvertedPrice } from '@/lib/format';
+import { formatPrice, getConvertedPrice, getScaledPrice } from '@/lib/format';
 import { isNumber } from '@/lib/guard';
 import { hasJsonStructure } from '@/lib/utils';
 
@@ -46,29 +46,21 @@ export const useLocaleAmount = ({
     return localeInfo?.rate ?? DEFAULT_EXCHANGE_RATE;
   }, [customRates, ignoreExchangeRate, locale?.currency, localeInfo?.rate, useDefaultLocale]);
 
-  const amount = (price ?? 0) * exchangeRate;
+  const amount = Math.round(
+    getScaledPrice(getConvertedPrice((price ?? 0) * exchangeRate, roundToNearestFive)),
+  );
 
   const { net, calculatedFees } = useFeesAmount({ exchangeRate, fees, price: amount });
 
-  const formattedPrice = locale
-    ? formatPrice(getConvertedPrice(amount, roundToNearestFive), locale)
-    : null;
-
-  const formattedNet = locale
-    ? formatPrice(getConvertedPrice(net, roundToNearestFive), locale)
-    : null;
-
+  const formattedPrice = locale ? formatPrice(getConvertedPrice(amount), locale) : null;
+  const formattedNet = locale ? formatPrice(getConvertedPrice(net), locale) : null;
   const formattedCalculatedFees = calculatedFees.map((fee) => ({
     ...fee,
-    amount: locale ? formatPrice(getConvertedPrice(fee.amount, roundToNearestFive), locale) : null,
+    amount: locale ? formatPrice(getConvertedPrice(fee.amount), locale) : null,
   }));
-
   const formattedTotalFees = locale
     ? formatPrice(
-        getConvertedPrice(
-          calculatedFees.reduce((total, fee) => total + fee.amount, 0),
-          roundToNearestFive,
-        ),
+        getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
         locale,
       )
     : null;
@@ -79,20 +71,14 @@ export const useLocaleAmount = ({
     ...(useDefaultLocale
       ? {
           amount: price,
-          formattedNet: formatPrice(getConvertedPrice(net, roundToNearestFive), defaultLocale),
-          formattedPrice: formatPrice(
-            getConvertedPrice(price ?? 0, roundToNearestFive),
-            defaultLocale,
-          ),
+          formattedNet: formatPrice(getConvertedPrice(net), defaultLocale),
+          formattedPrice: formatPrice(getConvertedPrice(price ?? 0), defaultLocale),
           formattedCalculatedFees: calculatedFees.map((fee) => ({
             ...fee,
-            amount: formatPrice(getConvertedPrice(fee.amount, roundToNearestFive), defaultLocale),
+            amount: formatPrice(getConvertedPrice(fee.amount), defaultLocale),
           })),
           formattedTotalFees: formatPrice(
-            getConvertedPrice(
-              calculatedFees.reduce((total, fee) => total + fee.amount, 0),
-              roundToNearestFive,
-            ),
+            getConvertedPrice(calculatedFees.reduce((total, fee) => total + fee.amount, 0)),
             defaultLocale,
           ),
         }

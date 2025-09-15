@@ -21,7 +21,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem } from '@/compo
 import { useToast } from '@/components/ui/use-toast';
 import { DEFAULT_LANGUAGE, SUPPORTED_LOCALES } from '@/constants/locale';
 import { fetcher } from '@/lib/fetcher';
-import { cn } from '@/lib/utils';
 
 type AdvancedOptionsFormProps = {
   courseId: string;
@@ -80,9 +79,7 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
         </Button>
       </div>
       {!isEditing && (
-        <div
-          className={cn('text-sm mt-4', !initialData.isPremium && 'text-neutral-500 italic mt-2')}
-        >
+        <div className="text-sm mt-4 gap-y-2">
           <div>
             Current language of course is{' '}
             <strong>
@@ -90,13 +87,17 @@ export const AdvancedOptionsForm = ({ courseId, initialData }: AdvancedOptionsFo
             </strong>
             .
           </div>
-          {initialData.isPremium ? (
-            <>
-              This course is <strong>Premium</strong> and available only for paid subscribers.
-            </>
-          ) : (
-            <>This course is not Premium</>
-          )}
+          <div>
+            {initialData.isPremium ? (
+              <span>
+                This course is <strong>Premium</strong> and available only for paid subscribers.
+              </span>
+            ) : (
+              <span>
+                This course is <strong>Basic</strong>
+              </span>
+            )}
+          </div>
         </div>
       )}
       {isEditing && (
