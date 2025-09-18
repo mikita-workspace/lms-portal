@@ -4,9 +4,9 @@ import { Suspense } from 'react';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getLeaders } from '@/actions/courses/get-leaders';
 import { LeaderBoardSkeleton } from '@/components/loaders/leaderboard-skeleton';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 import { LeadersTable } from './_components/leaders-table';
-import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Leaderboard',

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
-import withCompanyLabel from '@/hoc/with-company-label';
 import { PLATFORM_DESCRIPTION } from '@/constants/common';
+import withCompanyLabel from '@/hoc/with-company-label';
 
 export const metadata: Metadata = {
   title: '404',

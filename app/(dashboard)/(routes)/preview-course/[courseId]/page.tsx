@@ -10,13 +10,13 @@ import { getPreviewCourse } from '@/actions/courses/get-preview-course';
 import { AuthRedirect } from '@/components/auth/auth-redirect';
 import { CourseEnrollButton } from '@/components/common/course-enroll-button';
 import { Button } from '@/components/ui/button';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 import { db } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
 import { ContinueButton } from './_components/continue-button';
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
-import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 type PreviewCourseIdPageProps = {
   params: Promise<{ courseId: string }>;

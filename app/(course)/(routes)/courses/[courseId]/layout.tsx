@@ -6,11 +6,11 @@ import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getGlobalProgress } from '@/actions/courses/get-global-progress';
 import { getProgress } from '@/actions/courses/get-progress';
 import { getUserNotifications } from '@/actions/users/get-user-notifications';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 import { db } from '@/lib/db';
 
 import { CourseNavBar } from './_components/course-navbar/course-navbar';
 import { CourseSideBar } from './_components/course-sidebar/course-sidebar';
-import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 type CourseLayoutProps = Readonly<{
   children: React.ReactNode;

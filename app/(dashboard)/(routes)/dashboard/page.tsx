@@ -4,12 +4,12 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { getDashboardCourses } from '@/actions/courses/get-dashboard-courses';
 import { getNovaPulse } from '@/actions/nova-pulse/get-nova-pulse';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 import { FilterStatus } from '@/constants/courses';
 
 import { CoursesList } from '../../_components/courses/courses-list';
 import { InfoCard } from './_components/info-card';
 import { NovaPulse } from './_components/nova-pulse';
-import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Dashboard',

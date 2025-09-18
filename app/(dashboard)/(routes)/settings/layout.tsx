@@ -1,5 +1,6 @@
-import { PLATFORM_DESCRIPTION } from '@/constants/common';
 import { Metadata } from 'next';
+
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Settings',

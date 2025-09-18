@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
-import { isOwner } from '@/lib/owner';
 import { PLATFORM_DESCRIPTION } from '@/constants/common';
+import { isOwner } from '@/lib/owner';
 
 export const metadata: Metadata = {
   title: 'Owner',
