@@ -115,9 +115,11 @@ export const CredentialsFrom = ({
             body: { email: data?.email },
           });
 
-          setOtpResponse({ maskedEmail: response?.maskedEmail });
+          if (!response?.error) {
+            setOtpResponse({ maskedEmail: response?.maskedEmail });
 
-          return;
+            return;
+          }
         }
 
         switch (true) {
