@@ -1,4 +1,5 @@
 export enum CONVERSATION_ACTION {
+  CREATE = 'create',
   DELETE_ALL = 'delete-all',
   EDIT = 'edit',
   EMPTY_MESSAGES = 'empty-messages',
@@ -7,3 +8,4 @@ export enum CONVERSATION_ACTION {
 
 export const LIMIT_CONVERSATIONS = 10;
 export const LIMIT_CHAT_INPUT = 8000;
+export const LIMIT_CONVERSATION_TITLE = 100;

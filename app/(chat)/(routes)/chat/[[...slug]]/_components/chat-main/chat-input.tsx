@@ -69,7 +69,9 @@ const ChatInputComponent = ({
               onSendMessage={isSubmitting ? onAbortGenerating : () => {}}
             />
           </form>
-          <div className="p-2 text-center text-xs text-muted-foreground z-10">{t('footer')}</div>
+          <div className="p-2 text-center text-xs text-muted-foreground z-10 select-none">
+            {t('footer')}
+          </div>
         </div>
       </div>
       <div className="h-[calc(100%+20px)] w-full bg-gradient-to-t from-neutral-50 dark:from-neutral-900 to-transparent absolute bottom-0 z-0"></div>

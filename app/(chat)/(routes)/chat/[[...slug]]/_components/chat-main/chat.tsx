@@ -8,6 +8,7 @@ import { getChatInitial } from '@/actions/chat/get-chat-initial';
 import { ChatSkeleton } from '@/components/loaders/chat-skeleton';
 import { useToast } from '@/components/ui/use-toast';
 import { ChatCompletionRole } from '@/constants/ai';
+import { CONVERSATION_ACTION } from '@/constants/chat';
 import { useAppConfigStore } from '@/hooks/store/use-app-config-store';
 import { useChatStore } from '@/hooks/store/use-chat-store';
 import { useLocaleStore } from '@/hooks/store/use-locale-store';
@@ -74,7 +75,10 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     if (conversations.length) {
       const chatMessages = getChatMessages(conversations);
 
-      setConversationId(conversations[0].id);
+      if (!isEmbed) {
+        setConversationId(conversations[0].id);
+      }
+
       setCurrentModel(currentModel || TEXT_MODELS?.[0]?.value || '');
       setCurrentModelLabel(currentModelLabel || TEXT_MODELS?.[0]?.label || '');
       setChatMessages(chatMessages);
@@ -91,10 +95,15 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     setChatMessages,
     setHasSearch,
     hasSearch,
+    isEmbed,
   ]);
 
   const saveLastMessages = useCallback(
-    async (userMessage: Message, assistMessage: Message & { url: string }) => {
+    async (
+      conversationId: string,
+      userMessage: Message,
+      assistMessage: Message & { url: string },
+    ) => {
       const response = await fetcher.post('/api/chat', {
         body: {
           conversationId,
@@ -125,7 +134,6 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     },
     [
       chatMessages,
-      conversationId,
       currentModel,
       isImageGeneration,
       IMAGE_MODELS,
@@ -142,7 +150,24 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       setIsSubmitting(true);
       setIsFetching(true);
 
-      const messages = chatMessages[conversationId];
+      let currentConversationId = conversationId;
+
+      if (!currentConversationId && isEmbed) {
+        const newConversation = await fetcher.post(
+          `/api/chat/conversations?action=${CONVERSATION_ACTION.NEW}`,
+          {
+            body: {
+              title: currentMessage || options?.userMessage || '',
+            },
+            responseType: 'json',
+          },
+        );
+
+        currentConversationId = newConversation?.id;
+        setConversationId(newConversation?.id);
+      }
+
+      const messages = chatMessages[currentConversationId] ?? [];
 
       const currentUserMessage = {
         content: currentMessage || options?.userMessage || '',
@@ -167,7 +192,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       if (!options?.regenerate) {
         const updatedChatMessages = {
           ...chatMessages,
-          [conversationId]: [...messages, ...messagesForApi],
+          [currentConversationId]: [...messages, ...messagesForApi],
         };
 
         setChatMessages(updatedChatMessages);
@@ -266,7 +291,7 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
           });
         }
       } finally {
-        saveLastMessages(currentUserMessage, {
+        saveLastMessages(currentConversationId, currentUserMessage, {
           content: streamAssistMessage,
           id: uuidv4(),
           role: ChatCompletionRole.ASSISTANT,
@@ -284,11 +309,13 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
       conversationId,
       currentMessage,
       currentModel,
+      isEmbed,
       isImageGeneration,
       isSearchMode,
       localeInfo,
       saveLastMessages,
       setChatMessages,
+      setConversationId,
       setIsFetching,
       toast,
     ],

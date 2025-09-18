@@ -110,7 +110,7 @@ export const columns: ColumnDef<UserWithSubscription>[] = [
   },
   {
     id: 'extraInfo',
-    header: () => <span>Info</span>,
+    header: () => <span>Service info</span>,
     cell: ({ row }) => {
       return (
         <Dialog>

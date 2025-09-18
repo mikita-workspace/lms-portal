@@ -47,7 +47,6 @@ export const useChatStore = create<ChatStore, any>(
     {
       name: 'chat-storage',
       partialize: (state) => ({
-        conversationId: state.conversationId,
         currentModel: state.currentModel,
         currentModelLabel: state.currentModelLabel,
         hasSearch: state.hasSearch,
