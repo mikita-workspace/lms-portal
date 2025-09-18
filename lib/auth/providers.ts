@@ -27,7 +27,9 @@ export const providers = [
     },
     async authorize(credentials): Promise<any> {
       const t = await getTranslations('auth-form');
-      const user = await db.user.findFirst({ where: { email: credentials?.email } });
+      const user = await db.user.findFirst({
+        where: { email: credentials?.email?.toLocaleLowerCase() },
+      });
 
       const isSignUpFlow = credentials?.isSignUpFlow === 'true';
       const isAfterOtpPage = credentials?.isAfterOtpPage === 'true';
