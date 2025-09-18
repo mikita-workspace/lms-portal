@@ -1,8 +1,9 @@
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Settings',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type SettingsLayoutProps = Readonly<{

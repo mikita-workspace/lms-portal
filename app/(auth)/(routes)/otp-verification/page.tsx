@@ -9,10 +9,11 @@ import { OTP_CALLBACK_URL_SECURE } from '@/constants/otp';
 import { decrypt } from '@/lib/utils';
 
 import { OtpVerify } from './_components/otp-verify';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'OTP',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type OtpVerificationPageProps = {

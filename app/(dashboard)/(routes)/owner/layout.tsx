@@ -3,10 +3,11 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { isOwner } from '@/lib/owner';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Owner',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type OwnerLayoutProps = Readonly<{

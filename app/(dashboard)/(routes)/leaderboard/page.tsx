@@ -6,10 +6,11 @@ import { getLeaders } from '@/actions/courses/get-leaders';
 import { LeaderBoardSkeleton } from '@/components/loaders/leaderboard-skeleton';
 
 import { LeadersTable } from './_components/leaders-table';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Leaderboard',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 const LeaderBoard = async () => {

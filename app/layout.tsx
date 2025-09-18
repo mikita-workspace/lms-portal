@@ -13,6 +13,7 @@ import { TestModeDeclaimer } from '@/components/common/test-mode-declaimer';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const viewport: Viewport = {
   initialScale: 1,
@@ -23,7 +24,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Nova Academy',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_DOMAIN },
 };
 

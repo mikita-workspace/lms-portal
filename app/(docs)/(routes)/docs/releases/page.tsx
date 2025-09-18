@@ -5,11 +5,11 @@ import { getTranslations } from 'next-intl/server';
 
 import { getGithubReleases } from '@/actions/github/get-releases';
 import { MarkdownText } from '@/components/common/markdown-text';
-import { TIMESTAMP_TEMPLATE } from '@/constants/common';
+import { PLATFORM_DESCRIPTION, TIMESTAMP_TEMPLATE } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Releases notes',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type ReleasesPagePageProps = {

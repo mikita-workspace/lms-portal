@@ -10,6 +10,7 @@ import { db } from '@/lib/db';
 
 import { CourseNavBar } from './_components/course-navbar/course-navbar';
 import { CourseSideBar } from './_components/course-sidebar/course-sidebar';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 type CourseLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: CourseLayoutProps): Promise<M
 
   return {
     title: course?.title || 'Nova Academy',
-    description: course?.description || 'Educational portal',
+    description: course?.description || PLATFORM_DESCRIPTION,
   };
 }
 

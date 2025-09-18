@@ -2,10 +2,11 @@ import { Metadata } from 'next';
 
 import { getAppDocs } from '@/actions/docs/get-app-docs';
 import { MarkdownText } from '@/components/common/markdown-text';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 const TermsAndConditionsPage = async () => {

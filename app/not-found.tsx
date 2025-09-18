@@ -4,10 +4,11 @@ import { getTranslations } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
 import withCompanyLabel from '@/hoc/with-company-label';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: '404',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 const NotFoundPage = async () => {

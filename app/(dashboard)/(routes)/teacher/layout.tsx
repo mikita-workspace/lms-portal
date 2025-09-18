@@ -3,10 +3,11 @@ import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
 import { UserRole } from '@/constants/auth';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Teacher',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type TeacherLayoutProps = Readonly<{

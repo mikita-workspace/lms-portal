@@ -9,10 +9,11 @@ import { FilterStatus } from '@/constants/courses';
 import { CoursesList } from '../../_components/courses/courses-list';
 import { InfoCard } from './_components/info-card';
 import { NovaPulse } from './_components/nova-pulse';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type DashboardPageProps = {

@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: 'Restricted',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 const RestrictedPage = async () => {

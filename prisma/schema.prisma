@@ -264,8 +264,6 @@ enum CsmStatus {
   done
   new
   progress
-  review
-  todo
 }
 
 model CsmCategory {

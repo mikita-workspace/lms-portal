@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { ContinueButton } from './_components/continue-button';
 import { PreviewDescription } from './_components/preview-description';
 import { PreviewVideoPlayer } from './_components/preview-video-player';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 type PreviewCourseIdPageProps = {
   params: Promise<{ courseId: string }>;
@@ -30,7 +31,7 @@ export const generateMetadata = async (props: PreviewCourseIdPageProps): Promise
 
   return {
     title: course?.title || 'Nova Academy',
-    description: course?.description || 'Educational portal',
+    description: course?.description || PLATFORM_DESCRIPTION,
   };
 };
 

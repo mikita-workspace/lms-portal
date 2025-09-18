@@ -4,10 +4,11 @@ import { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui';
+import { PLATFORM_DESCRIPTION } from '@/constants/common';
 
 export const metadata: Metadata = {
   title: '500',
-  description: 'Educational portal',
+  description: PLATFORM_DESCRIPTION,
 };
 
 type ErrorProps = { error: Error & { digest?: string }; reset: () => void };
