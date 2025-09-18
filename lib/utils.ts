@@ -112,3 +112,30 @@ export const extractValidJson = (input: string) => {
   }
   return null;
 };
+
+export const maskEmail = (email: string) => {
+  const [localPart, domainPart] = email.split('@');
+
+  if (!localPart || !domainPart || domainPart.indexOf('.') === -1) {
+    throw new Error('Incorrect email address');
+  }
+
+  const firstChar = localPart[0];
+  const lastChar = localPart[localPart.length - 1];
+
+  const maskedLocalPart =
+    localPart.length > 2 ? firstChar + '*'.repeat(localPart.length - 2) + lastChar : localPart;
+
+  const domainParts = domainPart.split('.');
+  const primaryDomain = domainParts[0];
+  const topLevelDomain = domainParts.slice(1).join('.');
+
+  const maskedPrimaryDomain =
+    primaryDomain.length > 2
+      ? primaryDomain[0] +
+        '*'.repeat(primaryDomain.length - 2) +
+        primaryDomain[primaryDomain.length - 1]
+      : primaryDomain;
+
+  return `${maskedLocalPart}@${maskedPrimaryDomain}.${topLevelDomain}`;
+};

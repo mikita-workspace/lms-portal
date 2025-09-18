@@ -15,14 +15,12 @@ import { authIcons } from './auth-icons';
 import { OAuthButton } from './ouath-button';
 
 type OAuthButtonsProps = {
-  hasCredentialsProvider?: boolean;
   isDisabledButtons?: boolean;
   providers: Record<string, boolean>;
   setIsDisabledButtons: (value: boolean) => void;
 };
 
 export const OAuthButtons = ({
-  hasCredentialsProvider,
   isDisabledButtons,
   providers,
   setIsDisabledButtons,
@@ -45,7 +43,7 @@ export const OAuthButtons = ({
   }, []);
 
   const [headProviders, tailProviders] = useMemo(() => {
-    const showDropDown = activeProviders.length > MAX_OAUTH_IN_ROW && hasCredentialsProvider;
+    const showDropDown = activeProviders.length > MAX_OAUTH_IN_ROW;
 
     if (showDropDown) {
       return [
@@ -55,7 +53,7 @@ export const OAuthButtons = ({
     }
 
     return [activeProviders, []];
-  }, [activeProviders, hasCredentialsProvider]);
+  }, [activeProviders]);
 
   const callbackUrl = useMemo(() => {
     if (isPreviewCoursePage) {
@@ -88,16 +86,10 @@ export const OAuthButtons = ({
   });
 
   return (
-    <div
-      className={cn(
-        'space-y-2 w-full mt-2',
-        hasCredentialsProvider && 'flex items-end w-full justify-between space-x-2 mt-0',
-      )}
-    >
+    <div className="space-y-2 w-full flex items-end justify-between space-x-2 mt-0">
       {headProviders.map((provider) => (
         <OAuthButton
           disabled={isDisabledButtons}
-          hasCredentialsProvider={hasCredentialsProvider}
           key={provider}
           onSignIn={() => handleSignIn(provider)}
           provider={provider as Provider}

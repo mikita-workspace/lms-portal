@@ -79,7 +79,7 @@ export const getChatConversations = async ({ sharedConversationId }: GetChatConv
       const newChatConversation = await db.chatConversation.create({
         data: {
           position: 0,
-          title: t('title', { order: 1 }),
+          title: t('title'),
           userId: user?.userId,
         },
         select: {

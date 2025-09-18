@@ -16,14 +16,16 @@ export const CaptchaInvisible = ({
   visible,
 }: CaptchaInvisibleProps) => {
   return (
-    <InvisibleSmartCaptcha
-      language={locale as InvisibleSmartCaptchaProps['language']}
-      onChallengeHidden={() => setVisible(false)}
-      onSuccess={callback}
-      sitekey={process.env.NEXT_PUBLIC_YD_CAPTCHA as string}
-      test={process.env.NODE_ENV === 'development'}
-      visible={visible}
-      webview
-    />
+    <div className="absolute">
+      <InvisibleSmartCaptcha
+        language={locale as InvisibleSmartCaptchaProps['language']}
+        onChallengeHidden={() => setVisible(false)}
+        onSuccess={callback}
+        sitekey={process.env.NEXT_PUBLIC_YD_CAPTCHA as string}
+        test={process.env.NODE_ENV === 'development'}
+        visible={visible}
+        webview
+      />
+    </div>
   );
 };

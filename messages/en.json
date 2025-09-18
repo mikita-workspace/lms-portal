@@ -19,10 +19,13 @@
   "auth-form": {
     "alreadyHaveAnAccount": "Already have an account?",
     "continueWith": "Continue with { provider }",
+    "continue": "Continue",
     "doNotHaveAnAccount": "Do not have an account?",
     "email": "Email",
     "password": "Password",
     "signIn": "Sign in",
+    "signInWithPass": "Sign in with password",
+    "signInWithoutPass": "Sign in without password",
     "signUp": "Sign up",
     "toContinue": "to continue to { appName }",
     "username": "Username",
@@ -32,9 +35,14 @@
       "emailExist": "Email already exist",
       "invalidEmail": "Invalid Email.",
       "invalidPasswordOrEmail": "Invalid password or email address",
+      "invalidOtp": "Incorrect login code",
       "password": "Must have at least 4 character.",
       "passwordRules": "The password must contain at least one lowercase letter one uppercase letter and one digit.",
       "username": "Must have at least 4 character."
+    },
+    "otp": {
+      "title": "Enter the {count}-digit code we sent to {maskEmail}",
+      "getNew": "Get a new code"
     }
   },
   "confirm-modal": {
@@ -314,14 +322,14 @@
       "remove": "Remove",
       "removed-conversation": "The conversation \"{conversation}\" has been successfully deleted.",
       "share": "Share",
-      "title": "New conversation { order }",
+      "title": "New conversation",
       "view": "View all conversations"
     },
     "input": {
       "ask": "Ask",
       "enterImageMessage": "Enter your request...",
       "enterMessage": "Enter your message...",
-      "footer": "Nova Copilot can make mistakes. Consider checking important information.",
+      "footer": "AI-generated. For reference only.",
       "image-generation-mode": "Image generation mode",
       "search": "Web search mode"
     },
@@ -365,7 +373,7 @@
     "bannerBody": "Premium courses, unlimited access to Nova Copilot, and more.",
     "bannerTitle": "Upgrade to Nova Plus",
     "benefits": {
-      "cancel-anytime": "The first 14 days are free",
+      "cancel-anytime": "No payment for the first two weeks",
       "get-access-nova-ai": "Unlimited access to Nova Copilot",
       "unlock-premium-courses": "Premium courses",
       "teacher-functionality": "Advanced functionality for Teacher mode"
@@ -533,6 +541,9 @@
     },
     "payout": {
       "subject": "The payment has been confirmed 💸"
+    },
+    "login-code": {
+      "subject": "{code} - Your Nova Academy login code"
     }
   }
 }

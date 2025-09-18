@@ -11,6 +11,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { UserRole } from '@/constants/auth';
 
+import { getValueFromMemoryCache, removeValueFromMemoryCache } from '../cache';
 import { db } from '../db';
 
 export const providers = [
@@ -21,6 +22,7 @@ export const providers = [
       isAfterOtpPage: { label: 'isAfterOtpPage', type: 'text' },
       isSignUpFlow: { label: 'isSignUpFlow', type: 'text' },
       name: { label: 'Username', type: 'text' },
+      otp: { label: 'OTP', type: 'text' },
       password: { label: 'Password', type: 'password' },
     },
     async authorize(credentials): Promise<any> {
@@ -29,9 +31,23 @@ export const providers = [
 
       const isSignUpFlow = credentials?.isSignUpFlow === 'true';
       const isAfterOtpPage = credentials?.isAfterOtpPage === 'true';
+      const isWithoutPassFlow = Boolean(credentials?.otp);
 
       if (isAfterOtpPage && user) {
         return { ...user, ...credentials };
+      }
+
+      if (isWithoutPassFlow && user) {
+        const key = `${user.id}-auth_without_pass_token`;
+        const cachedOtp = await getValueFromMemoryCache(key);
+
+        if (JSON.parse(cachedOtp ?? '{}')?.otp === credentials?.otp) {
+          await removeValueFromMemoryCache(key);
+
+          return { ...credentials };
+        }
+
+        throw new Error(t('errors.invalidOtp'));
       }
 
       if (isSignUpFlow) {

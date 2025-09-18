@@ -68,7 +68,6 @@
     "isBlockedNewLogin": false,
     "isBlockingNewSubscriptions": true,
     "providers": {
-      "credentials": true,
       "github": true,
       "google": true,
       "linkedin": false,
