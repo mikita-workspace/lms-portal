@@ -36,7 +36,7 @@ model UserOAuth {
   createdAt  DateTime @default(now())
   email      String?
   provider   String
-  providerId String
+  providerId String   @unique
   updatedAt  DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String

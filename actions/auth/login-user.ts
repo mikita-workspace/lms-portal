@@ -15,12 +15,31 @@ import { stripe } from '@/server/stripe';
 import { getAppConfig } from '../configs/get-app-config';
 import { sentEmailByTemplate } from '../mailer/sent-email-by-template';
 
+type OAuth = { email?: string; provider?: string; providerId?: string; type?: string };
+
+const createUserOauth = async (userId: string, oauth?: OAuth) => {
+  if (oauth?.type === OAUTH && oauth?.provider && oauth?.providerId) {
+    const userProvider = {
+      email: oauth.email,
+      provider: oauth.provider,
+      providerId: oauth.providerId,
+      userId,
+    };
+
+    await db.userOAuth.upsert({
+      where: { providerId: oauth.providerId },
+      update: userProvider,
+      create: userProvider,
+    });
+  }
+};
+
 export const loginUser = async (
   email: string,
   name?: string | null,
   pictureUrl?: string | null,
   password?: string | null,
-  oauth?: { email?: string; provider?: string; providerId?: string; type?: string },
+  oauth?: OAuth,
 ) => {
   const config = await getAppConfig();
 
@@ -30,6 +49,8 @@ export const loginUser = async (
   });
 
   if (existingUser) {
+    await createUserOauth(existingUser.id, oauth);
+
     return {
       hasSubscription: Boolean(existingUser.stripeSubscription),
       id: existingUser.id,
@@ -77,16 +98,7 @@ export const loginUser = async (
     });
   }
 
-  if (oauth?.type === OAUTH && oauth?.provider && oauth?.providerId) {
-    await db.userOAuth.create({
-      data: {
-        email: oauth.email,
-        provider: oauth.provider,
-        providerId: oauth.providerId,
-        userId: user.id,
-      },
-    });
-  }
+  await createUserOauth(user.id, oauth);
 
   await createWebSocketNotification({
     channel: `notification_channel_${user.id}`,
