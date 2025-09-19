@@ -52,13 +52,6 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ message }, { status: StatusCodes.FORBIDDEN });
     }
 
-    const config = await getAppConfig();
-    const t = await getTranslations('subscription');
-
-    if (config?.auth?.isBlockingNewSubscriptions) {
-      return NextResponse.json({ message: t('block') }, { status: StatusCodes.FORBIDDEN });
-    }
-
     const { details, locale, price, rate, recurringInterval, returnUrl, subscriptionName } =
       await req.json();
 
@@ -76,6 +69,13 @@ export const POST = async (req: NextRequest) => {
     }
 
     const appLocale = await getAppLocale();
+    const config = await getAppConfig();
+
+    const t = await getTranslations('subscription');
+
+    if (config?.auth?.isBlockingNewSubscriptions) {
+      return NextResponse.json({ message: t('block') }, { status: StatusCodes.FORBIDDEN });
+    }
 
     let stripeCustomer = await db.stripeCustomer.findUnique({
       where: { userId: user?.userId },
