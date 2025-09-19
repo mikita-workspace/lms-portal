@@ -4,6 +4,7 @@ import { differenceInMilliseconds } from 'date-fns/differenceInMilliseconds';
 import { getTranslations } from 'next-intl/server';
 import { v4 as uuidv4 } from 'uuid';
 
+import { OAUTH } from '@/constants/auth';
 import { ONE_HOUR_SEC, ONE_MIN_MS } from '@/constants/common';
 import { setValueToMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
@@ -19,6 +20,7 @@ export const loginUser = async (
   name?: string | null,
   pictureUrl?: string | null,
   password?: string | null,
+  oauth?: { email?: string; provider?: string; providerId?: string; type?: string },
 ) => {
   const config = await getAppConfig();
 
@@ -72,6 +74,17 @@ export const loginUser = async (
 
     await db.stripeCustomer.create({
       data: { userId: user.id, stripeCustomerId: customer.id },
+    });
+  }
+
+  if (oauth?.type === OAUTH && oauth?.provider && oauth?.providerId) {
+    await db.userOAuth.create({
+      data: {
+        email: oauth.email,
+        provider: oauth.provider,
+        providerId: oauth.providerId,
+        userId: user.id,
+      },
     });
   }
 

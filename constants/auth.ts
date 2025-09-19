@@ -30,5 +30,5 @@ export const OAUTH_LABELS = {
 } as Record<Provider, string>;
 
 export const MAX_OAUTH_IN_ROW = 4;
-
 export const PASSWORD_VALIDATION = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$/);
+export const OAUTH = 'oauth';

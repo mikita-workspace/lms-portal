@@ -12,14 +12,19 @@ import { isOwner } from '../owner';
 import { absoluteUrl, encrypt } from '../utils';
 
 export const callbacks: NextAuthOptions['callbacks'] = {
-  async signIn({ user, account }) {
+  async signIn({ user, account, profile }) {
     const cookieStore = await cookies();
 
     const email = user?.email ?? account?.email;
     const hasOtpSecret = cookieStore.has(`${OTP_SECRET_SECURE}:${email}`);
 
     if (Object.values(Provider).includes(account?.provider as Provider) && isString(email)) {
-      const dbUser = await loginUser(email.toLowerCase(), user.name, user?.image, user?.password);
+      const dbUser = await loginUser(email.toLowerCase(), user.name, user?.image, user?.password, {
+        email: profile?.email,
+        provider: account?.provider,
+        providerId: account?.providerAccountId,
+        type: account?.type,
+      });
 
       if (!dbUser) {
         return `/restricted?code=${encodeURIComponent(encrypt({ email }, process.env.NEXTAUTH_SECRET as string))}`;
