@@ -428,6 +428,7 @@
   },
   "settings": {
     "advancedOptions": "Расширенные настройки",
+    "connectedAccounts": "Подключенные учетные записи",
     "deleteAcc": "Удалить аккаунт",
     "general": "Общие настройки",
     "generalForm": {

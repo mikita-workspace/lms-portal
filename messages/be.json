@@ -429,6 +429,7 @@
   },
   "settings": {
     "advancedOptions": "Дадатковыя налады",
+    "connectedAccounts": "Падлучаныя уліковыя запісы",
     "deleteAcc": "Выдаліць акаўнт",
     "general": "Агульныя налады",
     "generalForm": {

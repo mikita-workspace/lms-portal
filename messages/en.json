@@ -429,6 +429,7 @@
   },
   "settings": {
     "advancedOptions": "Advanced Options",
+    "connectedAccounts": "Connected accounts",
     "deleteAcc": "Delete Account",
     "general": "General Settings",
     "generalForm": {

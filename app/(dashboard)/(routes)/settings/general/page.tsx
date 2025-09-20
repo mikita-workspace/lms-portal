@@ -5,6 +5,7 @@ import { verifyUserEmail } from '@/actions/users/verify-user-email';
 import { db } from '@/lib/db';
 
 import { AdvancedOptions } from './_components/advanced-options/advanced-options';
+import { ConnectedAccounts } from './_components/connected-accounts';
 import { DeleteAccount } from './_components/delete-account';
 import { GeneralSettingsForm } from './_components/general-settings-form';
 
@@ -20,7 +21,7 @@ const SettingsPage = async ({ searchParams }: SettingsPagePageProps) => {
   const user = await getCurrentUser();
   const userInfo = await db.user.findUnique({
     where: { id: user?.userId },
-    include: { settings: true },
+    include: { settings: true, oauth: true },
   });
   const emailVerification = await verifyUserEmail({ user: userInfo, code });
 
@@ -31,6 +32,7 @@ const SettingsPage = async ({ searchParams }: SettingsPagePageProps) => {
         <div className="mt-12">
           <GeneralSettingsForm emailVerification={emailVerification} initialData={userInfo} />
           <AdvancedOptions initialData={userInfo} />
+          {Boolean(userInfo.oauth.length) && <ConnectedAccounts initialData={userInfo} />}
         </div>
       )}
       <DeleteAccount userId={user?.userId} email={user?.email} />
