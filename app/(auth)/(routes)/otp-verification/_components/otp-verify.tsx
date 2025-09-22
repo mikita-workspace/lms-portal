@@ -39,7 +39,7 @@ export const OtpVerify = ({ callbackUrl, email, provider, secret, userId }: OtpV
 
         if (response.verified) {
           setIsSuccess(true);
-          await signIn(provider, { callbackUrl, email, isAfterOtpPage: true });
+          await signIn(provider, { callbackUrl, email: email.toLowerCase(), isAfterOtpPage: true });
         } else {
           setErrorMessage(t('errors.invalidOtp'));
         }

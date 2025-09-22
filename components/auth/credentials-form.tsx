@@ -103,6 +103,7 @@ export const CredentialsFrom = ({
         ) {
           response = await signIn('credentials', {
             ...data,
+            email: data?.email?.toLowerCase(),
             callbackUrl,
             isSignUpFlow,
             redirect: false,
