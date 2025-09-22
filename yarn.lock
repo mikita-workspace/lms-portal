@@ -4158,6 +4158,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sparticuz/chromium@npm:^123.0.0":
+  version: 123.0.1
+  resolution: "@sparticuz/chromium@npm:123.0.1"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    tar-fs: "npm:^3.0.5"
+  checksum: 10c0/5d7b00141c65a2718c488ca8ab5b8a6bc4cf6f268c4aeb8126c4203819b4212a17b76af67584a7294367b04199d03c8c60937951c29ddc6041cc216c17ec27f7
+  languageName: node
+  linkType: hard
+
 "@standard-schema/spec@npm:^1.0.0":
   version: 1.0.0
   resolution: "@standard-schema/spec@npm:1.0.0"
@@ -7667,6 +7677,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.11
+  resolution: "follow-redirects@npm:1.15.11"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 10c0/d301f430542520a54058d4aeeb453233c564aaccac835d29d15e050beb33f339ad67d9bddbce01739c5dc46a6716dbe3d9d0d5134b1ca203effa11a7ef092343
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -9346,6 +9366,7 @@ __metadata:
     "@radix-ui/react-tabs": "npm:^1.0.4"
     "@radix-ui/react-toast": "npm:^1.2.1"
     "@radix-ui/react-tooltip": "npm:^1.2.7"
+    "@sparticuz/chromium": "npm:^123.0.0"
     "@tailwindcss/aspect-ratio": "npm:^0.4.2"
     "@tailwindcss/typography": "npm:^0.5.10"
     "@tanstack/react-table": "npm:^8.11.8"
@@ -9404,6 +9425,7 @@ __metadata:
     prettier: "npm:^3.2.4"
     prisma: "npm:^6.16.1"
     puppeteer: "npm:^24.22.0"
+    puppeteer-core: "npm:^24.22.0"
     pusher: "npm:^5.2.0"
     pusher-js: "npm:^8.4.0-rc2"
     qrcode: "npm:^1.5.3"
@@ -11664,7 +11686,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.22.0":
+"puppeteer-core@npm:24.22.0, puppeteer-core@npm:^24.22.0":
   version: 24.22.0
   resolution: "puppeteer-core@npm:24.22.0"
   dependencies:

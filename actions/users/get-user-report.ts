@@ -1,8 +1,10 @@
 'use server';
 
+import chromium from '@sparticuz/chromium';
 import { format } from 'date-fns';
 import Handlebars from 'handlebars';
-import puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer';
+import puppeteerCore from 'puppeteer-core';
 
 import { getEmailTemplate } from '@/actions/mailer/get-email-template';
 import { TIMESTAMP_EMAIL_TEMPLATE } from '@/constants/common';
@@ -120,19 +122,27 @@ export const getUserReportBuffer = async (userId: string) => {
     }),
   });
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--single-process',
-      '--disable-gpu',
-    ],
-  });
+  const browser =
+    process.env.NODE_ENV === 'production'
+      ? await puppeteerCore.launch({
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(),
+          headless: chromium.headless,
+        })
+      : await puppeteer.launch({
+          headless: true,
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process',
+            '--disable-gpu',
+          ],
+        });
 
   const page = await browser.newPage();
 
