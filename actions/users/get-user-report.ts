@@ -2,8 +2,6 @@
 
 import { format } from 'date-fns';
 import Handlebars from 'handlebars';
-import * as puppeteer from 'puppeteer';
-import puppeteerCore from 'puppeteer-core';
 
 import { getEmailTemplate } from '@/actions/mailer/get-email-template';
 import { TIMESTAMP_EMAIL_TEMPLATE } from '@/constants/common';
@@ -11,6 +9,7 @@ import { DEFAULT_LOCALE } from '@/constants/locale';
 import { db } from '@/lib/db';
 import { formatPrice, getConvertedPrice } from '@/lib/format';
 
+import { getBrowser } from '../virtualization/getBrowser';
 import { getUserSummary } from './get-user-summary';
 
 Handlebars.registerHelper('eq', function (a, b) {
@@ -104,7 +103,6 @@ export const getUserReportBuffer = async (userId: string) => {
   };
 
   const aiSummary = await getUserSummary(userData);
-
   const templateContent = await getEmailTemplate('user-report', 'en');
 
   const template = Handlebars.compile(templateContent);
@@ -121,31 +119,7 @@ export const getUserReportBuffer = async (userId: string) => {
     }),
   });
 
-  let browser = null;
-
-  if (process.env.NODE_ENV === 'production') {
-    const chromium = (await import('@sparticuz/chromium')).default;
-
-    browser = await puppeteerCore.launch({
-      headless: true,
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-    });
-  } else {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process',
-        '--disable-gpu',
-      ],
-    });
-  }
+  const browser = await getBrowser();
 
   const page = await browser.newPage();
 
