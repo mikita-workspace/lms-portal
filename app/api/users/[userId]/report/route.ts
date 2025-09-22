@@ -2,6 +2,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getCurrentUser } from '@/actions/auth/get-current-user';
+import { sentEmailTo } from '@/actions/mailer/sent-email-to';
 import { getUserReportBuffer } from '@/actions/users/get-user-report';
 import { isOwner } from '@/lib/owner';
 
@@ -16,6 +17,8 @@ export async function POST(_: NextRequest, props: { params: Promise<{ userId: st
     }
 
     const { pdfBuffer, emailOptions } = (await getUserReportBuffer(userId)) as any;
+
+    await sentEmailTo({ ...emailOptions, emails: [user?.email] });
 
     return new NextResponse(pdfBuffer, {
       status: StatusCodes.OK,

@@ -1,4 +1,4 @@
-export const OWNER_EMAIL = 'nova-academy@mail.ru';
+export const OWNER_EMAIL = 'n1ck.kondratyev@yandex.by';
 export const PLATFORM_DESCRIPTION =
   'An educational portal offering access to modern online resources, learning materials, and tools for effective education. It provides a curated selection of top-quality content to deepen knowledge and develop skills across various fields.';
 
