@@ -1,16 +1,26 @@
 'use server';
 
+import Mail from 'nodemailer/lib/mailer';
+
 import { OWNER_EMAIL } from '@/constants/common';
 import { transporter } from '@/server/mailer';
 
-type SentEmailTo = { emails: string[]; subject: string; html: string };
+type SentEmailTo = {
+  attachments?: Mail.Attachment[];
+  emails: string[];
+  html?: string;
+  subject: string;
+  text?: string;
+};
 
-export const sentEmailTo = async ({ emails, subject, html }: SentEmailTo) => {
+export const sentEmailTo = async ({ attachments, emails, html, subject, text }: SentEmailTo) => {
   try {
     const mail = await transporter.sendMail({
+      attachments,
       from: `"${process.env.NODE_ENV === 'development' ? '[DEV] ' : ''}Nova Academy" <${OWNER_EMAIL}>`,
       html,
-      subject: subject,
+      subject,
+      text,
       to: emails,
     });
 
