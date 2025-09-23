@@ -85,12 +85,6 @@ export const POST = async (req: NextRequest) => {
           return null;
         })();
 
-        const emailParams = {
-          courseLink: session.success_url ?? '',
-          courseName: session?.metadata?.courseName ?? '',
-          username: session?.metadata?.username ?? '',
-        };
-
         const transaction = await prisma.purchaseDetails.create({
           data: {
             city: session?.metadata?.city,
@@ -106,16 +100,25 @@ export const POST = async (req: NextRequest) => {
           },
         });
 
-        let pdfBuffer = null;
+        return transaction;
+      });
 
-        if (invoiceId) {
-          const stripeInvoice = await stripe.invoices.retrieve(invoiceId);
-          const invoicePdf = stripeInvoice?.invoice_pdf;
+      let pdfBuffer = null;
+      const invoiceId = response?.invoiceId;
 
-          if (invoicePdf) {
-            pdfBuffer = await fetcher.get(invoicePdf, { responseType: 'arrayBuffer' });
-          }
+      if (invoiceId) {
+        const stripeInvoice = await stripe.invoices.retrieve(invoiceId);
+        const invoicePdf = stripeInvoice?.invoice_pdf;
+
+        if (invoicePdf) {
+          pdfBuffer = await fetcher.get(invoicePdf, { responseType: 'arrayBuffer' });
         }
+
+        const emailParams = {
+          courseLink: session.success_url ?? '',
+          courseName: session?.metadata?.courseName ?? '',
+          username: session?.metadata?.username ?? '',
+        };
 
         await sentEmailByTemplate({
           attachments: pdfBuffer
@@ -134,9 +137,7 @@ export const POST = async (req: NextRequest) => {
             EMAIL_COURSE_PURCHASE_SUBJECT[locale as keyof typeof EMAIL_COURSE_PURCHASE_SUBJECT],
           template: 'course-purchase',
         });
-
-        return transaction;
-      });
+      }
 
       return new NextResponse(JSON.stringify(response));
     }

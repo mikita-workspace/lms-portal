@@ -65,19 +65,13 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
     };
 
     if (!course.price) {
-      await db.$transaction(async (prisma) => {
+      const response = await db.$transaction(async (prisma) => {
         const purchase = await prisma.purchase.create({
           data: {
             courseId: metadata.courseId,
             userId: metadata.userId,
           },
         });
-
-        const emailParams = {
-          courseLink: absoluteUrl(`/preview-course/${course.id}?success=true`),
-          courseName: course?.title ?? '',
-          username: user?.name ?? '',
-        };
 
         const transaction = await prisma.purchaseDetails.create({
           data: {
@@ -92,6 +86,16 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
           },
         });
 
+        return transaction;
+      });
+
+      if (response?.purchaseId) {
+        const emailParams = {
+          courseLink: absoluteUrl(`/preview-course/${course.id}?success=true`),
+          courseName: course?.title ?? '',
+          username: user?.name ?? '',
+        };
+
         await sentEmailByTemplate({
           emails: [user?.email ?? ''],
           locale: appLocale,
@@ -100,9 +104,7 @@ export const POST = async (req: NextRequest, props: { params: Promise<{ courseId
             EMAIL_COURSE_PURCHASE_SUBJECT[appLocale as keyof typeof EMAIL_COURSE_PURCHASE_SUBJECT],
           template: 'course-purchase',
         });
-
-        return transaction;
-      });
+      }
 
       return NextResponse.json({
         url: absoluteUrl(`/courses/${metadata.courseId}`),
