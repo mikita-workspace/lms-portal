@@ -2,7 +2,7 @@ type Options = {
   body?: Record<string, unknown>;
   cache?: RequestCache;
   headers?: HeadersInit;
-  responseType?: 'json' | 'stream' | 'text';
+  responseType?: 'json' | 'stream' | 'text' | 'arrayBuffer';
   signal?: AbortSignal;
 };
 
@@ -23,6 +23,15 @@ class Fetcher {
       });
 
       return await res.text();
+    }
+
+    if (options?.responseType === 'arrayBuffer') {
+      const res = await fetch(url, {
+        cache: options?.cache ?? 'force-cache',
+        headers: options.headers,
+      });
+
+      return await res.arrayBuffer();
     }
 
     return fetch(url);

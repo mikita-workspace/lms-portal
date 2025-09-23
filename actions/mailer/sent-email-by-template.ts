@@ -1,9 +1,12 @@
 'use server';
 
+import Mail from 'nodemailer/lib/mailer';
+
 import { getEmailTemplate } from './get-email-template';
 import { sentEmailTo } from './sent-email-to';
 
 type SentEmailByTemplate = {
+  attachments?: Mail.Attachment[];
   emails: string[];
   locale?: string;
   params: Record<string, string>;
@@ -12,6 +15,7 @@ type SentEmailByTemplate = {
 };
 
 export const sentEmailByTemplate = async ({
+  attachments,
   emails,
   locale,
   params,
@@ -30,6 +34,7 @@ export const sentEmailByTemplate = async ({
     html = html.replace('{{year}}', new Date().getFullYear().toString());
 
     const emailMessage = await sentEmailTo({
+      attachments,
       emails,
       subject,
       html,

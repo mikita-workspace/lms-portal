@@ -1,14 +1,16 @@
-import { fromUnixTime } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import { StatusCodes } from 'http-status-codes';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 import { sentEmailByTemplate } from '@/actions/mailer/sent-email-by-template';
+import { TIMESTAMP_EMAIL_TEMPLATE } from '@/constants/common';
 import { EMAIL_COURSE_PURCHASE_SUBJECT } from '@/constants/email-subject';
 import { DEFAULT_LANGUAGE } from '@/constants/locale';
 import { removeValueFromMemoryCache } from '@/lib/cache';
 import { db } from '@/lib/db';
+import { fetcher } from '@/lib/fetcher';
 import { isObject, isString } from '@/lib/guard';
 import { stripe } from '@/server/stripe';
 
@@ -104,7 +106,27 @@ export const POST = async (req: NextRequest) => {
           },
         });
 
+        let pdfBuffer = null;
+
+        if (invoiceId) {
+          const stripeInvoice = await stripe.invoices.retrieve(invoiceId);
+          const invoicePdf = stripeInvoice?.invoice_pdf;
+
+          if (invoicePdf) {
+            pdfBuffer = await fetcher.get(invoicePdf, { responseType: 'arrayBuffer' });
+          }
+        }
+
         await sentEmailByTemplate({
+          attachments: pdfBuffer
+            ? [
+                {
+                  content: Buffer.from(pdfBuffer),
+                  contentType: 'application/pdf',
+                  filename: `${session?.metadata?.email}_${format(new Date(), TIMESTAMP_EMAIL_TEMPLATE)}_invoice.pdf`,
+                },
+              ]
+            : [],
           emails: [session?.metadata?.email ?? ''],
           locale,
           params: emailParams,
