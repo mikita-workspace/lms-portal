@@ -34,7 +34,7 @@ export const useUserLocation = () => {
   useEffect(() => {
     const getUserLocation = async () => {
       try {
-        const { details, exchangeRates, locale } = await fetcher.get('/api/users/network', {
+        const { details, exchangeRates, locale } = await fetcher.get('/api/geo', {
           responseType: 'json',
         });
 

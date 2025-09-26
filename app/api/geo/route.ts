@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getExchangeRates } from '@/actions/exchange/get-exchange-rates';
 import {
   CURRENCY_BY_COUNTRY,
+  DEFAULT_COUNTRY_CODE,
   DEFAULT_CURRENCY,
   DEFAULT_LOCALE,
   DEFAULT_TIMEZONE,
@@ -16,8 +17,9 @@ export const GET = async (req: NextRequest) => {
     const geo = geolocation(req);
 
     const currency =
-      CURRENCY_BY_COUNTRY[(geo.country ?? 'US') as keyof typeof CURRENCY_BY_COUNTRY] ??
-      DEFAULT_CURRENCY;
+      CURRENCY_BY_COUNTRY[
+        (geo.country ?? DEFAULT_COUNTRY_CODE) as keyof typeof CURRENCY_BY_COUNTRY
+      ] ?? DEFAULT_CURRENCY;
 
     const locale = { currency, locale: DEFAULT_LOCALE };
     const details = {
@@ -35,7 +37,7 @@ export const GET = async (req: NextRequest) => {
       locale,
     });
   } catch (error) {
-    console.error('[GET_USERS_NETWORK]', error);
+    console.error('[GET_GEO]', error);
 
     return new NextResponse(ReasonPhrases.INTERNAL_SERVER_ERROR, {
       status: StatusCodes.INTERNAL_SERVER_ERROR,
