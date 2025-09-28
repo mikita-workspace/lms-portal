@@ -93,6 +93,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
                   content: promptMessage,
                 },
               ]}
+              showModelSelector
             />
           )}
           <Button onClick={handleToggleEdit} variant="outline" size="sm" disabled={isSubmitting}>

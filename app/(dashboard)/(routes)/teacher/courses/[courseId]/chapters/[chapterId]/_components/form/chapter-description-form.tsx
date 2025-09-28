@@ -96,6 +96,7 @@ export const ChapterDescriptionForm = ({
                   content: promptMessage,
                 },
               ]}
+              showModelSelector
             />
           )}
           {isEditing && (

@@ -8,9 +8,11 @@ import { BsStars } from 'react-icons/bs';
 import { useToast } from '@/components/ui/use-toast';
 import { SYSTEM_COURSE_PROMPT, SYSTEM_TRANSLATE_PROMPT } from '@/constants/ai';
 import { TEN_MINUTE_SEC } from '@/constants/common';
+import { useChatStore } from '@/hooks/store/use-chat-store';
 import { getValueFromMemoryCache, setValueToMemoryCache } from '@/lib/cache';
 import { fetcher } from '@/lib/fetcher';
 
+import { ChatModelSwitcher } from '../chat/chat-model-switcher';
 import { Button } from '../ui';
 
 type StreamTextProps = {
@@ -20,6 +22,7 @@ type StreamTextProps = {
   isTranslateButton?: boolean;
   isValid?: boolean;
   messages: { role: string; content: string }[];
+  showModelSelector?: boolean;
 };
 
 export const StreamText = ({
@@ -29,10 +32,13 @@ export const StreamText = ({
   isTranslateButton,
   isValid,
   messages,
+  showModelSelector,
 }: StreamTextProps) => {
   const t = useTranslations('ai-generate');
 
   const { toast } = useToast();
+
+  const { currentModel } = useChatStore((state) => ({ currentModel: state.currentModel }));
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -62,6 +68,7 @@ export const StreamText = ({
           input: messages,
           instructions: isTranslateButton ? SYSTEM_TRANSLATE_PROMPT : SYSTEM_COURSE_PROMPT,
           stream: true,
+          ...(showModelSelector && { model: currentModel }),
         },
         cache: 'no-cache',
         headers: {
@@ -148,18 +155,20 @@ export const StreamText = ({
   }
 
   return (
-    <button
-      disabled={isSubmitting || !isValid}
-      onClick={isImproving ? handleAbortGenerating : handleGenerate}
-    >
-      <div className="relative group z-10">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-        <div className="relative px-3 py-2 h-8 bg-white text-black rounded-md flex items-center text-sm">
-          {!isImproving && <BsStars className="mr-1" />}
-          {isImproving && <StopCircle className="w-4 h-4 mr-1" />}
-          {t(isImproving ? 'stop' : 'improve')}
+    <div className="flex gap-x-2">
+      {showModelSelector && <ChatModelSwitcher className="hidden md:block" />}
+      <button
+        disabled={isSubmitting || !isValid}
+        onClick={isImproving ? handleAbortGenerating : handleGenerate}
+      >
+        <div className="relative group z-10">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+          <div className="relative px-3 py-2 h-8 bg-white text-black rounded-md flex items-center text-sm">
+            {!isImproving && <BsStars />}
+            {isImproving && <StopCircle className="w-4 h-4" />}
+          </div>
         </div>
-      </div>
-    </button>
+      </button>
+    </div>
   );
 };
