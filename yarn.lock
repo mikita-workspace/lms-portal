@@ -621,15 +621,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/platform@npm:0.69.8":
-  version: 0.69.8
-  resolution: "@effect/platform@npm:0.69.8"
+"@effect/platform@npm:0.90.3":
+  version: 0.90.3
+  resolution: "@effect/platform@npm:0.90.3"
   dependencies:
-    find-my-way-ts: "npm:^0.1.5"
-    multipasta: "npm:^0.2.5"
+    "@opentelemetry/semantic-conventions": "npm:^1.33.0"
+    find-my-way-ts: "npm:^0.1.6"
+    msgpackr: "npm:^1.11.4"
+    multipasta: "npm:^0.2.7"
   peerDependencies:
-    effect: ^3.10.3
-  checksum: 10c0/23028c02a15d8504369d301ed49f42157ebcee2bc4caddf473f35231a725dfa75eb5363add2d686d5dec58bd500559b787a61827d423fb448a6b2dddf65d605c
+    effect: ^3.17.7
+  checksum: 10c0/91149793c4e43cf99c0db794844dbb8653205db87d047269f20539c8c47ce9420ee5b042b926f18beba93483e2510c401e33dac3a9f5cc7d51758789c5d2fb7d
   languageName: node
   linkType: hard
 
@@ -1211,6 +1213,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:15.4.7":
   version: 15.4.7
   resolution: "@next/env@npm:15.4.7"
@@ -1329,6 +1373,13 @@ __metadata:
   dependencies:
     semver: "npm:^7.3.5"
   checksum: 10c0/c37a5b4842bfdece3d14dfdb054f73fe15ed2d3da61b34ff76629fb5b1731647c49166fd2a8bf8b56fcfa51200382385ea8909a3cbecdad612310c114d3f6c99
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:^1.33.0":
+  version: 1.37.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.37.0"
+  checksum: 10c0/ddce99f36e390603d6bbc556a50c070e41303d764a830808a4c451f02f4e6a3d989dbde8bcfac15e4e5bba13686b36c6664a323321c9259f9030eb70522a7c68
   languageName: node
   linkType: hard
 
@@ -4168,6 +4219,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standard-schema/spec@npm:1.0.0-beta.4":
+  version: 1.0.0-beta.4
+  resolution: "@standard-schema/spec@npm:1.0.0-beta.4"
+  checksum: 10c0/f001a08d798fe2eb19e4982fc7707549be2b5d0a61c6f144ace9c85e71eee23a2774d84f83f3b2dea02cb670cbe5cd91c151c0bebbc15d0b7fbcf6b29911e334
+  languageName: node
+  linkType: hard
+
 "@standard-schema/spec@npm:^1.0.0":
   version: 1.0.0
   resolution: "@standard-schema/spec@npm:1.0.0"
@@ -4812,38 +4870,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uploadthing/mime-types@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@uploadthing/mime-types@npm:0.3.2"
-  checksum: 10c0/e61338afe6e66e602f3bd227fc6a413dc5099c65df8d3ca88a44ca459695a288c04eb8a10380ed5f947a2584e81256357692d35a81675282635f5381fa05ac83
+"@uploadthing/mime-types@npm:0.3.6":
+  version: 0.3.6
+  resolution: "@uploadthing/mime-types@npm:0.3.6"
+  checksum: 10c0/0abcc065491d877edf18bf0b10bd1fb2594ba73fec970a1df0f8ac84371557198951cff2a3720f1ae6b3f8323e54ddcd2d4a38247a52fb34c18cf95beaf17bba
   languageName: node
   linkType: hard
 
-"@uploadthing/react@npm:^7.1.1":
-  version: 7.1.1
-  resolution: "@uploadthing/react@npm:7.1.1"
+"@uploadthing/react@npm:^7.3.3":
+  version: 7.3.3
+  resolution: "@uploadthing/react@npm:7.3.3"
   dependencies:
-    "@uploadthing/shared": "npm:7.1.1"
+    "@uploadthing/shared": "npm:7.1.10"
     file-selector: "npm:0.6.0"
   peerDependencies:
     next: "*"
-    react: ^17.0.2 || ^18.0.0
-    uploadthing: 7.3.0
+    react: ^17.0.2 || ^18.0.0 || ^19.0.0
+    uploadthing: ^7.2.0
   peerDependenciesMeta:
     next:
       optional: true
-  checksum: 10c0/c3c94c05ae3587e9eb6f6ef271622ce30a821c3f8720a9abb2f294d7d3804bce30f633fa6710bb9225291c76d33789b5e6dfb98044964de5f0114d02454f0e91
+  checksum: 10c0/c299a5f0a6aedc8d6fe0fb44b4c377394a343b9103079074d9b5d97cfe50ae85c204000a09ffea6fb19f36ec90db562f865c4454825559a142b7b0c9f7e5908d
   languageName: node
   linkType: hard
 
-"@uploadthing/shared@npm:7.1.1":
-  version: 7.1.1
-  resolution: "@uploadthing/shared@npm:7.1.1"
+"@uploadthing/shared@npm:7.1.10":
+  version: 7.1.10
+  resolution: "@uploadthing/shared@npm:7.1.10"
   dependencies:
-    "@uploadthing/mime-types": "npm:0.3.2"
-    effect: "npm:3.10.3"
+    "@uploadthing/mime-types": "npm:0.3.6"
+    effect: "npm:3.17.7"
     sqids: "npm:^0.3.0"
-  checksum: 10c0/1561975d05952fd64c710fb4033fbe6a9f24b6609113eabdb84a8b7848c0f36544a83f688c7840e23b4aefe2adfd28967543e05df4c10e88af250baa8b63a91d
+  checksum: 10c0/bff9eff8db146fa2601b131b3e0b2da0df6717ba278976eb0b2e49971e28dc9b0d82c70618ea0ca98ae05a871bb97724ba7a3b6f33adedc7db7da73a3f0d4289
   languageName: node
   linkType: hard
 
@@ -6535,6 +6593,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"detect-libc@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "detect-libc@npm:2.1.1"
+  checksum: 10c0/97053299c1f68c7c4adf7b78c8d506e1d5f3a3fbc775920aaa0ecf7f8fcc6dfa46338a6ca82fe4500b4a51937def314584265a4ec9d565577485c4496aa7d64e
+  languageName: node
+  linkType: hard
+
 "detect-libc@npm:^2.0.4":
   version: 2.0.4
   resolution: "detect-libc@npm:2.0.4"
@@ -6648,15 +6713,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:3.10.3":
-  version: 3.10.3
-  resolution: "effect@npm:3.10.3"
-  dependencies:
-    fast-check: "npm:^3.21.0"
-  checksum: 10c0/aa09e50b67c9bf90e4ab11e34d8c9163de46d1ec2baa84ff8ce180f06e3b45798578cb5dca3051bb42596404f8978e24bc912790a984af1921618aef22570ee7
-  languageName: node
-  linkType: hard
-
 "effect@npm:3.16.12":
   version: 3.16.12
   resolution: "effect@npm:3.16.12"
@@ -6664,6 +6720,16 @@ __metadata:
     "@standard-schema/spec": "npm:^1.0.0"
     fast-check: "npm:^3.23.1"
   checksum: 10c0/43b73cece506926ff086fdaf62943c2706a83c4192f81f6cba5ff85761e05f5da3c72a547936678ad432a6ea7585cf8f9c38f2f6344492f132e986fd04425c58
+  languageName: node
+  linkType: hard
+
+"effect@npm:3.17.7":
+  version: 3.17.7
+  resolution: "effect@npm:3.17.7"
+  dependencies:
+    "@standard-schema/spec": "npm:^1.0.0"
+    fast-check: "npm:^3.23.1"
+  checksum: 10c0/f701dcd8b1b1bba3bf8cf2831bd30a3ee2a9a6e0c190154f3800a457ab9f329ec66903f458a378a4da919445a9f7bc675ee4474a19c4d527aa058798985a66d7
   languageName: node
   linkType: hard
 
@@ -7454,15 +7520,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-check@npm:^3.21.0":
-  version: 3.23.1
-  resolution: "fast-check@npm:3.23.1"
-  dependencies:
-    pure-rand: "npm:^6.1.0"
-  checksum: 10c0/d61ee4a7a2e1abc5126bf2f1894413f532f686b3d1fc15c67fefb60dcca66024934b69a6454d3eba92e6568ac1abbb9882080e212d255865c3b3bbe52c5bf702
-  languageName: node
-  linkType: hard
-
 "fast-check@npm:^3.23.1":
   version: 3.23.2
   resolution: "fast-check@npm:3.23.2"
@@ -7625,10 +7682,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-my-way-ts@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "find-my-way-ts@npm:0.1.5"
-  checksum: 10c0/703797b8466e1fbf437f0a6f7e100e02ca5922c0d7afb0548b5e77fa9c7b4e4a5bed5d2589e27cc037a516b144e3ba334acce5369387a79975ffaf61b2900398
+"find-my-way-ts@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "find-my-way-ts@npm:0.1.6"
+  checksum: 10c0/16ad4b15275b56ee0ec361d0c61afbdff4c75bd0ac04112f6910f188cb1058096ba63529c2363914da6bb60266aa4def1025af04af26368ff87eb0df52f2862f
   languageName: node
   linkType: hard
 
@@ -9383,7 +9440,7 @@ __metadata:
     "@types/react-syntax-highlighter": "npm:^15.5.13"
     "@types/uuid": "npm:^10"
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
-    "@uploadthing/react": "npm:^7.1.1"
+    "@uploadthing/react": "npm:^7.3.3"
     "@vercel/analytics": "npm:^1.3.1"
     "@vercel/functions": "npm:^2.1.0"
     "@vercel/kv": "npm:^1.0.1"
@@ -9457,7 +9514,7 @@ __metadata:
     tailwindcss: "npm:^3.3.0"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:^5"
-    uploadthing: "npm:^7.3.0"
+    uploadthing: "npm:^7.7.4"
     uuid: "npm:^10.0.0"
     vaul: "npm:^1.1.0"
     zod: "npm:^3.22.4"
@@ -10487,10 +10544,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multipasta@npm:^0.2.5":
-  version: 0.2.5
-  resolution: "multipasta@npm:0.2.5"
-  checksum: 10c0/f0790b1bdfc6b84ae6139982ead353957b668fe54fec8a4d93c19e9d051b02c837c93fbdff10b26bff2dbfcf7792c6435c27786c14ad82a0fb33b939c1bf96c6
+"msgpackr-extract@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "msgpackr-extract@npm:3.0.3"
+  dependencies:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-darwin-x64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-arm": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-arm64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-x64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-win32-x64": "npm:3.0.3"
+    node-gyp: "npm:latest"
+    node-gyp-build-optional-packages: "npm:5.2.2"
+  dependenciesMeta:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-darwin-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-win32-x64":
+      optional: true
+  bin:
+    download-msgpackr-prebuilds: bin/download-prebuilds.js
+  checksum: 10c0/e504fd8bf86a29d7527c83776530ee6dc92dcb0273bb3679fd4a85173efead7f0ee32fb82c8410a13c33ef32828c45f81118ffc0fbed5d6842e72299894623b4
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.11.4":
+  version: 1.11.5
+  resolution: "msgpackr@npm:1.11.5"
+  dependencies:
+    msgpackr-extract: "npm:^3.0.2"
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 10c0/f35ffd218661e8afc52490cde3dbf2656304e7940563c5313aa2f45e31ac5bdce3b58f27e55b785c700085ee76f26fc7afbae25ae5abe05068a8f000fd0ac6cd
+  languageName: node
+  linkType: hard
+
+"multipasta@npm:^0.2.7":
+  version: 0.2.7
+  resolution: "multipasta@npm:0.2.7"
+  checksum: 10c0/15917ac88aeefa5b8afac44b90d1e9d0d0ec7148b51e0766f07a69a220ecebcb6404539a856c45aa85a3d7fe517bc58febe81437146705f17ecd2961dc0b9fa5
   languageName: node
   linkType: hard
 
@@ -10733,6 +10833,19 @@ __metadata:
     encoding:
       optional: true
   checksum: 10c0/b55786b6028208e6fbe594ccccc213cab67a72899c9234eb59dba51062a299ea853210fcf526998eaa2867b0963ad72338824450905679ff0fa304b8c5093ae8
+  languageName: node
+  linkType: hard
+
+"node-gyp-build-optional-packages@npm:5.2.2":
+  version: 5.2.2
+  resolution: "node-gyp-build-optional-packages@npm:5.2.2"
+  dependencies:
+    detect-libc: "npm:^2.0.1"
+  bin:
+    node-gyp-build-optional-packages: bin.js
+    node-gyp-build-optional-packages-optional: optional.js
+    node-gyp-build-optional-packages-test: build-test.js
+  checksum: 10c0/c81128c6f91873381be178c5eddcbdf66a148a6a89a427ce2bcd457593ce69baf2a8662b6d22cac092d24aa9c43c230dec4e69b3a0da604503f4777cd77e282b
   languageName: node
   linkType: hard
 
@@ -14120,20 +14233,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uploadthing@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "uploadthing@npm:7.3.0"
+"uploadthing@npm:^7.7.4":
+  version: 7.7.4
+  resolution: "uploadthing@npm:7.7.4"
   dependencies:
-    "@effect/platform": "npm:0.69.8"
-    "@uploadthing/mime-types": "npm:0.3.2"
-    "@uploadthing/shared": "npm:7.1.1"
-    effect: "npm:3.10.3"
+    "@effect/platform": "npm:0.90.3"
+    "@standard-schema/spec": "npm:1.0.0-beta.4"
+    "@uploadthing/mime-types": "npm:0.3.6"
+    "@uploadthing/shared": "npm:7.1.10"
+    effect: "npm:3.17.7"
   peerDependencies:
     express: "*"
-    fastify: "*"
     h3: "*"
-    next: "*"
-    tailwindcss: "*"
+    tailwindcss: ^3.0.0 || ^4.0.0-beta.0
   peerDependenciesMeta:
     express:
       optional: true
@@ -14145,7 +14257,7 @@ __metadata:
       optional: true
     tailwindcss:
       optional: true
-  checksum: 10c0/dc52d45d40a570bf8f5593340c6bd2facb13948a9ece08ae07040f0522c73da859b0a6dea421081dbfecbc52b46d74a66fb78a10872029786cb3b60d6a69c428
+  checksum: 10c0/91bc02048418cdda074e61ee920dc0b641f0205f56c048bd41cb7dcded09a22511d56e270751f0af697090aea00301d8d6b43e7d72ca5906e2a8b2e1a8f7c6d8
   languageName: node
   linkType: hard
 
