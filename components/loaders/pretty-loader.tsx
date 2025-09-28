@@ -33,7 +33,9 @@ export const PrettyLoader = ({ isCopilot = false }: PrettyLoaderProps) => {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground">{t('description')}</p>
+        <p className="text-xs text-muted-foreground">
+          {t(isChatPage || isCopilot ? 'description-ai' : 'description')}
+        </p>
       </div>
     </div>
   );

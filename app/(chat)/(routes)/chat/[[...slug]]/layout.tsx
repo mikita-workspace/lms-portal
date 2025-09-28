@@ -15,6 +15,9 @@ import { ChatSideBar } from './_components/chat-sidebar/chat-sidebar';
 export const metadata: Metadata = {
   title: 'Nova Copilot',
   description: 'Nova Copilot',
+  icons: {
+    icon: '/assets/copilot.ico',
+  },
 };
 
 type ChatLayoutProps = Readonly<{

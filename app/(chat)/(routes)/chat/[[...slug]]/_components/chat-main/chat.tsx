@@ -75,10 +75,6 @@ export const Chat = ({ conversations = [], initialData, isEmbed, isShared }: Cha
     if (conversations.length) {
       const chatMessages = getChatMessages(conversations);
 
-      if (!isEmbed) {
-        setConversationId(conversations[0].id);
-      }
-
       setCurrentModel(currentModel || TEXT_MODELS?.[0]?.value || '');
       setCurrentModelLabel(currentModelLabel || TEXT_MODELS?.[0]?.label || '');
       setChatMessages(chatMessages);

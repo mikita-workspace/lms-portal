@@ -47,7 +47,7 @@ export const Logo = ({
             {isCopilot ? 'Nova Copilot' : t('name')}
           </p>
           <p className={cn(onlyDarkMode ? 'text-neutral-400' : 'text-muted-foreground', 'text-xs')}>
-            {t('description')}
+            {t(isCopilot ? 'description-ai' : 'description')}
           </p>
         </div>
       )}

@@ -1,6 +1,7 @@
 {
   "app": {
     "description": "Educational portal",
+    "description-ai": "AI Assistant",
     "loading": "Loading...",
     "name": "Nova Academy",
     "poweredBy": "Powered by"

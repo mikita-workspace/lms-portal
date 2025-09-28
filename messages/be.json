@@ -1,6 +1,7 @@
 {
   "app": {
     "description": "Адукацыйны портал",
+    "description-ai": "AI Памочнік",
     "loading": "Загрузка...",
     "name": "Nova Academy",
     "poweredBy": "На платформе"

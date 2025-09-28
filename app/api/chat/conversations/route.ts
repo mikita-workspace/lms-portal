@@ -25,16 +25,18 @@ export const POST = async (req: NextRequest) => {
     if (action === CONVERSATION_ACTION.NEW) {
       const { title } = await req.json();
 
-      const lastConversation = await db.chatConversation.findFirst({
+      await db.chatConversation.updateMany({
         where: { userId: user?.userId },
-        orderBy: { position: 'desc' },
+        data: {
+          position: {
+            increment: 1,
+          },
+        },
       });
-
-      const nextPosition = lastConversation ? lastConversation.position + 1 : 0;
 
       const newChatConversation = await db.chatConversation.create({
         data: {
-          position: nextPosition,
+          position: 0,
           title: title?.slice(0, LIMIT_CONVERSATION_TITLE) || generateConversationTitle(),
           userId: user?.userId,
         },
