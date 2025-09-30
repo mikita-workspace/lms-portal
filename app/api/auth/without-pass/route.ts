@@ -44,7 +44,6 @@ export const POST = async (req: NextRequest) => {
     if (isNewCreateKey) {
       sentEmail = await sentEmailByTemplate({
         emails: [email],
-        locale: 'en',
         template: 'login-code',
         params: {
           code: cachedData.otp,

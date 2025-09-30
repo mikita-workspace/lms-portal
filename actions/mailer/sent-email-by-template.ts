@@ -53,6 +53,8 @@ export const sentEmailByTemplate = async ({
 
     const html = templateHtml(templateData);
 
+    console.log(html);
+
     const emailMessage = await sentEmailTo({
       attachments,
       emails,
