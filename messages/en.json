@@ -257,7 +257,10 @@
       "inProgress": "In Progress"
     },
     "list": {
-      "notFound": "No courses found."
+      "notFound": "No courses found.",
+      "labels": {
+        "premium": "Premium"
+      }
     },
     "category": {
       "all": "All"

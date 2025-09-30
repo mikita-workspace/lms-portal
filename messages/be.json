@@ -257,7 +257,10 @@
       "inProgress": "У працэсе"
     },
     "list": {
-      "notFound": "Курсы не знойдзены."
+      "notFound": "Курсы не знойдзены.",
+      "labels": {
+        "premium": "Прэміум"
+      }
     },
     "category": {
       "all": "Усе"

@@ -10,7 +10,6 @@ import { useTranslations } from 'next-intl';
 import { IconBadge } from '@/components/common/icon-badge';
 import { Price } from '@/components/common/price';
 import { ProgressBar } from '@/components/common/progress-bar';
-import { TextBadge } from '@/components/common/text-badge';
 import { cn } from '@/lib/utils';
 
 type CourseCardProps = {
@@ -21,7 +20,6 @@ type CourseCardProps = {
   id: string;
   imagePlaceholder: string;
   imageUrl: string | null;
-  isPremium?: boolean | null;
   isPublished?: boolean;
   isPurchased?: boolean;
   price: number | null;
@@ -37,7 +35,6 @@ export const CourseCard = ({
   id,
   imagePlaceholder,
   imageUrl,
-  isPremium,
   isPublished,
   isPurchased,
   price,
@@ -58,9 +55,6 @@ export const CourseCard = ({
           !isPublished && 'select-none blur-sm',
         )}
       >
-        {isPremium && (
-          <TextBadge className="absolute z-10 mt-2 ml-2" label={t('premium')} variant="indigo" />
-        )}
         <div className="w-full aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
           <Image
             alt={title}

@@ -16,16 +16,23 @@ export const CategoryItem = ({ label, value = 'all' }: CategoryItemProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentCategoryId = searchParams.get('categoryId');
+  const currentCategoryIds = JSON.parse(searchParams.get('categoryIds') ?? '[]');
   const currentTitle = searchParams.get('title');
-
-  const isSelected = currentCategoryId === value || (value === 'all' && !currentCategoryId);
+  const isSelected =
+    currentCategoryIds.includes(value) || (value === 'all' && !currentCategoryIds?.length);
 
   const handleClick = () => {
+    const categoryIds = isSelected
+      ? currentCategoryIds.filter((item: string) => item !== value)
+      : [...currentCategoryIds, value];
+
     const url = qs.stringifyUrl(
       {
         url: pathname,
-        query: { title: currentTitle, categoryId: isSelected || value === 'all' ? null : value },
+        query: {
+          categoryIds: value === 'all' || !categoryIds.length ? null : JSON.stringify(categoryIds),
+          title: currentTitle,
+        },
       },
       { skipNull: true, skipEmptyString: true },
     );

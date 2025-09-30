@@ -9,7 +9,7 @@ import { Categories } from '../_components/category/categories';
 import { CoursesList } from '../_components/courses/courses-list';
 
 type SearchPageProps = {
-  searchParams: Promise<{ title: string; categoryId: string }>;
+  searchParams: Promise<{ title: string; categoryIds: string }>;
 };
 
 const SearchPage = async (props: SearchPageProps) => {
@@ -34,7 +34,7 @@ const SearchPage = async (props: SearchPageProps) => {
       </Suspense>
       <div className="p-6 space-y-4">
         <Categories items={categories} />
-        <CoursesList items={courses} fees={fees} />
+        <CoursesList items={courses} fees={fees} specificFilter />
       </div>
     </>
   );

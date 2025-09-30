@@ -256,7 +256,10 @@
       "inProgress": "В процессе"
     },
     "list": {
-      "notFound": "Курсы не найдены."
+      "notFound": "Курсы не найдены.",
+      "labels": {
+        "premium": "Премиум"
+      }
     },
     "category": {
       "all": "Все"
