@@ -4,7 +4,7 @@ import Handlebars from 'handlebars';
 import { getLocale } from 'next-intl/server';
 import Mail from 'nodemailer/lib/mailer';
 
-import { EMAIL_NOTIFICATION_MESSAGES } from '@/constants/email-notifications';
+import { EMAIL_NOTIFICATION_MESSAGES } from '@/messages/email-notification';
 
 import { getEmailTemplate } from './get-email-template';
 import { sentEmailTo } from './sent-email-to';

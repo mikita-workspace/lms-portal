@@ -8,7 +8,7 @@ export const EMAIL_NOTIFICATION_MESSAGES = {
     'course-purchase': {
       subject: 'Дзякуем за куплю! Доступ да вашага курса адкрыты 🔑',
     },
-    payout: {
+    'teacher-payout': {
       subject: 'Выплата потверждена 💸',
     },
     'login-code': {
@@ -29,7 +29,7 @@ export const EMAIL_NOTIFICATION_MESSAGES = {
     'course-purchase': {
       subject: 'Thank you for your purchase! Access to your course is now open 🔑',
     },
-    payout: {
+    'teacher-payout': {
       subject: 'The payment has been confirmed 💸',
     },
     'login-code': {
@@ -50,7 +50,7 @@ export const EMAIL_NOTIFICATION_MESSAGES = {
     'course-purchase': {
       subject: 'Спасибо за покупку! Доступ к вашему курсу открыт 🔑',
     },
-    payout: {
+    'teacher-payout': {
       subject: 'Выплата потверждена 💸',
     },
     'login-code': {
