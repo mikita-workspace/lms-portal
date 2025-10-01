@@ -1,0 +1,20 @@
+{
+  "confirmation-email": {
+    "subject": "Email Confirmation",
+    "warning": "Confirm your email in the settings to enable the ability to make purchases."
+  },
+  "course-purchase": {
+    "subject": "Thank you for your purchase! Access to your course is now open 🔑"
+  },
+  "teacher-payout": {
+    "subject": "The payment has been confirmed 💸"
+  },
+  "login-code": {
+    "subject": "{{code}} - Your Nova Academy login code",
+    "description": "Enter this code to continue logging in without a password:",
+    "footerNote": "All rights reserved.",
+    "greeting": "Hey!",
+    "ignoreNote": "If you didn't attempt to log in, you can safely ignore this email.",
+    "validityNote": "This code is valid for 20 minutes and can only be used once."
+  }
+}

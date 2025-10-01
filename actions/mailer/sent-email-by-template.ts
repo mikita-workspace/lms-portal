@@ -4,8 +4,6 @@ import Handlebars from 'handlebars';
 import { getLocale } from 'next-intl/server';
 import Mail from 'nodemailer/lib/mailer';
 
-import { EMAIL_NOTIFICATION_MESSAGES } from '@/messages/email-notification';
-
 import { getEmailTemplate } from './get-email-template';
 import { sentEmailTo } from './sent-email-to';
 
@@ -15,7 +13,7 @@ type SentEmailByTemplate = {
   locale?: string;
   params: Record<string, string>;
   subject?: string;
-  template: keyof (typeof EMAIL_NOTIFICATION_MESSAGES)[keyof typeof EMAIL_NOTIFICATION_MESSAGES];
+  template: string;
 };
 
 export const sentEmailByTemplate = async ({
@@ -28,10 +26,7 @@ export const sentEmailByTemplate = async ({
 }: SentEmailByTemplate) => {
   try {
     const locale = customLocale ?? (await getLocale());
-
-    const localeTemplates =
-      EMAIL_NOTIFICATION_MESSAGES[locale as keyof typeof EMAIL_NOTIFICATION_MESSAGES];
-    const translations = localeTemplates[template];
+    const translations = (await import(`/messages/email/${locale}.json`)).default[template];
 
     const templateContent = await getEmailTemplate(template);
     const templateHtml = Handlebars.compile(templateContent);
@@ -39,21 +34,17 @@ export const sentEmailByTemplate = async ({
     let subject = translations?.subject;
 
     for (const [key, value] of Object.entries(params)) {
-      const regexp = `{{${key}}}`;
+      const regexp = `{${key}}`;
       subject = subject.replace(new RegExp(regexp, 'g'), value);
     }
 
-    const templateData = {
+    const html = templateHtml({
       ...translations,
       ...params,
       lang: locale,
       title: template,
       year: new Date().getFullYear().toString(),
-    };
-
-    const html = templateHtml(templateData);
-
-    console.log(html);
+    });
 
     const emailMessage = await sentEmailTo({
       attachments,
