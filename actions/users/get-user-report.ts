@@ -103,7 +103,7 @@ export const getUserReportBuffer = async (userId: string) => {
   };
 
   const aiSummary = await getUserSummary(userData);
-  const templateContent = await getEmailTemplate('user-report', 'en');
+  const templateContent = await getEmailTemplate('user-report');
 
   const template = Handlebars.compile(templateContent);
 
