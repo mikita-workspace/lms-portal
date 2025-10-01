@@ -1,5 +1,10 @@
 {
   "confirmation-email": {
+    "confirmEmail": "Confirm Email",
+    "description": "Thank you for registering at Nova Academy! To complete the process, please confirm your email by clicking the button below.",
+    "footerNote": "All rights reserved.",
+    "greeting": "Hello, {username}!",
+    "ignoreNote": "If you did not register, please ignore this email.",
     "subject": "Email Confirmation",
     "warning": "Confirm your email in the settings to enable the ability to make purchases."
   },

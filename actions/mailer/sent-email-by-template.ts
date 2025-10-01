@@ -4,6 +4,8 @@ import Handlebars from 'handlebars';
 import { getLocale } from 'next-intl/server';
 import Mail from 'nodemailer/lib/mailer';
 
+import { replaceMessagePlaceholders } from '@/lib/locale';
+
 import { getEmailTemplate } from './get-email-template';
 import { sentEmailTo } from './sent-email-to';
 
@@ -26,17 +28,12 @@ export const sentEmailByTemplate = async ({
 }: SentEmailByTemplate) => {
   try {
     const locale = customLocale ?? (await getLocale());
-    const translations = (await import(`/messages/email/${locale}.json`)).default[template];
+    let translations = (await import(`/messages/email/${locale}.json`)).default[template];
 
     const templateContent = await getEmailTemplate(template);
     const templateHtml = Handlebars.compile(templateContent);
 
-    let subject = translations?.subject;
-
-    for (const [key, value] of Object.entries(params)) {
-      const regexp = `{${key}}`;
-      subject = subject.replace(new RegExp(regexp, 'g'), value);
-    }
+    translations = replaceMessagePlaceholders(translations, params);
 
     const html = templateHtml({
       ...translations,
@@ -49,7 +46,7 @@ export const sentEmailByTemplate = async ({
     const emailMessage = await sentEmailTo({
       attachments,
       emails,
-      subject: customSubject ?? subject,
+      subject: customSubject ?? translations?.subject,
       html,
     });
     return { messageId: emailMessage.messageId };

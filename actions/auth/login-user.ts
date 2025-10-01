@@ -67,7 +67,6 @@ export const loginUser = async (
   }
 
   const t = await getTranslations('auth');
-  const emailT = await getTranslations('email-notification.confirmation');
 
   const user = await db.user.upsert({
     where: {
@@ -129,7 +128,6 @@ export const loginUser = async (
     await sentEmailByTemplate({
       emails: [user?.email ?? ''],
       params: emailParams,
-      subject: emailT('subject'),
       template: 'confirmation-email',
     });
   }
